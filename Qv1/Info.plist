@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>ProximaNova-SBold.otf</string>
+		<string>ProximaNovaSoft-Bold.otf</string>
+		<string>ProximaNovaSoft.otf</string>
+		<string>ProximaNovaSoft-Medium.otf</string>
+		<string>ProximaNova-Reg.otf</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>

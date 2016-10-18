@@ -8,22 +8,38 @@
 
 /* Begin PBXBuildFile section */
 		680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DD1DB5933200452A4E /* AppDelegate.swift */; };
-		680DF2E01DB5933200452A4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DF1DB5933200452A4E /* ViewController.swift */; };
+		680DF2E01DB5933200452A4E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DF1DB5933200452A4E /* LoginViewController.swift */; };
 		680DF2E31DB5933200452A4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E11DB5933200452A4E /* Main.storyboard */; };
 		680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2E41DB5933200452A4E /* Qv1.xcdatamodeld */; };
 		680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E71DB5933200452A4E /* Assets.xcassets */; };
 		680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */; };
+		680DF2FA1DB5960800452A4E /* ProximaNova-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F31DB595F800452A4E /* ProximaNova-Light.otf */; };
+		680DF2FB1DB5960800452A4E /* ProximaNova-Reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F41DB595F800452A4E /* ProximaNova-Reg.otf */; };
+		680DF2FC1DB5960800452A4E /* ProximaNova-Sbold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F51DB595F800452A4E /* ProximaNova-Sbold.otf */; };
+		680DF2FD1DB5960800452A4E /* ProximaNovaSoft-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F61DB595F800452A4E /* ProximaNovaSoft-Bold.otf */; };
+		680DF2FE1DB5960800452A4E /* ProximaNovaSoft-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F71DB595F800452A4E /* ProximaNovaSoft-Medium.otf */; };
+		680DF2FF1DB5960800452A4E /* ProximaNovaSoft.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F81DB595F800452A4E /* ProximaNovaSoft.otf */; };
+		680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */; };
+		680DF3021DB59A3A00452A4E /* quarry.png in Resources */ = {isa = PBXBuildFile; fileRef = 680DF3011DB59A3A00452A4E /* quarry.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		680DF2DA1DB5933200452A4E /* Qv1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qv1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		680DF2DD1DB5933200452A4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		680DF2DF1DB5933200452A4E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		680DF2DF1DB5933200452A4E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		680DF2E21DB5933200452A4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		680DF2E51DB5933200452A4E /* Qv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Qv1.xcdatamodel; sourceTree = "<group>"; };
 		680DF2E71DB5933200452A4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		680DF2EA1DB5933200452A4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		680DF2EC1DB5933200452A4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		680DF2F31DB595F800452A4E /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
+		680DF2F41DB595F800452A4E /* ProximaNova-Reg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Reg.otf"; sourceTree = "<group>"; };
+		680DF2F51DB595F800452A4E /* ProximaNova-Sbold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Sbold.otf"; sourceTree = "<group>"; };
+		680DF2F61DB595F800452A4E /* ProximaNovaSoft-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNovaSoft-Bold.otf"; sourceTree = "<group>"; };
+		680DF2F71DB595F800452A4E /* ProximaNovaSoft-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNovaSoft-Medium.otf"; sourceTree = "<group>"; };
+		680DF2F81DB595F800452A4E /* ProximaNovaSoft.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProximaNovaSoft.otf; sourceTree = "<group>"; };
+		680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-LightIt.otf"; sourceTree = "<group>"; };
+		680DF3011DB59A3A00452A4E /* quarry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quarry.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,14 +73,30 @@
 			isa = PBXGroup;
 			children = (
 				680DF2DD1DB5933200452A4E /* AppDelegate.swift */,
-				680DF2DF1DB5933200452A4E /* ViewController.swift */,
+				680DF2DF1DB5933200452A4E /* LoginViewController.swift */,
 				680DF2E11DB5933200452A4E /* Main.storyboard */,
 				680DF2E71DB5933200452A4E /* Assets.xcassets */,
 				680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */,
 				680DF2EC1DB5933200452A4E /* Info.plist */,
+				680DF2F21DB5941A00452A4E /* Resources */,
 				680DF2E41DB5933200452A4E /* Qv1.xcdatamodeld */,
 			);
 			path = Qv1;
+			sourceTree = "<group>";
+		};
+		680DF2F21DB5941A00452A4E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				680DF3011DB59A3A00452A4E /* quarry.png */,
+				680DF2F31DB595F800452A4E /* ProximaNova-Light.otf */,
+				680DF2F41DB595F800452A4E /* ProximaNova-Reg.otf */,
+				680DF2F51DB595F800452A4E /* ProximaNova-Sbold.otf */,
+				680DF2F61DB595F800452A4E /* ProximaNovaSoft-Bold.otf */,
+				680DF2F71DB595F800452A4E /* ProximaNovaSoft-Medium.otf */,
+				680DF2F81DB595F800452A4E /* ProximaNovaSoft.otf */,
+				680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,9 +159,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				680DF2FA1DB5960800452A4E /* ProximaNova-Light.otf in Resources */,
+				680DF2FB1DB5960800452A4E /* ProximaNova-Reg.otf in Resources */,
+				680DF2FC1DB5960800452A4E /* ProximaNova-Sbold.otf in Resources */,
+				680DF2FD1DB5960800452A4E /* ProximaNovaSoft-Bold.otf in Resources */,
+				680DF2FE1DB5960800452A4E /* ProximaNovaSoft-Medium.otf in Resources */,
+				680DF2FF1DB5960800452A4E /* ProximaNovaSoft.otf in Resources */,
+				680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */,
 				680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */,
 				680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */,
 				680DF2E31DB5933200452A4E /* Main.storyboard in Resources */,
+				680DF3021DB59A3A00452A4E /* quarry.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +180,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				680DF2E01DB5933200452A4E /* ViewController.swift in Sources */,
+				680DF2E01DB5933200452A4E /* LoginViewController.swift in Sources */,
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */,
 			);
