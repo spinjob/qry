@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27B79C6780BCE387A65A38D0 /* Pods_Qv1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */; };
+		68012E701DB5A42600676EAF /* iPhone 7 Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */; };
+		68012E721DB5BEE000676EAF /* EnterPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68012E711DB5BEE000676EAF /* EnterPinViewController.swift */; };
 		680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DD1DB5933200452A4E /* AppDelegate.swift */; };
 		680DF2E01DB5933200452A4E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DF1DB5933200452A4E /* LoginViewController.swift */; };
 		680DF2E31DB5933200452A4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E11DB5933200452A4E /* Main.storyboard */; };
@@ -21,9 +24,22 @@
 		680DF2FF1DB5960800452A4E /* ProximaNovaSoft.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F81DB595F800452A4E /* ProximaNovaSoft.otf */; };
 		680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */; };
 		680DF3021DB59A3A00452A4E /* quarry.png in Resources */ = {isa = PBXBuildFile; fileRef = 680DF3011DB59A3A00452A4E /* quarry.png */; };
+		68DBF3941DB6E91700C87385 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3931DB6E91700C87385 /* GoogleService-Info.plist */; };
+		68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3951DB6EF5000C87385 /* HomeViewController.swift */; };
+		68DBF3981DB6EF9A00C87385 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3971DB6EF9A00C87385 /* User.swift */; };
+		68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF39A1DB6EFB000C87385 /* Polls.swift */; };
+		68DBF3A01DB6F5DC00C87385 /* ask.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF39D1DB6F5DC00C87385 /* ask.png */; };
+		68DBF3A11DB6F5DC00C87385 /* inboxActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF39E1DB6F5DC00C87385 /* inboxActive.png */; };
+		68DBF3A21DB6F5DC00C87385 /* inboxEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF39F1DB6F5DC00C87385 /* inboxEmpty.png */; };
+		68DBF3A61DB6F6E900C87385 /* small inbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3A51DB6F6E900C87385 /* small inbox.png */; };
+		68DBF3A81DB6F6FF00C87385 /* small ask.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3A71DB6F6FF00C87385 /* small ask.png */; };
+		68DBF3AA1DB6F71600C87385 /* small inbox empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3A91DB6F71600C87385 /* small inbox empty.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4DE9B6A28C941F22C37D448C /* Pods-Qv1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qv1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Qv1/Pods-Qv1.debug.xcconfig"; sourceTree = "<group>"; };
+		68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone 7 Plus.png"; sourceTree = "<group>"; };
+		68012E711DB5BEE000676EAF /* EnterPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinViewController.swift; sourceTree = "<group>"; };
 		680DF2DA1DB5933200452A4E /* Qv1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qv1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		680DF2DD1DB5933200452A4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		680DF2DF1DB5933200452A4E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -40,6 +56,18 @@
 		680DF2F81DB595F800452A4E /* ProximaNovaSoft.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProximaNovaSoft.otf; sourceTree = "<group>"; };
 		680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-LightIt.otf"; sourceTree = "<group>"; };
 		680DF3011DB59A3A00452A4E /* quarry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quarry.png; sourceTree = "<group>"; };
+		68DBF3931DB6E91700C87385 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		68DBF3951DB6EF5000C87385 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		68DBF3971DB6EF9A00C87385 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		68DBF39A1DB6EFB000C87385 /* Polls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Polls.swift; sourceTree = "<group>"; };
+		68DBF39D1DB6F5DC00C87385 /* ask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ask.png; sourceTree = "<group>"; };
+		68DBF39E1DB6F5DC00C87385 /* inboxActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inboxActive.png; sourceTree = "<group>"; };
+		68DBF39F1DB6F5DC00C87385 /* inboxEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inboxEmpty.png; sourceTree = "<group>"; };
+		68DBF3A51DB6F6E900C87385 /* small inbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small inbox.png"; sourceTree = "<group>"; };
+		68DBF3A71DB6F6FF00C87385 /* small ask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small ask.png"; sourceTree = "<group>"; };
+		68DBF3A91DB6F71600C87385 /* small inbox empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small inbox empty.png"; sourceTree = "<group>"; };
+		A4124686FDA3D5ED3994D781 /* Pods-Qv1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qv1.release.xcconfig"; path = "Pods/Target Support Files/Pods-Qv1/Pods-Qv1.release.xcconfig"; sourceTree = "<group>"; };
+		B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Qv1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,17 +75,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B79C6780BCE387A65A38D0 /* Pods_Qv1.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4BF5457A2FB48E866AC3863B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4DE9B6A28C941F22C37D448C /* Pods-Qv1.debug.xcconfig */,
+				A4124686FDA3D5ED3994D781 /* Pods-Qv1.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		680DF2D11DB5933200452A4E = {
 			isa = PBXGroup;
 			children = (
 				680DF2DC1DB5933200452A4E /* Qv1 */,
 				680DF2DB1DB5933200452A4E /* Products */,
+				4BF5457A2FB48E866AC3863B /* Pods */,
+				A46A0ACBC6389C255DF8EC08 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,13 +113,15 @@
 			isa = PBXGroup;
 			children = (
 				680DF2DD1DB5933200452A4E /* AppDelegate.swift */,
-				680DF2DF1DB5933200452A4E /* LoginViewController.swift */,
+				68DBF39C1DB6EFD100C87385 /* ViewControllers */,
 				680DF2E11DB5933200452A4E /* Main.storyboard */,
 				680DF2E71DB5933200452A4E /* Assets.xcassets */,
 				680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */,
 				680DF2EC1DB5933200452A4E /* Info.plist */,
+				68DBF3991DB6EFA100C87385 /* Models */,
 				680DF2F21DB5941A00452A4E /* Resources */,
 				680DF2E41DB5933200452A4E /* Qv1.xcdatamodeld */,
+				68DBF3931DB6E91700C87385 /* GoogleService-Info.plist */,
 			);
 			path = Qv1;
 			sourceTree = "<group>";
@@ -87,6 +129,8 @@
 		680DF2F21DB5941A00452A4E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				68DBF3A41DB6F5EB00C87385 /* Navigation Icons */,
+				68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */,
 				680DF3011DB59A3A00452A4E /* quarry.png */,
 				680DF2F31DB595F800452A4E /* ProximaNova-Light.otf */,
 				680DF2F41DB595F800452A4E /* ProximaNova-Reg.otf */,
@@ -99,6 +143,46 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		68DBF3991DB6EFA100C87385 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				68DBF3971DB6EF9A00C87385 /* User.swift */,
+				68DBF39A1DB6EFB000C87385 /* Polls.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		68DBF39C1DB6EFD100C87385 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				680DF2DF1DB5933200452A4E /* LoginViewController.swift */,
+				68012E711DB5BEE000676EAF /* EnterPinViewController.swift */,
+				68DBF3951DB6EF5000C87385 /* HomeViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		68DBF3A41DB6F5EB00C87385 /* Navigation Icons */ = {
+			isa = PBXGroup;
+			children = (
+				68DBF3A51DB6F6E900C87385 /* small inbox.png */,
+				68DBF3A91DB6F71600C87385 /* small inbox empty.png */,
+				68DBF3A71DB6F6FF00C87385 /* small ask.png */,
+				68DBF39D1DB6F5DC00C87385 /* ask.png */,
+				68DBF39E1DB6F5DC00C87385 /* inboxActive.png */,
+				68DBF39F1DB6F5DC00C87385 /* inboxEmpty.png */,
+			);
+			name = "Navigation Icons";
+			sourceTree = "<group>";
+		};
+		A46A0ACBC6389C255DF8EC08 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -106,9 +190,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 680DF2EF1DB5933200452A4E /* Build configuration list for PBXNativeTarget "Qv1" */;
 			buildPhases = (
+				70D14A7ACD2BBD4EDCE4F2C2 /* [CP] Check Pods Manifest.lock */,
 				680DF2D61DB5933200452A4E /* Sources */,
 				680DF2D71DB5933200452A4E /* Frameworks */,
 				680DF2D81DB5933200452A4E /* Resources */,
+				1BF98E28EEAE009AE7A45737 /* [CP] Embed Pods Frameworks */,
+				42A9B50202E2F1389577327D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -159,30 +246,90 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68DBF3A21DB6F5DC00C87385 /* inboxEmpty.png in Resources */,
+				68DBF3A61DB6F6E900C87385 /* small inbox.png in Resources */,
 				680DF2FA1DB5960800452A4E /* ProximaNova-Light.otf in Resources */,
 				680DF2FB1DB5960800452A4E /* ProximaNova-Reg.otf in Resources */,
 				680DF2FC1DB5960800452A4E /* ProximaNova-Sbold.otf in Resources */,
 				680DF2FD1DB5960800452A4E /* ProximaNovaSoft-Bold.otf in Resources */,
+				68DBF3A81DB6F6FF00C87385 /* small ask.png in Resources */,
 				680DF2FE1DB5960800452A4E /* ProximaNovaSoft-Medium.otf in Resources */,
 				680DF2FF1DB5960800452A4E /* ProximaNovaSoft.otf in Resources */,
+				68012E701DB5A42600676EAF /* iPhone 7 Plus.png in Resources */,
+				68DBF3941DB6E91700C87385 /* GoogleService-Info.plist in Resources */,
 				680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */,
+				68DBF3A01DB6F5DC00C87385 /* ask.png in Resources */,
 				680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */,
+				68DBF3AA1DB6F71600C87385 /* small inbox empty.png in Resources */,
 				680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */,
 				680DF2E31DB5933200452A4E /* Main.storyboard in Resources */,
+				68DBF3A11DB6F5DC00C87385 /* inboxActive.png in Resources */,
 				680DF3021DB59A3A00452A4E /* quarry.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1BF98E28EEAE009AE7A45737 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Qv1/Pods-Qv1-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		42A9B50202E2F1389577327D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Qv1/Pods-Qv1-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		70D14A7ACD2BBD4EDCE4F2C2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		680DF2D61DB5933200452A4E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */,
 				680DF2E01DB5933200452A4E /* LoginViewController.swift in Sources */,
+				68DBF3981DB6EF9A00C87385 /* User.swift in Sources */,
+				68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */,
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */,
+				68012E721DB5BEE000676EAF /* EnterPinViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +450,7 @@
 		};
 		680DF2F01DB5933200452A4E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4DE9B6A28C941F22C37D448C /* Pods-Qv1.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = S9J57RY573;
@@ -316,6 +464,7 @@
 		};
 		680DF2F11DB5933200452A4E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4124686FDA3D5ED3994D781 /* Pods-Qv1.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = S9J57RY573;
@@ -346,6 +495,7 @@
 				680DF2F11DB5933200452A4E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

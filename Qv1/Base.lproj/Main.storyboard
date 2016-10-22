@@ -1,46 +1,226 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="otl-ax-51e">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="ProximaNova-Light.otf">
+            <string>ProximaNova-Light</string>
+        </array>
+        <array key="ProximaNova-Sbold.otf">
+            <string>ProximaNova-Semibold</string>
+        </array>
+        <array key="ProximaNovaSoft-Medium.otf">
+            <string>ProximaNovaSoft-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Login View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <scene sceneID="JMZ-Cy-imj">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController id="R3y-SA-OF8" customClass="LoginViewController" customModule="Qv1" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                        <viewControllerLayoutGuide type="top" id="V3U-77-9dK"/>
+                        <viewControllerLayoutGuide type="bottom" id="MC8-Kj-646"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="QQn-VA-IRz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pdT-wf-dTG">
-                                <frame key="frameInset" minX="95" minY="328" width="185" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter phone number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Iqp-5b-ygO">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Vq2-ry-NSi"/>
+                                    <constraint firstAttribute="width" constant="265" id="xO2-fp-QEw"/>
+                                </constraints>
+                                <color key="textColor" red="0.098039215690000001" green="0.76862745099999996" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Light" family="Proxima Nova" pointSize="25"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" keyboardAppearance="light"/>
                             </textField>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="quarry.png" translatesAutoresizingMaskIntoConstraints="NO" id="7Ga-6N-haW">
-                                <frame key="frameInset" minX="112" minY="241" width="151" height="79"/>
-                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dao-YR-7v3">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="161" id="wL6-m2-rXj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="ProximaNovaSoft-Medium" family="Proxima Nova Soft" pointSize="17"/>
+                                <state key="normal" title="Send text to verify">
+                                    <color key="titleColor" red="0.015686274510000001" green="0.19215686269999999" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="smsVericationButtonTapped:" destination="R3y-SA-OF8" eventType="touchUpInside" id="NW8-Jk-eZK"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="wMs-k3-egh">
+                                <color key="color" red="0.098039215690000001" green="0.76862745099999996" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="error" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4EM-Nq-fsa">
+                                <frame key="frameInset" minX="166" minY="240" width="37" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="17"/>
+                                <color key="textColor" red="0.98431372549999996" green="0.20392156859999999" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="7Ga-6N-haW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kj6-xM-1fa"/>
+                            <constraint firstItem="Iqp-5b-ygO" firstAttribute="top" secondItem="V3U-77-9dK" secondAttribute="bottom" constant="59" id="CG5-8m-dkr"/>
+                            <constraint firstItem="dao-YR-7v3" firstAttribute="top" secondItem="Iqp-5b-ygO" secondAttribute="bottom" constant="34" id="D9D-es-aIL"/>
+                            <constraint firstItem="wMs-k3-egh" firstAttribute="centerX" secondItem="QQn-VA-IRz" secondAttribute="centerX" id="SOt-ya-jgG"/>
+                            <constraint firstItem="dao-YR-7v3" firstAttribute="centerX" secondItem="QQn-VA-IRz" secondAttribute="centerX" id="i1z-lh-f8B"/>
+                            <constraint firstItem="Iqp-5b-ygO" firstAttribute="centerX" secondItem="QQn-VA-IRz" secondAttribute="centerX" id="l1u-Cw-yKj"/>
+                            <constraint firstItem="wMs-k3-egh" firstAttribute="centerY" secondItem="QQn-VA-IRz" secondAttribute="centerY" id="nJ0-np-J7T"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="LRG-FJ-uTj"/>
+                    <connections>
+                        <outlet property="phoneNumberTextField" destination="Iqp-5b-ygO" id="SKo-wS-Ge2"/>
+                        <outlet property="smsVerificationButton" destination="dao-YR-7v3" id="Gb1-ij-pDN"/>
+                        <outlet property="spinner" destination="wMs-k3-egh" id="EAb-Km-qjN"/>
+                        <outlet property="statusTextLabel" destination="4EM-Nq-fsa" id="bWy-Lv-8J3"/>
+                        <segue destination="Ubw-dH-yyG" kind="show" identifier="enterPinSegue" id="dpt-hD-Ksd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cpx-Wd-cIf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1604" y="37.331334332833585"/>
+        </scene>
+        <!--Home-->
+        <scene sceneID="ghT-2i-CnM">
+            <objects>
+                <viewController title="Home" automaticallyAdjustsScrollViewInsets="NO" id="otl-ax-51e" customClass="HomeViewController" customModule="Qv1" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2SY-A3-aEv"/>
+                        <viewControllerLayoutGuide type="bottom" id="vg4-aq-vQs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="UiM-b5-qIa">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4Bb-MM-oEI">
+                                <frame key="frameInset" minY="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sp0-nP-88Y">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="BZH-oN-kJV"/>
+                                    <constraint firstAttribute="height" constant="40" id="GRB-bH-iQD"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="small inbox empty.png"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2oA-mE-VDa">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="58" id="7Wq-4z-Hag"/>
+                                    <constraint firstAttribute="height" constant="61" id="RHN-sA-UnR"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="small ask.png"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4Bb-MM-oEI" firstAttribute="top" secondItem="2SY-A3-aEv" secondAttribute="bottom" id="01z-ad-fuM"/>
+                            <constraint firstItem="vg4-aq-vQs" firstAttribute="top" secondItem="4Bb-MM-oEI" secondAttribute="bottom" id="LYi-2e-0eP"/>
+                            <constraint firstItem="4Bb-MM-oEI" firstAttribute="leading" secondItem="UiM-b5-qIa" secondAttribute="leadingMargin" id="SDs-Na-52U"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4Bb-MM-oEI" secondAttribute="trailing" id="ScZ-vD-AEd"/>
+                            <constraint firstItem="vg4-aq-vQs" firstAttribute="top" secondItem="2oA-mE-VDa" secondAttribute="bottom" constant="25" id="o6y-me-CD1"/>
+                            <constraint firstItem="2oA-mE-VDa" firstAttribute="centerX" secondItem="UiM-b5-qIa" secondAttribute="centerX" id="twZ-6h-dof"/>
+                            <constraint firstItem="vg4-aq-vQs" firstAttribute="top" secondItem="sp0-nP-88Y" secondAttribute="bottom" constant="25" id="uaj-ie-jWa"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sp0-nP-88Y" secondAttribute="trailing" constant="14" id="xow-93-ksX"/>
                         </constraints>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AH6-Uc-7bJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="48.799999999999997" y="38.23088455772114"/>
+            <point key="canvasLocation" x="3173.5999999999999" y="35.532233883058474"/>
+        </scene>
+        <!--Enter Pin View Controller-->
+        <scene sceneID="Wgz-UQ-PAF">
+            <objects>
+                <viewController id="Ubw-dH-yyG" customClass="EnterPinViewController" customModule="Qv1" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sq7-n1-TsO"/>
+                        <viewControllerLayoutGuide type="bottom" id="L3t-yc-opT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KS6-k1-Pm9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter PIN" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="egf-Eq-Acv">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="265" id="FaN-O5-G9s"/>
+                                    <constraint firstAttribute="height" constant="30" id="xkS-Cv-Ssn"/>
+                                </constraints>
+                                <color key="textColor" red="0.098039215690000001" green="0.76862745099999996" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Light" family="Proxima Nova" pointSize="25"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" keyboardAppearance="light"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17g-mD-vhs">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="128" id="0eI-Kk-YA8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="ProximaNovaSoft-Medium" family="Proxima Nova Soft" pointSize="17"/>
+                                <state key="normal" title="Verify">
+                                    <color key="titleColor" red="0.015686274510000001" green="0.19215686269999999" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="smsVericationButtonTapped:" destination="R3y-SA-OF8" eventType="touchUpInside" id="xGb-1Y-wqS"/>
+                                    <action selector="verifyButtonTapped:" destination="Ubw-dH-yyG" eventType="touchUpInside" id="ifu-N7-i2O"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="error" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lhc-Uc-qL6">
+                                <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="17"/>
+                                <color key="textColor" red="0.98431372549999996" green="0.20392156859999999" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eJT-0m-XqY">
+                                <color key="color" red="0.098039215690000001" green="0.76862745099999996" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="eJT-0m-XqY" firstAttribute="centerX" secondItem="KS6-k1-Pm9" secondAttribute="centerX" id="25e-TT-ihu"/>
+                            <constraint firstItem="egf-Eq-Acv" firstAttribute="centerX" secondItem="KS6-k1-Pm9" secondAttribute="centerX" id="4VG-Zx-tVt"/>
+                            <constraint firstItem="eJT-0m-XqY" firstAttribute="centerY" secondItem="KS6-k1-Pm9" secondAttribute="centerY" id="AY9-6e-Pii"/>
+                            <constraint firstItem="lhc-Uc-qL6" firstAttribute="top" secondItem="17g-mD-vhs" secondAttribute="bottom" constant="24" id="Jg3-Y6-jT6"/>
+                            <constraint firstItem="17g-mD-vhs" firstAttribute="centerX" secondItem="KS6-k1-Pm9" secondAttribute="centerX" id="Ott-rf-PuZ"/>
+                            <constraint firstItem="lhc-Uc-qL6" firstAttribute="centerX" secondItem="KS6-k1-Pm9" secondAttribute="centerX" id="WDB-up-hKi"/>
+                            <constraint firstItem="17g-mD-vhs" firstAttribute="top" secondItem="egf-Eq-Acv" secondAttribute="bottom" constant="34" id="cDn-WA-Ppm"/>
+                            <constraint firstItem="egf-Eq-Acv" firstAttribute="top" secondItem="sq7-n1-TsO" secondAttribute="bottom" constant="63" id="oEU-tI-8Vi"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="enterPINTextField" destination="egf-Eq-Acv" id="L5v-Lc-C00"/>
+                        <outlet property="errorTextLabel" destination="lhc-Uc-qL6" id="Dcb-sw-ZSo"/>
+                        <outlet property="spinner" destination="eJT-0m-XqY" id="fXD-Xn-CWu"/>
+                        <outlet property="verifyButton" destination="17g-mD-vhs" id="hSi-i3-5Yi"/>
+                        <segue destination="otl-ax-51e" kind="show" identifier="loginSegue" id="N8r-ta-YpF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d0v-wz-NEa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2324" y="37"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="LRF-EJ-GKH">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ki2-Cg-Axj" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="75M-De-s90">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="R3y-SA-OF8" kind="relationship" relationship="rootViewController" id="sKZ-ld-T3S"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ic2-82-nxa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="664.79999999999995" y="37.331334332833585"/>
         </scene>
     </scenes>
     <resources>
-        <image name="quarry.png" width="284" height="145"/>
+        <image name="small ask.png" width="101" height="103"/>
+        <image name="small inbox empty.png" width="90" height="82"/>
     </resources>
 </document>
