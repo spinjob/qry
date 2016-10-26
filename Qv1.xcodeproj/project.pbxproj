@@ -11,7 +11,7 @@
 		68012E701DB5A42600676EAF /* iPhone 7 Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */; };
 		68012E721DB5BEE000676EAF /* EnterPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68012E711DB5BEE000676EAF /* EnterPinViewController.swift */; };
 		680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DD1DB5933200452A4E /* AppDelegate.swift */; };
-		680DF2E01DB5933200452A4E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DF1DB5933200452A4E /* LoginViewController.swift */; };
+		680DF2E01DB5933200452A4E /* VerifyPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */; };
 		680DF2E31DB5933200452A4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E11DB5933200452A4E /* Main.storyboard */; };
 		680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2E41DB5933200452A4E /* Qv1.xcdatamodeld */; };
 		680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E71DB5933200452A4E /* Assets.xcassets */; };
@@ -24,6 +24,31 @@
 		680DF2FF1DB5960800452A4E /* ProximaNovaSoft.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F81DB595F800452A4E /* ProximaNovaSoft.otf */; };
 		680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */; };
 		680DF3021DB59A3A00452A4E /* quarry.png in Resources */ = {isa = PBXBuildFile; fileRef = 680DF3011DB59A3A00452A4E /* quarry.png */; };
+		68D3841D1DBBE701000B4084 /* Sign Up Button Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D3841C1DBBE701000B4084 /* Sign Up Button Background.png */; };
+		68D3841F1DBBE706000B4084 /* Login Button Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D3841E1DBBE706000B4084 /* Login Button Background.png */; };
+		68D384211DBBE925000B4084 /* Blue Button Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D384201DBBE925000B4084 /* Blue Button Background.png */; };
+		68D384231DBBEACA000B4084 /* Text Field Underline.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D384221DBBEACA000B4084 /* Text Field Underline.png */; };
+		68D384251DBBF1E7000B4084 /* LoginOrSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D384241DBBF1E7000B4084 /* LoginOrSignUpViewController.swift */; };
+		68D384271DBBF28D000B4084 /* EnterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D384261DBBF28D000B4084 /* EnterNameViewController.swift */; };
+		68D384291DBBF31C000B4084 /* SelectBirthdayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D384281DBBF31C000B4084 /* SelectBirthdayViewController.swift */; };
+		68D3842B1DBEFD5F000B4084 /* AskFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D3842A1DBEFD5F000B4084 /* AskFormViewController.swift */; };
+		68D384311DBFBBB4000B4084 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842E1DBFBBB4000B4084 /* AWSCore.framework */; };
+		68D384321DBFBBB4000B4084 /* AWSDynamoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */; };
+		68D384331DBFBBB4000B4084 /* CheckXcodeVersion.sh in Resources */ = {isa = PBXBuildFile; fileRef = 68D384301DBFBBB4000B4084 /* CheckXcodeVersion.sh */; };
+		68D384341DBFBC05000B4084 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842E1DBFBBB4000B4084 /* AWSCore.framework */; };
+		68D384351DBFBC05000B4084 /* AWSCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842E1DBFBBB4000B4084 /* AWSCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		68D384361DBFBC05000B4084 /* AWSDynamoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */; };
+		68D384371DBFBC05000B4084 /* AWSDynamoDB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		68D384411DBFBC68000B4084 /* AWSMobileClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D3843B1DBFBC68000B4084 /* AWSMobileClient.swift */; };
+		68D384421DBFBC68000B4084 /* AWSMobileHubHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3843C1DBFBC68000B4084 /* AWSMobileHubHelper.framework */; };
+		68D384431DBFBC68000B4084 /* QPoll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D3843F1DBFBC68000B4084 /* QPoll.swift */; };
+		68D384441DBFBC68000B4084 /* QUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D384401DBFBC68000B4084 /* QUser.swift */; };
+		68D384461DBFBD2C000B4084 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D384451DBFBD2C000B4084 /* libz.tbd */; };
+		68D384481DBFBD36000B4084 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D384471DBFBD36000B4084 /* libsqlite3.tbd */; };
+		68D3862F1DBFCCCF000B4084 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3862B1DBFCCCF000B4084 /* Bolts.framework */; };
+		68D386301DBFCCCF000B4084 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3862C1DBFCCCF000B4084 /* FBSDKCoreKit.framework */; };
+		68D386311DBFCCCF000B4084 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3862D1DBFCCCF000B4084 /* FBSDKLoginKit.framework */; };
+		68D386321DBFCCCF000B4084 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3862E1DBFCCCF000B4084 /* FBSDKShareKit.framework */; };
 		68DBF3941DB6E91700C87385 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3931DB6E91700C87385 /* GoogleService-Info.plist */; };
 		68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3951DB6EF5000C87385 /* HomeViewController.swift */; };
 		68DBF3981DB6EF9A00C87385 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3971DB6EF9A00C87385 /* User.swift */; };
@@ -36,13 +61,28 @@
 		68DBF3AA1DB6F71600C87385 /* small inbox empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3A91DB6F71600C87385 /* small inbox empty.png */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		68D384381DBFBC05000B4084 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				68D384371DBFBC05000B4084 /* AWSDynamoDB.framework in Embed Frameworks */,
+				68D384351DBFBC05000B4084 /* AWSCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		4DE9B6A28C941F22C37D448C /* Pods-Qv1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qv1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Qv1/Pods-Qv1.debug.xcconfig"; sourceTree = "<group>"; };
 		68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone 7 Plus.png"; sourceTree = "<group>"; };
 		68012E711DB5BEE000676EAF /* EnterPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinViewController.swift; sourceTree = "<group>"; };
 		680DF2DA1DB5933200452A4E /* Qv1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qv1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		680DF2DD1DB5933200452A4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		680DF2DF1DB5933200452A4E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPhoneViewController.swift; sourceTree = "<group>"; };
 		680DF2E21DB5933200452A4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		680DF2E51DB5933200452A4E /* Qv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Qv1.xcdatamodel; sourceTree = "<group>"; };
 		680DF2E71DB5933200452A4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -56,6 +96,28 @@
 		680DF2F81DB595F800452A4E /* ProximaNovaSoft.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProximaNovaSoft.otf; sourceTree = "<group>"; };
 		680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-LightIt.otf"; sourceTree = "<group>"; };
 		680DF3011DB59A3A00452A4E /* quarry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quarry.png; sourceTree = "<group>"; };
+		68D3841C1DBBE701000B4084 /* Sign Up Button Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sign Up Button Background.png"; sourceTree = "<group>"; };
+		68D3841E1DBBE706000B4084 /* Login Button Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Login Button Background.png"; sourceTree = "<group>"; };
+		68D384201DBBE925000B4084 /* Blue Button Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Blue Button Background.png"; sourceTree = "<group>"; };
+		68D384221DBBEACA000B4084 /* Text Field Underline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Text Field Underline.png"; sourceTree = "<group>"; };
+		68D384241DBBF1E7000B4084 /* LoginOrSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOrSignUpViewController.swift; sourceTree = "<group>"; };
+		68D384261DBBF28D000B4084 /* EnterNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterNameViewController.swift; sourceTree = "<group>"; };
+		68D384281DBBF31C000B4084 /* SelectBirthdayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectBirthdayViewController.swift; sourceTree = "<group>"; };
+		68D3842A1DBEFD5F000B4084 /* AskFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskFormViewController.swift; sourceTree = "<group>"; };
+		68D3842E1DBFBBB4000B4084 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
+		68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSDynamoDB.framework; sourceTree = "<group>"; };
+		68D384301DBFBBB4000B4084 /* CheckXcodeVersion.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = CheckXcodeVersion.sh; sourceTree = "<group>"; };
+		68D3843B1DBFBC68000B4084 /* AWSMobileClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSMobileClient.swift; sourceTree = "<group>"; };
+		68D3843C1DBFBC68000B4084 /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSMobileHubHelper.framework; sourceTree = "<group>"; };
+		68D3843F1DBFBC68000B4084 /* QPoll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QPoll.swift; sourceTree = "<group>"; };
+		68D384401DBFBC68000B4084 /* QUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QUser.swift; sourceTree = "<group>"; };
+		68D384451DBFBD2C000B4084 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		68D384471DBFBD36000B4084 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		68D3862B1DBFCCCF000B4084 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
+		68D3862C1DBFCCCF000B4084 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		68D3862D1DBFCCCF000B4084 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		68D3862E1DBFCCCF000B4084 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		68D386331DBFD85A000B4084 /* Qv1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qv1.entitlements; sourceTree = "<group>"; };
 		68DBF3931DB6E91700C87385 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		68DBF3951DB6EF5000C87385 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		68DBF3971DB6EF9A00C87385 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -75,7 +137,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68D384481DBFBD36000B4084 /* libsqlite3.tbd in Frameworks */,
+				68D384461DBFBD2C000B4084 /* libz.tbd in Frameworks */,
 				27B79C6780BCE387A65A38D0 /* Pods_Qv1.framework in Frameworks */,
+				68D384341DBFBC05000B4084 /* AWSCore.framework in Frameworks */,
+				68D384421DBFBC68000B4084 /* AWSMobileHubHelper.framework in Frameworks */,
+				68D386301DBFCCCF000B4084 /* FBSDKCoreKit.framework in Frameworks */,
+				68D384321DBFBBB4000B4084 /* AWSDynamoDB.framework in Frameworks */,
+				68D3862F1DBFCCCF000B4084 /* Bolts.framework in Frameworks */,
+				68D386321DBFCCCF000B4084 /* FBSDKShareKit.framework in Frameworks */,
+				68D386311DBFCCCF000B4084 /* FBSDKLoginKit.framework in Frameworks */,
+				68D384311DBFBBB4000B4084 /* AWSCore.framework in Frameworks */,
+				68D384361DBFBC05000B4084 /* AWSDynamoDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,8 +168,10 @@
 			isa = PBXGroup;
 			children = (
 				680DF2DC1DB5933200452A4E /* Qv1 */,
+				68D3843A1DBFBC68000B4084 /* AmazonAws */,
 				680DF2DB1DB5933200452A4E /* Products */,
 				4BF5457A2FB48E866AC3863B /* Pods */,
+				68D3842C1DBFBBB4000B4084 /* Sdk */,
 				A46A0ACBC6389C255DF8EC08 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +187,7 @@
 		680DF2DC1DB5933200452A4E /* Qv1 */ = {
 			isa = PBXGroup;
 			children = (
+				68D386331DBFD85A000B4084 /* Qv1.entitlements */,
 				680DF2DD1DB5933200452A4E /* AppDelegate.swift */,
 				68DBF39C1DB6EFD100C87385 /* ViewControllers */,
 				680DF2E11DB5933200452A4E /* Main.storyboard */,
@@ -131,7 +207,10 @@
 			children = (
 				68DBF3A41DB6F5EB00C87385 /* Navigation Icons */,
 				68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */,
+				68D3841C1DBBE701000B4084 /* Sign Up Button Background.png */,
+				68D384201DBBE925000B4084 /* Blue Button Background.png */,
 				680DF3011DB59A3A00452A4E /* quarry.png */,
+				68D3841E1DBBE706000B4084 /* Login Button Background.png */,
 				680DF2F31DB595F800452A4E /* ProximaNova-Light.otf */,
 				680DF2F41DB595F800452A4E /* ProximaNova-Reg.otf */,
 				680DF2F51DB595F800452A4E /* ProximaNova-Sbold.otf */,
@@ -141,6 +220,53 @@
 				680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		68D3842C1DBFBBB4000B4084 /* Sdk */ = {
+			isa = PBXGroup;
+			children = (
+				68D3842D1DBFBBB4000B4084 /* Aws */,
+				68D384301DBFBBB4000B4084 /* CheckXcodeVersion.sh */,
+			);
+			name = Sdk;
+			path = Qv1/Sdk;
+			sourceTree = "<group>";
+		};
+		68D3842D1DBFBBB4000B4084 /* Aws */ = {
+			isa = PBXGroup;
+			children = (
+				68D3842E1DBFBBB4000B4084 /* AWSCore.framework */,
+				68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */,
+			);
+			path = Aws;
+			sourceTree = "<group>";
+		};
+		68D3843A1DBFBC68000B4084 /* AmazonAws */ = {
+			isa = PBXGroup;
+			children = (
+				68D3843B1DBFBC68000B4084 /* AWSMobileClient.swift */,
+				68D3843C1DBFBC68000B4084 /* AWSMobileHubHelper.framework */,
+				68D3843D1DBFBC68000B4084 /* Models */,
+			);
+			name = AmazonAws;
+			path = Qv1/AmazonAws;
+			sourceTree = "<group>";
+		};
+		68D3843D1DBFBC68000B4084 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				68D3843E1DBFBC68000B4084 /* NoSQL */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		68D3843E1DBFBC68000B4084 /* NoSQL */ = {
+			isa = PBXGroup;
+			children = (
+				68D3843F1DBFBC68000B4084 /* QPoll.swift */,
+				68D384401DBFBC68000B4084 /* QUser.swift */,
+			);
+			path = NoSQL;
 			sourceTree = "<group>";
 		};
 		68DBF3991DB6EFA100C87385 /* Models */ = {
@@ -155,9 +281,13 @@
 		68DBF39C1DB6EFD100C87385 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				680DF2DF1DB5933200452A4E /* LoginViewController.swift */,
+				68D384241DBBF1E7000B4084 /* LoginOrSignUpViewController.swift */,
+				68D384261DBBF28D000B4084 /* EnterNameViewController.swift */,
+				68D384281DBBF31C000B4084 /* SelectBirthdayViewController.swift */,
+				680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */,
 				68012E711DB5BEE000676EAF /* EnterPinViewController.swift */,
 				68DBF3951DB6EF5000C87385 /* HomeViewController.swift */,
+				68D3842A1DBEFD5F000B4084 /* AskFormViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -169,6 +299,7 @@
 				68DBF3A91DB6F71600C87385 /* small inbox empty.png */,
 				68DBF3A71DB6F6FF00C87385 /* small ask.png */,
 				68DBF39D1DB6F5DC00C87385 /* ask.png */,
+				68D384221DBBEACA000B4084 /* Text Field Underline.png */,
 				68DBF39E1DB6F5DC00C87385 /* inboxActive.png */,
 				68DBF39F1DB6F5DC00C87385 /* inboxEmpty.png */,
 			);
@@ -178,6 +309,12 @@
 		A46A0ACBC6389C255DF8EC08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68D3862B1DBFCCCF000B4084 /* Bolts.framework */,
+				68D3862C1DBFCCCF000B4084 /* FBSDKCoreKit.framework */,
+				68D3862D1DBFCCCF000B4084 /* FBSDKLoginKit.framework */,
+				68D3862E1DBFCCCF000B4084 /* FBSDKShareKit.framework */,
+				68D384471DBFBD36000B4084 /* libsqlite3.tbd */,
+				68D384451DBFBD2C000B4084 /* libz.tbd */,
 				B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */,
 			);
 			name = Frameworks;
@@ -196,6 +333,8 @@
 				680DF2D81DB5933200452A4E /* Resources */,
 				1BF98E28EEAE009AE7A45737 /* [CP] Embed Pods Frameworks */,
 				42A9B50202E2F1389577327D /* [CP] Copy Pods Resources */,
+				68D384381DBFBC05000B4084 /* Embed Frameworks */,
+				68D384391DBFBC27000B4084 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -220,6 +359,11 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = S9J57RY573;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -250,15 +394,20 @@
 				68DBF3A61DB6F6E900C87385 /* small inbox.png in Resources */,
 				680DF2FA1DB5960800452A4E /* ProximaNova-Light.otf in Resources */,
 				680DF2FB1DB5960800452A4E /* ProximaNova-Reg.otf in Resources */,
+				68D384331DBFBBB4000B4084 /* CheckXcodeVersion.sh in Resources */,
+				68D3841F1DBBE706000B4084 /* Login Button Background.png in Resources */,
 				680DF2FC1DB5960800452A4E /* ProximaNova-Sbold.otf in Resources */,
 				680DF2FD1DB5960800452A4E /* ProximaNovaSoft-Bold.otf in Resources */,
 				68DBF3A81DB6F6FF00C87385 /* small ask.png in Resources */,
 				680DF2FE1DB5960800452A4E /* ProximaNovaSoft-Medium.otf in Resources */,
+				68D384231DBBEACA000B4084 /* Text Field Underline.png in Resources */,
 				680DF2FF1DB5960800452A4E /* ProximaNovaSoft.otf in Resources */,
 				68012E701DB5A42600676EAF /* iPhone 7 Plus.png in Resources */,
+				68D3841D1DBBE701000B4084 /* Sign Up Button Background.png in Resources */,
 				68DBF3941DB6E91700C87385 /* GoogleService-Info.plist in Resources */,
 				680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */,
 				68DBF3A01DB6F5DC00C87385 /* ask.png in Resources */,
+				68D384211DBBE925000B4084 /* Blue Button Background.png in Resources */,
 				680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */,
 				68DBF3AA1DB6F71600C87385 /* small inbox empty.png in Resources */,
 				680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */,
@@ -301,6 +450,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Qv1/Pods-Qv1-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		68D384391DBFBC27000B4084 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework/strip-frameworks.sh\"";
+		};
 		70D14A7ACD2BBD4EDCE4F2C2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -323,12 +485,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68D384271DBBF28D000B4084 /* EnterNameViewController.swift in Sources */,
 				68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */,
-				680DF2E01DB5933200452A4E /* LoginViewController.swift in Sources */,
+				68D384441DBFBC68000B4084 /* QUser.swift in Sources */,
+				68D384411DBFBC68000B4084 /* AWSMobileClient.swift in Sources */,
+				68D384251DBBF1E7000B4084 /* LoginOrSignUpViewController.swift in Sources */,
+				680DF2E01DB5933200452A4E /* VerifyPhoneViewController.swift in Sources */,
 				68DBF3981DB6EF9A00C87385 /* User.swift in Sources */,
 				68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */,
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
+				68D384291DBBF31C000B4084 /* SelectBirthdayViewController.swift in Sources */,
 				680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */,
+				68D3842B1DBEFD5F000B4084 /* AskFormViewController.swift in Sources */,
+				68D384431DBFBC68000B4084 /* QPoll.swift in Sources */,
 				68012E721DB5BEE000676EAF /* EnterPinViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -452,13 +621,22 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4DE9B6A28C941F22C37D448C /* Pods-Qv1.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Qv1/Qv1.entitlements;
 				DEVELOPMENT_TEAM = S9J57RY573;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Qv1/Sdk/Aws",
+					"$(PROJECT_DIR)/Qv1/AmazonAws",
+					"$(PROJECT_DIR)/Qv1/Sdk/Facebook",
+					/Users/spencerjohnson/Documents/FacebookSDK,
+				);
 				INFOPLIST_FILE = Qv1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMJ.Qv1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 3.0.1;
 			};
 			name = Debug;
 		};
@@ -466,13 +644,22 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A4124686FDA3D5ED3994D781 /* Pods-Qv1.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Qv1/Qv1.entitlements;
 				DEVELOPMENT_TEAM = S9J57RY573;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Qv1/Sdk/Aws",
+					"$(PROJECT_DIR)/Qv1/AmazonAws",
+					"$(PROJECT_DIR)/Qv1/Sdk/Facebook",
+					/Users/spencerjohnson/Documents/FacebookSDK,
+				);
 				INFOPLIST_FILE = Qv1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SMJ.Qv1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 3.0.1;
 			};
 			name = Release;
 		};

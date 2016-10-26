@@ -8,6 +8,5 @@ target 'Qv1' do
   # Pods for Qv1
 
 pod 'SinchVerification-Swift'
-pod 'Firebase/Core'
 
 end

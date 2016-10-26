@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+var userName = ""
+var userBirthday = ""
+var userPhoneNumber = ""
