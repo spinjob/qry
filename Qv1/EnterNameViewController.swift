@@ -20,7 +20,6 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate
     
     var userFullName = ""
     var userID = ""
-
     
     
     override func viewDidLoad() {

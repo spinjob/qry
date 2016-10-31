@@ -2,14 +2,40 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>ProximaNova-SBold.otf</string>
-		<string>ProximaNovaSoft-Bold.otf</string>
-		<string>ProximaNovaSoft.otf</string>
-		<string>ProximaNovaSoft-Medium.otf</string>
-		<string>ProximaNova-Reg.otf</string>
-	</array>
+	<key>AWS</key>
+	<dict>
+		<key>CredentialsProvider</key>
+		<dict>
+			<key>CognitoIdentity</key>
+			<dict>
+				<key>Default</key>
+				<dict>
+					<key>PoolId</key>
+					<string>us-east-1:877cdf7b-03e6-4aef-b75b-87b15be599c1</string>
+					<key>Region</key>
+					<string>us-east-1</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>DynamoDBObjectMapper</key>
+		<dict>
+			<key>Default</key>
+			<dict>
+				<key>Region</key>
+				<string>us-east-1</string>
+			</dict>
+		</dict>
+		<key>IdentityManager</key>
+		<dict>
+			<key>Default</key>
+			<dict/>
+		</dict>
+		<key>MobileHub</key>
+		<dict>
+			<key>ProjectClientId</key>
+			<string>MobileHub 19b66af1-1bfa-4306-a73a-2d359bb96c22 aws-my-sample-app-ios-swift-v0.4</string>
+		</dict>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -24,10 +50,40 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1007598312696093</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FacebookAppID</key>
+	<string>1007598312696093</string>
+	<key>FacebookDisplayName</key>
+	<string> QMessenger </string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>We&apos;d like to access your contacts so you can ask friends without them needing the app!</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>ProximaNova-SBold.otf</string>
+		<string>ProximaNovaSoft-Bold.otf</string>
+		<string>ProximaNovaSoft.otf</string>
+		<string>ProximaNovaSoft-Medium.otf</string>
+		<string>ProximaNova-Reg.otf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -49,81 +105,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-        <key>AWS</key>
-        <dict>
-            <key>IdentityManager</key>
-            <dict>
-                <key>Default</key>
-                <dict/>
-            </dict>
-            <key>CredentialsProvider</key>
-            <dict>
-                <key>CognitoIdentity</key>
-                <dict>
-                    <key>Default</key>
-                    <dict>
-                        <key>PoolId</key>
-                        <string>us-east-1:877cdf7b-03e6-4aef-b75b-87b15be599c1</string>
-                        <key>Region</key>
-                        <string>us-east-1</string>
-                    </dict>
-                </dict>
-            </dict>
-            <key>MobileHub</key>
-            <dict>
-                <key>ProjectClientId</key>
-                <string>MobileHub 19b66af1-1bfa-4306-a73a-2d359bb96c22 aws-my-sample-app-ios-swift-v0.4</string>
-            </dict>
-        <key>DynamoDBObjectMapper</key>
-        <dict>
-            <key>Default</key>
-            <dict>
-                <key>Region</key>
-                <string>us-east-1</string>
-            </dict>
-        </dict>
-       </dict>
-        
-        <key>CFBundleURLTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <string>fb1007598312696093</string>
-                </array>
-            </dict>
-        </array>
-        <key>FacebookAppID</key>
-        <string>1007598312696093</string>
-        <key>FacebookDisplayName</key>
-        <string>QMessenger</string>
-        
-        <key>LSApplicationQueriesSchemes</key>
-        <array>
-            <string>fbapi</string>
-            <string>fb-messenger-api</string>
-            <string>fbauth2</string>
-            <string>fbshareextension</string>
-        </array>
-        <key>FacebookAppID</key>
-        <string>1007598312696093</string>
-        <key>FacebookDisplayName</key>
-        <string> QMessenger </string>
-        <key>LSApplicationQueriesSchemes</key>
-        <array>
-            <string>fbapi</string>
-            <string>fb-messenger-api</string>
-            <string>fbauth2</string>
-            <string>fbshareextension</string>
-        </array>
-        <key>CFBundleURLTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <string>fb1007598312696093</string>
-                </array>
-            </dict>
-        </array>
 </dict>
 </plist>

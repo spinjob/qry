@@ -11,11 +11,13 @@ import UIKit
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
-    
+    var currentUserID = ""
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(currentUserID)
+        
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: navigationController, action: nil)
         navigationItem.leftBarButtonItem = backButton
 

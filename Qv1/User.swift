@@ -11,3 +11,6 @@ import Foundation
 var userName = ""
 var userBirthday = ""
 var userPhoneNumber = ""
+var userImageURL = ""
+
+
