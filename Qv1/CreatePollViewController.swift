@@ -24,7 +24,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
     var featuredAnswersDict : [String:String] = ["Attending":"Not Attending", "👍":"👎","Chyeah":"Nah", "Going":"Can't Go", "🔥":"❄️"]
     
-    let pickerData = ["an hour", "a day", "a week"]
+    let pickerData : [String] = ["an hour", "a day", "a week"]
     
     let pollId = UUID().uuidString
     
@@ -139,14 +139,14 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
         
 
-        let poll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
+      let poll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
         
-        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(poll)
+     FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(poll)
         
-        FIRDatabase.database().reference().child("polls").child(pollId).updateChildValues(poll)
+    FIRDatabase.database().reference().child("polls").child(pollId).updateChildValues(poll)
         
         
-      //  if pickerData[selectedIndex] == "an hour" {
+      // if pickerData[selectedIndex] == "an hour" {
       //  poll.expiration = Timer(timeInterval: 3600, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
       //  }
         
@@ -157,12 +157,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
       //  if pickerData[selectedIndex] == "a week" {
       //      poll.expiration = Timer(timeInterval: 432000, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
       //  }
-        
-      //  poll.answer1String = answer1TextField.text!
-      //  poll.answer2String = answer2TextField.text!
-      //  poll.questionString = questionTextField.text!
-      //  poll.senderUser = (FIRAuth.auth()?.currentUser?.uid)!
-        
+
         
         
         
@@ -172,9 +167,19 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+
+       // let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
+    
         let nextVC = segue.destination as! SelectRecipientsViewController
+        
+        nextVC.answer1String = answer1TextField.text!
+        nextVC.answer2String = answer2TextField.text!
+        nextVC.expired = false
         nextVC.pollID = pollId
-        nextVC.poll = self.poll
+        nextVC.questionString = questionTextField.text!
+        
+        
+        
     }
     
     

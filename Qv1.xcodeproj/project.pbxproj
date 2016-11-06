@@ -24,6 +24,9 @@
 		680DF2FF1DB5960800452A4E /* ProximaNovaSoft.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F81DB595F800452A4E /* ProximaNovaSoft.otf */; };
 		680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */; };
 		680DF3021DB59A3A00452A4E /* quarry.png in Resources */ = {isa = PBXBuildFile; fileRef = 680DF3011DB59A3A00452A4E /* quarry.png */; };
+		682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39A1DCFB228009015AC /* EditGroupViewController.swift */; };
+		682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */; };
+		682DB3A11DCFF394009015AC /* edit icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 682DB3A01DCFF394009015AC /* edit icon.jpg */; };
 		6880A9B41DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */; };
 		6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B51DC41998000BB884 /* CreatePollViewController.swift */; };
 		6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */; };
@@ -107,6 +110,9 @@
 		680DF2F81DB595F800452A4E /* ProximaNovaSoft.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProximaNovaSoft.otf; sourceTree = "<group>"; };
 		680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-LightIt.otf"; sourceTree = "<group>"; };
 		680DF3011DB59A3A00452A4E /* quarry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quarry.png; sourceTree = "<group>"; };
+		682DB39A1DCFB228009015AC /* EditGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGroupViewController.swift; sourceTree = "<group>"; };
+		682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
+		682DB3A01DCFF394009015AC /* edit icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "edit icon.jpg"; path = "../../edit icon.jpg"; sourceTree = "<group>"; };
 		6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedAnswerOptionTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B51DC41998000BB884 /* CreatePollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollViewController.swift; sourceTree = "<group>"; };
 		6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexToCGFloat.swift; sourceTree = "<group>"; };
@@ -226,6 +232,7 @@
 		680DF2F21DB5941A00452A4E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				682DB3A01DCFF394009015AC /* edit icon.jpg */,
 				68CCC48A1DC6BFDB0094F3AE /* contactIcon.png */,
 				68CCC4861DC528500094F3AE /* profileSocialSmall45.PNG */,
 				68DBF3A41DB6F5EB00C87385 /* Navigation Icons */,
@@ -252,6 +259,7 @@
 				68CCC47E1DC524230094F3AE /* FriendTableViewCell.swift */,
 				68CCC48C1DC6C8F10094F3AE /* UserTableViewCell.swift */,
 				68CCC48E1DC7D5AD0094F3AE /* GroupTableViewCell.swift */,
+				682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */,
 			);
 			name = "Select Recipients VCs";
 			sourceTree = "<group>";
@@ -308,6 +316,7 @@
 				68DBF3951DB6EF5000C87385 /* HomeViewController.swift */,
 				6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */,
 				6880A9B51DC41998000BB884 /* CreatePollViewController.swift */,
+				682DB39A1DCFB228009015AC /* EditGroupViewController.swift */,
 				68CCC4901DC7D5B80094F3AE /* Select Recipients VCs */,
 			);
 			name = ViewControllers;
@@ -441,6 +450,7 @@
 				68DBF3A11DB6F5DC00C87385 /* inboxActive.png in Resources */,
 				680DF3021DB59A3A00452A4E /* quarry.png in Resources */,
 				68CCC48B1DC6BFDB0094F3AE /* contactIcon.png in Resources */,
+				682DB3A11DCFF394009015AC /* edit icon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +523,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68CCC49D1DC8227B0094F3AE /* LoginViewController.swift in Sources */,
+				682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */,
 				68CCC48F1DC7D5AD0094F3AE /* GroupTableViewCell.swift in Sources */,
 				68D384271DBBF28D000B4084 /* EnterNameViewController.swift in Sources */,
 				68C3C82C1DC922B3000B9730 /* Recipient.swift in Sources */,
@@ -527,6 +538,7 @@
 				68DBF3981DB6EF9A00C87385 /* User.swift in Sources */,
 				68CCC47F1DC524230094F3AE /* FriendTableViewCell.swift in Sources */,
 				68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */,
+				682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */,
 				6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */,
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				68D384291DBBF31C000B4084 /* SelectBirthdayViewController.swift in Sources */,

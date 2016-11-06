@@ -18,20 +18,28 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
     @IBOutlet weak var createGroupButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
-
-    var pollID = ""
+    
+    var answer1String : String = ""
+    var answer2String : String = ""
+    var expiration : Timer = Timer()
+    var pollID : String = ""
+    var questionString : String = ""
+    var recipients : [String] = []
+    var answer1Percentage : Double = 0
+    var expired : Bool = false
+    var senderUser : String = ""
+    
+    
     var recipientList : [Recipient] = []
     var users : [User] = []
     var selectedRecipients  : [Recipient] = []
+    
+    var groupToEdit : Recipient = Recipient()
 
-
-    var poll = Poll()
     
     
     
     @IBOutlet weak var sendButton: UIButton!
-    
-    
     
     
 
@@ -75,7 +83,18 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         })
         
     }
-
+    
+    func editGroupScreen (sender : UIButton!) {
+        
+        groupToEdit = recipientList[sender.tag]
+        
+        performSegue(withIdentifier: "editGroupSegue", sender: groupToEdit)
+        
+        
+        
+    }
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         print(recipientList)
@@ -88,8 +107,8 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
         
+     //user cell
       let cell = tableView.dequeueReusableCell(withIdentifier: "userCell") as! UserTableViewCell
         
       cell.userProfileImageView.layer.cornerRadius =  cell.userProfileImageView.layer.frame.size.width / 2
@@ -102,12 +121,19 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
       cell.userProfileImageView.sd_setImage(with: URL(string : recipientCell.imageURL1))
        
+    //group cell
         
       let groupCell = tableView.dequeueReusableCell(withIdentifier: "groupCell") as! GroupTableViewCell
+        
         
       groupCell.groupMember1ImageView.sd_setImage(with: URL(string : recipientCell.imageURL1))
       groupCell.groupMember2ImageView.sd_setImage(with: URL(string : recipientCell.imageURL2))
       groupCell.groupNameLabel.text = recipientCell.recipientName
+
+        
+      groupCell.editButton.tag = indexPath.row
+      groupCell.editButton.addTarget(self, action: #selector(self.editGroupScreen(sender:)), for: .touchUpInside)
+    
         
         if recipientCell.tag == "group" {
             
@@ -126,6 +152,8 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     @IBAction func createGroupButtonTapped(_ sender: Any) {
         
         var newRecipient : [NSObject : AnyObject] = [ : ]
+
+        
         let selectedRecipientNames = selectedRecipients.map { $0.recipientName}
         print(selectedRecipientNames)
         
@@ -143,7 +171,6 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
         
-        
         newRecipient = ["recipientName" as NSObject: (selectedRecipientNamesString) as AnyObject, "recipientImageURL1" as NSObject: (selectedRecipients.first!.imageURL1 ) as AnyObject,"recipientImageURL2" as NSObject : (selectedRecipients[1].imageURL1 as AnyObject), "recipientID" as NSObject: (recipientID ) as AnyObject, "tag" as NSObject: "group" as AnyObject]
         
         
@@ -153,6 +180,14 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
             
         recipientListRef.setValue(newRecipient)
+        
+        selectedRecipients.forEach { (Recipient) in
+            
+        let groupMember = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (Recipient.recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject]
+           
+        recipientListRef.child("groupMembers").child(Recipient.recipientID).setValue(groupMember)
+            
+        }
         
         selectedRecipients.removeAll()
         
@@ -184,19 +219,21 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         print("send tapped")
         
     
-        
-        FIRDatabase.database().reference()
+    }
 
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        let nextVC = segue.destination as! EditGroupViewController
+        nextVC.group = sender as! Recipient
+        
+        print(nextVC.group)
+    
         
     }
     
-    
-    func sendPoll(recipientID : String){
-
-
     }
-}
+
 
 
     
