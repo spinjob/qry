@@ -7,27 +7,48 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var logoutButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     var currentUserID = ""
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(currentUserID)
+        
+        var newRecipient : [NSObject : AnyObject] = [ : ]
+        var recipientID = ""
+        
+        let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
+        
+        ref.observe(.childAdded, with: {
+            snapshot in
+            
+            let snapshotValue = snapshot.value as? NSDictionary
+            
+            newRecipient = ["recipientName" as NSObject: (snapshotValue?["fullName"] as! String) as AnyObject, "recipientImageURL1" as NSObject: (snapshotValue?["profileImageURL"] as! String) as AnyObject, "recipientID" as NSObject: (snapshotValue?["uID"] as! String) as AnyObject, "tag" as NSObject: "user" as AnyObject]
+            
+            recipientID = snapshotValue?["uID"] as! String
+            
+            let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
+            
+            recipientListRef.setValue(newRecipient)
+
+        
+            })
+
+        
+        
         
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: navigationController, action: nil)
         navigationItem.leftBarButtonItem = backButton
 
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
@@ -38,14 +59,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         return cell
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    
+    @IBAction func logoutTapped(_ sender: Any) {
+        
+        do {
+            try FIRAuth.auth()?.signOut()
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginOrSignUpViewController") as! LoginOrSignUpViewController
+            present(vc, animated: true, completion: nil)
+            print("You logged out")
+            
+        } catch let error as Error {
+            print("\(error)")
+        }
+        
     }
-    */
-
+   
 }

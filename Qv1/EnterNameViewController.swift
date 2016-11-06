@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import AWSDynamoDB
-import AWSMobileHubHelper
 import FBSDKLoginKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class EnterNameViewController: UIViewController, UITextFieldDelegate
 
@@ -19,7 +19,6 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate
     @IBOutlet weak var nextButton: UIButton!
     
     var userFullName = ""
-    var userID = ""
     
     
     override func viewDidLoad() {
@@ -34,6 +33,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate
         
         
         FirstNameTextField.delegate = self
+        LastNameTextField.delegate = self
         
         FirstNameTextField.becomeFirstResponder()
         
@@ -47,26 +47,23 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate
       
     }
     
-    func insertData() {
-        
-        let objectMapper = AWSDynamoDBObjectMapper.default()
-        
-        let itemToCreate = QUser()
-        
-        itemToCreate?._userId = AWSIdentityManager.defaultIdentityManager().identityId
-        
-        objectMapper.save(itemToCreate!, completionHandler: nil)
-    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         nextButton.isUserInteractionEnabled = true
         nextButton.alpha = 1.0
     }
     
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
 
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         
-
+        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("fullName").setValue("\(FirstNameTextField.text!) \(LastNameTextField.text!)")
+        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("uID").setValue(FIRAuth.auth()?.currentUser?.uid)
         
     }
 

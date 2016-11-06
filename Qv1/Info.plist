@@ -74,8 +74,12 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We'd like to access your camera so you can use it in our app!</string>
 	<key>NSContactsUsageDescription</key>
-	<string>We&apos;d like to access your contacts so you can ask friends without them needing the app!</string>
+	<string>We'd like to access your contacts so you can ask friends without them needing the app!</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We'd like to access your photos so you can choose one!</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ProximaNova-SBold.otf</string>

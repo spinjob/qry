@@ -8,8 +8,6 @@
 
 import UIKit
 //import SinchVerification
-import AWSMobileHubHelper
-import AWSDynamoDB
 
 
 class EnterPinViewController: UIViewController {
@@ -19,26 +17,7 @@ class EnterPinViewController: UIViewController {
     var applicationKey = "9dd11fb9-3460-423c-83b8-95ce145d8e18"
     var userPhoneNumberProvided = ""
     var userID = ""
-    
-    func insertData(newUserPhoneNumber : String!){
-        
-        let itemToCreate = QUser()
-        
-        itemToCreate?._userId = AWSIdentityManager.defaultIdentityManager().identityId!
-        itemToCreate?._userPhoneNumber = newUserPhoneNumber
-        
-        AWSDynamoDBObjectMapper.default().save(itemToCreate!, completionHandler: {error -> Void in
-            if let error = error {
-                print("Amazon DynamoDB Save Error: \(error)")
-                return
-            }
-            print(itemToCreate?._userId)
-            print(itemToCreate?._userPhoneNumber)
-            print("Item saved.")
-        })
-    }
-    
-    
+ 
     @IBOutlet weak var enterPINTextField: UITextField!
     @IBOutlet weak var verifyButton: UIButton!
     @IBOutlet weak var errorTextLabel: UILabel!

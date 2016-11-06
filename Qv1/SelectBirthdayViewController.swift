@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
 class SelectBirthdayViewController: UIViewController {
 
@@ -16,7 +18,6 @@ class SelectBirthdayViewController: UIViewController {
     @IBOutlet weak var nextButton: UIButton!
     
     
-   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +50,8 @@ class SelectBirthdayViewController: UIViewController {
 
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
+        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("birthday").setValue(birthdayLabel.text)
+        
     }
     
 }

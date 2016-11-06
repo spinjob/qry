@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, FeaturedAnswerCellDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -18,13 +21,14 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
   
     @IBOutlet weak var expirationPicker: UIPickerView!
 
-    
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
     var featuredAnswersDict : [String:String] = ["Attending":"Not Attending", "👍":"👎","Chyeah":"Nah", "Going":"Can't Go", "🔥":"❄️"]
     
     let pickerData = ["an hour", "a day", "a week"]
     
+    let pollId = UUID().uuidString
     
+    var poll = Poll()
     
     override func viewDidLoad() {
         
@@ -50,8 +54,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         expirationPicker.delegate = self
         expirationPicker.dataSource = self
         nextButton.alpha = 0
-        
-        
+    
         
     }
     
@@ -133,10 +136,46 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     }
    
     @IBAction func nextButtonTapped(_ sender: Any) {
+        let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
+        
+
+        let poll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
+        
+        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(poll)
+        
+        FIRDatabase.database().reference().child("polls").child(pollId).updateChildValues(poll)
+        
+        
+      //  if pickerData[selectedIndex] == "an hour" {
+      //  poll.expiration = Timer(timeInterval: 3600, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
+      //  }
+        
+      // if pickerData[selectedIndex] == "a day" {
+      //     poll.expiration = Timer(timeInterval: 86400, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
+      //  }
+        
+      //  if pickerData[selectedIndex] == "a week" {
+      //      poll.expiration = Timer(timeInterval: 432000, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
+      //  }
+        
+      //  poll.answer1String = answer1TextField.text!
+      //  poll.answer2String = answer2TextField.text!
+      //  poll.questionString = questionTextField.text!
+      //  poll.senderUser = (FIRAuth.auth()?.currentUser?.uid)!
+        
+        
+        
+        
+            performSegue(withIdentifier: "selectRecipientsSegue", sender: nil)
         
     }
 
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let nextVC = segue.destination as! SelectRecipientsViewController
+        nextVC.pollID = pollId
+        nextVC.poll = self.poll
+    }
     
     
     //        CIRCULAR BUTTON TO ALLOW USER TO CHANGE ANSWER BUTTON COLOR

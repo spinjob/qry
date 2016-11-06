@@ -7,10 +7,13 @@
 //
 
 import Foundation
+class User {
+    
+    var userName = ""
+    var uID = ""
+    var userBirthday = ""
+    var userPhoneNumber = ""
+    var userImageURL = ""
+    
 
-var userName = ""
-var userBirthday = ""
-var userPhoneNumber = ""
-var userImageURL = ""
-
-
+}

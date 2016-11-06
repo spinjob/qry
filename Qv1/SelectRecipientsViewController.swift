@@ -9,134 +9,197 @@
 import UIKit
 import AddressBook
 import Contacts
+import FirebaseDatabase
+import FirebaseAuth
+import SDWebImage
+
 
 class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var createGroupButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
-    var contactStore = CNContactStore()
-    
-    lazy var contacts: [CNContact] = {
-        let contactStore = CNContactStore()
-        let keysToFetch =
-            [CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
-             CNContactEmailAddressesKey,
-             CNContactPhoneNumbersKey,
-             CNContactImageDataAvailableKey,
-             CNContactImageDataKey,
-             CNContactThumbnailImageDataKey] as [Any]
-        
-        // Get all the containers
-        var allContainers: [CNContainer] = []
-        do {
-            allContainers = try contactStore.containers(matching: nil)
-        } catch {
-            print("Error fetching containers")
-        }
-        
-        var results: [CNContact] = []
-        
-        // Iterate all containers and append their contacts to our results array
-        for container in allContainers {
-            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
-            
-            do {
-                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as! [CNKeyDescriptor])
-                results.append(contentsOf: containerResults)
-            } catch {
-                print("Error fetching results for container")
-            }
-        }
-        
-        return results
-    }()
+
+    var pollID = ""
+    var recipientList : [Recipient] = []
+    var users : [User] = []
+    var selectedRecipients  : [Recipient] = []
+
+
+    var poll = Poll()
     
     
+    
+    @IBOutlet weak var sendButton: UIButton!
+    
+    
+    
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+    
+        
+        let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
         
         navigationController?.navigationBar.barTintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
-        
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
         
         tableView.delegate = self
         tableView.dataSource = self
         
         
+        userRef.observe(FIRDataEventType.childAdded, with: {(snapshot) in
+            print(snapshot)
+            
+            
+            let recipient = Recipient()
+            
+            let snapshotvalue = snapshot.value as! NSDictionary
+            
+            recipient.recipientName = snapshotvalue["recipientName"] as! String
+            recipient.recipientID = snapshotvalue["recipientID"] as! String
+            recipient.tag = snapshotvalue["tag"] as! String
+            recipient.imageURL1 = snapshotvalue["recipientImageURL1"] as! String
+            
+            if recipient.tag == "group" {
+               recipient.imageURL2 = snapshotvalue["recipientImageURL2"] as! String
+            } else {
+             print("not a group")
+            }
         
+            self.recipientList.sort(by: {$0.recipientName > $1.recipientName})
+            self.recipientList.append(recipient)
+            
+            self.tableView.reloadData()
+            
+        })
         
-
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contacts.count
+        
+        print(recipientList)
+        print(recipientList.count)
+        
+        return recipientList.count
+        
+        
+    
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
         
+      let cell = tableView.dequeueReusableCell(withIdentifier: "userCell") as! UserTableViewCell
         
-        let contactCellIdentifier = "FriendTableViewCell"
-        //let userCellIdentifier = "UserTableViewCell"
+      cell.userProfileImageView.layer.cornerRadius =  cell.userProfileImageView.layer.frame.size.width / 2
+        cell.userProfileImageView.layer.masksToBounds = true
+        
+      let recipientCell = recipientList[indexPath.row]
+        
 
+      cell.userNameLabel.text = recipientCell.recipientName
         
-        let contactCell = tableView.dequeueReusableCell(withIdentifier: contactCellIdentifier, for: indexPath) as! FriendTableViewCell
-        //let userCell = tableView.dequeueReusableCell(withIdentifier: userCellIdentifier, for: indexPath) as! UserTableViewCell
-        
-        
-        
-        contactCell.friendNameLabel.text = "\(contacts[indexPath.row].givenName) \(contacts[indexPath.row].familyName)"
-        if contacts[indexPath.row].phoneNumbers.first?.value == nil {
-            contactCell.friendPhoneNumberLabel.text = "No phone number!"
-        } else {
-            contactCell.friendPhoneNumberLabel.text = ((contacts[indexPath.row].phoneNumbers.first?.value)! as CNPhoneNumber).stringValue
-        }
-        contactCell.friendProfileImageView.layer.cornerRadius = 3
-        contactCell.friendProfileImageView.layer.masksToBounds = true
-        contactCell.selectedBackgroundView?.backgroundColor = UIColor.white
-        
-        
-        //userCell.userProfileImageView.layer.cornerRadius = userCell.userProfileImageView.frame.height/2
-        //userCell.userProfileImageView.clipsToBounds = true
-        
-        //userCell.userNameLabel.text = "\(contacts[indexPath.row].givenName) \(contacts[indexPath.row].familyName)"
-        
+      cell.userProfileImageView.sd_setImage(with: URL(string : recipientCell.imageURL1))
        
-        return contactCell
+        
+      let groupCell = tableView.dequeueReusableCell(withIdentifier: "groupCell") as! GroupTableViewCell
+        
+      groupCell.groupMember1ImageView.sd_setImage(with: URL(string : recipientCell.imageURL1))
+      groupCell.groupMember2ImageView.sd_setImage(with: URL(string : recipientCell.imageURL2))
+      groupCell.groupNameLabel.text = recipientCell.recipientName
+        
+        if recipientCell.tag == "group" {
             
+        return groupCell
+            
+            
+        } else {
+        
+     return cell
+        
+        }
+    
+    }
 
+    
+    @IBAction func createGroupButtonTapped(_ sender: Any) {
+        
+        var newRecipient : [NSObject : AnyObject] = [ : ]
+        let selectedRecipientNames = selectedRecipients.map { $0.recipientName}
+        print(selectedRecipientNames)
+        
+        let selectedRecipientIDs = selectedRecipients.map { $0.recipientID}
+        print(selectedRecipientIDs)
+        
+        let selectedRecipientNamesString = selectedRecipientNames.joined(separator: ", ")
+        print(selectedRecipientNamesString)
+        
+        let selectedRecipientIDString = selectedRecipientIDs.joined(separator: "+")
+        print(selectedRecipientIDString)
+        
+        let recipientID = UUID().uuidString
+        
+        
+        let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
+        
+        
+        newRecipient = ["recipientName" as NSObject: (selectedRecipientNamesString) as AnyObject, "recipientImageURL1" as NSObject: (selectedRecipients.first!.imageURL1 ) as AnyObject,"recipientImageURL2" as NSObject : (selectedRecipients[1].imageURL1 as AnyObject), "recipientID" as NSObject: (recipientID ) as AnyObject, "tag" as NSObject: "group" as AnyObject]
+        
+        
+        print(newRecipient)
+        
+            
+        let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
+            
+        recipientListRef.setValue(newRecipient)
+        
+        selectedRecipients.removeAll()
+        
+        tableView.reloadData()
+    
+        
     }
     
-    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        var highlightedCell = tableView.cellForRow(at: indexPath)
-        highlightedCell?.contentView.backgroundColor = UIColor.white
-    }
-    
-    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        var unHighlightedCell = tableView.cellForRow(at: indexPath)
-        unHighlightedCell?.contentView.backgroundColor = UIColor.white
-    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedCell = tableView.cellForRow(at: indexPath)
-        selectedCell?.contentView.backgroundColor = UIColor.white
+        var selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
+        selectedCell.contentView.backgroundColor = UIColor.white
+        
+        let selectedRecipient = recipientList[indexPath.row]
+        selectedRecipients.append(selectedRecipient)
+
+        print(selectedRecipients)
+        
     }
-    
+  
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        var deSelectedCell = tableView.cellForRow(at: indexPath)
-        deSelectedCell?.contentView.backgroundColor = UIColor.white
+        let deSelectedRecipient = recipientList[indexPath.row]
+        selectedRecipients.remove(at: indexPath.row)
+        print(selectedRecipients)
+        tableView.reloadData()
+    }
+
+    @IBAction func sendButtonTapped(_ sender: Any) {
+        print("send tapped")
+        
+    
+        
+        FIRDatabase.database().reference()
+
+        
+        
     }
     
     
-    /*
-    // MARK: - Navigation
+    func sendPoll(recipientID : String){
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+
     }
-    */
-
 }
+
+
+    
+
+
+

@@ -9,24 +9,26 @@
 import UIKit
 import CoreData
 import FBSDKCoreKit
-
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    override init() {
+        super.init()
+        // Firebase Init
+        FIRApp.configure()
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     
-
-        return AWSMobileClient.sharedInstance.didFinishLaunching(application: application, withOptions: launchOptions)
+        FIRApp.configure()
+        
+        print("FIREBASE CONFIGURED")
+        return true
     }
-
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-        // print("application application: \(application.description), openURL: \(url.absoluteURL), sourceApplication: \(sourceApplication)")
-        return AWSMobileClient.sharedInstance.withApplication(application: application, withURL: url, withSourceApplication: sourceApplication, withAnnotation: annotation)
-    }
-
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -43,8 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        
-        AWSMobileClient.sharedInstance.applicationDidBecomeActive(application: application)
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
