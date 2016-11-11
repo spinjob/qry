@@ -10,7 +10,7 @@ import Foundation
 class Poll {
     var answer1String : String = ""
     var answer2String : String = ""
-    var expiration : Timer = Timer()
+    var expiration : String = ""
     var pollID : String = ""
     var questionString : String = ""
     var recipients : [String] = []

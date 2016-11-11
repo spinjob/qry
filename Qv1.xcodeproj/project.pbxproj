@@ -27,6 +27,7 @@
 		682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39A1DCFB228009015AC /* EditGroupViewController.swift */; };
 		682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */; };
 		682DB3A11DCFF394009015AC /* edit icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 682DB3A01DCFF394009015AC /* edit icon.jpg */; };
+		682DB3A31DD16A4A009015AC /* PollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB3A21DD16A4A009015AC /* PollTableViewCell.swift */; };
 		6880A9B41DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */; };
 		6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B51DC41998000BB884 /* CreatePollViewController.swift */; };
 		6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */; };
@@ -113,6 +114,7 @@
 		682DB39A1DCFB228009015AC /* EditGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGroupViewController.swift; sourceTree = "<group>"; };
 		682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		682DB3A01DCFF394009015AC /* edit icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "edit icon.jpg"; path = "../../edit icon.jpg"; sourceTree = "<group>"; };
+		682DB3A21DD16A4A009015AC /* PollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedAnswerOptionTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B51DC41998000BB884 /* CreatePollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollViewController.swift; sourceTree = "<group>"; };
 		6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexToCGFloat.swift; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 				6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */,
 				6880A9B51DC41998000BB884 /* CreatePollViewController.swift */,
 				682DB39A1DCFB228009015AC /* EditGroupViewController.swift */,
+				682DB3A21DD16A4A009015AC /* PollTableViewCell.swift */,
 				68CCC4901DC7D5B80094F3AE /* Select Recipients VCs */,
 			);
 			name = ViewControllers;
@@ -525,6 +528,7 @@
 				68CCC49D1DC8227B0094F3AE /* LoginViewController.swift in Sources */,
 				682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */,
 				68CCC48F1DC7D5AD0094F3AE /* GroupTableViewCell.swift in Sources */,
+				682DB3A31DD16A4A009015AC /* PollTableViewCell.swift in Sources */,
 				68D384271DBBF28D000B4084 /* EnterNameViewController.swift in Sources */,
 				68C3C82C1DC922B3000B9730 /* Recipient.swift in Sources */,
 				68CCC4891DC6A7B40094F3AE /* Contact.swift in Sources */,

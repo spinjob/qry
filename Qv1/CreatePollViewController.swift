@@ -28,12 +28,15 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     let pollId = UUID().uuidString
     
-    var poll = Poll()
+    var dictPoll : [NSObject : AnyObject] = [:]
+    
+    var senderUserDict : [NSObject : AnyObject] = [:]
+    
+    var senderUser : User = User()
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
         
         navigationController?.navigationBar.barTintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
@@ -54,6 +57,8 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         expirationPicker.delegate = self
         expirationPicker.dataSource = self
         nextButton.alpha = 0
+
+        
     
         
     }
@@ -136,15 +141,13 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     }
    
     @IBAction func nextButtonTapped(_ sender: Any) {
+        
         let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
         
+        let nextPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject]
+        
+        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(nextPoll)
 
-      let poll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
-        
-     FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(poll)
-        
-    FIRDatabase.database().reference().child("polls").child(pollId).updateChildValues(poll)
-        
         
       // if pickerData[selectedIndex] == "an hour" {
       //  poll.expiration = Timer(timeInterval: 3600, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
@@ -158,9 +161,6 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
       //      poll.expiration = Timer(timeInterval: 432000, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
       //  }
 
-        
-        
-        
             performSegue(withIdentifier: "selectRecipientsSegue", sender: nil)
         
     }
@@ -168,18 +168,19 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
 
-       // let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
-    
+       let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
+       
+        let dictPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
+        
+        
         let nextVC = segue.destination as! SelectRecipientsViewController
+
         
-        nextVC.answer1String = answer1TextField.text!
-        nextVC.answer2String = answer2TextField.text!
-        nextVC.expired = false
+        nextVC.dictPoll = dictPoll
         nextVC.pollID = pollId
-        nextVC.questionString = questionTextField.text!
+
         
-        
-        
+    
     }
     
     
