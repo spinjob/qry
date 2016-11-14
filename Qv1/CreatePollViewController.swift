@@ -147,6 +147,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         let nextPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject]
         
         FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(nextPoll)
+        FIRDatabase.database().reference().child("polls").child(pollId).setValue(nextPoll)
 
         
       // if pickerData[selectedIndex] == "an hour" {

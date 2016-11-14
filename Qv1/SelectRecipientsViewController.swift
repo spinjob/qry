@@ -28,6 +28,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
 
     var groupToEdit : Recipient = Recipient()
     var groupMembers : [Recipient] = []
+   
     
     @IBOutlet weak var sendButton: UIButton!
     
@@ -247,6 +248,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
                     }
                 }
+                
             self.groupMembers.removeAll(keepingCapacity: true)
             
             })
@@ -316,11 +318,22 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     @IBAction func sendButtonTapped(_ sender: Any) {
+    
+    
         
         self.selectedRecipients.forEach { (Recipient) in
         let recipientID = Recipient.recipientID
+        let recipientDict : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject]
+            
+            
         let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(pollID)
+            let pollRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
+            
+        let voteRef = FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(recipientID)
+            
+        pollRef.setValue(recipientDict)
         ref.setValue(self.dictPoll)
+        voteRef.setValue("no vote")
     
      }
 

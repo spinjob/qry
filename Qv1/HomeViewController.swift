@@ -18,8 +18,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var receivedPolls : [Poll] = []
     var selectedButton : [Int : UIButton] = [:]
     var senderUser : User = User()
+    
+
     let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
+    let sentPollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls")
 
     
     override func viewDidLoad() {
@@ -45,6 +48,31 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             })
         
         
+        sentPollsRef.observe(.childAdded, with: {
+            snapshot in
+            
+            let poll = Poll()
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            
+            poll.answer1String = snapshotValue["answer1"] as! String
+            poll.answer2String = snapshotValue["answer2"] as! String
+            poll.questionString = snapshotValue["question"] as! String
+            poll.senderUser = (FIRAuth.auth()?.currentUser?.uid)!
+            poll.pollID = snapshot.key
+            
+            
+            self.receivedPolls.append(poll)
+            
+            self.tableView.reloadData()
+            
+            
+            
+        })
+        
+        
+        
         pollRef.observe(.childAdded, with: {
             snapshot in
             
@@ -52,11 +80,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let poll = Poll()
 
             let snapshotValue = snapshot.value as! NSDictionary
+           
             
             poll.answer1String = snapshotValue["answer1"] as! String
             poll.answer2String = snapshotValue["answer2"] as! String
             poll.questionString = snapshotValue["question"] as! String
             poll.senderUser = snapshotValue["senderUser"] as! String
+            poll.pollID = snapshot.key
             
             
             self.receivedPolls.append(poll)
@@ -88,16 +118,48 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cellIdentifier = "pollCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! PollTableViewCell
         
-        let userRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users")
+        let senderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child(receivedPolls[indexPath.row].senderUser)
+        let sentToRecipientsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("sentTo")
+
+        var sentToRecipients : [String] = [""]
+        var numberOfOtherRecipients : Int
         
-        print(receivedPolls[indexPath.row].pollID)
         
-       // let pollSenderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(receivedPolls[indexPath.row].pollID)
         
+        sentToRecipientsRef.observe(.childAdded, with: {
+        
+            snapshot in
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            let userName = snapshotValue["recipientName"] as! String
+
+            sentToRecipients.append(userName)
+            
+
+            if sentToRecipients.count == 2 {
+            cell.toUserNameLabel.text = "to \(sentToRecipients[1])"
+            }
+            
+            if sentToRecipients.count == 3 {
+                cell.toUserNameLabel.text = "to \(sentToRecipients[1]) & \(sentToRecipients[2])"
+            }
+            
+            if sentToRecipients.count == 4 {
+                cell.toUserNameLabel.text = "to \(sentToRecipients[1]) & \(sentToRecipients[2]) & 1 other"
+            }
+            
+            if sentToRecipients.count > 4 {
+                cell.toUserNameLabel.text = "to \(sentToRecipients[1]) & \(sentToRecipients[2]) & \((sentToRecipients.count - 3)) others"
+            }
+            
+            
+        })
         
         
         cell.answer1Button.tag = indexPath.row
         cell.answer2Button.tag = indexPath.row
+        cell.conversationButton.tag = indexPath.row
         
         
         cell.answer1Button.layer.borderWidth = 0.5
@@ -111,6 +173,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.answer1Button.setTitle(receivedPolls[indexPath.row].answer1String, for: .normal);
         cell.answer2Button.setTitle(receivedPolls[indexPath.row].answer2String, for: .normal);
         cell.questionStringLabel.text = receivedPolls[indexPath.row].questionString
+    
+        senderUserRef.observe(.value, with: {
+            snapshot in
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            cell.senderUserImageView.sd_setImage(with: URL(string : snapshotValue["profileImageURL"] as! String))
+            cell.senderUserLabel.text = snapshotValue["fullName"] as! String
+    
+        })
         
         
         cell.senderUserImageView.layer.cornerRadius =  cell.senderUserImageView.layer.frame.size.width / 2
@@ -120,6 +192,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         cell.answer1Button.addTarget(self, action: #selector(self.answerButton1Tapped(sender:)), for: .touchUpInside)
         cell.answer2Button.addTarget(self, action: #selector(self.answerButton2Tapped(sender:)), for: .touchUpInside)
+        cell.conversationButton.addTarget(self, action: #selector(self.chatButtonTapped(sender:)), for: .touchUpInside)
         
         return cell
 
@@ -144,6 +217,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func answerButton1Tapped (sender : UIButton){
         sender.isSelected = !sender.isSelected;
+
+        let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!)
+        
         
         if selectedButton[sender.tag] != nil {
             if selectedButton[sender.tag] != sender {
@@ -157,6 +233,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 selectedButton.removeValue(forKey: sender.tag)
                 sender.isSelected = false
                 sender.layer.backgroundColor = UIColor.white.cgColor
+                pollAnsweredRef.setValue("no vote")
             }
         } else {
             
@@ -164,6 +241,17 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             sender.isSelected = true
             sender.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
         }
+        
+        if selectedButton[sender.tag]?.isSelected == true {
+            
+            pollAnsweredRef.setValue("answer1")
+            
+        } else {
+            pollAnsweredRef.setValue("no vote")
+        }
+        
+        
+       
         print(selectedButton[sender.tag]?.titleLabel?.text!)
     }
     
@@ -171,6 +259,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func answerButton2Tapped (sender : UIButton){
         
         sender.isSelected = !sender.isSelected;
+        
+        let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!)
         
         if selectedButton.first != nil {
             if selectedButton[sender.tag] != sender {
@@ -184,6 +274,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 selectedButton.removeValue(forKey: sender.tag)
                 sender.isSelected = false
                 sender.layer.backgroundColor = UIColor.white.cgColor
+                pollAnsweredRef.setValue("no vote")
             }
         } else {
             
@@ -191,6 +282,29 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             sender.isSelected = true
             sender.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
         }
+        
+        if selectedButton[sender.tag]?.isSelected == true {
+            
+            pollAnsweredRef.setValue("answer2")
+
+            
+        } else {
+            pollAnsweredRef.setValue("no vote")
+        }
+        
+        
         print(selectedButton[sender.tag]?.titleLabel?.text!)
+        
     }
+    
+    func chatButtonTapped (sender : UIButton){
+        
+        
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
+        
+        myVC.poll = receivedPolls[sender.tag]
+        navigationController?.pushViewController(myVC, animated: true)
+        
+    }
+   
 }
