@@ -2,39 +2,30 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AWS</key>
+    
+    <key>Fabric</key>
+    <dict>
+        <key>APIKey</key>
+        <string>f43856dc0b99930941e85bcb2e5e516ae180dc18</string>
+        <key>Kits</key>
+        <array>
+            <dict>
+                <key>KitInfo</key>
+                <dict>
+                    <key>consumerKey</key>
+                    <string>1qBwheweIXqWntOOgfZtZOjYj</string>
+                    <key>consumerSecret</key>
+                    <string>ac3RCZrvbJNaRKOktgiV72Fa5p963OUujBapucKWfyLwitUDOw</string>
+                </dict>
+                <key>KitName</key>
+                <string>Digits</string>
+            </dict>
+        </array>
+    </dict>
+    <key>NSAppTransportSecurity</key>
 	<dict>
-		<key>CredentialsProvider</key>
-		<dict>
-			<key>CognitoIdentity</key>
-			<dict>
-				<key>Default</key>
-				<dict>
-					<key>PoolId</key>
-					<string>us-east-1:877cdf7b-03e6-4aef-b75b-87b15be599c1</string>
-					<key>Region</key>
-					<string>us-east-1</string>
-				</dict>
-			</dict>
-		</dict>
-		<key>DynamoDBObjectMapper</key>
-		<dict>
-			<key>Default</key>
-			<dict>
-				<key>Region</key>
-				<string>us-east-1</string>
-			</dict>
-		</dict>
-		<key>IdentityManager</key>
-		<dict>
-			<key>Default</key>
-			<dict/>
-		</dict>
-		<key>MobileHub</key>
-		<dict>
-			<key>ProjectClientId</key>
-			<string>MobileHub 19b66af1-1bfa-4306-a73a-2d359bb96c22 aws-my-sample-app-ios-swift-v0.4</string>
-		</dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
@@ -75,11 +66,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We'd like to access your camera so you can use it in our app!</string>
+	<string>We&apos;d like to access your camera so you can use it in our app!</string>
 	<key>NSContactsUsageDescription</key>
-	<string>We'd like to access your contacts so you can ask friends without them needing the app!</string>
+	<string>We&apos;d like to access your contacts so you can ask friends without them needing the app!</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We'd like to access your photos so you can choose one!</string>
+	<string>We&apos;d like to access your photos so you can choose one!</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ProximaNova-SBold.otf</string>

@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import FBSDKCoreKit
-import FBSDKLoginKit
+import DigitsKit
+import Fabric
 
 class LoginOrSignUpViewController: UIViewController {
 
@@ -17,11 +17,19 @@ class LoginOrSignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+       let digitsButton = DGTAuthenticateButton(authenticationCompletion: { (session, error) in
+            // Inspect session/error objects
+        })
+
+       self.view.addSubview(digitsButton!)
+
     }
     
     @IBAction func createAccountTapped(_ sender: Any) {
         
     }
- 
+    
+
+    
 }

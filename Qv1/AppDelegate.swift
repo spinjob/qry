@@ -10,6 +10,9 @@ import UIKit
 import CoreData
 import FBSDKCoreKit
 import Firebase
+import Fabric
+import DigitsKit
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,10 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        Fabric.with([Digits.self])
     
         FIRApp.configure()
         
-        print("FIREBASE CONFIGURED")
         return true
     }
     

@@ -37,6 +37,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
         
         navigationController?.navigationBar.barTintColor = UIColor.white
@@ -318,12 +319,11 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     @IBAction func sendButtonTapped(_ sender: Any) {
-    
-    
-        
+
         self.selectedRecipients.forEach { (Recipient) in
         let recipientID = Recipient.recipientID
         let recipientDict : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject]
+        let voter : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "voteString" as NSObject: "no vote" as AnyObject]
             
             
         let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(pollID)
@@ -333,7 +333,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
         pollRef.setValue(recipientDict)
         ref.setValue(self.dictPoll)
-        voteRef.setValue("no vote")
+        voteRef.setValue(voter)
     
      }
 

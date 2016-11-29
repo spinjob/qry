@@ -10,6 +10,8 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import SwiftLinkPreview
+import SDWebImage
 
 class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, FeaturedAnswerCellDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -21,6 +23,11 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
   
     @IBOutlet weak var expirationPicker: UIPickerView!
 
+    @IBOutlet weak var pollImageView: UIImageView!
+    
+    @IBOutlet weak var hyperLinkButton: UIButton!
+    
+    
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
     var featuredAnswersDict : [String:String] = ["Attending":"Not Attending", "👍":"👎","Chyeah":"Nah", "Going":"Can't Go", "🔥":"❄️"]
     
@@ -34,10 +41,21 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     var senderUser : User = User()
     
+    let slp = SwiftLinkPreview()
+    
+    var pollURL : String = "no url"
+    
+    var pollImage : String = "no image"
+    
+    var pollImageTitle : String = "no image title"
+    
+    var pollImageDescription : String = "no image description"
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
+       
         navigationController?.navigationBar.barTintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
         navigationController?.navigationBar.backItem?.backBarButtonItem!.title = "X"
@@ -53,10 +71,17 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
         answer1TextField.layer.cornerRadius = 3.5
         answer2TextField.layer.cornerRadius = 3.5
+        pollImageView.layer.borderWidth = 0.2
+        pollImageView.layer.borderColor = UIColor.lightGray.cgColor
+        pollImageView.layer.cornerRadius = 3.5
+        pollImageView.layer.masksToBounds = true
+        
+        hyperLinkButton.isHidden = true
         
         expirationPicker.delegate = self
         expirationPicker.dataSource = self
         nextButton.alpha = 0
+        
 
         
     
@@ -136,18 +161,69 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let input = textField.text
+        print(verifyUrl(urlString: input))
+        if verifyUrl(urlString: input) == true {
+            hyperLinkButton.isHidden = false
+        } else {
+            hyperLinkButton.isHidden = true
+        }
+        
         self.view.endEditing(true)
+        
         return false
     }
+    
+
+   func verifyUrl (urlString: String?) -> Bool {
+        let types: NSTextCheckingResult.CheckingType = .link
+        
+        let detector = try? NSDataDetector(types: types.rawValue)
+        
+        let matches = detector?.matches(in: urlString!, options: .reportCompletion, range: NSMakeRange(0, (urlString?.characters.count)!))
+        
+        if matches?.count != 0 {
+            return true
+        }
+            else {
+                return false
+        }
+
+    }
+    
    
     @IBAction func nextButtonTapped(_ sender: Any) {
         
         let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
         
-        let nextPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject]
+        let nextPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
         
         FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(nextPoll)
         FIRDatabase.database().reference().child("polls").child(pollId).setValue(nextPoll)
+        
+        if pollURL != nil {
+            
+            FIRDatabase.database().reference().child("polls").child(pollId).child("pollURL").setValue(pollURL)
+        
+        }
+        
+        if pollImage != nil {
+            
+            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageURL").setValue(pollImage)
+            
+        }
+        
+        if pollImageDescription != nil {
+            
+            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageURL").setValue(pollImageDescription)
+            
+        }
+        
+        if pollImageTitle != nil {
+            
+            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageURL").setValue(pollImageTitle)
+            
+        }
 
         
       // if pickerData[selectedIndex] == "an hour" {
@@ -170,9 +246,9 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
 
        let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
-       
-        let dictPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
-        
+    
+       let dictPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject, "pollImageURL" as NSObject: self.pollImage as AnyObject, "pollURL" as NSObject: self.pollURL as AnyObject, "pollImageDescription" as NSObject: self.pollImageDescription as AnyObject, "pollImageTitle" as NSObject: self.pollImageTitle as AnyObject ]
+            
         
         let nextVC = segue.destination as! SelectRecipientsViewController
 
@@ -184,6 +260,35 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     }
     
+    @IBAction func hyperLinkButtonTapped(_ sender: Any) {
+        
+        let input = questionTextField.text
+        
+        slp.preview(input, onSuccess: {
+            
+            result in
+            let imageURL = URL(string: result["image"] as! String)
+            self.pollImage = result["image"] as! String
+            self.pollImageView.sd_setImage(with: imageURL)
+            self.pollURL = result["url"] as! String
+            self.pollImageTitle = result["title"] as! String
+            self.pollImageDescription = result["description"] as! String
+            
+
+            print("\(result)")
+            self.questionTextField.text = ""
+            
+        }, onError: {
+            error in
+            
+            
+            print("\(error)")
+            
+            
+        })
+
+        
+    }
     
     //        CIRCULAR BUTTON TO ALLOW USER TO CHANGE ANSWER BUTTON COLOR
     //        let redColorButton = UIButton(type: .custom)

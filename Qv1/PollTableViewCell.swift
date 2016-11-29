@@ -10,6 +10,16 @@ import UIKit
 
 class PollTableViewCell: UITableViewCell {
 
+    //ResultsView
+    @IBOutlet weak var answer2PercentageTextLabel: UILabel!
+    @IBOutlet weak var resultsView: UIView!
+    @IBOutlet weak var answer1PercentageTextLabel: UILabel!
+    @IBOutlet weak var answer1ResultBarImageView: UIImageView!
+    @IBOutlet weak var answer2ResultBarImageView: UIImageView!
+    @IBOutlet weak var answer2TextLabel: UILabel!
+    @IBOutlet weak var answer1TextLabel: UILabel!
+    @IBOutlet weak var reloadResultsButton: UIButton!
+    @IBOutlet weak var noVotesTextLabel: UILabel!
     @IBOutlet weak var senderUserLabel: UILabel!
     @IBOutlet weak var senderUserImageView: UIImageView!
     @IBOutlet weak var questionStringLabel: UILabel!
@@ -17,6 +27,16 @@ class PollTableViewCell: UITableViewCell {
     @IBOutlet weak var answer2Button: UIButton!
     @IBOutlet weak var conversationButton: UIButton!
     @IBOutlet weak var toUserNameLabel: UILabel!
+    @IBOutlet weak var viewPollResultsButton: UIButton!
+    @IBOutlet weak var separatorImageView: UIImageView!
+    @IBOutlet weak var pollImageView: UIImageView!
+    @IBOutlet weak var resultViewVerticalConstraint: NSLayoutConstraint!
+    @IBOutlet weak var questionTextVerticalConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageHeadlineTextLabel: UILabel!
+    @IBOutlet weak var imageDescriptionTextView: UITextView!
+    
+    
+    
     
     
     override func awakeFromNib() {

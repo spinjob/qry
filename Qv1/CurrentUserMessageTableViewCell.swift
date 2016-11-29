@@ -10,11 +10,8 @@ import UIKit
 
 class CurrentUserMessageTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var currentUserName: UILabel!
-    @IBOutlet weak var currentUserImage: UIImageView!
     @IBOutlet weak var answerIndicator: UIImageView!
     @IBOutlet weak var messageTextView: UITextView!
-    @IBOutlet weak var leftMessageConstraint: NSLayoutConstraint!
     
     
     override func awakeFromNib() {
