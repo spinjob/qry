@@ -58,7 +58,6 @@
 		68CCC4811DC5250F0094F3AE /* notselectedicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCC4801DC5250F0094F3AE /* notselectedicon.png */; };
 		68CCC4831DC525120094F3AE /* selectedicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCC4821DC525120094F3AE /* selectedicon.png */; };
 		68CCC4851DC526CC0094F3AE /* SelectRecipientsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CCC4841DC526CC0094F3AE /* SelectRecipientsViewController.swift */; };
-		68CCC4871DC528500094F3AE /* profileSocialSmall45.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 68CCC4861DC528500094F3AE /* profileSocialSmall45.PNG */; };
 		68CCC4891DC6A7B40094F3AE /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CCC4881DC6A7B40094F3AE /* Contact.swift */; };
 		68CCC48B1DC6BFDB0094F3AE /* contactIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCC48A1DC6BFDB0094F3AE /* contactIcon.png */; };
 		68CCC48D1DC6C8F10094F3AE /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CCC48C1DC6C8F10094F3AE /* UserTableViewCell.swift */; };
@@ -167,7 +166,6 @@
 		68CCC4801DC5250F0094F3AE /* notselectedicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = notselectedicon.png; path = ../../notselectedicon.png; sourceTree = "<group>"; };
 		68CCC4821DC525120094F3AE /* selectedicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectedicon.png; path = ../../selectedicon.png; sourceTree = "<group>"; };
 		68CCC4841DC526CC0094F3AE /* SelectRecipientsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectRecipientsViewController.swift; sourceTree = "<group>"; };
-		68CCC4861DC528500094F3AE /* profileSocialSmall45.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = profileSocialSmall45.PNG; path = ../../profileSocialSmall45.PNG; sourceTree = "<group>"; };
 		68CCC4881DC6A7B40094F3AE /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		68CCC48A1DC6BFDB0094F3AE /* contactIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = contactIcon.png; path = ../../contactIcon.png; sourceTree = "<group>"; };
 		68CCC48C1DC6C8F10094F3AE /* UserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
@@ -285,7 +283,6 @@
 				6819B6311DDAB0540099A98B /* conversationicon.png */,
 				683166801DD6B752003EDC21 /* gradient.png */,
 				68CCC48A1DC6BFDB0094F3AE /* contactIcon.png */,
-				68CCC4861DC528500094F3AE /* profileSocialSmall45.PNG */,
 				68DBF3A41DB6F5EB00C87385 /* Navigation Icons */,
 				68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */,
 				6819B60F1DD904860099A98B /* green answer.png */,
@@ -545,7 +542,6 @@
 				6819B6301DDA8E1E0099A98B /* friendmessagetail.png in Resources */,
 				68D3841D1DBBE701000B4084 /* Sign Up Button Background.png in Resources */,
 				6819B63A1DDBA0EB0099A98B /* Login Button Background.png in Resources */,
-				68CCC4871DC528500094F3AE /* profileSocialSmall45.PNG in Resources */,
 				680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */,
 				68DBF3A01DB6F5DC00C87385 /* ask.png in Resources */,
 				68CCC4831DC525120094F3AE /* selectedicon.png in Resources */,

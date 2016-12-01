@@ -129,36 +129,38 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         print(pollForCell.pollImageURL)
         
-        sentToRecipientsRef.observe(.childAdded, with: {
+       // sentToRecipientsRef.observe(.childAdded, with: {
         
-            snapshot in
+       //     snapshot in
             
-            let snapshotValue = snapshot.value as! NSDictionary
+      //      let snapshotValue = snapshot.value as! NSDictionary
             
-            let userName = snapshotValue["recipientName"] as! String
+       //     let userName = snapshotValue["recipientName"] as! String
 
-            sentToRecipientsString.append(userName)
+       //     sentToRecipientsString.append(userName)
             
 
-            if sentToRecipientsString.count == 2 {
-            cell.toUserNameLabel.text = "to \(sentToRecipientsString[1])"
-            }
+       //     if sentToRecipientsString.count == 2 {
+       //     cell.toUserNameLabel.text = "to \(sentToRecipientsString[1])"
+      //      }
             
-            if sentToRecipientsString.count == 3 {
-                cell.toUserNameLabel.text = "to \(sentToRecipientsString[1]) & \(sentToRecipientsString[2])"
-            }
+      //      if sentToRecipientsString.count == 3 {
+      //          cell.toUserNameLabel.text = "to \(sentToRecipientsString[1]) & \(sentToRecipientsString[2])"
+      //      }
             
-            if sentToRecipientsString.count == 4 {
-                cell.toUserNameLabel.text = "to \(sentToRecipientsString[1]) & \(sentToRecipientsString[2]) & 1 other"
-            }
+      //      if sentToRecipientsString.count == 4 {
+      //          cell.toUserNameLabel.text = "to \(sentToRecipientsString[1]) & \(sentToRecipientsString[2]) & 1 other"
+      //      }
             
-            if sentToRecipientsString.count > 4 {
-                cell.toUserNameLabel.text = "to \(sentToRecipientsString[1]) & \(sentToRecipientsString[2]) & \((sentToRecipientsString.count - 3)) others"
-            }
+      //      if sentToRecipientsString.count > 4 {
+      //          cell.toUserNameLabel.text = "to \(sentToRecipientsString[1]) & \(sentToRecipientsString[2]) & \((sentToRecipientsString.count - 3)) others"
+     //       }
 
             
-        })
+     //   })
     
+        cell.toUserNameLabel.isHidden = true
+        
         cell.answer1Button.tag = indexPath.row
         cell.answer2Button.tag = indexPath.row
         cell.viewPollResultsButton.tag = indexPath.row
@@ -188,13 +190,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.pollImageView.layer.borderWidth = 0.5
         cell.pollImageView.layer.cornerRadius = 3.5
         cell.pollImageView.layer.masksToBounds = true
-        cell.pollImageView.layer.borderColor = UIColor.lightGray.cgColor
-        cell.pollImageView.isHidden = true
-        cell.imageHeadlineTextLabel.isHidden = true
-        cell.imageDescriptionTextView.isHidden = true
-        cell.resultViewVerticalConstraint.constant = 130
-        cell.questionTextVerticalConstraint.constant = 72
+        cell.pollImageView.layer.borderColor = UIColor.white.cgColor
+        cell.linkPreviewView.isHidden = true
+        cell.linkPreviewView.layer.borderWidth = 0.2
+        cell.linkPreviewView.layer.borderColor = UIColor.lightGray.cgColor
+        cell.linkPreviewView.layer.cornerRadius = 3.5
     
+        cell.resultViewVerticalConstraint.constant = 80
+        cell.answerButton1VerticalConstraint.constant = 80
+        cell.answerButton2VerticalConstraint.constant = 80
         
         senderUserRef.observe(.value, with: {
             snapshot in
@@ -364,11 +368,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         
         if receivedPolls[indexPath.row].pollImageURL != "no image"  {
-            cell.pollImageView.isHidden = false
-            cell.imageDescriptionTextView.isHidden = false
-            cell.imageHeadlineTextLabel.isHidden = false
-            cell.resultViewVerticalConstraint.constant = 304
-            cell.questionTextVerticalConstraint.constant = 246
+            cell.linkPreviewView.isHidden = false
+            cell.resultViewVerticalConstraint.constant = 202
+            cell.answerButton1VerticalConstraint.constant = 202
+            cell.answerButton2VerticalConstraint.constant = 202
+            //cell.questionTextVerticalConstraint.constant = 177
                    }
         
         return cell
@@ -380,9 +384,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
          if receivedPolls[indexPath.row].pollImageURL != "no image" {
-            return 456
+            return 355
         } else {
-            return 282
+            return 246
         }
         
     }

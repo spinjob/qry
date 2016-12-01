@@ -31,12 +31,13 @@ class PollTableViewCell: UITableViewCell {
     @IBOutlet weak var separatorImageView: UIImageView!
     @IBOutlet weak var pollImageView: UIImageView!
     @IBOutlet weak var resultViewVerticalConstraint: NSLayoutConstraint!
-    @IBOutlet weak var questionTextVerticalConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageHeadlineTextLabel: UILabel!
     @IBOutlet weak var imageDescriptionTextView: UITextView!
+    @IBOutlet weak var linkPreviewView: UIView!
     
+    @IBOutlet weak var answerButton1VerticalConstraint: NSLayoutConstraint!
     
-    
+    @IBOutlet weak var answerButton2VerticalConstraint: NSLayoutConstraint!
     
     
     override func awakeFromNib() {

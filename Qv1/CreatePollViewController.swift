@@ -27,6 +27,18 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     @IBOutlet weak var hyperLinkButton: UIButton!
     
+    @IBOutlet weak var questionFieldVerticalConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var linkDescriptionTextView: UITextView!
+    
+    @IBOutlet weak var linkHeadlineTextLabel: UILabel!
+    
+    @IBOutlet weak var linkPreviewView: UIView!
+    
+    @IBOutlet weak var answer1TextFieldVerticalConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var answer2TextFieldVerticalConstraint: NSLayoutConstraint!
+    
     
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
     var featuredAnswersDict : [String:String] = ["Attending":"Not Attending", "👍":"👎","Chyeah":"Nah", "Going":"Can't Go", "🔥":"❄️"]
@@ -75,16 +87,17 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         pollImageView.layer.borderColor = UIColor.lightGray.cgColor
         pollImageView.layer.cornerRadius = 3.5
         pollImageView.layer.masksToBounds = true
+        linkPreviewView.layer.borderWidth = 0.2
+        linkPreviewView.layer.borderColor = UIColor.lightGray.cgColor
+        linkPreviewView.layer.cornerRadius = 3.5
+        linkPreviewView.isHidden = true
         
         hyperLinkButton.isHidden = true
         
         expirationPicker.delegate = self
         expirationPicker.dataSource = self
         nextButton.alpha = 0
-        
 
-        
-    
         
     }
     
@@ -270,13 +283,22 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
             let imageURL = URL(string: result["image"] as! String)
             self.pollImage = result["image"] as! String
             self.pollImageView.sd_setImage(with: imageURL)
+            self.linkHeadlineTextLabel.text = result["title"] as! String
+            self.linkDescriptionTextView.text = result["description"] as! String
             self.pollURL = result["url"] as! String
             self.pollImageTitle = result["title"] as! String
             self.pollImageDescription = result["description"] as! String
+            self.questionFieldVerticalConstraint.constant = 164
+            self.answer1TextFieldVerticalConstraint.constant = 133
+            self.answer2TextFieldVerticalConstraint.constant = 133
+            self.linkPreviewView.isHidden = false
             
-
-            print("\(result)")
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+            
             self.questionTextField.text = ""
+           
             
         }, onError: {
             error in
