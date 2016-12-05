@@ -38,6 +38,15 @@
 		6819B63E1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 6819B63D1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png */; };
 		6819B6401DDD1A270099A98B /* reloadAnswersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6819B63F1DDD1A270099A98B /* reloadAnswersIcon.png */; };
 		6819B6461DDE7D440099A98B /* ChatMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6819B6451DDE7D440099A98B /* ChatMemberCollectionViewCell.swift */; };
+		682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */; };
+		682572911DF112A7006150DB /* Answer 1 Conversation (In-active).png in Resources */ = {isa = PBXBuildFile; fileRef = 682572891DF112A7006150DB /* Answer 1 Conversation (In-active).png */; };
+		682572921DF112A7006150DB /* Answer 1 Conversation Icon (Active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728A1DF112A7006150DB /* Answer 1 Conversation Icon (Active).png */; };
+		682572931DF112A7006150DB /* Answer 2 Conversation (Active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728B1DF112A7006150DB /* Answer 2 Conversation (Active).png */; };
+		682572941DF112A7006150DB /* Answer 2 Conversation (In-active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728C1DF112A7006150DB /* Answer 2 Conversation (In-active).png */; };
+		682572951DF112A7006150DB /* Everybody Active Conversation (Active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728D1DF112A7006150DB /* Everybody Active Conversation (Active).png */; };
+		682572961DF112A7006150DB /* Everybody Conversation (In-active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728E1DF112A7006150DB /* Everybody Conversation (In-active).png */; };
+		682572971DF112A7006150DB /* Undecided Conversation (Active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728F1DF112A7006150DB /* Undecided Conversation (Active).png */; };
+		682572981DF112A7006150DB /* Undecided Conversation (In-active).png in Resources */ = {isa = PBXBuildFile; fileRef = 682572901DF112A7006150DB /* Undecided Conversation (In-active).png */; };
 		6828C20C1DE3C51E005AEC0F /* linkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6828C20B1DE3C51E005AEC0F /* linkIcon.png */; };
 		682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39A1DCFB228009015AC /* EditGroupViewController.swift */; };
 		682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */; };
@@ -146,6 +155,15 @@
 		6819B63D1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LeastVotesAnswerBackground.png; path = ../../LeastVotesAnswerBackground.png; sourceTree = "<group>"; };
 		6819B63F1DDD1A270099A98B /* reloadAnswersIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = reloadAnswersIcon.png; path = ../../reloadAnswersIcon.png; sourceTree = "<group>"; };
 		6819B6451DDE7D440099A98B /* ChatMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMemberCollectionViewCell.swift; sourceTree = "<group>"; };
+		682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollGroupMemberCollectionViewCell.swift; sourceTree = "<group>"; };
+		682572891DF112A7006150DB /* Answer 1 Conversation (In-active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 1 Conversation (In-active).png"; sourceTree = "<group>"; };
+		6825728A1DF112A7006150DB /* Answer 1 Conversation Icon (Active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 1 Conversation Icon (Active).png"; sourceTree = "<group>"; };
+		6825728B1DF112A7006150DB /* Answer 2 Conversation (Active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 2 Conversation (Active).png"; sourceTree = "<group>"; };
+		6825728C1DF112A7006150DB /* Answer 2 Conversation (In-active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 2 Conversation (In-active).png"; sourceTree = "<group>"; };
+		6825728D1DF112A7006150DB /* Everybody Active Conversation (Active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Everybody Active Conversation (Active).png"; sourceTree = "<group>"; };
+		6825728E1DF112A7006150DB /* Everybody Conversation (In-active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Everybody Conversation (In-active).png"; sourceTree = "<group>"; };
+		6825728F1DF112A7006150DB /* Undecided Conversation (Active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Undecided Conversation (Active).png"; sourceTree = "<group>"; };
+		682572901DF112A7006150DB /* Undecided Conversation (In-active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Undecided Conversation (In-active).png"; sourceTree = "<group>"; };
 		6828C20B1DE3C51E005AEC0F /* linkIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = linkIcon.png; path = ../../linkIcon.png; sourceTree = "<group>"; };
 		682DB39A1DCFB228009015AC /* EditGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGroupViewController.swift; sourceTree = "<group>"; };
 		682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
@@ -276,6 +294,7 @@
 		680DF2F21DB5941A00452A4E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				682572881DF112A7006150DB /* Conversation Icons */,
 				6819B63B1DDBB3380099A98B /* MostVotesAnswerBackground.png */,
 				6819B63D1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png */,
 				6819B6391DDBA0EB0099A98B /* Login Button Background.png */,
@@ -336,6 +355,22 @@
 				680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		682572881DF112A7006150DB /* Conversation Icons */ = {
+			isa = PBXGroup;
+			children = (
+				682572891DF112A7006150DB /* Answer 1 Conversation (In-active).png */,
+				6825728A1DF112A7006150DB /* Answer 1 Conversation Icon (Active).png */,
+				6825728B1DF112A7006150DB /* Answer 2 Conversation (Active).png */,
+				6825728C1DF112A7006150DB /* Answer 2 Conversation (In-active).png */,
+				6825728D1DF112A7006150DB /* Everybody Active Conversation (Active).png */,
+				6825728E1DF112A7006150DB /* Everybody Conversation (In-active).png */,
+				6825728F1DF112A7006150DB /* Undecided Conversation (Active).png */,
+				682572901DF112A7006150DB /* Undecided Conversation (In-active).png */,
+			);
+			name = "Conversation Icons";
+			path = "../../Q Messenger/Conversation Icons";
 			sourceTree = "<group>";
 		};
 		68CCC4901DC7D5B80094F3AE /* Select Recipients VCs */ = {
@@ -404,6 +439,7 @@
 				6880A9B51DC41998000BB884 /* CreatePollViewController.swift */,
 				682DB39A1DCFB228009015AC /* EditGroupViewController.swift */,
 				682DB3A21DD16A4A009015AC /* PollTableViewCell.swift */,
+				682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */,
 				6819B6151DD94F880099A98B /* ChatVCs */,
 				68CCC4901DC7D5B80094F3AE /* Select Recipients VCs */,
 			);
@@ -524,6 +560,7 @@
 				68D3841F1DBBE706000B4084 /* Login Button Background.png in Resources */,
 				680DF2FC1DB5960800452A4E /* ProximaNova-Sbold.otf in Resources */,
 				685ED1741DD6747400C85F37 /* Main.storyboard in Resources */,
+				682572981DF112A7006150DB /* Undecided Conversation (In-active).png in Resources */,
 				680DF2FD1DB5960800452A4E /* ProximaNovaSoft-Bold.otf in Resources */,
 				68DBF3A81DB6F6FF00C87385 /* small ask.png in Resources */,
 				680DF2FE1DB5960800452A4E /* ProximaNovaSoft-Medium.otf in Resources */,
@@ -542,10 +579,12 @@
 				6819B6301DDA8E1E0099A98B /* friendmessagetail.png in Resources */,
 				68D3841D1DBBE701000B4084 /* Sign Up Button Background.png in Resources */,
 				6819B63A1DDBA0EB0099A98B /* Login Button Background.png in Resources */,
+				682572961DF112A7006150DB /* Everybody Conversation (In-active).png in Resources */,
 				680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */,
 				68DBF3A01DB6F5DC00C87385 /* ask.png in Resources */,
 				68CCC4831DC525120094F3AE /* selectedicon.png in Resources */,
 				68CCC4811DC5250F0094F3AE /* notselectedicon.png in Resources */,
+				682572951DF112A7006150DB /* Everybody Active Conversation (Active).png in Resources */,
 				68D384211DBBE925000B4084 /* Blue Button Background.png in Resources */,
 				680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */,
 				6819B6141DD90B010099A98B /* grey answer.png in Resources */,
@@ -554,10 +593,15 @@
 				680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */,
 				68DBF3A11DB6F5DC00C87385 /* inboxActive.png in Resources */,
 				6819B6401DDD1A270099A98B /* reloadAnswersIcon.png in Resources */,
+				682572941DF112A7006150DB /* Answer 2 Conversation (In-active).png in Resources */,
 				6819B63C1DDBB3380099A98B /* MostVotesAnswerBackground.png in Resources */,
 				680DF3021DB59A3A00452A4E /* quarry.png in Resources */,
+				682572921DF112A7006150DB /* Answer 1 Conversation Icon (Active).png in Resources */,
+				682572971DF112A7006150DB /* Undecided Conversation (Active).png in Resources */,
 				68CCC48B1DC6BFDB0094F3AE /* contactIcon.png in Resources */,
 				682DB3A11DCFF394009015AC /* edit icon.jpg in Resources */,
+				682572931DF112A7006150DB /* Answer 2 Conversation (Active).png in Resources */,
+				682572911DF112A7006150DB /* Answer 1 Conversation (In-active).png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,6 +700,7 @@
 				680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */,
 				682DB3A51DD66E95009015AC /* ChatViewController.swift in Sources */,
 				68CCC4971DC7E6120094F3AE /* EnterEmail&PasswordViewController.swift in Sources */,
+				682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */,
 				68CCC4851DC526CC0094F3AE /* SelectRecipientsViewController.swift in Sources */,
 				68012E721DB5BEE000676EAF /* EnterPinViewController.swift in Sources */,
 			);

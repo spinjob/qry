@@ -18,8 +18,6 @@ class PollTableViewCell: UITableViewCell {
     @IBOutlet weak var answer2ResultBarImageView: UIImageView!
     @IBOutlet weak var answer2TextLabel: UILabel!
     @IBOutlet weak var answer1TextLabel: UILabel!
-    @IBOutlet weak var reloadResultsButton: UIButton!
-    @IBOutlet weak var noVotesTextLabel: UILabel!
     @IBOutlet weak var senderUserLabel: UILabel!
     @IBOutlet weak var senderUserImageView: UIImageView!
     @IBOutlet weak var questionStringLabel: UILabel!
@@ -39,6 +37,9 @@ class PollTableViewCell: UITableViewCell {
     
     @IBOutlet weak var answerButton2VerticalConstraint: NSLayoutConstraint!
     
+    @IBOutlet private weak var groupMemberCollectionView: UICollectionView!
+    
+    @IBOutlet weak var noVotesButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -49,6 +50,16 @@ class PollTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func setCollectionViewDataSourceDelegate
+        <D: protocol<UICollectionViewDataSource, UICollectionViewDelegate>>
+        (dataSourceDelegate: D, forRow row: Int) {
+        
+        groupMemberCollectionView.delegate = dataSourceDelegate
+        groupMemberCollectionView.dataSource = dataSourceDelegate
+        groupMemberCollectionView.tag = row
+        groupMemberCollectionView.reloadData()
     }
 
 }

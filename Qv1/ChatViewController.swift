@@ -37,6 +37,33 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var chatMemberViewVerticalConstraint: NSLayoutConstraint!
     
     
+    //change chat outlets
+    @IBOutlet weak var changeChatButton: UIButton!
+    
+    @IBOutlet weak var position1ChangeConversationButton: UIButton!
+    
+    @IBOutlet weak var position2ChangeConversationButton: UIButton!
+    
+    @IBOutlet weak var position3ChangeConversationButton: UIButton!
+    
+    @IBOutlet weak var position0ChangeConversationButton: UIButton!
+
+    @IBOutlet weak var position0ChangeConversationLabel: UILabel!
+    
+    @IBOutlet weak var position1ChangeConversationLabel: UILabel!
+    
+    @IBOutlet weak var position2ChangeConversationLabel: UILabel!
+    
+    @IBOutlet weak var position3ChangeConversationLabel: UILabel!
+    
+    @IBOutlet weak var changeConversationView: UIView!
+    
+    @IBOutlet weak var changeConversationBottomConstraint: UITextField!
+    
+    @IBOutlet weak var changeConversationTopConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
+    
     var currentUsers : [Recipient] = []
     var userName = ""
     var userImage = ""
@@ -44,6 +71,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var kbHeight = 0
     var chatMembers : [Recipient] = []
     var senderUser : User = User()
+    
+    var answer1UserIDs : [String] = []
+    var answer2UserIDs : [String] = []
+    var undecidedUserIDs : [String] = []
+    
+    var showAnswer1Users : Bool = false
+    var showAnswer2Users : Bool = false
+    var showUndecidedUsers : Bool = false
+    var showEverybody : Bool = true
 
     
     struct message {
@@ -64,10 +100,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let recipientsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("sentTo")
         let pollVoteReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes")
         let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("sentTo")
-
-
-    
+        let currentUserID = FIRAuth.auth()?.currentUser?.uid
         
+
         tableView.delegate = self
         tableView.dataSource = self
         collectionView.delegate = self
@@ -86,6 +121,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         answer1BarImageView.layer.masksToBounds = true
         answer2BarImageView.layer.masksToBounds = true
     
+        changeConversationView.isHidden = true
+        tableViewBottomConstraint.constant = 0
+        
         
         self.tableView.estimatedRowHeight = 100.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -97,6 +135,16 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         questionTextLabel?.text = poll.questionString
         
+        //change conversation view
+        
+        position1ChangeConversationLabel.text = "Team \(poll.answer1String)"
+        position2ChangeConversationLabel.text = "Team \(poll.answer2String)"
+        
+        
+        
+        
+        //conversation view
+        
         senderUserRef.observe(.value, with: {
             snapshot in
             
@@ -105,7 +153,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.senderUserImageView.layer.cornerRadius = self.senderUserImageView.layer.frame.size.width / 2
             self.senderUserImageView.layer.masksToBounds = true
             self.senderUserName.text = snapshotValue["fullName"] as! String
-            
+        
         
         })
 
@@ -128,6 +176,43 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         })
        
         
+        
+        //figure out current user's vote and update conversation choices
+        
+        if currentUserID != poll.senderUser {
+        pollVoteReference.child(currentUserID!).observe(.value, with: {
+            snapshot in
+        
+            let snapshotValue = snapshot.value as! NSDictionary
+            let userAnswer = snapshotValue["voteString"] as! String
+            print("CURRENT USER ID\(currentUserID)")
+            print("SENDER ID\(self.senderUser.uID)")
+        
+            if userAnswer == "answer1" {
+                
+                self.position2ChangeConversationLabel.isHidden = true
+                self.position3ChangeConversationLabel.isHidden = true
+                self.position2ChangeConversationButton.isHidden = true
+                self.position3ChangeConversationButton.isHidden = true
+            }
+            
+            if userAnswer == "no vote" {
+                self.position2ChangeConversationLabel.isHidden = true
+                self.position1ChangeConversationLabel.isHidden = true
+                self.position2ChangeConversationButton.isHidden = true
+                self.position1ChangeConversationButton.isHidden = true
+            }
+            
+            if userAnswer == "answer2" {
+                self.position1ChangeConversationLabel.isHidden = true
+                self.position3ChangeConversationLabel.isHidden = true
+                self.position3ChangeConversationButton.isHidden = true
+                self.position1ChangeConversationButton.isHidden = true
+                
+            }
+            
+        })
+        }
         //get votes and calculate poll results from Firebase
         
         
@@ -140,6 +225,30 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
 
         })
+    
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.childAdded, with: {
+            snapshot in
+            
+            
+            self.answer1UserIDs.append(snapshot.key as! String)
+            
+        })
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.childAdded, with: {
+            snapshot in
+            
+            self.answer2UserIDs.append(snapshot.key as! String)
+            
+        })
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.childAdded, with: {
+            snapshot in
+            
+            self.undecidedUserIDs.append(snapshot.key as! String)
+            
+        })
+        
+        
         
         pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
             snapshot in
@@ -170,6 +279,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                     self.answer2BarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
                     self.answer1BarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
                     self.answer2TextLabel.textColor = UIColor.white
+                    self.position1ChangeConversationButton.isEnabled = false
+                    self.position1ChangeConversationButton.alpha = 0.5
+                    self.position1ChangeConversationLabel.textColor = UIColor.lightGray
+                    
+                    
                 }
                 
                 if answer2Count == 0, Int(answer1Count!) > 0 {
@@ -178,6 +292,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                     self.answer2BarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
                     self.answer1BarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
                     self.answer1TextLabel.textColor = UIColor.white
+                    self.position2ChangeConversationButton.isEnabled = false
+                    self.position2ChangeConversationButton.alpha = 0.5
+                    self.position2ChangeConversationLabel.textColor = UIColor.lightGray
+
                     
                 }
                 
@@ -377,11 +495,22 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     //collection view delegate methods
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
         
-        print(self.chatMembers.count)
+    
+        if showAnswer1Users == true {
+            return self.answer1UserIDs.count
+        }
         
-        return self.chatMembers.count
+        if showAnswer2Users == true {
+            return self.answer2UserIDs.count
+        }
+        
+        
+        if showUndecidedUsers == true {
+            return self.undecidedUserIDs.count
+        }
+        
+         return self.chatMembers.count
     
     
     }
@@ -392,11 +521,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chatMemberCell", for: indexPath) as! ChatMemberCollectionViewCell
         
         let chatMemberVoteRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").child(self.chatMembers[indexPath.item].recipientID)
+        let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
         
-       cell.chatMemberImageView.sd_setImage(with: URL(string : self.chatMembers[indexPath.item].imageURL1))
-       cell.chatMemberImageView.layer.cornerRadius = cell.chatMemberImageView.layer.frame.size.width / 2
-       cell.chatMemberImageView.layer.masksToBounds = true
-       cell.chatMemberFirstNameLabel.text = self.chatMembers[indexPath.item].recipientName
+        if showEverybody == true {
+       
+            cell.chatMemberImageView.sd_setImage(with: URL(string : self.chatMembers[indexPath.item].imageURL1))
+            cell.chatMemberImageView.layer.cornerRadius = cell.chatMemberImageView.layer.frame.size.width / 2
+            cell.chatMemberImageView.layer.masksToBounds = true
+            cell.chatMemberFirstNameLabel.text = self.chatMembers[indexPath.item].recipientName
         
         
         chatMemberVoteRef.observe(.value, with: {
@@ -417,6 +549,56 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         
         })
+        
+        
+        
+        }
+        
+        if showAnswer1Users == true {
+           
+            userRef.child(answer1UserIDs[indexPath.item]).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                cell.chatMemberImageView.sd_setImage(with: URL(string: snapshotValue["profileImageURL"] as! String))
+                cell.chatMemberAnswerIndicator.image = UIImage(named: "green answer.png")
+                cell.chatMemberFirstNameLabel.text = snapshotValue["fullName"] as! String
+                
+            })
+            
+        
+        }
+        
+        if showAnswer2Users == true {
+            
+            userRef.child(answer2UserIDs[indexPath.item]).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                cell.chatMemberImageView.sd_setImage(with: URL(string: snapshotValue["profileImageURL"] as! String))
+                cell.chatMemberAnswerIndicator.image = UIImage(named: "red answer.png")
+                cell.chatMemberFirstNameLabel.text = snapshotValue["fullName"] as! String
+                
+            })
+            
+        }
+        
+        if showUndecidedUsers == true {
+            
+            userRef.child(undecidedUserIDs[indexPath.item]).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                cell.chatMemberImageView.sd_setImage(with: URL(string: snapshotValue["profileImageURL"] as! String))
+                cell.chatMemberAnswerIndicator.image = UIImage(named: "grey answer.png")
+                cell.chatMemberFirstNameLabel.text = snapshotValue["fullName"] as! String
+                
+            })
+            
+        }
+        
+        
+        
         return cell
         
     }
@@ -464,7 +646,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
     }
-    ///
+
     
     
     func viewPollResultsButtonTapped (sender : UIButton){
@@ -487,7 +669,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         answer2BarImageView.isHidden = true
         chatMemberViewVerticalConstraint.constant = 22
         senderUserName.text = questionTextLabel.text
-            
+        
+        UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
         }
         
         else {
@@ -514,13 +699,75 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 
                 
             })
-
+           
+             UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
     
     
-    ///
+    @IBAction func changeConversationButtonTapped(_ sender: Any) {
+        if tableViewBottomConstraint.constant == 0 {
+        tableViewBottomConstraint.constant = 60
+        changeConversationView.isHidden = false
+        }
+        
+        else {
+            
+            tableViewBottomConstraint.constant = 0
+            changeConversationView.isHidden = true
+        }
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+        
+        
+        
+    }
+    
+    @IBAction func changeConversationPosition1ButtonTapped(_ sender: Any) {
+
+        showEverybody = false
+        showAnswer2Users = false
+        showUndecidedUsers = false
+        showAnswer1Users = true
+        collectionView.reloadData()
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+        
+        
+    }
+
+    
+    @IBAction func changeConversationPosition2ButtonTapped(_ sender: Any) {
+        showEverybody = false
+        showUndecidedUsers = false
+        showAnswer1Users = false
+        showAnswer2Users = true
+        collectionView.reloadData()
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+        
+    }
+    
+
+    @IBAction func changeConversationPosition3ButtonTapped(_ sender: Any) {
+        showEverybody = false
+        showAnswer1Users = false
+        showAnswer2Users = false
+        showUndecidedUsers = true
+        collectionView.reloadData()
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+  
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         sendButton.isEnabled = true
@@ -532,6 +779,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
+    }
+    
+    func isSenderID (currentUserIDString :String) -> Bool {
+        if currentUserIDString == senderUser.uID {
+            return true
+        } else {
+            return false
+        }
     }
 
 }

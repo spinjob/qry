@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
     @IBOutlet weak var logoutButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
@@ -101,11 +101,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationItem.leftBarButtonItem = backButton
 
     }
-    
+
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return receivedPolls.count
     }
     
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let tableViewCell = cell as? PollTableViewCell else { return }
+        
+        tableViewCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
+    }
+    
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -125,8 +134,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         var sentToRecipientsString : [String] = [""]
         var numberOfOtherRecipients : Int
         
-        
-        
+    
         print(pollForCell.pollImageURL)
         
        // sentToRecipientsRef.observe(.childAdded, with: {
@@ -165,7 +173,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.answer2Button.tag = indexPath.row
         cell.viewPollResultsButton.tag = indexPath.row
         cell.conversationButton.tag = indexPath.row
-        cell.reloadResultsButton.tag = indexPath.row
+        cell.noVotesButton.tag = indexPath.row
         
         
         cell.answer1Button.layer.borderWidth = 0.5
@@ -236,7 +244,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.answer1ResultBarImageView.layer.cornerRadius = 4
         cell.answer1ResultBarImageView.layer.masksToBounds = true
         
-        cell.reloadResultsButton.addTarget(self, action: #selector(self.reloadResultsButtonTapped(sender:)), for: .touchUpInside)
+        cell.noVotesButton.addTarget(self, action: #selector(self.reloadResultsButtonTapped(sender:)), for: .touchUpInside)
         
         cell.answer2ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
         cell.answer2ResultBarImageView.layer.borderWidth = 0.2
@@ -244,8 +252,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.answer2ResultBarImageView.layer.masksToBounds = true
         
         cell.resultsView.isHidden = true
-        cell.reloadResultsButton.isHidden = true
-        cell.noVotesTextLabel.isHidden = true
+        cell.noVotesButton.isHidden = true
         
         
         pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
@@ -310,8 +317,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
            
             if total == 0 {
                 cell.viewPollResultsButton.isHidden = true
-                cell.reloadResultsButton.isHidden = false
-                cell.noVotesTextLabel.isHidden = false
+                cell.noVotesButton.isHidden = false
             }
             
             print(cell.answer1ResultBarImageView.frame)
@@ -391,6 +397,28 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return receivedPolls[collectionView.tag].groupMembers.count
+        
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pollGroupMemberCell", for: indexPath) as! PollGroupMemberCollectionViewCell
+        
+        
+        cell.groupMemberImage.sd_setImage(with: URL(string : receivedPolls[collectionView.tag].groupMembers[indexPath.item].imageURL1))
+        
+        cell.groupMemberImage.layer.cornerRadius = cell.groupMemberImage.layer.frame.size.width / 2
+        cell.groupMemberImage.layer.masksToBounds = true
+        
+        return cell
+        
+    }
     
     
     @IBAction func logoutTapped(_ sender: Any) {
@@ -508,7 +536,8 @@ func chatButtonTapped (sender : UIButton){
         
         myVC.poll = receivedPolls[sender.tag]
         myVC.chatMembers = receivedPolls[sender.tag].groupMembers
-        
+    
+    
         navigationController?.pushViewController(myVC, animated: true)
         
     }
@@ -530,7 +559,6 @@ func viewPollResultsButtonTapped (sender : UIButton){
             cell.resultsView.isHidden = false
             cell.answer2Button.isHidden = true
             cell.answer1Button.isHidden = true
-            cell.reloadResultsButton.isHidden = false
         }
         
         if sender.isSelected == false {
@@ -538,7 +566,7 @@ func viewPollResultsButtonTapped (sender : UIButton){
             cell.resultsView.isHidden = true
             cell.answer2Button.isHidden = false
             cell.answer1Button.isHidden = false
-            cell.reloadResultsButton.isHidden = true
+
             
         }
         
@@ -599,7 +627,7 @@ func viewPollResultsButtonTapped (sender : UIButton){
         
         } else {
             cell.viewPollResultsButton.isHidden = true
-            cell.noVotesTextLabel.isHidden = false
+            cell.noVotesButton.isHidden = false
             cell.answer1Button.isHidden = false
             cell.answer2Button.isHidden = false
             cell.resultsView.isHidden = true
@@ -673,16 +701,13 @@ func reloadResultsButtonTapped (sender : UIButton){
             }
             
                 
-                if cell.noVotesTextLabel.isHidden == false {
-                        cell.noVotesTextLabel.isHidden = true
+                if cell.noVotesButton.isHidden == false {
+                        cell.noVotesButton.isHidden = true
                         cell.viewPollResultsButton.isSelected = false
                         cell.viewPollResultsButton.isHidden = false
                 
                     }
             
-                if cell.answer1Button.isHidden == false {
-                        cell.reloadResultsButton.isHidden = true
-                    }
                 
     
             } else {
@@ -690,9 +715,9 @@ func reloadResultsButtonTapped (sender : UIButton){
                 animation.duration = 0.07
                 animation.repeatCount = 4
                 animation.autoreverses = true
-                animation.fromValue = NSValue(cgPoint: CGPoint(x: cell.noVotesTextLabel.center.x - 10, y: cell.noVotesTextLabel.center.y))
-                animation.toValue = NSValue(cgPoint: CGPoint(x: cell.noVotesTextLabel.center.x + 10, y: cell.noVotesTextLabel.center.y))
-                cell.noVotesTextLabel.layer.add(animation, forKey: "position")
+                animation.fromValue = NSValue(cgPoint: CGPoint(x: cell.noVotesButton.center.x - 10, y: cell.noVotesButton.center.y))
+                animation.toValue = NSValue(cgPoint: CGPoint(x: cell.noVotesButton.center.x + 10, y: cell.noVotesButton.center.y))
+                cell.noVotesButton.layer.add(animation, forKey: "position")
             }
             
             print(cell.answer1ResultBarImageView.frame)
