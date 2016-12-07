@@ -44,6 +44,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         var newRecipient : [NSObject : AnyObject] = [ : ]
         var recipientID = ""
+        
     
         
         ref.observe(.childAdded, with: {
@@ -408,11 +409,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        collectionView.showsHorizontalScrollIndicator = false
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pollGroupMemberCell", for: indexPath) as! PollGroupMemberCollectionViewCell
         
         
         cell.groupMemberImage.sd_setImage(with: URL(string : receivedPolls[collectionView.tag].groupMembers[indexPath.item].imageURL1))
-        
+    
         cell.groupMemberImage.layer.cornerRadius = cell.groupMemberImage.layer.frame.size.width / 2
         cell.groupMemberImage.layer.masksToBounds = true
         

@@ -43,6 +43,8 @@ class PollTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        groupMemberCollectionView.showsHorizontalScrollIndicator = true
         // Initialization code
     }
 
