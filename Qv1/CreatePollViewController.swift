@@ -228,13 +228,13 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
         if pollImageDescription != nil {
             
-            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageURL").setValue(pollImageDescription)
+            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageDescription").setValue(pollImageDescription)
             
         }
         
         if pollImageTitle != nil {
             
-            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageURL").setValue(pollImageTitle)
+            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageTitle").setValue(pollImageTitle)
             
         }
 

@@ -27,26 +27,35 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
     let sentPollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls")
-  
+    
     
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        //navigation controller
+        
         navigationController?.navigationBar.barTintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
         navigationController?.navigationBar.backItem?.backBarButtonItem!.title = "X"
-
-        
+ 
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: navigationController, action: nil)
+        navigationItem.leftBarButtonItem = backButton
+        
+
+        
+        
+        //pulling data from Firebase
         
         var newRecipient : [NSObject : AnyObject] = [ : ]
         var recipientID = ""
         
     
-        
         ref.observe(.childAdded, with: {
             snapshot in
             
@@ -64,7 +73,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             })
 
         
-        
         pollRef.observe(.childAdded, with: {
             snapshot in
             
@@ -80,6 +88,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             poll.senderUser = snapshotValue["senderUser"] as! String
             poll.pollImageURL = snapshotValue["pollImageURL"] as! String
             poll.pollID = snapshot.key
+            poll.pollURL = snapshotValue["pollURL"] as! String
             poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
             
@@ -91,17 +100,17 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         })
         
+        //tableView delegates
         
         tableView.delegate = self
         tableView.dataSource = self
         
         
-        print(receivedPolls)
+        tableView.reloadData()
         
-        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: navigationController, action: nil)
-        navigationItem.leftBarButtonItem = backButton
 
     }
+    
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -121,8 +130,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let cellIdentifier = "pollCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! PollTableViewCell
-        
-        cell.prepareForReuse()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.userImageTapped(sender:)))
+        let linkViewTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.linkViewTapped(sender:)))
         
         let pollForCell = receivedPolls[indexPath.row]
         
@@ -131,50 +140,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let pollVoteReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("votes")
         let myVoteReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!)
         let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("sentTo")
+        
 
         var sentToRecipientsString : [String] = [""]
         var numberOfOtherRecipients : Int
         
+      
     
-        print(pollForCell.pollImageURL)
-        
-       // sentToRecipientsRef.observe(.childAdded, with: {
-        
-       //     snapshot in
-            
-      //      let snapshotValue = snapshot.value as! NSDictionary
-            
-       //     let userName = snapshotValue["recipientName"] as! String
-
-       //     sentToRecipientsString.append(userName)
-            
-
-       //     if sentToRecipientsString.count == 2 {
-       //     cell.toUserNameLabel.text = "to \(sentToRecipientsString[1])"
-      //      }
-            
-      //      if sentToRecipientsString.count == 3 {
-      //          cell.toUserNameLabel.text = "to \(sentToRecipientsString[1]) & \(sentToRecipientsString[2])"
-      //      }
-            
-      //      if sentToRecipientsString.count == 4 {
-      //          cell.toUserNameLabel.text = "to \(sentToRecipientsString[1]) & \(sentToRecipientsString[2]) & 1 other"
-      //      }
-            
-      //      if sentToRecipientsString.count > 4 {
-      //          cell.toUserNameLabel.text = "to \(sentToRecipientsString[1]) & \(sentToRecipientsString[2]) & \((sentToRecipientsString.count - 3)) others"
-     //       }
-
-            
-     //   })
-    
-        cell.toUserNameLabel.isHidden = true
-        
         cell.answer1Button.tag = indexPath.row
         cell.answer2Button.tag = indexPath.row
         cell.viewPollResultsButton.tag = indexPath.row
         cell.conversationButton.tag = indexPath.row
         cell.noVotesButton.tag = indexPath.row
+        cell.senderUserImageView.tag = indexPath.row
+        cell.linkPreviewView.tag = indexPath.row
+        
+        cell.separatorImageView.isHidden = false
         
         
         cell.answer1Button.layer.borderWidth = 0.5
@@ -209,6 +190,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.answerButton1VerticalConstraint.constant = 80
         cell.answerButton2VerticalConstraint.constant = 80
         
+        if cell.questionStringLabel.text == (receivedPolls.last?.questionString){
+            cell.separatorImageView.isHidden = true
+        }
+        
+
         senderUserRef.observe(.value, with: {
             snapshot in
             
@@ -224,6 +210,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.senderUserImageView.layer.masksToBounds = true
         cell.senderUserImageView.layer.borderWidth = 0.2
         cell.senderUserImageView.layer.borderColor = UIColor.init(hexString: "506688").cgColor
+        cell.senderUserImageView.isUserInteractionEnabled = true
+        cell.senderUserImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        
         cell.pollImageView.sd_setImage(with: URL(string: pollForCell.pollImageURL))
         cell.imageHeadlineTextLabel.text = pollForCell.pollImageTitle
         cell.imageDescriptionTextView.text = pollForCell.pollImageDescription
@@ -279,10 +269,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let answer1frame : CGRect = CGRect(x: cell.answer1ResultBarImageView.frame.origin.x, y: cell.answer1ResultBarImageView.frame.origin.y, width: CGFloat(334*(answer1Count!/total)), height: cell.answer1ResultBarImageView.frame.height)
             
             let answer2frame : CGRect = CGRect(x: cell.answer2ResultBarImageView.frame.origin.x, y: cell.answer2ResultBarImageView.frame.origin.y, width: CGFloat(334*(answer2Count/total)), height: cell.answer1ResultBarImageView.frame.height)
-            
-            print("ANSWER 2 COUNT \(530*(answer2Count/total))")
-            print("ANSWER 1 COUNT \(530*(answer1Count!/total))")
-            
+                
                 
             UIView.animate(withDuration: 0.5, animations: {
                     cell.answer1ResultBarImageView.frame = answer1frame
@@ -320,10 +307,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.viewPollResultsButton.isHidden = true
                 cell.noVotesButton.isHidden = false
             }
-            
-            print(cell.answer1ResultBarImageView.frame)
-            
-            
+       
         })
 
         myVoteReference.observe(.value, with: {
@@ -367,7 +351,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             recipient.recipientName = snapshotValue["recipientName"] as! String
 
             if pollForCell.groupMembers.contains(where: { $0.recipientID == recipient.recipientID }) {
-             print("group member already added")
             } else {
                 pollForCell.groupMembers.append(recipient)
             }
@@ -379,6 +362,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.resultViewVerticalConstraint.constant = 202
             cell.answerButton1VerticalConstraint.constant = 202
             cell.answerButton2VerticalConstraint.constant = 202
+            cell.linkPreviewView.isUserInteractionEnabled = true
+            cell.linkPreviewView.addGestureRecognizer(linkViewTapGestureRecognizer)
+           
             //cell.questionTextVerticalConstraint.constant = 177
                    }
         
@@ -398,7 +384,52 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+func tableView( _ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
+    {
+       let footerView = UIView()
+        
+       return footerView
+    }
     
+func tableView( _ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 100
+    }
+    
+
+ func linkViewTapped (sender : UITapGestureRecognizer) {
+    
+    
+       let linkPreview = sender.view! as UIView
+
+       let url = URL(string: receivedPolls[linkPreview.tag].pollURL)
+    
+       if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url!)
+      }
+    }
+    
+    
+    func userImageTapped (sender : UITapGestureRecognizer) {
+        
+        let imgView = sender.view as! UIImageView
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+        let transition:CATransition = CATransition()
+        
+        controller.profileUserID = receivedPolls[imgView.tag].senderUser
+    
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+
+        
+    }
+
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -409,6 +440,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        collectionView.isHidden = true
         collectionView.showsHorizontalScrollIndicator = false
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pollGroupMemberCell", for: indexPath) as! PollGroupMemberCollectionViewCell
@@ -426,8 +458,17 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBAction func logoutTapped(_ sender: Any) {
         
+        let userDefaults = UserDefaults.standard
+        
         do {
             try FIRAuth.auth()?.signOut()
+            if userDefaults.string(forKey: "email") != nil {
+                
+                userDefaults.removeObject(forKey: "email")
+                userDefaults.removeObject(forKey: "password")
+
+                
+            }
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginOrSignUpViewController") as! LoginOrSignUpViewController
             present(vc, animated: true, completion: nil)
             print("You logged out")
@@ -447,6 +488,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!).child("voteString")
         
+        let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(receivedPolls[sender.tag].pollID).child("vote")
+        
         
         if selectedButton[sender.tag] != nil {
             if selectedButton[sender.tag] != sender {
@@ -461,6 +504,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 sender.isSelected = false
                 sender.layer.backgroundColor = UIColor.white.cgColor
                 pollAnsweredRef.setValue("no vote")
+                answeredPollRef.setValue("no vote")
             }
         } else {
             
@@ -472,13 +516,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if selectedButton[sender.tag]?.isSelected == true {
             
             pollAnsweredRef.setValue("answer1")
+            answeredPollRef.setValue("answer1")
             
         } else {
             pollAnsweredRef.setValue("no vote")
+            answeredPollRef.setValue("no vote")
         }
         
-    
-        print(selectedButton[sender.tag]?.titleLabel?.text!)
     }
     
     
@@ -491,6 +535,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
         let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!).child("voteString")
+        let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(receivedPolls[sender.tag].pollID).child("vote")
+
         
         if selectedButton.first != nil {
     
@@ -506,6 +552,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 sender.isSelected = false
                 sender.layer.backgroundColor = UIColor.white.cgColor
                 pollAnsweredRef.setValue("no vote")
+                answeredPollRef.setValue("no vote")
             }
         } else {
             
@@ -517,15 +564,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if selectedButton[sender.tag]?.isSelected == true {
             
             pollAnsweredRef.setValue("answer2")
+            answeredPollRef.setValue("answer2")
 
             
         } else {
             
             pollAnsweredRef.setValue("no vote")
+            answeredPollRef.setValue("no vote")
         }
         
-        
-        print(selectedButton[sender.tag]?.titleLabel?.text!)
         
     }
     
@@ -723,7 +770,6 @@ func reloadResultsButtonTapped (sender : UIButton){
                 cell.noVotesButton.layer.add(animation, forKey: "position")
             }
             
-            print(cell.answer1ResultBarImageView.frame)
             
             
             
@@ -731,5 +777,7 @@ func reloadResultsButtonTapped (sender : UIButton){
         })
             
     }
-   
+  
+    
+
 }

@@ -813,10 +813,12 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.messageTextField.text = ""
     
             })
-
+            
+            tableView.reloadData()
+            
         }
         
-        
+        tableView.reloadData()
     }
 
     

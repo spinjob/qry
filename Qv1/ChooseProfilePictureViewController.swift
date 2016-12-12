@@ -31,12 +31,13 @@ class ChooseProfilePictureViewController: UIViewController, UIImagePickerControl
         imagePicker.delegate = self
         
         imageView.isHidden = false
-        imageView.layer.borderWidth = 0
-        imageView.layer.borderColor = UIColor.clear.cgColor
-        imageView.layer.cornerRadius = 3
-        imageView.layer.masksToBounds = true
+        //imageView.layer.cornerRadius = 3
+         imageView.layer.cornerRadius = imageView.layer.frame.size.width / 2
         imageView.layer.borderWidth = 0.3
         imageView.layer.borderColor = UIColor(hexString: "004488").cgColor
+        imageView.layer.masksToBounds = true
+      
+        
         
     
         
@@ -82,6 +83,7 @@ class ChooseProfilePictureViewController: UIViewController, UIImagePickerControl
         
         
             let profileImageData = UIImageJPEGRepresentation(imageView.image!, 0.4)
+            let userDefaults = UserDefaults.standard
         
             FIRStorage.storage().reference().child("ProfileImages/\(FIRAuth.auth()?.currentUser!.uid)/profileImage.jpg").put(profileImageData!, metadata: nil){
             metadata, error in
@@ -91,7 +93,15 @@ class ChooseProfilePictureViewController: UIViewController, UIImagePickerControl
             }
             else {
                 let downloadURL = metadata?.downloadURL()?.absoluteString
-                FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("profileImageURL").setValue(downloadURL)
+            FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("profileImageURL").setValue(downloadURL)
+                
+                if userDefaults.string(forKey: "email") != nil {
+                    
+                    let email = userDefaults.string(forKey: "email")
+                    
+                    let password = userDefaults.string(forKey: "password")
+                    
+                }
                 
                 self.performSegue(withIdentifier: "signInFromRegisterSegue", sender: nil)
                 

@@ -327,7 +327,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
             
         let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(pollID)
-            let pollRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
+        let pollRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
             
         let voteRef = FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(recipientID)
             

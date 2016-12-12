@@ -16,6 +16,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var loginButton: UIButton!
     
+    let userDefaults = UserDefaults.standard
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,12 +35,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 print("We have an error: \(error)")
             } else {
                 print("We've signed in successfully")
+                
+                self.userDefaults.setValue(self.emailTextField.text!, forKey: "email")
+                self.userDefaults.setValue(self.passwordTextField.text!, forKey: "password")
                 self.performSegue(withIdentifier: "loginSegue", sender: nil)
             }
         })
     
     }
     
+
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         loginButton.isEnabled = true

@@ -24,7 +24,6 @@ class PollTableViewCell: UITableViewCell {
     @IBOutlet weak var answer1Button: UIButton!
     @IBOutlet weak var answer2Button: UIButton!
     @IBOutlet weak var conversationButton: UIButton!
-    @IBOutlet weak var toUserNameLabel: UILabel!
     @IBOutlet weak var viewPollResultsButton: UIButton!
     @IBOutlet weak var separatorImageView: UIImageView!
     @IBOutlet weak var pollImageView: UIImageView!

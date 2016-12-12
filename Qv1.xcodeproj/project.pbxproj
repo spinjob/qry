@@ -47,6 +47,8 @@
 		682572961DF112A7006150DB /* Everybody Conversation (In-active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728E1DF112A7006150DB /* Everybody Conversation (In-active).png */; };
 		682572971DF112A7006150DB /* Undecided Conversation (Active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728F1DF112A7006150DB /* Undecided Conversation (Active).png */; };
 		682572981DF112A7006150DB /* Undecided Conversation (In-active).png in Resources */ = {isa = PBXBuildFile; fileRef = 682572901DF112A7006150DB /* Undecided Conversation (In-active).png */; };
+		6825729A1DF79880006150DB /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682572991DF79880006150DB /* UserProfileViewController.swift */; };
+		6825729C1DF7ADF8006150DB /* profile social.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 6825729B1DF7ADF8006150DB /* profile social.PNG */; };
 		6828C20C1DE3C51E005AEC0F /* linkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6828C20B1DE3C51E005AEC0F /* linkIcon.png */; };
 		682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39A1DCFB228009015AC /* EditGroupViewController.swift */; };
 		682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */; };
@@ -59,9 +61,11 @@
 		685E9B9C1DE9FEC700D95C15 /* show icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 685E9B9B1DE9FEC700D95C15 /* show icon.png */; };
 		685E9B9E1DE9FED300D95C15 /* hide icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 685E9B9D1DE9FED300D95C15 /* hide icon.png */; };
 		685ED1741DD6747400C85F37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685ED1731DD6747400C85F37 /* Main.storyboard */; };
+		6869CEE41DF8EE1200F8207C /* ProfilePollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */; };
 		6880A9B41DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */; };
 		6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B51DC41998000BB884 /* CreatePollViewController.swift */; };
 		6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */; };
+		68BDD7C11DFA0A2500C64B7C /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BDD7C01DFA0A2500C64B7C /* WebViewController.swift */; };
 		68C3C82C1DC922B3000B9730 /* Recipient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C3C82B1DC922B3000B9730 /* Recipient.swift */; };
 		68CCC47F1DC524230094F3AE /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CCC47E1DC524230094F3AE /* FriendTableViewCell.swift */; };
 		68CCC4811DC5250F0094F3AE /* notselectedicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCC4801DC5250F0094F3AE /* notselectedicon.png */; };
@@ -164,6 +168,8 @@
 		6825728E1DF112A7006150DB /* Everybody Conversation (In-active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Everybody Conversation (In-active).png"; sourceTree = "<group>"; };
 		6825728F1DF112A7006150DB /* Undecided Conversation (Active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Undecided Conversation (Active).png"; sourceTree = "<group>"; };
 		682572901DF112A7006150DB /* Undecided Conversation (In-active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Undecided Conversation (In-active).png"; sourceTree = "<group>"; };
+		682572991DF79880006150DB /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		6825729B1DF7ADF8006150DB /* profile social.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "profile social.PNG"; path = "../../Profile Pictures/profile social.PNG"; sourceTree = "<group>"; };
 		6828C20B1DE3C51E005AEC0F /* linkIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = linkIcon.png; path = ../../linkIcon.png; sourceTree = "<group>"; };
 		682DB39A1DCFB228009015AC /* EditGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGroupViewController.swift; sourceTree = "<group>"; };
 		682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
@@ -176,9 +182,11 @@
 		685E9B9B1DE9FEC700D95C15 /* show icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "show icon.png"; path = "../../../Downloads/show icon.png"; sourceTree = "<group>"; };
 		685E9B9D1DE9FED300D95C15 /* hide icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "hide icon.png"; path = "../../../Downloads/hide icon.png"; sourceTree = "<group>"; };
 		685ED1731DD6747400C85F37 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = SOURCE_ROOT; };
+		6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePollTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedAnswerOptionTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B51DC41998000BB884 /* CreatePollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollViewController.swift; sourceTree = "<group>"; };
 		6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexToCGFloat.swift; sourceTree = "<group>"; };
+		68BDD7C01DFA0A2500C64B7C /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		68C3C82B1DC922B3000B9730 /* Recipient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipient.swift; sourceTree = "<group>"; };
 		68CCC47E1DC524230094F3AE /* FriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		68CCC4801DC5250F0094F3AE /* notselectedicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = notselectedicon.png; path = ../../notselectedicon.png; sourceTree = "<group>"; };
@@ -294,6 +302,7 @@
 		680DF2F21DB5941A00452A4E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6825729B1DF7ADF8006150DB /* profile social.PNG */,
 				682572881DF112A7006150DB /* Conversation Icons */,
 				6819B63B1DDBB3380099A98B /* MostVotesAnswerBackground.png */,
 				6819B63D1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png */,
@@ -439,7 +448,10 @@
 				6880A9B51DC41998000BB884 /* CreatePollViewController.swift */,
 				682DB39A1DCFB228009015AC /* EditGroupViewController.swift */,
 				682DB3A21DD16A4A009015AC /* PollTableViewCell.swift */,
+				6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */,
 				682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */,
+				682572991DF79880006150DB /* UserProfileViewController.swift */,
+				68BDD7C01DFA0A2500C64B7C /* WebViewController.swift */,
 				6819B6151DD94F880099A98B /* ChatVCs */,
 				68CCC4901DC7D5B80094F3AE /* Select Recipients VCs */,
 			);
@@ -587,6 +599,7 @@
 				682572951DF112A7006150DB /* Everybody Active Conversation (Active).png in Resources */,
 				68D384211DBBE925000B4084 /* Blue Button Background.png in Resources */,
 				680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */,
+				6825729C1DF7ADF8006150DB /* profile social.PNG in Resources */,
 				6819B6141DD90B010099A98B /* grey answer.png in Resources */,
 				6819B62E1DDA8D8E0099A98B /* mymessagetail.png in Resources */,
 				68DBF3AA1DB6F71600C87385 /* small inbox empty.png in Resources */,
@@ -674,9 +687,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				68CCC49D1DC8227B0094F3AE /* LoginViewController.swift in Sources */,
+				68BDD7C11DFA0A2500C64B7C /* WebViewController.swift in Sources */,
 				6819B6461DDE7D440099A98B /* ChatMemberCollectionViewCell.swift in Sources */,
 				682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */,
 				682DB3A91DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift in Sources */,
+				6869CEE41DF8EE1200F8207C /* ProfilePollTableViewCell.swift in Sources */,
 				682DB3A71DD66F74009015AC /* FriendMessageTableViewCell.swift in Sources */,
 				68CCC48F1DC7D5AD0094F3AE /* GroupTableViewCell.swift in Sources */,
 				682DB3A31DD16A4A009015AC /* PollTableViewCell.swift in Sources */,
@@ -695,6 +710,7 @@
 				68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */,
 				682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */,
 				6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */,
+				6825729A1DF79880006150DB /* UserProfileViewController.swift in Sources */,
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				68D384291DBBF31C000B4084 /* SelectBirthdayViewController.swift in Sources */,
 				680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */,
