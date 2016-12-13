@@ -21,8 +21,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var senderUser : User = User()
     var answer1Users : [String] = []
     var answer2Users : [String] = []
-    
-    
 
     let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
@@ -250,8 +248,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             snapshot in
             
             cell.answer1PercentageTextLabel.text = String(snapshot.childrenCount)
+
             
         })
+        
         
         //calculating the poll results and displaying the bar chart
         
@@ -261,6 +261,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.answer2PercentageTextLabel.text = String(snapshot.childrenCount)
             
             let answer1Count = Double(cell.answer1PercentageTextLabel.text!)
+            
             let answer2Count = Double(snapshot.childrenCount)
             let total = answer1Count! + answer2Count
             
@@ -582,8 +583,34 @@ func chatButtonTapped (sender : UIButton){
         
         let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("sentTo")
         let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
+        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes")
         var chatMembers : [Recipient] = []
+    
+    
+    
+     pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
+        snapshot in
         
+            myVC.answer1Count = Int(snapshot.childrenCount)
+        
+     })
+    
+     pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
+        snapshot in
+        
+            myVC.answer2Count = Int(snapshot.childrenCount)
+        
+    })
+    
+    pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.value, with: {
+        snapshot in
+        
+            myVC.undecidedCount = Int(snapshot.childrenCount)
+        
+    })
+    
+    
+    
         myVC.poll = receivedPolls[sender.tag]
         myVC.chatMembers = receivedPolls[sender.tag].groupMembers
     

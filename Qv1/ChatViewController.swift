@@ -24,8 +24,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var answer1VoteCount: UILabel!
     @IBOutlet weak var answer2VoteCount: UILabel!
     @IBOutlet weak var senderUserName: UILabel!
-    @IBOutlet weak var answer1BarImageView: UIImageView!
-    @IBOutlet weak var answer2BarImageView: UIImageView!
+//    @IBOutlet weak var answer1BarImageView: UIImageView!
+//    @IBOutlet weak var answer2BarImageView: UIImageView!
     
     @IBOutlet weak var answer1TextLabel: UILabel!
     @IBOutlet weak var answer2TextLabel: UILabel!
@@ -64,6 +64,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var pieChartView: UIView!
+    
+    @IBOutlet weak var pieChartCenterImageView: UIImageView!
+    
+    @IBOutlet weak var shareButton: UIButton!
+    
+    
+    
+    
     var currentUsers : [Recipient] = []
     var userName = ""
     var userImage = ""
@@ -71,6 +80,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var kbHeight = 0
     var chatMembers : [Recipient] = []
     var senderUser : User = User()
+    var answer1Count : Int = 0
+    var answer2Count : Int = 0
+    var undecidedCount : Int = 0
     
     var answer1UserIDs : [String] = []
     var answer2UserIDs : [String] = []
@@ -80,6 +92,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var showAnswer2Users : Bool = false
     var showUndecidedUsers : Bool = false
     var showEverybody : Bool = true
+    
+    
 
     
     struct message {
@@ -95,6 +109,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var answer2Messages : [message] = []
     var undecidedMessages : [message] = []
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -104,6 +119,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let pollVoteReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes")
         let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("sentTo")
         let currentUserID = FIRAuth.auth()?.currentUser?.uid
+        let chartView = PieChartView()
         
 
         tableView.delegate = self
@@ -115,14 +131,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         answer1TextLabel.text = poll.answer1String
         answer2TextLabel.text = poll.answer2String
-        answer1BarImageView.layer.borderWidth = 0.5
-        answer1BarImageView.layer.cornerRadius = 3.5
-        answer1BarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
-        answer2BarImageView.layer.borderWidth = 0.5
-        answer2BarImageView.layer.cornerRadius = 3.5
-        answer2BarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
-        answer1BarImageView.layer.masksToBounds = true
-        answer2BarImageView.layer.masksToBounds = true
     
         changeConversationView.isHidden = true
         tableViewBottomConstraint.constant = 0
@@ -151,8 +159,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         answer2TextLabel.isHidden = true
         answer1VoteCount.isHidden = true
         answer2VoteCount.isHidden = true
-        answer1BarImageView.isHidden = true
-        answer2BarImageView.isHidden = true
+        pieChartCenterImageView.isHidden = true
+        pieChartView.isHidden = true
+        shareButton.isHidden = true
         chatMemberViewVerticalConstraint.constant = 22
         senderUserName.text = poll.questionString
         collectionView.layer.borderWidth = 0.2
@@ -344,24 +353,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             if total > 0 {
                 
-                let answer1frame : CGRect = CGRect(x: self.answer1BarImageView.layer.frame.origin.x, y: self.answer1BarImageView.layer.frame.origin.y, width: CGFloat(334*(answer1Count!/total)), height: self.answer1BarImageView.layer.frame.height)
-                
-                let answer2frame : CGRect = CGRect(x: self.answer2BarImageView.layer.frame.origin.x, y: self.answer2BarImageView.layer.frame.origin.y, width: CGFloat(334*(answer2Count/total)), height: self.answer2BarImageView.layer.frame.height)
-
-            
-                self.answer1BarImageView.frame = answer1frame
-                self.answer2BarImageView.frame = answer2frame
-                self.answer2BarImageView.updateConstraints()
-                self.answer1BarImageView.updateConstraints()
-                
-                print("answer 1 button width \(self.answer1BarImageView.frame.width)")
-                print("answer 2 button width \(self.answer2BarImageView.frame.width)")
-                
+        
                 if answer1Count == 0, Int(answer2Count) > 0 {
                     self.answer1TextLabel.textColor = UIColor.init(hexString: "00CDCE")
-                    self.answer2BarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
-                    self.answer1BarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
-                    self.answer2TextLabel.textColor = UIColor.white
+   
+                    //self.answer2TextLabel.textColor = UIColor.white
                     self.position1ChangeConversationButton.isEnabled = false
                     self.position1ChangeConversationButton.alpha = 0.5
                     self.position1ChangeConversationLabel.textColor = UIColor.lightGray
@@ -372,9 +368,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if answer2Count == 0, Int(answer1Count!) > 0 {
                     
                     self.answer2TextLabel.textColor = UIColor.init(hexString: "00CDCE")
-                    self.answer2BarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
-                    self.answer1BarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
-                    self.answer1TextLabel.textColor = UIColor.white
+        
+                    //self.answer1TextLabel.textColor = UIColor.white
                     self.position2ChangeConversationButton.isEnabled = false
                     self.position2ChangeConversationButton.alpha = 0.5
                     self.position2ChangeConversationLabel.textColor = UIColor.lightGray
@@ -384,18 +379,16 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 
                 if Int(answer1Count!) < Int(answer2Count) {
                     
-                    self.answer2BarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
-                    self.answer2TextLabel.textColor = UIColor.white
+
+                    //self.answer2TextLabel.textColor = UIColor.white
                     self.answer1TextLabel.textColor = UIColor.init(hexString: "00CDCE")
-                    self.answer1BarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
+          
                     
                }
                
                 if Int(answer1Count!) > Int(answer2Count) {
-                    
-                    self.answer1BarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
-                    self.answer2BarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
-                    self.answer1TextLabel.textColor = UIColor.white
+           
+                    //self.answer1TextLabel.textColor = UIColor.white
                     self.answer2TextLabel.textColor = UIColor.init(hexString: "00CDCE")
                     
                 }
@@ -409,6 +402,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         })
 
+        
+        
+        chartView.frame = CGRect(x: 0, y: 0, width: pieChartView.frame.size.width, height: 86)
+        chartView.segments = [
+
+            Segment(color: UIColor.init(hexString: "A8E855"), value: CGFloat(answer1Count)),
+            Segment(color: UIColor.init(hexString: "FF4E56"), value: CGFloat(answer2Count)),
+            Segment(color: UIColor.init(hexString: "D8D8D8"), value: CGFloat(undecidedCount))
+        ]
+        
+        pieChartView.addSubview(chartView)
     }
 
     
@@ -824,6 +828,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBAction func showHidePollButtonTapped(_ sender: Any) {
         
+        
         if pollViewHeightConstraint.constant == 213 {
         showHidePollViewButton.setImage(UIImage(named: "hide icon.png"), for: .normal)
         pollViewHeightConstraint.constant = 96
@@ -832,8 +837,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         answer2TextLabel.isHidden = true
         answer1VoteCount.isHidden = true
         answer2VoteCount.isHidden = true
-        answer1BarImageView.isHidden = true
-        answer2BarImageView.isHidden = true
+        pieChartView.isHidden = true
+        pieChartCenterImageView.isHidden = true
+        shareButton.isHidden = true
+            
         chatMemberViewVerticalConstraint.constant = 22
         senderUserName.text = questionTextLabel.text
         
@@ -850,9 +857,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             answer2TextLabel.isHidden = false
             answer1VoteCount.isHidden = false
             answer2VoteCount.isHidden = false
-            answer1BarImageView.isHidden = false
-            answer2BarImageView.isHidden = false
-            chatMemberViewVerticalConstraint.constant = 140
+            pieChartCenterImageView.isHidden = false
+            pieChartView.isHidden = false
+            shareButton.isHidden = false
+            
+        chatMemberViewVerticalConstraint.constant = 140
             questionTextLabel.text = poll.questionString
             
             let senderUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(poll.senderUser)
@@ -985,6 +994,25 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         
+    }
+    
+    
+    
+    @IBAction func shareButtonTapped(_ sender: Any) {
+        
+        captureView()
+        
+    }
+    
+    
+    func captureView() -> UIImage {
+        
+        UIGraphicsBeginImageContext(pollView.frame.size)
+        pollView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        UIImageWriteToSavedPhotosAlbum(img!, nil, nil, nil)
+        return img!
     }
   
     
