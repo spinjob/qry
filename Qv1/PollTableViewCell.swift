@@ -40,6 +40,19 @@ class PollTableViewCell: UITableViewCell {
     
     @IBOutlet weak var noVotesButton: UIButton!
     
+    @IBOutlet weak var imagePollView: UIView!
+    
+    @IBOutlet weak var imagePollImageView: UIImageView!
+    
+    @IBOutlet weak var imagePollLeftConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var imagePollViewRightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var imagePollViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var imagePollViewWidthConstraint: NSLayoutConstraint!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

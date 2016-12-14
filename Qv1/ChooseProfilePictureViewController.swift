@@ -110,5 +110,5 @@ class ChooseProfilePictureViewController: UIViewController, UIImagePickerControl
             }
 
         }
-    } 
+    }
 }

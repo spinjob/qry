@@ -38,6 +38,8 @@
 		6819B63E1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 6819B63D1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png */; };
 		6819B6401DDD1A270099A98B /* reloadAnswersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6819B63F1DDD1A270099A98B /* reloadAnswersIcon.png */; };
 		6819B6461DDE7D440099A98B /* ChatMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6819B6451DDE7D440099A98B /* ChatMemberCollectionViewCell.swift */; };
+		68219A6F1E00AABE004E822F /* cameraIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A6E1E00AABE004E822F /* cameraIcon.png */; };
+		68219A711E00B0B9004E822F /* galleryIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A701E00B0B9004E822F /* galleryIcon.png */; };
 		682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */; };
 		682572911DF112A7006150DB /* Answer 1 Conversation (In-active).png in Resources */ = {isa = PBXBuildFile; fileRef = 682572891DF112A7006150DB /* Answer 1 Conversation (In-active).png */; };
 		682572921DF112A7006150DB /* Answer 1 Conversation Icon (Active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728A1DF112A7006150DB /* Answer 1 Conversation Icon (Active).png */; };
@@ -164,6 +166,8 @@
 		6819B63D1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LeastVotesAnswerBackground.png; path = ../../LeastVotesAnswerBackground.png; sourceTree = "<group>"; };
 		6819B63F1DDD1A270099A98B /* reloadAnswersIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = reloadAnswersIcon.png; path = ../../reloadAnswersIcon.png; sourceTree = "<group>"; };
 		6819B6451DDE7D440099A98B /* ChatMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMemberCollectionViewCell.swift; sourceTree = "<group>"; };
+		68219A6E1E00AABE004E822F /* cameraIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cameraIcon.png; path = ../../cameraIcon.png; sourceTree = "<group>"; };
+		68219A701E00B0B9004E822F /* galleryIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = galleryIcon.png; path = ../../galleryIcon.png; sourceTree = "<group>"; };
 		682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollGroupMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		682572891DF112A7006150DB /* Answer 1 Conversation (In-active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 1 Conversation (In-active).png"; sourceTree = "<group>"; };
 		6825728A1DF112A7006150DB /* Answer 1 Conversation Icon (Active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 1 Conversation Icon (Active).png"; sourceTree = "<group>"; };
@@ -351,6 +355,8 @@
 		6819B6411DDD1A3E0099A98B /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				68219A701E00B0B9004E822F /* galleryIcon.png */,
+				68219A6E1E00AABE004E822F /* cameraIcon.png */,
 				68B999C21DFF589700959721 /* shareIcon.png */,
 				685E9B9B1DE9FEC700D95C15 /* show icon.png */,
 				685E9B9D1DE9FED300D95C15 /* hide icon.png */,
@@ -586,6 +592,7 @@
 				685E9B9E1DE9FED300D95C15 /* hide icon.png in Resources */,
 				68D3841F1DBBE706000B4084 /* Login Button Background.png in Resources */,
 				680DF2FC1DB5960800452A4E /* ProximaNova-Sbold.otf in Resources */,
+				68219A6F1E00AABE004E822F /* cameraIcon.png in Resources */,
 				685ED1741DD6747400C85F37 /* Main.storyboard in Resources */,
 				682572981DF112A7006150DB /* Undecided Conversation (In-active).png in Resources */,
 				680DF2FD1DB5960800452A4E /* ProximaNovaSoft-Bold.otf in Resources */,
@@ -633,6 +640,7 @@
 				682DB3A11DCFF394009015AC /* edit icon.jpg in Resources */,
 				682572931DF112A7006150DB /* Answer 2 Conversation (Active).png in Resources */,
 				682572911DF112A7006150DB /* Answer 1 Conversation (In-active).png in Resources */,
+				68219A711E00B0B9004E822F /* galleryIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,8 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import SDWebImage
+
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -21,6 +23,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var senderUser : User = User()
     var answer1Users : [String] = []
     var answer2Users : [String] = []
+    
+    
 
     let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
@@ -89,6 +93,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             poll.pollURL = snapshotValue["pollURL"] as! String
             poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
+            poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
             
             
             self.receivedPolls.append(poll)
@@ -138,6 +143,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let pollVoteReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("votes")
         let myVoteReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!)
         let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("sentTo")
+        
         
 
         var sentToRecipientsString : [String] = [""]
@@ -242,6 +248,30 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         cell.resultsView.isHidden = true
         cell.noVotesButton.isHidden = true
+        
+        //imagepollviews
+        cell.imagePollView.isHidden = true
+        cell.imagePollView.layer.borderWidth = 0.2
+        cell.imagePollView.layer.borderColor = UIColor.lightGray.cgColor
+        cell.imagePollView.layer.cornerRadius = 3.5
+        cell.imagePollView.layer.masksToBounds = true
+        
+        
+        print(pollForCell)
+        
+        if pollForCell.pollQuestionImageURL != "no question image", cell.linkPreviewView.isHidden == true {
+            cell.imagePollImageView.sd_setImage(with: URL(string: pollForCell.pollQuestionImageURL))
+            cell.imagePollView?.isHidden = false
+
+            cell.resultViewVerticalConstraint.constant = 438
+            cell.answerButton1VerticalConstraint.constant = 442
+            cell.answerButton2VerticalConstraint.constant = 442
+            cell.imagePollViewRightConstraint.constant = 16
+            cell.imagePollViewWidthConstraint.constant = 343
+            cell.imagePollViewHeightConstraint.constant = 343
+            
+    
+        }
         
         
         pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
@@ -358,7 +388,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         })
 
         
-        if receivedPolls[indexPath.row].pollImageURL != "no image"  {
+        if receivedPolls[indexPath.row].pollURL != "no url"  {
             cell.linkPreviewView.isHidden = false
             cell.resultViewVerticalConstraint.constant = 202
             cell.answerButton1VerticalConstraint.constant = 202
@@ -366,8 +396,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.linkPreviewView.isUserInteractionEnabled = true
             cell.linkPreviewView.addGestureRecognizer(linkViewTapGestureRecognizer)
            
-            //cell.questionTextVerticalConstraint.constant = 177
-                   }
+                        }
+        
+        cell.updateConstraintsIfNeeded()
         
         return cell
 
@@ -377,11 +408,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-         if receivedPolls[indexPath.row].pollImageURL != "no image" {
+         if receivedPolls[indexPath.row].pollURL != "no url" {
             return 355
-        } else {
-            return 246
+        } else if receivedPolls[indexPath.row].pollQuestionImageURL != "no question image" {
+            return 615
         }
+         return 246
+        
         
     }
     
@@ -455,7 +488,6 @@ func tableView( _ tableView: UITableView, heightForFooterInSection section: Int)
         return cell
         
     }
-    
     
     @IBAction func logoutTapped(_ sender: Any) {
         
@@ -577,7 +609,7 @@ func tableView( _ tableView: UITableView, heightForFooterInSection section: Int)
         
     }
     
-    
+
     
 func chatButtonTapped (sender : UIButton){
         
@@ -715,6 +747,23 @@ func viewPollResultsButtonTapped (sender : UIButton){
         })
        
       
+    }
+
+    
+    
+    @IBAction func unwindToMenu(segue: UIStoryboardSegue){
+        
+        tableView.reloadData()
+        tableView.updateConstraints()
+        
+    }
+    
+    @IBAction func unwindToMenuAfterSending(segue: UIStoryboardSegue){
+        
+        tableView.reloadData()
+        tableView.updateConstraints()
+        
+    
     }
     
 func reloadResultsButtonTapped (sender : UIButton){

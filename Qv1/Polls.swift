@@ -20,6 +20,7 @@ class Poll {
     var pollImageURL : String = ""
     var pollImageTitle : String = ""
     var pollImageDescription : String = ""
+    var pollQuestionImageURL : String = ""
     var groupMembers : [Recipient] = []
     
     

@@ -13,7 +13,7 @@ import FirebaseStorage
 import SwiftLinkPreview
 import SDWebImage
 
-class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, FeaturedAnswerCellDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, FeaturedAnswerCellDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var questionTextField: UITextField!
     @IBOutlet weak var answer1TextField: UITextField!
@@ -39,6 +39,14 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
 
     @IBOutlet weak var answer2TextFieldVerticalConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var takePictureButton: UIButton!
+    
+    @IBOutlet weak var uploadPictureButton: UIButton!
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
+    
     
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
     var featuredAnswersDict : [String:String] = ["Attending":"Not Attending", "👍":"👎","Chyeah":"Nah", "Going":"Can't Go", "🔥":"❄️"]
@@ -49,9 +57,9 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     var dictPoll : [NSObject : AnyObject] = [:]
     
-    var senderUserDict : [NSObject : AnyObject] = [:]
+    let poll = Poll()
     
-    var senderUser : User = User()
+    var senderUserDict : [NSObject : AnyObject] = [:]
     
     let slp = SwiftLinkPreview()
     
@@ -63,17 +71,26 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     var pollImageDescription : String = "no image description"
     
+    var questionImageURL : String = "no question image"
+    
+    var questionImage : UIImage = UIImage()
+    
+    
+    var imagePicker = UIImagePickerController()
+
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
        
-        navigationController?.navigationBar.barTintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
-        navigationController?.navigationBar.backItem?.backBarButtonItem!.title = "X"
+       navigationController?.navigationBar.barTintColor = UIColor.white
+       navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
+       navigationController?.navigationBar.backItem?.backBarButtonItem!.title = "X"
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
+       self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+       self.navigationController?.navigationBar.shadowImage = UIImage()
 
         featuredAnswerTableView.delegate = self
         featuredAnswerTableView.dataSource = self
@@ -91,14 +108,49 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         linkPreviewView.layer.borderColor = UIColor.lightGray.cgColor
         linkPreviewView.layer.cornerRadius = 3.5
         linkPreviewView.isHidden = true
-        
         hyperLinkButton.isHidden = true
         
         expirationPicker.delegate = self
         expirationPicker.dataSource = self
         nextButton.alpha = 0
+        
+        imageView.isHidden = true
+        imageView.layer.borderWidth = 0.2
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.layer.cornerRadius = 3.5
+        imageView.layer.masksToBounds = true
+        
+        imagePicker.delegate = self
 
         
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        let image = info[UIImagePickerControllerEditedImage] as! UIImage
+        imagePicker.dismiss(animated: true, completion: nil)
+        questionImage = image
+        
+        if linkPreviewView.isHidden == false {
+            pollImageView.image = image
+            imageView.isHidden = true
+        } else {
+        
+        
+        imageView.image = image
+        questionFieldVerticalConstraint.constant = 139
+        answer1TextFieldVerticalConstraint.constant = 175
+        answer2TextFieldVerticalConstraint.constant = 175
+        imageView.isHidden = false
+        
+        imageView.backgroundColor = UIColor.clear
+        
+            
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+
+        }
     }
     
     
@@ -164,8 +216,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         answer1TextField.text = customCell.featuredAnswer1Button.titleLabel?.text
     }
     
-    
-    
+ 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         nextButton.isEnabled = true
         nextButton.isUserInteractionEnabled = true
@@ -206,37 +257,40 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
    
     @IBAction func nextButtonTapped(_ sender: Any) {
+       
         
-        let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
+        print(imageView.image)
         
-        let nextPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
+       // let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
         
-        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(nextPoll)
-        FIRDatabase.database().reference().child("polls").child(pollId).setValue(nextPoll)
+       // let nextPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
         
-        if pollURL != nil {
+       // FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(nextPoll)
+      //  FIRDatabase.database().reference().child("polls").child(pollId).setValue(nextPoll)
+        
+      //  if pollURL != nil {
             
-            FIRDatabase.database().reference().child("polls").child(pollId).child("pollURL").setValue(pollURL)
+      //      FIRDatabase.database().reference().child("polls").child(pollId).child("pollURL").setValue(pollURL)
         
-        }
+      //  }
         
-        if pollImage != nil {
+      //  if pollImage != nil {
             
-            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageURL").setValue(pollImage)
+      //      FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageURL").setValue(pollImage)
             
-        }
+      //  }
         
-        if pollImageDescription != nil {
+      //  if pollImageDescription != nil {
             
-            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageDescription").setValue(pollImageDescription)
+      //      FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageDescription").setValue(pollImageDescription)
             
-        }
+       // }
         
-        if pollImageTitle != nil {
+      //  if pollImageTitle != nil {
             
-            FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageTitle").setValue(pollImageTitle)
+      //      FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageTitle").setValue(pollImageTitle)
             
-        }
+      //  }
 
         
       // if pickerData[selectedIndex] == "an hour" {
@@ -257,22 +311,54 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        if segue.identifier == "selectRecipientsSegue" {
+       let nextVC = segue.destination as! SelectRecipientsViewController
 
        let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
     
-       let dictPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject, "pollImageURL" as NSObject: self.pollImage as AnyObject, "pollURL" as NSObject: self.pollURL as AnyObject, "pollImageDescription" as NSObject: self.pollImageDescription as AnyObject, "pollImageTitle" as NSObject: self.pollImageTitle as AnyObject ]
+            
+        let dictPoll : [NSObject : AnyObject]  = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject, "pollImageURL" as NSObject: self.pollImage as AnyObject, "pollURL" as NSObject: self.pollURL as AnyObject, "pollImageDescription" as NSObject: self.pollImageDescription as AnyObject, "pollImageTitle" as NSObject: self.pollImageTitle as AnyObject, "questionImageURL" as NSObject: self.questionImageURL as AnyObject]
+            
             
         
-        let nextVC = segue.destination as! SelectRecipientsViewController
+        nextVC.poll.answer1String = answer1TextField.text!
+        nextVC.poll.answer2String = answer2TextField.text!
+        nextVC.poll.questionString = questionTextField.text!
+        nextVC.poll.expiration = pickerData[selectedIndex]
+        nextVC.poll.pollImageDescription = pollImageDescription
+        nextVC.poll.pollImageTitle = pollImageTitle
+        nextVC.poll.pollURL = pollURL
+        nextVC.poll.pollImageURL = pollImageTitle
+        nextVC.poll.senderUser = (FIRAuth.auth()?.currentUser?.uid)!
+        nextVC.poll.pollID = pollId
+        nextVC.questionImage = questionImage
 
         
         nextVC.dictPoll = dictPoll
         nextVC.pollID = pollId
+            
+        }
 
-        
     
     }
     
+    
+    @IBAction func takePictureButtonTapped(_ sender: Any) {
+        
+        imagePicker.sourceType = .camera
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+        
+    }
+
+    
+    @IBAction func addPhotoFromGalleryButtonTapped(_ sender: Any) {
+        imagePicker.sourceType = .savedPhotosAlbum
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+
     @IBAction func hyperLinkButtonTapped(_ sender: Any) {
         
         let input = questionTextField.text
@@ -312,6 +398,11 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
     }
     
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        self.performSegue(withIdentifier: "unwindToMenuCancel", sender: self)
+        
+        
+    }
     //        CIRCULAR BUTTON TO ALLOW USER TO CHANGE ANSWER BUTTON COLOR
     //        let redColorButton = UIButton(type: .custom)
     //        redColorButton.frame = CGRect(x: 160, y: 100, width: 10, height: 10)

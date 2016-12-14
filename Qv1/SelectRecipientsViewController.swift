@@ -11,6 +11,7 @@ import AddressBook
 import Contacts
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseStorage
 import SDWebImage
 
 
@@ -25,9 +26,13 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     var recipientList : [Recipient] = []
     var users : [User] = []
     var selectedRecipients  : [Recipient] = []
+    var questionImage : UIImage = UIImage()
+    var questionImageURL : String = "no question image"
 
     var groupToEdit : Recipient = Recipient()
     var groupMembers : [Recipient] = []
+    
+    
    
     
     @IBOutlet weak var sendButton: UIButton!
@@ -37,7 +42,11 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(dictPoll)
+        print(poll.pollID)
+        print(questionImage)
         
+        let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
         
         navigationController?.navigationBar.barTintColor = UIColor.white
@@ -46,6 +55,25 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         tableView.delegate = self
         tableView.dataSource = self
         
+        if questionImage.size != CGSize(width: 0, height: 0) {
+            
+            let profileImageData = UIImageJPEGRepresentation(questionImage, 0.4)
+            
+            FIRStorage.storage().reference().child("PollImages/\(poll.pollID)/pollImage.jpg").put(profileImageData!, metadata: nil){
+                metadata, error in
+                
+                if error != nil {
+                    print("error \(error)")
+                }
+                else {
+                    pollRef.child("questionImageURL").setValue((metadata?.downloadURL()?.absoluteString)!)
+                    self.questionImageURL = (metadata?.downloadURL()?.absoluteString)!
+                    
+                }
+                
+            }
+            
+        }
         
         userRef.observe(FIRDataEventType.childAdded, with: {(snapshot) in
             print(snapshot)
@@ -199,7 +227,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
 
         let selectedRecipient = recipientList[indexPath.row]
         selectedRecipients.append(selectedRecipient)
-         print(selectedRecipient.recipientName)
+         print(selectedRecipient.recipientID)
             
         }
 
@@ -319,25 +347,32 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     @IBAction func sendButtonTapped(_ sender: Any) {
-
+        
+        let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)
+        pollRef.setValue(dictPoll)
+               
+        print(questionImage)
+        
+        
         self.selectedRecipients.forEach { (Recipient) in
+        
         let recipientID = Recipient.recipientID
+        print(Recipient.recipientName)
         let recipientDict : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject]
         let voter : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "voteString" as NSObject: "no vote" as AnyObject]
-            
-            
         let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(pollID)
-        let pollRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
-            
+        let sentToRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
         let voteRef = FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(recipientID)
             
-        pollRef.setValue(recipientDict)
+   
+        sentToRef.setValue(recipientDict)
         ref.setValue(self.dictPoll)
+        ref.child("questionImageURL").setValue(self.questionImageURL)
         voteRef.setValue(voter)
     
      }
-
         
+         self.performSegue(withIdentifier: "unwindToMenuSend", sender: self)
     
     }
 
@@ -352,13 +387,13 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+        if segue.identifier == "editGroupSegue" {
         let nextVC = segue.destination as! EditGroupViewController
         nextVC.group = sender as! Recipient
         
         print(nextVC.group)
     
-        
+        }
         }
     
     }
