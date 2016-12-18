@@ -401,23 +401,22 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         snapshot in
         
         let snapshotValue = snapshot.value as? NSDictionary
-        
         let myVote = snapshotValue!["voteString"] as! String
-        
+    
         if myVote == "answer1" {
             cell.answer1Button.isSelected = true
             cell.answer1Button.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
             cell.answer2Button.isSelected = false
             cell.answer2Button.layer.backgroundColor = UIColor.white.cgColor
         }
-        
+    
         if myVote == "answer2" {
             cell.answer2Button.isSelected = true
             cell.answer2Button.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
             cell.answer1Button.isSelected = false
             cell.answer1Button.layer.backgroundColor = UIColor.white.cgColor
         }
-        
+    
         if myVote == "no vote" {
             cell.answer1Button.isSelected = false
             cell.answer2Button.isSelected = false

@@ -523,6 +523,9 @@ func tableView( _ tableView: UITableView, heightForFooterInSection section: Int)
         
         let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(receivedPolls[sender.tag].pollID).child("vote")
         
+        let senderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child(receivedPolls[sender.tag].senderUser)
+        let buttonIndexPath = IndexPath(row: sender.tag, section: 0)
+        let cell = tableView.cellForRow(at: buttonIndexPath) as! PollTableViewCell
         
         if selectedButton[sender.tag] != nil {
             if selectedButton[sender.tag] != sender {
@@ -556,6 +559,16 @@ func tableView( _ tableView: UITableView, heightForFooterInSection section: Int)
             answeredPollRef.setValue("no vote")
         }
         
+        
+        senderUserRef.observe(.value, with: {
+            snapshot in
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            cell.senderUserImageView.sd_setImage(with: URL(string : snapshotValue["profileImageURL"] as! String))
+            cell.senderUserLabel.text = snapshotValue["fullName"] as! String
+            
+        })
     }
     
     
@@ -569,7 +582,7 @@ func tableView( _ tableView: UITableView, heightForFooterInSection section: Int)
         
         let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!).child("voteString")
         let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(receivedPolls[sender.tag].pollID).child("vote")
-
+        let senderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child(receivedPolls[sender.tag].senderUser)
         
         if selectedButton.first != nil {
     
@@ -606,6 +619,15 @@ func tableView( _ tableView: UITableView, heightForFooterInSection section: Int)
             answeredPollRef.setValue("no vote")
         }
         
+        senderUserRef.observe(.value, with: {
+            snapshot in
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            cell.senderUserImageView.sd_setImage(with: URL(string : snapshotValue["profileImageURL"] as! String))
+            cell.senderUserLabel.text = snapshotValue["fullName"] as! String
+            
+        })
         
     }
     

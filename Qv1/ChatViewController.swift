@@ -67,10 +67,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var pieChartView: UIView!
     
     @IBOutlet weak var pieChartCenterImageView: UIImageView!
-    
-    @IBOutlet weak var shareButton: UIButton!
-    
-    
+
+    @IBOutlet weak var greenBackgroundImageView: UIImageView!
+
+    @IBOutlet weak var redBackgroundImageView: UIImageView!
     
     
     var currentUsers : [Recipient] = []
@@ -159,9 +159,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         answer2TextLabel.isHidden = true
         answer1VoteCount.isHidden = true
         answer2VoteCount.isHidden = true
+        greenBackgroundImageView.isHidden = true
+        greenBackgroundImageView.layer.cornerRadius = greenBackgroundImageView.layer.frame.size.width / 2
+        greenBackgroundImageView.layer.masksToBounds = true
+        redBackgroundImageView.isHidden = true
+        redBackgroundImageView.layer.cornerRadius = redBackgroundImageView.layer.frame.size.width / 2
+        redBackgroundImageView.layer.masksToBounds = true
         pieChartCenterImageView.isHidden = true
         pieChartView.isHidden = true
-        shareButton.isHidden = true
         chatMemberViewVerticalConstraint.constant = 22
         senderUserName.text = poll.questionString
         collectionView.layer.borderWidth = 0.2
@@ -402,9 +407,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         })
 
-        
-        
         chartView.frame = CGRect(x: 0, y: 0, width: pieChartView.frame.size.width, height: 86)
+        pieChartCenterImageView.layer.cornerRadius = pieChartCenterImageView.layer.frame.size.width / 2
+        pieChartCenterImageView.layer.masksToBounds = true
+        
         chartView.segments = [
 
             Segment(color: UIColor.init(hexString: "A8E855"), value: CGFloat(answer1Count)),
@@ -829,7 +835,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func showHidePollButtonTapped(_ sender: Any) {
         
         
-        if pollViewHeightConstraint.constant == 213 {
+        if pollViewHeightConstraint.constant == 280 {
         showHidePollViewButton.setImage(UIImage(named: "hide icon.png"), for: .normal)
         pollViewHeightConstraint.constant = 96
         questionTextLabel.isHidden = true
@@ -837,9 +843,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         answer2TextLabel.isHidden = true
         answer1VoteCount.isHidden = true
         answer2VoteCount.isHidden = true
+        greenBackgroundImageView.isHidden = true
+        redBackgroundImageView.isHidden = true
         pieChartView.isHidden = true
         pieChartCenterImageView.isHidden = true
-        shareButton.isHidden = true
+
             
         chatMemberViewVerticalConstraint.constant = 22
         senderUserName.text = questionTextLabel.text
@@ -851,17 +859,19 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         else {
             showHidePollViewButton.setImage(UIImage(named: "show icon.png"), for: .normal)
-            pollViewHeightConstraint.constant = 213
+            pollViewHeightConstraint.constant = 280
             questionTextLabel.isHidden = false
             answer1TextLabel.isHidden = false
             answer2TextLabel.isHidden = false
             answer1VoteCount.isHidden = false
             answer2VoteCount.isHidden = false
+            greenBackgroundImageView.isHidden = false
+            redBackgroundImageView.isHidden = false
             pieChartCenterImageView.isHidden = false
             pieChartView.isHidden = false
-            shareButton.isHidden = false
+
             
-        chatMemberViewVerticalConstraint.constant = 140
+        chatMemberViewVerticalConstraint.constant = 213
             questionTextLabel.text = poll.questionString
             
             let senderUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(poll.senderUser)
@@ -996,14 +1006,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    
-    
-    @IBAction func shareButtonTapped(_ sender: Any) {
-        
-        captureView()
-        
-    }
-    
+
     
     func captureView() -> UIImage {
         

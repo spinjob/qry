@@ -40,6 +40,8 @@
 		6819B6461DDE7D440099A98B /* ChatMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6819B6451DDE7D440099A98B /* ChatMemberCollectionViewCell.swift */; };
 		68219A6F1E00AABE004E822F /* cameraIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A6E1E00AABE004E822F /* cameraIcon.png */; };
 		68219A711E00B0B9004E822F /* galleryIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A701E00B0B9004E822F /* galleryIcon.png */; };
+		68219A741E033032004E822F /* redBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A721E033032004E822F /* redBackground.png */; };
+		68219A751E033032004E822F /* greenBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A731E033032004E822F /* greenBackground.png */; };
 		682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */; };
 		682572911DF112A7006150DB /* Answer 1 Conversation (In-active).png in Resources */ = {isa = PBXBuildFile; fileRef = 682572891DF112A7006150DB /* Answer 1 Conversation (In-active).png */; };
 		682572921DF112A7006150DB /* Answer 1 Conversation Icon (Active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728A1DF112A7006150DB /* Answer 1 Conversation Icon (Active).png */; };
@@ -168,6 +170,8 @@
 		6819B6451DDE7D440099A98B /* ChatMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		68219A6E1E00AABE004E822F /* cameraIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cameraIcon.png; path = ../../cameraIcon.png; sourceTree = "<group>"; };
 		68219A701E00B0B9004E822F /* galleryIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = galleryIcon.png; path = ../../galleryIcon.png; sourceTree = "<group>"; };
+		68219A721E033032004E822F /* redBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redBackground.png; path = ../../redBackground.png; sourceTree = "<group>"; };
+		68219A731E033032004E822F /* greenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = greenBackground.png; path = ../../greenBackground.png; sourceTree = "<group>"; };
 		682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollGroupMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		682572891DF112A7006150DB /* Answer 1 Conversation (In-active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 1 Conversation (In-active).png"; sourceTree = "<group>"; };
 		6825728A1DF112A7006150DB /* Answer 1 Conversation Icon (Active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 1 Conversation Icon (Active).png"; sourceTree = "<group>"; };
@@ -316,6 +320,8 @@
 		680DF2F21DB5941A00452A4E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				68219A721E033032004E822F /* redBackground.png */,
+				68219A731E033032004E822F /* greenBackground.png */,
 				68DA700C1E0092C700B396C5 /* Logo.png */,
 				68B999C01DFF434900959721 /* piechartcenter.png */,
 				6825729B1DF7ADF8006150DB /* profile social.PNG */,
@@ -618,6 +624,7 @@
 				68DBF3A01DB6F5DC00C87385 /* ask.png in Resources */,
 				68CCC4831DC525120094F3AE /* selectedicon.png in Resources */,
 				68CCC4811DC5250F0094F3AE /* notselectedicon.png in Resources */,
+				68219A751E033032004E822F /* greenBackground.png in Resources */,
 				682572951DF112A7006150DB /* Everybody Active Conversation (Active).png in Resources */,
 				68D384211DBBE925000B4084 /* Blue Button Background.png in Resources */,
 				68B999C11DFF434900959721 /* piechartcenter.png in Resources */,
@@ -626,6 +633,7 @@
 				6819B6141DD90B010099A98B /* grey answer.png in Resources */,
 				6819B62E1DDA8D8E0099A98B /* mymessagetail.png in Resources */,
 				68B999C31DFF589700959721 /* shareIcon.png in Resources */,
+				68219A741E033032004E822F /* redBackground.png in Resources */,
 				68DA700D1E0092C700B396C5 /* Logo.png in Resources */,
 				68DBF3AA1DB6F71600C87385 /* small inbox empty.png in Resources */,
 				680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */,

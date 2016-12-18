@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import DigitsKit
-import Fabric
 import FirebaseAuth
 import FirebaseDatabase
 
@@ -22,14 +21,15 @@ class LoginOrSignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       let digitsButton = DGTAuthenticateButton(authenticationCompletion: { (session, error) in
+        let digitsButton = DGTAuthenticateButton(authenticationCompletion: { (session, error) in
             // Inspect session/error objects
         })
-
-       self.view.addSubview(digitsButton!)
-
+        self.view.addSubview(digitsButton!)
+        
+        digitsButton?.center = self.view.center
+        
     }
-    
+
     
     
     override func viewWillAppear(_ animated: Bool) {
