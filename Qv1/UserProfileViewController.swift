@@ -28,10 +28,13 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     var profileImageURL = ""
     var profileUserID = ""
     var askedPolls : [Poll] = []
+    var askedPollsObserved : [Poll] = []
     var answeredPolls : [Poll] = []
     //var receivedPolls : [Poll] = []
     var selectedButton : [Int : UIButton] = [:]
     let currentUserID = FIRAuth.auth()!.currentUser!.uid
+    var askedPollSelected : Bool = true
+    var pollForCell : Poll = Poll()
     
     
 override func viewDidLoad() {
@@ -90,33 +93,42 @@ override func viewDidLoad() {
             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
             poll.pollURL = snapshotValue["pollURL"] as! String
             
+            
+            
             self.askedPolls.append(poll)
+            
             }
             
             self.tableView.reloadData()
         })
+    
+    
+    receivedPollsRef.queryOrdered(byChild: "senderUser").queryEqual(toValue: profileUserID).observe(.childAdded, with: {
+        snapshot in
         
-    //    receivedPollsRef.observe(.childAdded, with: {
-    //        snapshot in
-  
-    //        if snapshot.childrenCount != 0 {
-    //        let poll = Poll()
-  
-    //        let snapshotValue = snapshot.value as! NSDictionary
+        if snapshot.childrenCount != 0 {
             
-    //        poll.answer1String = snapshotValue["answer1"] as! String
-    //        poll.answer2String = snapshotValue["answer2"] as! String
-    //       poll.questionString = snapshotValue["question"] as! String
-    //        poll.senderUser = snapshotValue["senderUser"] as! String
-    //        poll.pollImageURL = snapshotValue["pollImageURL"] as! String
-    //        poll.pollID = snapshot.key
-    //        poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
-    //        poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
+            let poll = Poll()
             
-    //    self.receivedPolls.append(poll)
-    //        }
+            let snapshotValue = snapshot.value as! NSDictionary
             
-    //    })
+            poll.answer1String = snapshotValue["answer1"] as! String
+            poll.answer2String = snapshotValue["answer2"] as! String
+            poll.questionString = snapshotValue["question"] as! String
+            
+            poll.senderUser = snapshotValue["senderUser"] as! String
+            poll.pollImageURL = snapshotValue["pollImageURL"] as! String
+            poll.pollID = snapshot.key
+            poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
+            poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
+            poll.pollURL = snapshotValue["pollURL"] as! String
+            
+            self.askedPollsObserved.append(poll)
+        }
+        
+        self.tableView.reloadData()
+    })
+
         
         receivedPollsRef.queryOrdered(byChild: "vote").queryEqual(toValue: "answer1").observe(.childAdded, with: {
             snapshot in
@@ -133,8 +145,19 @@ override func viewDidLoad() {
             poll.pollID = snapshot.key
             poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
+            poll.pollURL = snapshotValue["pollURL"] as! String
+            poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
             
-            self.answeredPolls.append(poll)
+            
+            if self.answeredPolls.contains(where: { $0.pollID == poll.pollID}) {
+                
+                print("already added")
+                
+            }   else {
+                
+                self.answeredPolls.append(poll)
+                
+            }
             
         })
         
@@ -153,9 +176,18 @@ override func viewDidLoad() {
              poll.pollID = snapshot.key
              poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
              poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
+             poll.pollURL = snapshotValue["pollURL"] as! String
+             poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
+            
+            if self.answeredPolls.contains(where: { $0.pollID == poll.pollID}) {
+                
+                print("already added")
+                
+            } else {
             
              self.answeredPolls.append(poll)
             
+            }
          })
     
     
@@ -184,11 +216,20 @@ override func viewDidLoad() {
     }
     
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if underlineImageView.center.x == answeredButton.center.x {
-        return answeredPolls.count
-    }
-    return askedPolls.count
     
+    if askedPollSelected == false, profileUserID == currentUserID {
+
+      return answeredPolls.count
+    }
+    
+    if askedPollSelected == true, profileUserID == currentUserID {
+        return askedPolls.count
+    }
+
+    return askedPollsObserved.count
+    
+    
+    tableView.reloadData()
     
     }
     
@@ -196,20 +237,28 @@ func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
 func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
     
-    if underlineImageView.center.x == answeredButton.center.x {
+    if askedPollSelected == false, profileUserID == currentUserID {
         if answeredPolls[indexPath.row].pollImageURL != "no image" {
                 return 355
-            } else {
+        } else {
             return 246
-            }
+        }
         }
     
-    if askedPolls[indexPath.row].pollImageURL != "no image" {
+    if askedPollSelected == true, profileUserID == currentUserID {
+        if askedPolls[indexPath.row].pollImageURL != "no image" {
+            return 355
+        } else {
+            return 246
+        }
+    }
+    
+    
+    if askedPollsObserved[indexPath.row].pollImageURL != "no image" {
         return 355
     } else {
         return 246
     }
-    
     
 }
     
@@ -220,21 +269,30 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
     let cellIdentifier = "pollCellProfile"
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ProfilePollTableViewCell
+    var pollCell = Poll()
     
-    var pollForCell = askedPolls[indexPath.row]
+    print("CURRENT USER ID \(currentUserID)")
     
-    if underlineImageView.center.x == answeredButton.center.x {
-        pollForCell = answeredPolls[indexPath.row]
+    if profileUserID != currentUserID {
+        pollCell = askedPollsObserved[indexPath.row]
     }
     
+    if askedPollSelected == false, profileUserID == currentUserID {
+        pollCell = answeredPolls[indexPath.row]
+    }
+    
+    if askedPollSelected == true, profileUserID == currentUserID {
+        pollCell = askedPolls[indexPath.row]
+    }
+
     
     let linkViewTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.linkViewTapped(sender:)))
     
-    let senderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child(pollForCell.senderUser)
-    let sentToRecipientsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("sentTo")
-    let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
-    let myVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!)
-    let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("sentTo")
+    let senderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child(pollCell.senderUser)
+    let sentToRecipientsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollCell.pollID).child("sentTo")
+    let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollCell.pollID).child("votes")
+    let myVoteReference : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollCell.pollID).child("votes").child(currentUserID)
+    let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollCell.pollID).child("sentTo")
     
     
     var sentToRecipientsString : [String] = [""]
@@ -261,9 +319,9 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     cell.answer2Button.layer.cornerRadius = 3.5
     cell.answer2Button.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
     
-    cell.answer1Button.setTitle(pollForCell.answer1String, for: .normal);
-    cell.answer2Button.setTitle(pollForCell.answer2String, for: .normal);
-    cell.questionStringLabel.text = pollForCell.questionString
+    cell.answer1Button.setTitle(pollCell.answer1String, for: .normal);
+    cell.answer2Button.setTitle(pollCell.answer2String, for: .normal);
+    cell.questionStringLabel.text = pollCell.questionString
     cell.separatorImageView.layer.borderWidth = 0.2
     cell.separatorImageView.layer.borderColor = UIColor.init(hexString: "D8D8D8").cgColor
     
@@ -304,9 +362,9 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
    // cell.senderUserImageView.addGestureRecognizer(tapGestureRecognizer)
     
     
-    cell.pollImageView.sd_setImage(with: URL(string: pollForCell.pollImageURL))
-    cell.imageHeadlineTextLabel.text = pollForCell.pollImageTitle
-    cell.imageDescriptionTextView.text = pollForCell.pollImageDescription
+    cell.pollImageView.sd_setImage(with: URL(string: pollCell.pollImageURL))
+    cell.imageHeadlineTextLabel.text = pollCell.pollImageTitle
+    cell.imageDescriptionTextView.text = pollCell.pollImageDescription
     
     
     cell.answer1Button.addTarget(self, action: #selector(self.answerButton1Tapped(sender:)), for: .touchUpInside)
@@ -400,10 +458,13 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     myVoteReference.observe(.value, with: {
         snapshot in
         
+        print(snapshot)
         let snapshotValue = snapshot.value as? NSDictionary
         let myVote = snapshotValue!["voteString"] as! String
     
         if myVote == "answer1" {
+            
+            print("answer1")
             cell.answer1Button.isSelected = true
             cell.answer1Button.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
             cell.answer2Button.isSelected = false
@@ -411,6 +472,8 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         }
     
         if myVote == "answer2" {
+            
+            print("answer2")
             cell.answer2Button.isSelected = true
             cell.answer2Button.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
             cell.answer1Button.isSelected = false
@@ -418,13 +481,13 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         }
     
         if myVote == "no vote" {
+            print("no vote")
             cell.answer1Button.isSelected = false
             cell.answer2Button.isSelected = false
             cell.answer1Button.layer.backgroundColor = UIColor.white.cgColor
             cell.answer2Button.layer.backgroundColor = UIColor.white.cgColor
         }
     })
-    
     
     
     chatMemberRef.observe(.childAdded, with: {
@@ -436,14 +499,14 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         recipient.recipientID = snapshotValue["recipientID"] as! String
         recipient.recipientName = snapshotValue["recipientName"] as! String
         
-        if pollForCell.groupMembers.contains(where: { $0.recipientID == recipient.recipientID }) {
+        if pollCell.groupMembers.contains(where: { $0.recipientID == recipient.recipientID }) {
         } else {
-            pollForCell.groupMembers.append(recipient)
+            pollCell.groupMembers.append(recipient)
         }
     })
     
-    
-    if askedPolls[indexPath.row].pollImageURL != "no image"  {
+
+    if pollCell.pollImageURL != "no image"  {
         cell.linkPreviewView.isHidden = false
         cell.resultViewVerticalConstraint.constant = 202
         cell.answerButton1VerticalConstraint.constant = 202
@@ -468,12 +531,20 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
 
 func linkViewTapped (sender : UITapGestureRecognizer) {
-        
-        
-        let linkPreview = sender.view! as UIView
     
+    let linkPreview = sender.view! as UIView
+
+    pollForCell = askedPollsObserved[linkPreview.tag]
     
-        let url = URL(string: askedPolls[linkPreview.tag].pollURL)
+    if askedPollSelected == false, profileUserID == currentUserID {
+        pollForCell = answeredPolls[linkPreview.tag]
+    }
+    
+    if askedPollSelected == true, profileUserID == currentUserID {
+        pollForCell = askedPolls[linkPreview.tag]
+    }
+    
+    let url = URL(string: pollForCell.pollURL)
         
         if #available(iOS 10.0, *) {
             UIApplication.shared.open(url!, options: [:], completionHandler: nil)
@@ -491,7 +562,9 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
            self.view.layoutIfNeeded()
            self.underlineImageView.center.x = self.askedButton.center.x
         })
-        
+    askedPollSelected = true
+    tableView.reloadData()
+    tableView.updateConstraints()
         
     }
     
@@ -505,18 +578,34 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
             self.view.layoutIfNeeded()
             self.underlineImageView.center.x = self.answeredButton.center.x
         })
-        
+    
+       askedPollSelected = false
+       tableView.reloadData()
+       tableView.updateConstraints()
+    
     }
    
     
 func answerButton1Tapped (sender : UIButton){
         sender.isSelected = !sender.isSelected;
+    
+    
+    pollForCell = askedPollsObserved[sender.tag]
+    
+    if askedPollSelected == false, profileUserID == currentUserID {
+        pollForCell = answeredPolls[sender.tag]
+    }
+    
+    if askedPollSelected == true, profileUserID == currentUserID {
+        pollForCell = askedPolls[sender.tag]
+    }
+    
+    
+        let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").child(currentUserID).child("voteString")
         
-        let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(askedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!).child("voteString")
+        let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(currentUserID).child("receivedPolls").child(pollForCell.pollID).child("vote")
         
-        let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(askedPolls[sender.tag].pollID).child("vote")
-        
-        
+    
         if selectedButton[sender.tag] != nil {
             if selectedButton[sender.tag] != sender {
                 selectedButton[sender.tag]?.isSelected = false
@@ -556,14 +645,28 @@ func answerButton2Tapped (sender : UIButton){
         
         sender.isSelected = !sender.isSelected;
     
+    
+    print(pollForCell.pollID)
+    
+    pollForCell = askedPollsObserved[sender.tag]
+    
+    if askedPollSelected == false, profileUserID == currentUserID {
+        pollForCell = answeredPolls[sender.tag]
+    }
+    
+    if askedPollSelected == true, profileUserID == currentUserID {
+        pollForCell = askedPolls[sender.tag]
+    }
+    
+    
         viewPollResultsButtonTapped(sender: sender)
         
         let buttonIndexPath = IndexPath(row: sender.tag, section: 0)
         let cell = tableView.cellForRow(at: buttonIndexPath) as! ProfilePollTableViewCell
+    
         
-        
-        let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(askedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!).child("voteString")
-        let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(askedPolls[sender.tag].pollID).child("vote")
+        let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!).child("voteString")
+        let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(currentUserID).child("receivedPolls").child(pollForCell.pollID).child("vote")
         
     
     
@@ -607,21 +710,26 @@ func answerButton2Tapped (sender : UIButton){
     
     
     
-    func chatButtonTapped (sender : UIButton){
+func chatButtonTapped (sender : UIButton){
+    
         
-        var pollForButton : Poll = askedPolls[sender.tag]
-        
-        if underlineImageView.center.x == answeredButton.center.x {
-            pollForButton = answeredPolls[sender.tag]
-        } else if underlineImageView.center.x == askedButton.center.x {
-            pollForButton = askedPolls[sender.tag]
-        }
-        
-        let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForButton.pollID).child("sentTo")
+    pollForCell = askedPollsObserved[sender.tag]
+    
+    if askedPollSelected == false, profileUserID == currentUserID {
+        pollForCell = answeredPolls[sender.tag]
+    }
+    
+    if askedPollSelected == true, profileUserID == currentUserID {
+        pollForCell = askedPolls[sender.tag]
+    }
+    
+        print(pollForCell.groupMembers)
+
+        let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("sentTo")
         
         
         let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
-        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForButton.pollID).child("votes")
+        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
        
         pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
             snapshot in
@@ -648,11 +756,12 @@ func answerButton2Tapped (sender : UIButton){
             
         })
         
+        
         var chatMembers : [Recipient] = []
         
         
-        myVC.poll = pollForButton
-        myVC.chatMembers = pollForButton.groupMembers
+        myVC.poll = pollForCell
+        myVC.chatMembers = pollForCell.groupMembers
        
         
         
@@ -666,9 +775,22 @@ func answerButton2Tapped (sender : UIButton){
         
         let indexPath = IndexPath(row: sender.tag, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! ProfilePollTableViewCell
-        let sentToRecipientsReference = FIRDatabase.database().reference().child("polls").child(askedPolls[sender.tag].pollID).child("sentTo")
+        
+        pollForCell = askedPollsObserved[sender.tag]
+        
+        if askedPollSelected == false, profileUserID == currentUserID {
+            pollForCell = answeredPolls[sender.tag]
+        }
+        
+        if askedPollSelected == true, profileUserID == currentUserID {
+            pollForCell = askedPolls[sender.tag]
+        }
+        
+        
+        let sentToRecipientsReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("sentTo")
         var sentToRecipientIDs : [String] = []
         
+     
         
         //hide/show buttons when results view button is tapped
         sender.isSelected = !sender.isSelected;
@@ -690,7 +812,7 @@ func answerButton2Tapped (sender : UIButton){
         
         //get votes and calculate poll results from Firebase
         
-        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(askedPolls[sender.tag].pollID).child("votes")
+        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
         
         
         pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {

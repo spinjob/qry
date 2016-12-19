@@ -113,6 +113,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("POLL \(poll.questionString)")
+        print("POLL \(poll.groupMembers)")
+        
         let databaseRef : FIRDatabaseReference = FIRDatabase.database().reference()
         let senderUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(poll.senderUser)
         let recipientsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("sentTo")
