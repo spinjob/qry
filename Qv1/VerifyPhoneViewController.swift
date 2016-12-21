@@ -11,7 +11,7 @@ import UIKit
 
 class VerifyPhoneViewController: UIViewController {
 
-    var applicationKey = "9dd11fb9-3460-423c-83b8-95ce145d8e18"
+    var applicationKey = "d7050be6-5d80-41a4-aba7-5baed06312bf"
     var userID = ""
     
     
@@ -38,6 +38,7 @@ class VerifyPhoneViewController: UIViewController {
     
     @IBAction func smsVericationButtonTapped(_ sender: AnyObject) {
         disableUI(disable: true)
+    
         
     }
     

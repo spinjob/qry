@@ -891,6 +891,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
            
              UIView.animate(withDuration: 0.2) {
                 self.view.layoutIfNeeded()
+                self.view.reloadInputViews()
             }
         }
     }

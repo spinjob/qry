@@ -345,6 +345,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
       print("AFTER RECIPIENTLIST \(recipientList)")
     }
+    
 
     @IBAction func sendButtonTapped(_ sender: Any) {
         
@@ -377,7 +378,13 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     
+    @IBAction func unwindAfterEditing(segue: UIStoryboardSegue){
     
+    tableView.reloadData()
+    
+    
+    }
+
     
     func delete(recipient: Recipient) {
         selectedRecipients = selectedRecipients.filter() {$0 !== recipient}

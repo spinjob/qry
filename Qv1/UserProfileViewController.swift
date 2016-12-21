@@ -24,6 +24,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var profileView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var friendsButton: UIButton!
     
     var profileImageURL = ""
     var profileUserID = ""
@@ -35,7 +36,8 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     let currentUserID = FIRAuth.auth()!.currentUser!.uid
     var askedPollSelected : Bool = true
     var pollForCell : Poll = Poll()
-    
+    var userFriendArray : [Recipient] = []
+    var userGroupArray : [Recipient] = []
     
 override func viewDidLoad() {
         super.viewDidLoad()
@@ -209,9 +211,50 @@ override func viewDidLoad() {
             
        })
     }
+    
+    
+    
+    
+    let friendAndGroupListReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(currentUserID).child("recipientList")
+    
+    
+    friendAndGroupListReference.queryOrdered(byChild: "tag").queryEqual(toValue: "group").observe(.childAdded, with: {
+        snapshot in
+        
+        var group : Recipient = Recipient ()
+        
+        let snapshotValue = snapshot.value as! NSDictionary
+        
+        group.recipientID = snapshotValue["recipientID"] as! String
+        group.recipientName = snapshotValue["recipientName"] as! String
+        group.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+        group.tag = snapshotValue["tag"] as! String
+        
+        self.userGroupArray.append(group)
+        
+    })
+    
+    friendAndGroupListReference.queryOrdered(byChild: "tag").queryEqual(toValue: "user").observe(.childAdded, with: {
+        snapshot in
+        
+        var friend : Recipient = Recipient ()
+        
+        let snapshotValue = snapshot.value as! NSDictionary
+        
+        friend.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+        friend.recipientID = snapshotValue["recipientID"] as! String
+        friend.recipientName = snapshotValue["recipientName"] as! String
+        friend.tag = snapshotValue["tag"] as! String
+        
+        self.userFriendArray.append(friend)
+        
+    })
+
         //Follow Button
         followButton.layer.cornerRadius = 4
         followButton.layer.masksToBounds = true
+    
+    
     
     }
     
@@ -708,6 +751,29 @@ func answerButton2Tapped (sender : UIButton){
         
     }
     
+
+    
+@IBAction func friendsButtonTapped(_ sender: Any) {
+
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let controller = storyboard.instantiateViewController(withIdentifier: "FriendsViewController") as! FriendsViewController
+    let transition:CATransition = CATransition()
+    
+    controller.profileUserID = profileUserID
+    controller.groupArray = self.userGroupArray
+    controller.friendArray = self.userFriendArray
+    controller.items = [self.userFriendArray, self.userGroupArray]
+    
+    transition.duration = 0.3
+    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+    transition.type = kCATransitionMoveIn
+    transition.subtype = kCATransitionFromRight
+    self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+    self.navigationController?.pushViewController(controller, animated: false)
+    
+    
+    
+    }
     
     
 func chatButtonTapped (sender : UIButton){
@@ -727,7 +793,7 @@ func chatButtonTapped (sender : UIButton){
 
         let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("sentTo")
         
-        
+    
         let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
         let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
        

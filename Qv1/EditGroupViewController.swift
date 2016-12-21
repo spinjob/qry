@@ -113,6 +113,8 @@ class EditGroupViewController: UIViewController, UITableViewDelegate, UITableVie
         
         ref.setValue(groupNameTextField.text)
         
+        self.performSegue(withIdentifier: "unwindAfterEditing", sender: self)
+        
     }
     
     func removeUserFromGroup (sender : UIButton) {

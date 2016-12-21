@@ -42,6 +42,10 @@
 		68219A711E00B0B9004E822F /* galleryIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A701E00B0B9004E822F /* galleryIcon.png */; };
 		68219A741E033032004E822F /* redBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A721E033032004E822F /* redBackground.png */; };
 		68219A751E033032004E822F /* greenBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A731E033032004E822F /* greenBackground.png */; };
+		68219A771E0AFEEA004E822F /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68219A761E0AFEEA004E822F /* FriendsViewController.swift */; };
+		68219A791E0B016E004E822F /* EditFriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68219A781E0B016E004E822F /* EditFriendTableViewCell.swift */; };
+		68219A7C1E0B04FA004E822F /* EditGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68219A7B1E0B04FA004E822F /* EditGroupTableViewCell.swift */; };
+		68219A7E1E0B3096004E822F /* addGroup.png in Resources */ = {isa = PBXBuildFile; fileRef = 68219A7D1E0B3096004E822F /* addGroup.png */; };
 		682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */; };
 		682572911DF112A7006150DB /* Answer 1 Conversation (In-active).png in Resources */ = {isa = PBXBuildFile; fileRef = 682572891DF112A7006150DB /* Answer 1 Conversation (In-active).png */; };
 		682572921DF112A7006150DB /* Answer 1 Conversation Icon (Active).png in Resources */ = {isa = PBXBuildFile; fileRef = 6825728A1DF112A7006150DB /* Answer 1 Conversation Icon (Active).png */; };
@@ -172,6 +176,10 @@
 		68219A701E00B0B9004E822F /* galleryIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = galleryIcon.png; path = ../../galleryIcon.png; sourceTree = "<group>"; };
 		68219A721E033032004E822F /* redBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redBackground.png; path = ../../redBackground.png; sourceTree = "<group>"; };
 		68219A731E033032004E822F /* greenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = greenBackground.png; path = ../../greenBackground.png; sourceTree = "<group>"; };
+		68219A761E0AFEEA004E822F /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		68219A781E0B016E004E822F /* EditFriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFriendTableViewCell.swift; sourceTree = "<group>"; };
+		68219A7B1E0B04FA004E822F /* EditGroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGroupTableViewCell.swift; sourceTree = "<group>"; };
+		68219A7D1E0B3096004E822F /* addGroup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = addGroup.png; path = ../../addGroup.png; sourceTree = "<group>"; };
 		682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollGroupMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		682572891DF112A7006150DB /* Answer 1 Conversation (In-active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 1 Conversation (In-active).png"; sourceTree = "<group>"; };
 		6825728A1DF112A7006150DB /* Answer 1 Conversation Icon (Active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Answer 1 Conversation Icon (Active).png"; sourceTree = "<group>"; };
@@ -361,6 +369,7 @@
 		6819B6411DDD1A3E0099A98B /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				68219A7D1E0B3096004E822F /* addGroup.png */,
 				68219A701E00B0B9004E822F /* galleryIcon.png */,
 				68219A6E1E00AABE004E822F /* cameraIcon.png */,
 				68B999C21DFF589700959721 /* shareIcon.png */,
@@ -389,6 +398,16 @@
 				680DF2F91DB595F800452A4E /* SourceSansPro-LightIt.otf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		68219A7A1E0B017E004E822F /* Friend VC */ = {
+			isa = PBXGroup;
+			children = (
+				68219A761E0AFEEA004E822F /* FriendsViewController.swift */,
+				68219A781E0B016E004E822F /* EditFriendTableViewCell.swift */,
+				68219A7B1E0B04FA004E822F /* EditGroupTableViewCell.swift */,
+			);
+			name = "Friend VC";
 			sourceTree = "<group>";
 		};
 		682572881DF112A7006150DB /* Conversation Icons */ = {
@@ -478,6 +497,7 @@
 				682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */,
 				68B999C41DFF5F4300959721 /* EditPollResultsViewController.swift */,
 				682572991DF79880006150DB /* UserProfileViewController.swift */,
+				68219A7A1E0B017E004E822F /* Friend VC */,
 				68BDD7C01DFA0A2500C64B7C /* WebViewController.swift */,
 				6819B6151DD94F880099A98B /* ChatVCs */,
 				68CCC4901DC7D5B80094F3AE /* Select Recipients VCs */,
@@ -602,6 +622,7 @@
 				685ED1741DD6747400C85F37 /* Main.storyboard in Resources */,
 				682572981DF112A7006150DB /* Undecided Conversation (In-active).png in Resources */,
 				680DF2FD1DB5960800452A4E /* ProximaNovaSoft-Bold.otf in Resources */,
+				68219A7E1E0B3096004E822F /* addGroup.png in Resources */,
 				68DBF3A81DB6F6FF00C87385 /* small ask.png in Resources */,
 				680DF2FE1DB5960800452A4E /* ProximaNovaSoft-Medium.otf in Resources */,
 				68D384231DBBEACA000B4084 /* Text Field Underline.png in Resources */,
@@ -727,6 +748,7 @@
 				682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */,
 				682DB3A91DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift in Sources */,
 				6869CEE41DF8EE1200F8207C /* ProfilePollTableViewCell.swift in Sources */,
+				68219A7C1E0B04FA004E822F /* EditGroupTableViewCell.swift in Sources */,
 				682DB3A71DD66F74009015AC /* FriendMessageTableViewCell.swift in Sources */,
 				68CCC48F1DC7D5AD0094F3AE /* GroupTableViewCell.swift in Sources */,
 				682DB3A31DD16A4A009015AC /* PollTableViewCell.swift in Sources */,
@@ -734,6 +756,7 @@
 				68C3C82C1DC922B3000B9730 /* Recipient.swift in Sources */,
 				68CCC4891DC6A7B40094F3AE /* Contact.swift in Sources */,
 				68CCC4991DC7E63B0094F3AE /* ChooseProfilePictureViewController.swift in Sources */,
+				68219A791E0B016E004E822F /* EditFriendTableViewCell.swift in Sources */,
 				68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */,
 				68CCC48D1DC6C8F10094F3AE /* UserTableViewCell.swift in Sources */,
 				6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */,
@@ -748,6 +771,7 @@
 				6825729A1DF79880006150DB /* UserProfileViewController.swift in Sources */,
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				68D384291DBBF31C000B4084 /* SelectBirthdayViewController.swift in Sources */,
+				68219A771E0AFEEA004E822F /* FriendsViewController.swift in Sources */,
 				680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */,
 				682DB3A51DD66E95009015AC /* ChatViewController.swift in Sources */,
 				68CCC4971DC7E6120094F3AE /* EnterEmail&PasswordViewController.swift in Sources */,
