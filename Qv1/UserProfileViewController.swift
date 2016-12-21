@@ -132,7 +132,7 @@ override func viewDidLoad() {
     })
 
         
-        receivedPollsRef.queryOrdered(byChild: "vote").queryEqual(toValue: "answer1").observe(.childAdded, with: {
+    receivedPollsRef.queryOrdered(byChild: "vote").queryEqual(toValue: "answer1").observe(.childAdded, with: {
             snapshot in
             
             let poll = Poll()
@@ -163,7 +163,7 @@ override func viewDidLoad() {
             
         })
         
-         receivedPollsRef.queryOrdered(byChild: "vote").queryEqual(toValue: "answer2").observe(.childAdded, with: {
+    receivedPollsRef.queryOrdered(byChild: "vote").queryEqual(toValue: "answer2").observe(.childAdded, with: {
              snapshot in
             
              let poll = Poll()
@@ -215,7 +215,7 @@ override func viewDidLoad() {
     
     
     
-    let friendAndGroupListReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(currentUserID).child("recipientList")
+    let friendAndGroupListReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID).child("recipientList")
     
     
     friendAndGroupListReference.queryOrdered(byChild: "tag").queryEqual(toValue: "group").observe(.childAdded, with: {

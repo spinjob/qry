@@ -114,6 +114,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         selectedCell.actionButton.setTitle("✓", for: .normal)
         selectedCell.actionButton.layer.cornerRadius = 22 / 2
         selectedCell.actionButton.setBackgroundImage(UIImage(named: "Login Button Background"), for: .normal)
+        selectedCell.actionButton.isUserInteractionEnabled = false
     
         print("Is Selected: \(selectedCell.isSelected)")
             
@@ -135,6 +136,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         deSelectedCell.actionButton.layer.cornerRadius = 4
         deSelectedCell.actionButton.layer.masksToBounds = true
         deSelectedCell.actionButton.setBackgroundImage(UIImage(named: "greenBackground"), for: .normal)
+        deSelectedCell.actionButton.isUserInteractionEnabled = true
         
         deSelectedCell.editButton.isHidden = true
         
