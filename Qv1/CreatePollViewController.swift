@@ -130,6 +130,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         let image = info[UIImagePickerControllerEditedImage] as! UIImage
         imagePicker.dismiss(animated: true, completion: nil)
         questionImage = image
+        print(image)
         
         if linkPreviewView.isHidden == false {
             pollImageView.image = image
@@ -403,14 +404,5 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
         
     }
-    //        CIRCULAR BUTTON TO ALLOW USER TO CHANGE ANSWER BUTTON COLOR
-    //        let redColorButton = UIButton(type: .custom)
-    //        redColorButton.frame = CGRect(x: 160, y: 100, width: 10, height: 10)
-    //        redColorButton.layer.cornerRadius = 0.5 * redColorButton.bounds.size.width
-    //        redColorButton.clipsToBounds = true
-    //        redColorButton.backgroundColor = UIColor.red
-    //        redColorButton.addTarget(self, action: #selector(redColorButtonTapped), for: .touchUpInside)
-    //        view.addSubview(redColorButton)
-    //        
 
 }

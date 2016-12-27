@@ -14,8 +14,7 @@ pod 'Firebase/Storage'
 pod 'Firebase/Messaging'
 pod 'SDWebImage'
 pod 'SwiftLinkPreview'
-pod 'Fabric'
-pod 'Digits'
+
 
 
 post_install do |installer|

@@ -107,10 +107,6 @@
 		68D384371DBFBC05000B4084 /* AWSDynamoDB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		68D384461DBFBD2C000B4084 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D384451DBFBD2C000B4084 /* libz.tbd */; };
 		68D384481DBFBD36000B4084 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D384471DBFBD36000B4084 /* libsqlite3.tbd */; };
-		68D3862F1DBFCCCF000B4084 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3862B1DBFCCCF000B4084 /* Bolts.framework */; };
-		68D386301DBFCCCF000B4084 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3862C1DBFCCCF000B4084 /* FBSDKCoreKit.framework */; };
-		68D386311DBFCCCF000B4084 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3862D1DBFCCCF000B4084 /* FBSDKLoginKit.framework */; };
-		68D386321DBFCCCF000B4084 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3862E1DBFCCCF000B4084 /* FBSDKShareKit.framework */; };
 		68DA700D1E0092C700B396C5 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DA700C1E0092C700B396C5 /* Logo.png */; };
 		68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3951DB6EF5000C87385 /* HomeViewController.swift */; };
 		68DBF3981DB6EF9A00C87385 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3971DB6EF9A00C87385 /* User.swift */; };
@@ -237,10 +233,6 @@
 		68D384301DBFBBB4000B4084 /* CheckXcodeVersion.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = CheckXcodeVersion.sh; sourceTree = "<group>"; };
 		68D384451DBFBD2C000B4084 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		68D384471DBFBD36000B4084 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		68D3862B1DBFCCCF000B4084 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
-		68D3862C1DBFCCCF000B4084 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		68D3862D1DBFCCCF000B4084 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		68D3862E1DBFCCCF000B4084 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		68D386331DBFD85A000B4084 /* Qv1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qv1.entitlements; sourceTree = "<group>"; };
 		68DA700C1E0092C700B396C5 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo.png; path = ../../Logo.png; sourceTree = "<group>"; };
 		68DBF3951DB6EF5000C87385 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -265,11 +257,7 @@
 				68D384461DBFBD2C000B4084 /* libz.tbd in Frameworks */,
 				27B79C6780BCE387A65A38D0 /* Pods_Qv1.framework in Frameworks */,
 				68D384341DBFBC05000B4084 /* AWSCore.framework in Frameworks */,
-				68D386301DBFCCCF000B4084 /* FBSDKCoreKit.framework in Frameworks */,
 				68D384321DBFBBB4000B4084 /* AWSDynamoDB.framework in Frameworks */,
-				68D3862F1DBFCCCF000B4084 /* Bolts.framework in Frameworks */,
-				68D386321DBFCCCF000B4084 /* FBSDKShareKit.framework in Frameworks */,
-				68D386311DBFCCCF000B4084 /* FBSDKLoginKit.framework in Frameworks */,
 				68D384311DBFBBB4000B4084 /* AWSCore.framework in Frameworks */,
 				68D384361DBFBC05000B4084 /* AWSDynamoDB.framework in Frameworks */,
 			);
@@ -526,10 +514,6 @@
 		A46A0ACBC6389C255DF8EC08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				68D3862B1DBFCCCF000B4084 /* Bolts.framework */,
-				68D3862C1DBFCCCF000B4084 /* FBSDKCoreKit.framework */,
-				68D3862D1DBFCCCF000B4084 /* FBSDKLoginKit.framework */,
-				68D3862E1DBFCCCF000B4084 /* FBSDKShareKit.framework */,
 				68D384471DBFBD36000B4084 /* libsqlite3.tbd */,
 				68D384451DBFBD2C000B4084 /* libz.tbd */,
 				B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */,
@@ -717,7 +701,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" f43856dc0b99930941e85bcb2e5e516ae180dc18 81bfb1fa2152fd22c097bb3e46483724ac7bd12b26a1ba2661318db65e428edc";
+			shellScript = "";
 		};
 		70D14A7ACD2BBD4EDCE4F2C2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

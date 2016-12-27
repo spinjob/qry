@@ -2,26 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    
-    <key>Fabric</key>
-    <dict>
-        <key>APIKey</key>
-        <string>f43856dc0b99930941e85bcb2e5e516ae180dc18</string>
-        <key>Kits</key>
-        <array>
-            <dict>
-                <key>KitInfo</key>
-                <dict>
-                    <key>consumerKey</key>
-                    <string>1qBwheweIXqWntOOgfZtZOjYj</string>
-                    <key>consumerSecret</key>
-                    <string>ac3RCZrvbJNaRKOktgiV72Fa5p963OUujBapucKWfyLwitUDOw</string>
-                </dict>
-                <key>KitName</key>
-                <string>Digits</string>
-            </dict>
-        </array>
-    </dict>
+
     <key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -52,17 +33,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>FacebookAppID</key>
-	<string>1007598312696093</string>
-	<key>FacebookDisplayName</key>
-	<string> QMessenger </string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fb-messenger-api</string>
-		<string>fbauth2</string>
-		<string>fbshareextension</string>
-	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -99,6 +69,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
+	</array>    
 </dict>
 </plist>

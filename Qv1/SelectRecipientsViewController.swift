@@ -44,7 +44,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         print(dictPoll)
         print(poll.pollID)
-        print(questionImage)
+        print("View Did Load Question Image \(questionImage)")
         
         let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
@@ -352,7 +352,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)
         pollRef.setValue(dictPoll)
                
-        print(questionImage)
+        print("Send Tapped Question Image \(questionImage)")
         
         
         self.selectedRecipients.forEach { (Recipient) in

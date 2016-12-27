@@ -1,7 +1,4 @@
 PODS:
-  - Digits (2.4.0):
-    - TwitterCore (= 2.4.0)
-  - Fabric (1.6.9)
   - Firebase/Analytics (3.6.0):
     - FirebaseAnalytics (= 3.4.2)
   - Firebase/Auth (3.6.0):
@@ -53,12 +50,8 @@ PODS:
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
   - SwiftLinkPreview (1.0.1)
-  - TwitterCore (2.4.0):
-    - Fabric
 
 DEPENDENCIES:
-  - Digits
-  - Fabric
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -68,8 +61,6 @@ DEPENDENCIES:
   - SwiftLinkPreview
 
 SPEC CHECKSUMS:
-  Digits: 8173fa5420d64bf490bade840e6bc36b74537d6c
-  Fabric: bc5bec42cef4bcf1ee3ce0e218fc518e4b44dfbb
   Firebase: 34187200ef4979dbd485c7aa685ef078bf587c86
   FirebaseAnalytics: 3f5358d9104adf159cc8d99b7b501e50099a39ad
   FirebaseAuth: 75a062bbf2d3c97d1e6e55bbc110e13a6853e25d
@@ -84,8 +75,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SwiftLinkPreview: 977461879ae31f9e2d1bf2fafba0553d99eacbb9
-  TwitterCore: a139904c80805ad3dde9eef1100704f96f646d1d
 
-PODFILE CHECKSUM: 549ac04fc6d21abd57f9c8f827f440571b25e38d
+PODFILE CHECKSUM: 1edf215eaf8efe21f9a488f5a62e556f9d0f6e7b
 
 COCOAPODS: 1.1.1

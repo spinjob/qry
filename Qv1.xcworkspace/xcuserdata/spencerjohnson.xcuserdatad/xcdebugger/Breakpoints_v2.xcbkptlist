@@ -54,11 +54,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qv1/EnterNameViewController.swift"
-            timestampString = "499649317.076988"
+            timestampString = "504140390.475734"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
             landmarkName = "EnterNameViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -70,12 +70,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qv1/AppDelegate.swift"
-            timestampString = "501987499.930323"
+            timestampString = "504140390.475734"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "application(application:didFinishLaunchingWithOptions:)"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "applicationWillResignActive(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -134,11 +134,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qv1/CreatePollViewController.swift"
-            timestampString = "503372711.384749"
+            timestampString = "504491293.097327"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
