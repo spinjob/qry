@@ -52,6 +52,7 @@ PODS:
   - SwiftLinkPreview (1.0.1)
 
 DEPENDENCIES:
+  - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -76,6 +77,6 @@ SPEC CHECKSUMS:
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SwiftLinkPreview: 977461879ae31f9e2d1bf2fafba0553d99eacbb9
 
-PODFILE CHECKSUM: 1edf215eaf8efe21f9a488f5a62e556f9d0f6e7b
+PODFILE CHECKSUM: ec636571e83e36065bde86ca486a0d10dad578f5
 
 COCOAPODS: 1.1.1

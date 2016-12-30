@@ -170,52 +170,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     
-    @IBAction func createGroupButtonTapped(_ sender: Any) {
-        
-        var newRecipient : [NSObject : AnyObject] = [ : ]
-
-        
-        let selectedRecipientNames = selectedRecipients.map { $0.recipientName}
-        print(selectedRecipientNames)
-        
-        let selectedRecipientIDs = selectedRecipients.map { $0.recipientID}
-        print(selectedRecipientIDs)
-        
-        let selectedRecipientNamesString = selectedRecipientNames.joined(separator: ", ")
-        print(selectedRecipientNamesString)
-        
-        let selectedRecipientIDString = selectedRecipientIDs.joined(separator: "+")
-        print(selectedRecipientIDString)
-        
-        let recipientID = UUID().uuidString
-        
-        
-        let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
-        
-        newRecipient = ["recipientName" as NSObject: (selectedRecipientNamesString) as AnyObject, "recipientImageURL1" as NSObject: (selectedRecipients.first!.imageURL1 ) as AnyObject,"recipientImageURL2" as NSObject : (selectedRecipients[1].imageURL1 as AnyObject), "recipientID" as NSObject: (recipientID ) as AnyObject, "tag" as NSObject: "group" as AnyObject]
-        
-        
-        print(newRecipient)
-        
-            
-        let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
-            
-        recipientListRef.setValue(newRecipient)
-        
-        selectedRecipients.forEach { (Recipient) in
-            
-        let groupMember = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (Recipient.recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject]
-           
-        recipientListRef.child("groupMembers").child(Recipient.recipientID).setValue(groupMember)
-            
-        }
-        
-        selectedRecipients.removeAll()
-        
-        tableView.reloadData()
-    
-        
-    }
+ 
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -346,7 +301,54 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
       print("AFTER RECIPIENTLIST \(recipientList)")
     }
     
-
+    
+    @IBAction func createGroupButtonTapped(_ sender: Any) {
+        
+        var newRecipient : [NSObject : AnyObject] = [ : ]
+        
+        
+        let selectedRecipientNames = selectedRecipients.map { $0.recipientName}
+        print(selectedRecipientNames)
+        
+        let selectedRecipientIDs = selectedRecipients.map { $0.recipientID}
+        print(selectedRecipientIDs)
+        
+        let selectedRecipientNamesString = selectedRecipientNames.joined(separator: ", ")
+        print(selectedRecipientNamesString)
+        
+        let selectedRecipientIDString = selectedRecipientIDs.joined(separator: "+")
+        print(selectedRecipientIDString)
+        
+        let recipientID = UUID().uuidString
+        
+        
+        let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
+        
+        newRecipient = ["recipientName" as NSObject: (selectedRecipientNamesString) as AnyObject, "recipientImageURL1" as NSObject: (selectedRecipients.first!.imageURL1 ) as AnyObject,"recipientImageURL2" as NSObject : (selectedRecipients[1].imageURL1 as AnyObject), "recipientID" as NSObject: (recipientID ) as AnyObject, "tag" as NSObject: "group" as AnyObject]
+        
+        
+        print(newRecipient)
+        
+        
+        let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
+        
+        recipientListRef.setValue(newRecipient)
+        
+        selectedRecipients.forEach { (Recipient) in
+            
+            let groupMember = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (Recipient.recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject]
+            
+            recipientListRef.child("groupMembers").child(Recipient.recipientID).setValue(groupMember)
+            
+        }
+        
+        selectedRecipients.removeAll()
+        
+        tableView.reloadData()
+        
+        
+    }
+    
     @IBAction func sendButtonTapped(_ sender: Any) {
         
         let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)

@@ -27,6 +27,7 @@ class EditFriendTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+
         // Initialization code
     }
 
@@ -38,9 +39,6 @@ class EditFriendTableViewCell: UITableViewCell {
 
     @IBAction func actionButtonTapped(_ sender: Any) {
     }
-    
-    @IBAction func editButtonTapped(_ sender: Any) {
-    }
-    
+
     
 }

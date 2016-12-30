@@ -73,6 +73,7 @@
 		6880A9B41DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */; };
 		6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B51DC41998000BB884 /* CreatePollViewController.swift */; };
 		6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */; };
+		68B118D61E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B118D51E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift */; };
 		68B999BF1DFF25FE00959721 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B999BE1DFF25FE00959721 /* PieChart.swift */; };
 		68B999C11DFF434900959721 /* piechartcenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B999C01DFF434900959721 /* piechartcenter.png */; };
 		68B999C31DFF589700959721 /* shareIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B999C21DFF589700959721 /* shareIcon.png */; };
@@ -117,6 +118,7 @@
 		68DBF3A61DB6F6E900C87385 /* small inbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3A51DB6F6E900C87385 /* small inbox.png */; };
 		68DBF3A81DB6F6FF00C87385 /* small ask.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3A71DB6F6FF00C87385 /* small ask.png */; };
 		68DBF3AA1DB6F71600C87385 /* small inbox empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3A91DB6F71600C87385 /* small inbox empty.png */; };
+		68E2F7E41E158976002E13D9 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E2F7E31E158976002E13D9 /* GroupViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -203,6 +205,7 @@
 		6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedAnswerOptionTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B51DC41998000BB884 /* CreatePollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollViewController.swift; sourceTree = "<group>"; };
 		6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexToCGFloat.swift; sourceTree = "<group>"; };
+		68B118D51E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditGroupMemberTableViewCell.swift; path = ../EditGroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		68B999BE1DFF25FE00959721 /* PieChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		68B999C01DFF434900959721 /* piechartcenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = piechartcenter.png; path = ../../piechartcenter.png; sourceTree = "<group>"; };
 		68B999C21DFF589700959721 /* shareIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shareIcon.png; path = ../../shareIcon.png; sourceTree = "<group>"; };
@@ -244,6 +247,7 @@
 		68DBF3A51DB6F6E900C87385 /* small inbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small inbox.png"; sourceTree = "<group>"; };
 		68DBF3A71DB6F6FF00C87385 /* small ask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small ask.png"; sourceTree = "<group>"; };
 		68DBF3A91DB6F71600C87385 /* small inbox empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small inbox empty.png"; sourceTree = "<group>"; };
+		68E2F7E31E158976002E13D9 /* GroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
 		A4124686FDA3D5ED3994D781 /* Pods-Qv1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qv1.release.xcconfig"; path = "Pods/Target Support Files/Pods-Qv1/Pods-Qv1.release.xcconfig"; sourceTree = "<group>"; };
 		B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Qv1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -414,6 +418,15 @@
 			path = "../../Q Messenger/Conversation Icons";
 			sourceTree = "<group>";
 		};
+		68B118D71E15B7CC006F05B7 /* Group VC */ = {
+			isa = PBXGroup;
+			children = (
+				68E2F7E31E158976002E13D9 /* GroupViewController.swift */,
+				68B118D51E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift */,
+			);
+			name = "Group VC";
+			sourceTree = "<group>";
+		};
 		68CCC4901DC7D5B80094F3AE /* Select Recipients VCs */ = {
 			isa = PBXGroup;
 			children = (
@@ -485,6 +498,7 @@
 				682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */,
 				68B999C41DFF5F4300959721 /* EditPollResultsViewController.swift */,
 				682572991DF79880006150DB /* UserProfileViewController.swift */,
+				68B118D71E15B7CC006F05B7 /* Group VC */,
 				68219A7A1E0B017E004E822F /* Friend VC */,
 				68BDD7C01DFA0A2500C64B7C /* WebViewController.swift */,
 				6819B6151DD94F880099A98B /* ChatVCs */,
@@ -750,6 +764,7 @@
 				68DBF3981DB6EF9A00C87385 /* User.swift in Sources */,
 				68CCC47F1DC524230094F3AE /* FriendTableViewCell.swift in Sources */,
 				68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */,
+				68B118D61E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift in Sources */,
 				682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */,
 				6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */,
 				6825729A1DF79880006150DB /* UserProfileViewController.swift in Sources */,
@@ -761,6 +776,7 @@
 				68CCC4971DC7E6120094F3AE /* EnterEmail&PasswordViewController.swift in Sources */,
 				682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */,
 				68B999C51DFF5F4300959721 /* EditPollResultsViewController.swift in Sources */,
+				68E2F7E41E158976002E13D9 /* GroupViewController.swift in Sources */,
 				68CCC4851DC526CC0094F3AE /* SelectRecipientsViewController.swift in Sources */,
 				68012E721DB5BEE000676EAF /* EnterPinViewController.swift in Sources */,
 			);
