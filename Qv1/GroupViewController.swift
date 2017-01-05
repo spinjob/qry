@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseStorage
+import FirebaseDatabase
 
-class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var groupImageView: UIImageView!
     @IBOutlet weak var editPictureView: UIView!
@@ -16,16 +19,23 @@ class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UI
     @IBOutlet weak var addFriendButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var saveChangesButton: UIButton!
+    
+    @IBOutlet weak var saveChangesButtonHeightConstraint: NSLayoutConstraint!
+    
     var imagePicker = UIImagePickerController()
     var groupMembers : [Recipient] = []
     var groupImageURL : String = ""
     var groupName : String = ""
+    var groupID : String = ""
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        
         groupImageView.isHidden = false
         groupImageView.layer.cornerRadius = 3
         groupImageView.layer.borderWidth = 0.3
@@ -38,22 +48,93 @@ class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UI
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(sender:)))
         tap.delegate = self
         editPictureView.addGestureRecognizer(tap)
+        groupNameTextField.addTarget(self, action: #selector(GroupViewController.textFieldDidChange(textField:)), for: UIControlEvents.editingChanged)
+        
+        
+        saveChangesButtonHeightConstraint.constant = 0
+        
+        
+        imagePicker.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
+        groupNameTextField.delegate = self
+        
+        
+        
+        let groupReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(groupID).child("groupMembers")
+    
+        
+        groupReference.observe(.childAdded, with: {
+            snapshot in
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            var groupMember = Recipient()
+            
+            groupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+            groupMember.recipientID = snapshotValue["recipientID"] as! String
+            groupMember.recipientName = snapshotValue["recipientName"] as! String
+            
+            self.groupMembers.append(groupMember)
+            
+            print(self.groupMembers)
+        
+            self.tableView.reloadData()
+        })
         
         
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+        let groupPictureURLRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(groupID).child("recipientImageURL1")
         groupImageView.isHidden = false
         let image = info[UIImagePickerControllerEditedImage] as! UIImage
+        
+        
+        let groupImageData = UIImageJPEGRepresentation(image, 0.4)
+        
+        FIRStorage.storage().reference().child("Users/\(FIRAuth.auth()?.currentUser!.uid)/\(groupID)").put(groupImageData!, metadata: nil){
+            metadata, error in
+            
+            if error != nil {
+                print("error \(error)")
+            }
+            else {
+                let downloadURL = metadata?.downloadURL()?.absoluteString
+                groupPictureURLRef.setValue(downloadURL)
+
+            }}
+        
         groupImageView.image = image
         groupImageView.backgroundColor = UIColor.clear
+        
 
         
         imagePicker.dismiss(animated: true, completion: nil)
         
     }
+
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "editGroupMemberCell", for: indexPath) as! EditGroupMemberTableViewCell
+        
+        let groupMemberForCell = self.groupMembers[indexPath.row]
+        
+        
+        cell.groupMemberNameLabel.text = groupMemberForCell.recipientName
+        cell.groupMemberImageView.sd_setImage(with: URL(string: groupMemberForCell.imageURL1))
+        cell.groupMemberImageView.layer.cornerRadius =  cell.groupMemberImageView.layer.frame.size.width / 2
+        cell.groupMemberImageView.layer.masksToBounds = true
+        
+        return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return groupMembers.count
+        
+    }
     
     
     func handleTap(sender: UITapGestureRecognizer) {
@@ -65,5 +146,30 @@ class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UI
     @IBAction func addFriendButtonTapped(_ sender: Any) {
     }
 
+
+    func textFieldDidChange(textField: UITextField) {
+       saveChangesButtonHeightConstraint.constant = 58
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+
+    @IBAction func saveChangesButtonTapped(_ sender: Any) {
+        let groupNameReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(groupID).child("recipientName")
+        
+        groupNameReference.setValue(groupNameTextField.text)
+    
+        saveChangesButtonHeightConstraint.constant = 0
+        
+        
+        UIView.animate(withDuration: 0.1) {
+            self.view.layoutIfNeeded()
+        }
+
+        
+    }
 
 }

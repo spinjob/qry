@@ -24,6 +24,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var profileView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var numberOfAskedLabel: UILabel!
     @IBOutlet weak var friendsButton: UIButton!
     
     var profileImageURL = ""
@@ -54,6 +55,10 @@ override func viewDidLoad() {
         userProfileImageView.layer.masksToBounds = true
         userProfileImageView.layer.borderColor = UIColor.init(hexString: "C8C7C9").cgColor
         userProfileImageView.layer.borderWidth = 1.5
+
+    
+        numberOfAskedLabel.layer.cornerRadius = 4
+        numberOfAskedLabel.layer.masksToBounds = true
 
         
         userRef.observe(.value, with: {
@@ -101,6 +106,7 @@ override func viewDidLoad() {
             
             }
             
+            self.numberOfAskedLabel.text = String(self.askedPolls.count)
             self.tableView.reloadData()
         })
     
@@ -195,8 +201,9 @@ override func viewDidLoad() {
     
     if currentUserID == profileUserID {
 
-       self.followButton.setTitle("Edit", for: .normal)
-       self.followButton.backgroundColor = UIColor.init(hexString: "004488")
+        self.followButton.isHidden = true
+//       self.followButton.setTitle("Edit", for: .normal)
+//       self.followButton.backgroundColor = UIColor.init(hexString: "004488")
         
     } else {
         
@@ -601,9 +608,10 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
 @IBAction func askedButtonTapped(_ sender: Any) {
     
         answeredButton.titleLabel?.textColor = UIColor.init(hexString: "D8D8D8")
+        numberOfAskedLabel.backgroundColor = UIColor.init(hexString: "043176")
         UIView.animate(withDuration: 0.3, animations: {
            self.view.layoutIfNeeded()
-           self.underlineImageView.center.x = self.askedButton.center.x
+           self.underlineImageView.center.x = (self.askedButton.center.x + 13)
         })
     askedPollSelected = true
     tableView.reloadData()
@@ -614,6 +622,7 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
     
 @IBAction func answeredButtonTapped(_ sender: Any) {
         askedButton.titleLabel?.textColor = UIColor.init(hexString: "D8D8D8")
+        numberOfAskedLabel.backgroundColor = UIColor.init(hexString: "D8D8D8")
         
         answeredButton.titleLabel?.textColor = UIColor.init(hexString: "043176")
     
@@ -760,9 +769,9 @@ func answerButton2Tapped (sender : UIButton){
     let transition:CATransition = CATransition()
     
     controller.profileUserID = profileUserID
-    controller.groupArray = self.userGroupArray
-    controller.friendArray = self.userFriendArray
-    controller.items = [self.userFriendArray, self.userGroupArray]
+//    controller.groupArray = self.userGroupArray
+//    controller.friendArray = self.userFriendArray
+//    controller.items = [self.userFriendArray, self.userGroupArray]
     
     transition.duration = 0.3
     transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -837,7 +846,7 @@ func chatButtonTapped (sender : UIButton){
     
     
     
-    func viewPollResultsButtonTapped (sender : UIButton){
+func viewPollResultsButtonTapped (sender : UIButton){
         
         let indexPath = IndexPath(row: sender.tag, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! ProfilePollTableViewCell

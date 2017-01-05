@@ -19,11 +19,11 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var createGroupButton: UIButton!
     
     
-    let sectionTitles = ["Friends", "Groups"]
+    let sectionTitles = ["Friends (Mutual Follows)", "Lists"]
     var profileUserID = ""
     var friendArray : [Recipient] = []
     var groupArray : [Recipient] = []
-    var items : [[Recipient]] = [[]]
+//    var items : [[Recipient]] = [[]]
     var selectedRecipients : [Recipient] = []
     var selectedCells : [EditFriendTableViewCell] = []
     
@@ -36,28 +36,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         createGroupButtonHeightConstraint.constant = 0
         let friendAndGroupListReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID).child("recipientList")
-        
-        
-        friendAndGroupListReference.queryOrdered(byChild: "tag").queryEqual(toValue: "group").observe(.childAdded, with: {
-            snapshot in
-            
-            var group : Recipient = Recipient ()
-            
-            let snapshotValue = snapshot.value as! NSDictionary
-            
-            if self.selectedRecipients.contains(where: { $0.recipientID == group.recipientID})
-            { print("new group added")
-            
-            }
-            
-            group.recipientID = snapshotValue["recipientID"] as! String
-            group.recipientName = snapshotValue["recipientName"] as! String
-            group.imageURL1 = snapshotValue["recipientImageURL1"] as! String
-            group.tag = snapshotValue["tag"] as! String
-            
-            self.groupArray.append(group)
-            
-        })
         
         friendAndGroupListReference.queryOrdered(byChild: "tag").queryEqual(toValue: "user").observe(.childAdded, with: {
             snapshot in
@@ -72,6 +50,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             friend.tag = snapshotValue["tag"] as! String
             
             self.friendArray.append(friend)
+            self.tableView.reloadData()
             
         })
         
@@ -79,12 +58,44 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             EditFriendTableViewCell.isSelected = true
         }
         
-        items = [friendArray, groupArray]
+        tableView.reloadData()
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        print("view appeared")
+        
+        groupArray.removeAll()
+        
+        let friendAndGroupListReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID).child("recipientList")
+        
+        friendAndGroupListReference.queryOrdered(byChild: "tag").queryEqual(toValue: "group").observe(.childAdded, with: {
+            snapshot in
+            
+            var group : Recipient = Recipient ()
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            if self.selectedRecipients.contains(where: { $0.recipientID == group.recipientID})
+            { print("group already added")
+                
+            }
+            
+            group.recipientID = snapshotValue["recipientID"] as! String
+            group.recipientName = snapshotValue["recipientName"] as! String
+            group.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+            group.tag = snapshotValue["tag"] as! String
+            
+            self.groupArray.append(group)
+            self.tableView.reloadData()
+            
+        })
+        
+    }
     
     //TableView Data Source
+    
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionTitles[section]
@@ -97,6 +108,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let items = [friendArray, groupArray]
         
         if items[indexPath.section][indexPath.row].tag == "group" {
             return 100
@@ -107,13 +119,15 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let items = [friendArray, groupArray]
+        
         return items[section].count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "editFriendCell", for: indexPath) as! EditFriendTableViewCell
-
+        let items = [friendArray, groupArray]
         cell.isUserInteractionEnabled = true
         cell.editButton.tag = indexPath.row
         cell.editButton.addTarget(self, action: (#selector(self.editGroup(sender:))), for: .touchUpInside)
@@ -135,7 +149,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             cell.actionButtonWidth.constant = 73
             cell.actionButton.layer.cornerRadius = 4
-            cell.actionButton.setTitle("Remove", for: .normal)
+            cell.actionButton.setTitle("Unfollow", for: .normal)
             cell.actionButton.layer.masksToBounds = true
             cell.actionButton.setBackgroundImage(UIImage(named: "redBackground"), for: .normal)
             cell.actionButton.isUserInteractionEnabled = true
@@ -155,7 +169,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         
-        if items[indexPath.section][indexPath.row].tag == "group" {
+        if  items[indexPath.section][indexPath.row].tag == "group" {
             
             cell.actionButton.isHidden = true
             cell.editButton.isHidden = false
@@ -175,6 +189,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCell = tableView.cellForRow(at: indexPath)! as! EditFriendTableViewCell
+        let items = [friendArray, groupArray]
+        
         selectedCell.isSelected = true
         selectedCells.append(selectedCell)
         
@@ -206,14 +222,16 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let items = [friendArray, groupArray]
         let deSelectedCell = tableView.cellForRow(at: indexPath)! as! EditFriendTableViewCell
         let deSelectedRecipient = items[indexPath.section][indexPath.row]
         deSelectedCell.isSelected = false
         
+        
          if items[indexPath.section][indexPath.row].tag == "user" {
         deSelectedCell.actionButtonWidth.constant = 73
         deSelectedCell.actionButton.layer.cornerRadius = 4
-        deSelectedCell.actionButton.setTitle("Remove", for: .normal)
+        deSelectedCell.actionButton.setTitle("Unfollow", for: .normal)
         deSelectedCell.actionButton.layer.cornerRadius = 4
         deSelectedCell.actionButton.layer.masksToBounds = true
         deSelectedCell.actionButton.setBackgroundImage(UIImage(named: "redBackground"), for: .normal)
@@ -223,6 +241,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             
         delete(recipient: deSelectedRecipient)
         removeCell(cell: deSelectedCell)
+        
+        print(selectedCells)
             
         if selectedRecipients.count < 2 {
                 createGroupButtonHeightConstraint.constant = 0
@@ -246,6 +266,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let items = [friendArray, groupArray]
         let groupToDelete = items[indexPath.section][indexPath.row].recipientID
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
@@ -253,16 +274,42 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
             
+            let friendAndGroupListReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(self.profileUserID).child("recipientList")
+            
             ref.child(groupToDelete).removeValue()
+            
+            self.groupArray.removeAll()
+            
+            friendAndGroupListReference.queryOrdered(byChild: "tag").queryEqual(toValue: "group").observe(.childAdded, with: {
+                snapshot in
+                
+                var group : Recipient = Recipient ()
+                
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                if self.selectedRecipients.contains(where: { $0.recipientID == group.recipientID})
+                { print("group already added")
+                    
+                }
+                
+                group.recipientID = snapshotValue["recipientID"] as! String
+                group.recipientName = snapshotValue["recipientName"] as! String
+                group.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+                group.tag = snapshotValue["tag"] as! String
+                
+                self.groupArray.append(group)
+                self.tableView.reloadData()
+                
+            })
+            
     
-            tableView.reloadSections([1], with: .fade)
-            
-            
             UIView.animate(withDuration: 0.1) {
                 self.view.layoutIfNeeded()
             }
             
+
         }
+        
         delete.backgroundColor = UIColor.init(hexString: "FF4E56")
        
         
@@ -311,7 +358,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         group.recipientID = recipientID
         group.tag = "group"
         
-        groupArray.append(group)
         
         newRecipient = ["recipientName" as NSObject: (selectedRecipientNamesString) as AnyObject, "recipientImageURL1" as NSObject: (selectedRecipients.first!.imageURL1 ) as AnyObject,"recipientImageURL2" as NSObject : (selectedRecipients[1].imageURL1 as AnyObject), "recipientID" as NSObject: (recipientID ) as AnyObject, "tag" as NSObject: "group" as AnyObject]
         
@@ -330,12 +376,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         selectedRecipients.removeAll()
-        tableView.reloadSections([0,1], with: .fade)
-        
-        UIView.animate(withDuration: 0.1) {
-            self.view.layoutIfNeeded()
-        }
-        
+        tableView.reloadSections([1], with: .fade)
         
     }
     
@@ -350,8 +391,9 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     
+    
     func editGroup (sender: UIButton) {
-        
+        let items = [friendArray, groupArray]
         let groupToEdit = items[1][sender.tag]
         
         print(groupToEdit.recipientID)
@@ -359,29 +401,12 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         print(groupToEdit.recipientName)
         
         let myVC = storyboard?.instantiateViewController(withIdentifier: "editGroupVC") as! GroupViewController
-        let groupReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(groupToEdit.recipientID).child("groupMembers")
-        
-        print(myVC)
         myVC.groupImageURL = groupToEdit.imageURL1
         myVC.groupName = groupToEdit.recipientName
-
-//        groupReference.observe(.childAdded, with: {
-//            snapshot in
-//            let snapshotValue = snapshot.value as! NSDictionary
-//            
-//            var groupMember = Recipient()
-//            
-//            groupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
-//            groupMember.recipientID = snapshotValue["recipientID"] as! String
-//            groupMember.recipientName = snapshotValue["recipientName"] as! String
-//            
-//            myVC.groupMembers.append(groupMember)
-//        })
-//        
+        myVC.groupID = groupToEdit.recipientID
+        
          navigationController?.pushViewController(myVC, animated: true)
     }
-
-        
         
     }
     

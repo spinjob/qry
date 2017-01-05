@@ -301,9 +301,9 @@
 		680DF2DC1DB5933200452A4E /* Qv1 */ = {
 			isa = PBXGroup;
 			children = (
-				68D386331DBFD85A000B4084 /* Qv1.entitlements */,
 				680DF2DD1DB5933200452A4E /* AppDelegate.swift */,
 				6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */,
+				68D386331DBFD85A000B4084 /* Qv1.entitlements */,
 				685ED1731DD6747400C85F37 /* Main.storyboard */,
 				68DBF39C1DB6EFD100C87385 /* ViewControllers */,
 				680DF2E71DB5933200452A4E /* Assets.xcassets */,

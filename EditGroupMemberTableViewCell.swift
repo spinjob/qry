@@ -10,6 +10,13 @@ import UIKit
 
 class EditGroupMemberTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var groupMemberNameLabel: UILabel!
+    @IBOutlet weak var removeButton: UIButton!
+    
+    @IBOutlet weak var groupMemberImageView: UIImageView!
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
