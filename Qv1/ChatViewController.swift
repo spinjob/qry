@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var pollView: UIView!
@@ -24,8 +24,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var answer1VoteCount: UILabel!
     @IBOutlet weak var answer2VoteCount: UILabel!
     @IBOutlet weak var senderUserName: UILabel!
-//    @IBOutlet weak var answer1BarImageView: UIImageView!
-//    @IBOutlet weak var answer2BarImageView: UIImageView!
+
     
     @IBOutlet weak var answer1TextLabel: UILabel!
     @IBOutlet weak var answer2TextLabel: UILabel!
@@ -92,8 +91,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var showAnswer2Users : Bool = false
     var showUndecidedUsers : Bool = false
     var showEverybody : Bool = true
-    
-    
 
     
     struct message {
@@ -117,16 +114,20 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         print("POLL \(poll.groupMembers)")
         
         let databaseRef : FIRDatabaseReference = FIRDatabase.database().reference()
-        let senderUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(poll.senderUser)
         let recipientsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("sentTo")
         let pollVoteReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes")
         let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("sentTo")
         let currentUserID = FIRAuth.auth()?.currentUser?.uid
         let chartView = PieChartView()
         
-
+    
+        setUpNavigationBarItems()
+        
+        
         tableView.delegate = self
         tableView.dataSource = self
+
+    
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.alwaysBounceHorizontal = true
@@ -175,21 +176,22 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         collectionView.layer.borderWidth = 0.2
         collectionView.layer.borderColor = UIColor.init(hexString: "D7D7D7").cgColor 
         
+        //show correct change conversation icon when chat changes and reloads
         
+        changeChatButton.imageView?.image = UIImage(named: "Everybody Active Conversation (Active)")
         
-        //conversation view
+        if showAnswer1Users == true {
+           changeChatButton.imageView?.image = UIImage(named: "Answer 1 Conversation Icon (Active).png")
+        }
         
-        senderUserRef.observe(.value, with: {
-            snapshot in
-            
-            let snapshotValue = snapshot.value as! NSDictionary
-            self.senderUserImageView.sd_setImage(with: URL(string : snapshotValue["profileImageURL"] as! String))
-            self.senderUserImageView.layer.cornerRadius = self.senderUserImageView.layer.frame.size.width / 2
-            self.senderUserImageView.layer.masksToBounds = true
-            //self.senderUserName.text = snapshotValue["fullName"] as! String
+        if showAnswer2Users == true {
+            changeChatButton.imageView?.image = UIImage(named: "Answer 2 Conversation (Active).png")
+        }
         
+        if showUndecidedUsers == true {
+            changeChatButton.imageView?.image = UIImage(named: "Undecided Conversation (Active).png")
+        }
         
-        })
 
         
         databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "everybody").observe(.childAdded, with: {
@@ -292,6 +294,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.position3ChangeConversationLabel.isHidden = true
                 self.position2ChangeConversationButton.isHidden = true
                 self.position3ChangeConversationButton.isHidden = true
+                
             }
             
             if userAnswer == "no vote" {
@@ -299,6 +302,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.position1ChangeConversationLabel.isHidden = true
                 self.position2ChangeConversationButton.isHidden = true
                 self.position1ChangeConversationButton.isHidden = true
+                
             }
             
             if userAnswer == "answer2" {
@@ -409,6 +413,29 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             
         })
+        
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
+            snapshot in
+            
+            self.answer1Count = Int(snapshot.childrenCount)
+            
+        })
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
+            snapshot in
+            
+            self.answer2Count = Int(snapshot.childrenCount)
+            
+        })
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.value, with: {
+            snapshot in
+            
+            self.undecidedCount = Int(snapshot.childrenCount)
+            
+        })
+        
 
         chartView.frame = CGRect(x: 0, y: 0, width: pieChartView.frame.size.width, height: 86)
         pieChartCenterImageView.layer.cornerRadius = pieChartCenterImageView.layer.frame.size.width / 2
@@ -416,7 +443,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         chartView.segments = [
 
-            Segment(color: UIColor.init(hexString: "A8E855"), value: CGFloat(answer1Count)),
+            Segment(color: UIColor.init(hexString: "A8E855"), value: CGFloat(self.answer1Count)),
             Segment(color: UIColor.init(hexString: "FF4E56"), value: CGFloat(answer2Count)),
             Segment(color: UIColor.init(hexString: "D8D8D8"), value: CGFloat(undecidedCount))
         ]
@@ -432,12 +459,52 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
   
          NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
          NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    
+    func setUpNavigationBarItems() {
+        
+        let senderUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(poll.senderUser)
+        
+        senderUserRef.observe(.value, with: {
+            snapshot in
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            let titleImageView = UIImageView()
+            titleImageView.sd_setImage(with: URL(string: snapshotValue["profileImageURL"] as! String))
+            titleImageView.backgroundColor = UIColor.black
+            titleImageView.contentMode = .scaleAspectFit
+            
+            
+            let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 34, height: 34))
+            
+            titleImageView.frame = titleView.bounds
+            titleView.layer.cornerRadius = titleView.layer.frame.size.width / 2
+            titleView.layer.masksToBounds = true
+            titleView.addSubview(titleImageView)
+
+            self.navigationItem.titleView = titleView
+            
+        })
+        
+
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+            self.view.reloadInputViews()
+        }
+
+        
     }
     
    
@@ -767,6 +834,77 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+  
+    //Hide Poll Details upon chat scroll
+    
+    
+    
+    func scrollViewDidScroll (_ scrollView: UIScrollView) {
+       
+        if pollViewHeightConstraint.constant == 280, scrollView == tableView {
+            showHidePollViewButton.setImage(UIImage(named: "hide icon.png"), for: .normal)
+            pollViewHeightConstraint.constant = 96
+            questionTextLabel.isHidden = true
+            answer1TextLabel.isHidden = true
+            answer2TextLabel.isHidden = true
+            answer1VoteCount.isHidden = true
+            answer2VoteCount.isHidden = true
+            greenBackgroundImageView.isHidden = true
+            redBackgroundImageView.isHidden = true
+            pieChartView.isHidden = true
+            pieChartCenterImageView.isHidden = true
+            
+            
+            chatMemberViewVerticalConstraint.constant = 22
+            senderUserName.text = questionTextLabel.text
+            
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
+        }
+        
+        
+        if pollViewHeightConstraint.constant == 0, scrollView == tableView, scrollView.scrollsToTop == true {
+            
+            showHidePollViewButton.setImage(UIImage(named: "show icon.png"), for: .normal)
+            pollViewHeightConstraint.constant = 280
+            questionTextLabel.isHidden = false
+            answer1TextLabel.isHidden = false
+            answer2TextLabel.isHidden = false
+            answer1VoteCount.isHidden = false
+            answer2VoteCount.isHidden = false
+            greenBackgroundImageView.isHidden = false
+            redBackgroundImageView.isHidden = false
+            pieChartCenterImageView.isHidden = false
+            pieChartView.isHidden = false
+            
+            
+            chatMemberViewVerticalConstraint.constant = 213
+            questionTextLabel.text = poll.questionString
+            
+            let senderUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(poll.senderUser)
+            
+            senderUserRef.observe(.value, with: {
+                snapshot in
+                
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                self.senderUserName.text = snapshotValue["fullName"] as! String
+                
+                
+            })
+            
+            
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+                self.view.reloadInputViews()
+            }
+
+            
+        }
+
+    }
+    
     
  
     //function to determine the frame that any given amount of text would measure so we can adjust the message bubble height and width dynamically
@@ -888,6 +1026,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 
                 
             })
+            
            
              UIView.animate(withDuration: 0.2) {
                 self.view.layoutIfNeeded()
@@ -913,6 +1052,18 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             changeConversationView.isHidden = true
             
             
+        }
+        
+        if showAnswer1Users == true {
+            changeChatButton.imageView?.image = UIImage(named: "Answer 1 Conversation Icon (Active).png")
+        }
+        
+        if showAnswer2Users == true {
+            changeChatButton.imageView?.image = UIImage(named: "Answer 2 Conversation (Active).png")
+        }
+        
+        if showUndecidedUsers == true {
+            changeChatButton.imageView?.image = UIImage(named: "Undecided Conversation (Active).png")
         }
         
         UIView.animate(withDuration: 0.2) {
@@ -1027,6 +1178,28 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         sendButton.isEnabled = true
         sendButton.isUserInteractionEnabled = true
         sendButton.alpha = 1.0
+        
+        if pollViewHeightConstraint.constant == 280 {
+            showHidePollViewButton.setImage(UIImage(named: "hide icon.png"), for: .normal)
+            pollViewHeightConstraint.constant = 96
+            questionTextLabel.isHidden = true
+            answer1TextLabel.isHidden = true
+            answer2TextLabel.isHidden = true
+            answer1VoteCount.isHidden = true
+            answer2VoteCount.isHidden = true
+            greenBackgroundImageView.isHidden = true
+            redBackgroundImageView.isHidden = true
+            pieChartView.isHidden = true
+            pieChartCenterImageView.isHidden = true
+            
+            
+            chatMemberViewVerticalConstraint.constant = 22
+            senderUserName.text = questionTextLabel.text
+            
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
+        }
         
     }
     

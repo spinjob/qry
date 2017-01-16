@@ -23,34 +23,35 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var senderUser : User = User()
     var answer1Users : [String] = []
     var answer2Users : [String] = []
+    //let currentUserProfileImageURL = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).value(forKey: "profileImageURL")
     
     
 
     let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
+    let currentUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!)
     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
     let sentPollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls")
-    
     
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+     
+        setUpNavigationBarItems()
         
         //navigation controller
-        
-        navigationController?.navigationBar.barTintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
-        navigationController?.navigationBar.backItem?.backBarButtonItem!.title = "X"
- 
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        
-        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: navigationController, action: nil)
-        navigationItem.leftBarButtonItem = backButton
-        
 
         
+//          navigationController?.navigationBar.barTintColor = UIColor.white
+        
+
+//        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
+//    
+//        navigationController?.navigationBar.backItem?.backBarButtonItem!.title = "X"
+//        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+//        navigationController?.navigationBar.shadowImage = UIImage()
+     
+       
         
         //pulling data from Firebase
         
@@ -115,6 +116,42 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
 
+    func setUpNavigationBarItems () {
+       
+        let titleImageView = UIImageView(image: UIImage(named: "Logo"))
+        titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        titleImageView.contentMode = .scaleAspectFit
+        
+        navigationItem.titleView = titleImageView
+        
+        let profileButton = UIButton(type: .system)
+        profileButton.setImage(UIImage(named:"inboxActive")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        profileButton.frame = CGRect(x: 0, y: 0, width: 30, height: 28)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileButton)
+        
+        navigationController?.navigationBar.backgroundColor = UIColor.white
+        navigationController?.navigationBar.isTranslucent = false
+        
+        
+//        profileButton.layer.cornerRadius = profileButton.layer.frame.size.width / 2
+//        profileButton.layer.masksToBounds = true
+        
+//        currentUserRef.observe(.value, with: {
+//            snapshot in
+//            
+//            let snapshotValue = snapshot.value as! NSDictionary
+//            let userProfilePictureURL = snapshotValue["profileImageURL"]
+//            profileButton.imageView?.sd_setImage(with: URL(string: userProfilePictureURL as! String))
+//
+//            print("USER PROFILE PICTURE URL \(userProfilePictureURL)")
+//            
+//        })
+        
+        
+
+    }
+    
+    
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return receivedPolls.count
@@ -272,7 +309,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
             
     
         }
-        
+    
         
         pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
             snapshot in
@@ -374,7 +411,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
                 cell.answer1Button.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
                 cell.answer2Button.isSelected = false
                 cell.answer2Button.layer.backgroundColor = UIColor.white.cgColor
-                self.viewPollResultsButtonTapped(sender: cell.viewPollResultsButton)
+      
             }
             
             if myVote == "answer2" {
@@ -382,7 +419,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
                 cell.answer2Button.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
                 cell.answer1Button.isSelected = false
                 cell.answer1Button.layer.backgroundColor = UIColor.white.cgColor
-                self.viewPollResultsButtonTapped(sender: cell.viewPollResultsButton)
+        
             }
             
             if myVote == "no vote" {
@@ -430,7 +467,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
     
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
          if receivedPolls[indexPath.row].pollURL != "no url" {
             return 355
         } else if receivedPolls[indexPath.row].pollQuestionImageURL != "no question image" {
@@ -468,7 +505,7 @@ func tableView( _ tableView: UITableView, heightForFooterInSection section: Int)
     }
     
     
-    func userImageTapped (sender : UITapGestureRecognizer) {
+func userImageTapped (sender : UITapGestureRecognizer) {
         
         let imgView = sender.view as! UIImageView
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -542,6 +579,7 @@ func tableView( _ tableView: UITableView, heightForFooterInSection section: Int)
 func answerButton1Tapped (sender : UIButton){
         sender.isSelected = !sender.isSelected;
     
+    
 
         let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!).child("voteString")
         
@@ -597,16 +635,13 @@ func answerButton1Tapped (sender : UIButton){
             cell.senderUserLabel.text = snapshotValue["fullName"] as! String
             
         })
-    
-    
-        viewPollResultsButtonTapped(sender: sender)
+
     }
     
     
 func answerButton2Tapped (sender : UIButton){
         
         sender.isSelected = !sender.isSelected;
-    
     
         
         let buttonIndexPath = IndexPath(row: sender.tag, section: 0)
@@ -662,9 +697,6 @@ func answerButton2Tapped (sender : UIButton){
             cell.senderUserLabel.text = snapshotValue["fullName"] as! String
             
         })
-        
-    
-        viewPollResultsButtonTapped(sender: sender)
     
     
         
@@ -673,14 +705,11 @@ func answerButton2Tapped (sender : UIButton){
 
     
 func chatButtonTapped (sender : UIButton){
-        
-        let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("sentTo")
+
         let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
         let pollVoteReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes")
-        var chatMembers : [Recipient] = []
     
-    
-    
+
      pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
         snapshot in
         
@@ -701,8 +730,6 @@ func chatButtonTapped (sender : UIButton){
             myVC.undecidedCount = Int(snapshot.childrenCount)
         
     })
-    
-    
     
         myVC.poll = receivedPolls[sender.tag]
         myVC.chatMembers = receivedPolls[sender.tag].groupMembers
