@@ -26,6 +26,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var numberOfAskedLabel: UILabel!
     @IBOutlet weak var friendsButton: UIButton!
+    @IBOutlet weak var pollViewHeightConstraint: NSLayoutConstraint!
     
     var profileImageURL = ""
     var profileUserID = ""
@@ -54,7 +55,7 @@ override func viewDidLoad() {
         userProfileImageView.layer.cornerRadius =  userProfileImageView.layer.frame.size.width / 2
         userProfileImageView.layer.masksToBounds = true
         userProfileImageView.layer.borderColor = UIColor.init(hexString: "C8C7C9").cgColor
-        userProfileImageView.layer.borderWidth = 1.5
+        userProfileImageView.layer.borderWidth = 0
 
     
         numberOfAskedLabel.layer.cornerRadius = 4
@@ -202,8 +203,7 @@ override func viewDidLoad() {
     if currentUserID == profileUserID {
 
         self.followButton.isHidden = true
-//       self.followButton.setTitle("Edit", for: .normal)
-//       self.followButton.backgroundColor = UIColor.init(hexString: "004488")
+        self.pollViewHeightConstraint.constant = 240
         
     } else {
         

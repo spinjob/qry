@@ -23,7 +23,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var senderUser : User = User()
     var answer1Users : [String] = []
     var answer2Users : [String] = []
-    //let currentUserProfileImageURL = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).value(forKey: "profileImageURL")
     
     
 
@@ -39,19 +38,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
      
         setUpNavigationBarItems()
         
-        //navigation controller
-
-        
-//          navigationController?.navigationBar.barTintColor = UIColor.white
-        
-
-//        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
-//    
-//        navigationController?.navigationBar.backItem?.backBarButtonItem!.title = "X"
-//        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-//        navigationController?.navigationBar.shadowImage = UIImage()
-     
-       
         
         //pulling data from Firebase
         
@@ -119,34 +105,38 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func setUpNavigationBarItems () {
        
         let titleImageView = UIImageView(image: UIImage(named: "Logo"))
-        titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+
+        titleImageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         titleImageView.contentMode = .scaleAspectFit
         
         navigationItem.titleView = titleImageView
         
-        let profileButton = UIButton(type: .system)
-        profileButton.setImage(UIImage(named:"inboxActive")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        profileButton.frame = CGRect(x: 0, y: 0, width: 30, height: 28)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileButton)
+        let profileIconImageView = UIImageView()
+        let profileIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.myProfileImageTapped(sender:)))
         
+        profileIconImageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        profileIconImageView.layer.cornerRadius = profileIconImageView.frame.size.width / 2
+        profileIconImageView.layer.borderWidth = 1
+        profileIconImageView.layer.borderColor = UIColor.init(hexString: "004488").cgColor
+        profileIconImageView.layer.masksToBounds = true
+        profileIconImageView.addGestureRecognizer(profileIconTapGesture)
+      
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileIconImageView)
+        
+        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observe(.value, with: {
+            snapshot in
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            let profileImageURLString = snapshotValue["profileImageURL"] as! String
+            let profileImageURL = URL(string: profileImageURLString)
+            
+            profileIconImageView.sd_setImage(with: profileImageURL)
+
+        })
+       
+       
         navigationController?.navigationBar.backgroundColor = UIColor.white
         navigationController?.navigationBar.isTranslucent = false
-        
-        
-//        profileButton.layer.cornerRadius = profileButton.layer.frame.size.width / 2
-//        profileButton.layer.masksToBounds = true
-        
-//        currentUserRef.observe(.value, with: {
-//            snapshot in
-//            
-//            let snapshotValue = snapshot.value as! NSDictionary
-//            let userProfilePictureURL = snapshotValue["profileImageURL"]
-//            profileButton.imageView?.sd_setImage(with: URL(string: userProfilePictureURL as! String))
-//
-//            print("USER PROFILE PICTURE URL \(userProfilePictureURL)")
-//            
-//        })
-        
         
 
     }
@@ -166,7 +156,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
 
     
-func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellIdentifier = "pollCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! PollTableViewCell
@@ -521,6 +511,25 @@ func userImageTapped (sender : UITapGestureRecognizer) {
         self.navigationController!.view.layer.add(transition, forKey: kCATransition)
         self.navigationController?.pushViewController(controller, animated: false)
 
+        
+    }
+    
+    func myProfileImageTapped (sender : UITapGestureRecognizer) {
+        
+        let imgView = sender.view as! UIImageView
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+        let transition:CATransition = CATransition()
+        
+        controller.profileUserID = (FIRAuth.auth()?.currentUser?.uid)!
+        
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromLeft
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+        
         
     }
 
