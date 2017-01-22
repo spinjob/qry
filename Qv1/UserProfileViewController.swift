@@ -11,7 +11,7 @@ import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
 
-class UserProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class UserProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -40,22 +40,33 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     var pollForCell : Poll = Poll()
     var userFriendArray : [Recipient] = []
     var userGroupArray : [Recipient] = []
+    var imagePicker = UIImagePickerController()
     
 override func viewDidLoad() {
         super.viewDidLoad()
     
         tableView.delegate = self
         tableView.dataSource = self
+    
+        imagePicker.delegate = self
 
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID)
         let pollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls")
         let receivedPollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID).child("receivedPolls")
         let currentUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(currentUserID)
+    
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.profileImageTapped(sender:)))
+    
         
         userProfileImageView.layer.cornerRadius =  userProfileImageView.layer.frame.size.width / 2
         userProfileImageView.layer.masksToBounds = true
         userProfileImageView.layer.borderColor = UIColor.init(hexString: "C8C7C9").cgColor
         userProfileImageView.layer.borderWidth = 0
+        userProfileImageView.addGestureRecognizer(tapGestureRecognizer)
+    
+        if profileUserID == currentUserID {
+        userProfileImageView.isUserInteractionEnabled = true
+        }
 
     
         numberOfAskedLabel.layer.cornerRadius = 4
@@ -108,6 +119,7 @@ override func viewDidLoad() {
             }
             
             self.numberOfAskedLabel.text = String(self.askedPolls.count)
+            self.numberOfFollowersLabel.text = String(self.askedPolls.count)
             self.tableView.reloadData()
         })
     
@@ -845,7 +857,42 @@ func chatButtonTapped (sender : UIButton){
     }
     
     
+    func profileImageTapped (sender: UITapGestureRecognizer) {
+        imagePicker.sourceType = .savedPhotosAlbum
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+    }
     
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        let image = info[UIImagePickerControllerEditedImage] as! UIImage
+        userProfileImageView.image = image
+        
+        
+        let profileImageData = UIImageJPEGRepresentation(userProfileImageView.image!, 0.4)
+        
+        FIRStorage.storage().reference().child("ProfileImages/\(FIRAuth.auth()?.currentUser!.uid)/profileImage.jpg").put(profileImageData!, metadata: nil){
+                metadata, error in
+                
+                if error != nil {
+                    print("error \(error)")
+                }
+                else {
+                    let downloadURL = metadata?.downloadURL()?.absoluteString
+                    FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("profileImageURL").setValue(downloadURL)
+        
+                    
+                }
+                
+            }
+            
+        
+        
+        imagePicker.dismiss(animated: true, completion: nil)
+        
+    }
 func viewPollResultsButtonTapped (sender : UIButton){
         
         let indexPath = IndexPath(row: sender.tag, section: 0)
