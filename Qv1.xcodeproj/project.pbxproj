@@ -69,6 +69,7 @@
 		685E9B9C1DE9FEC700D95C15 /* show icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 685E9B9B1DE9FEC700D95C15 /* show icon.png */; };
 		685E9B9E1DE9FED300D95C15 /* hide icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 685E9B9D1DE9FED300D95C15 /* hide icon.png */; };
 		685ED1741DD6747400C85F37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685ED1731DD6747400C85F37 /* Main.storyboard */; };
+		685EFABC1E37EAF2007FB8FE /* elipses Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 685EFABB1E37EAF2007FB8FE /* elipses Icon.png */; };
 		6869CEE41DF8EE1200F8207C /* ProfilePollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */; };
 		6880A9B41DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */; };
 		6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B51DC41998000BB884 /* CreatePollViewController.swift */; };
@@ -77,7 +78,6 @@
 		68B999BF1DFF25FE00959721 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B999BE1DFF25FE00959721 /* PieChart.swift */; };
 		68B999C11DFF434900959721 /* piechartcenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B999C01DFF434900959721 /* piechartcenter.png */; };
 		68B999C31DFF589700959721 /* shareIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B999C21DFF589700959721 /* shareIcon.png */; };
-		68B999C51DFF5F4300959721 /* EditPollResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B999C41DFF5F4300959721 /* EditPollResultsViewController.swift */; };
 		68BDD7C11DFA0A2500C64B7C /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BDD7C01DFA0A2500C64B7C /* WebViewController.swift */; };
 		68C3C82C1DC922B3000B9730 /* Recipient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C3C82B1DC922B3000B9730 /* Recipient.swift */; };
 		68CCC47F1DC524230094F3AE /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CCC47E1DC524230094F3AE /* FriendTableViewCell.swift */; };
@@ -201,6 +201,7 @@
 		685E9B9B1DE9FEC700D95C15 /* show icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "show icon.png"; path = "../../../Downloads/show icon.png"; sourceTree = "<group>"; };
 		685E9B9D1DE9FED300D95C15 /* hide icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "hide icon.png"; path = "../../../Downloads/hide icon.png"; sourceTree = "<group>"; };
 		685ED1731DD6747400C85F37 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = SOURCE_ROOT; };
+		685EFABB1E37EAF2007FB8FE /* elipses Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "elipses Icon.png"; path = "../../elipses Icon.png"; sourceTree = "<group>"; };
 		6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePollTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedAnswerOptionTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B51DC41998000BB884 /* CreatePollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollViewController.swift; sourceTree = "<group>"; };
@@ -209,7 +210,6 @@
 		68B999BE1DFF25FE00959721 /* PieChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		68B999C01DFF434900959721 /* piechartcenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = piechartcenter.png; path = ../../piechartcenter.png; sourceTree = "<group>"; };
 		68B999C21DFF589700959721 /* shareIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shareIcon.png; path = ../../shareIcon.png; sourceTree = "<group>"; };
-		68B999C41DFF5F4300959721 /* EditPollResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPollResultsViewController.swift; sourceTree = "<group>"; };
 		68BDD7C01DFA0A2500C64B7C /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		68C3C82B1DC922B3000B9730 /* Recipient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipient.swift; sourceTree = "<group>"; };
 		68CCC47E1DC524230094F3AE /* FriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
@@ -361,6 +361,7 @@
 		6819B6411DDD1A3E0099A98B /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				685EFABB1E37EAF2007FB8FE /* elipses Icon.png */,
 				68219A7D1E0B3096004E822F /* addGroup.png */,
 				68219A701E00B0B9004E822F /* galleryIcon.png */,
 				68219A6E1E00AABE004E822F /* cameraIcon.png */,
@@ -496,7 +497,6 @@
 				682DB3A21DD16A4A009015AC /* PollTableViewCell.swift */,
 				6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */,
 				682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */,
-				68B999C41DFF5F4300959721 /* EditPollResultsViewController.swift */,
 				682572991DF79880006150DB /* UserProfileViewController.swift */,
 				68B118D71E15B7CC006F05B7 /* Group VC */,
 				68219A7A1E0B017E004E822F /* Friend VC */,
@@ -638,6 +638,7 @@
 				6819B6301DDA8E1E0099A98B /* friendmessagetail.png in Resources */,
 				68D3841D1DBBE701000B4084 /* Sign Up Button Background.png in Resources */,
 				6819B63A1DDBA0EB0099A98B /* Login Button Background.png in Resources */,
+				685EFABC1E37EAF2007FB8FE /* elipses Icon.png in Resources */,
 				682572961DF112A7006150DB /* Everybody Conversation (In-active).png in Resources */,
 				680DF3001DB5960800452A4E /* SourceSansPro-LightIt.otf in Resources */,
 				68DBF3A01DB6F5DC00C87385 /* ask.png in Resources */,
@@ -775,7 +776,6 @@
 				682DB3A51DD66E95009015AC /* ChatViewController.swift in Sources */,
 				68CCC4971DC7E6120094F3AE /* EnterEmail&PasswordViewController.swift in Sources */,
 				682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */,
-				68B999C51DFF5F4300959721 /* EditPollResultsViewController.swift in Sources */,
 				68E2F7E41E158976002E13D9 /* GroupViewController.swift in Sources */,
 				68CCC4851DC526CC0094F3AE /* SelectRecipientsViewController.swift in Sources */,
 				68012E721DB5BEE000676EAF /* EnterPinViewController.swift in Sources */,

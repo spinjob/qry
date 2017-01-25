@@ -127,6 +127,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        messageTextField.delegate = self
+        
+        self.hideKeyboard()
 
     
         collectionView.delegate = self
@@ -144,7 +148,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.estimatedRowHeight = 100.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
-        messageTextField.delegate = self
+       
         
         tableView.separatorStyle = .none
         tableView.backgroundColor = UIColor.init(hexString: "F9F9F9")
@@ -500,6 +504,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             titleView.layer.masksToBounds = true
             titleView.addSubview(titleImageView)
             
+            let editChatMembersImageView = UIImageView()
+            let editChatMembersTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.editChatMembersTapped(sender:)))
+            
+            editChatMembersImageView.frame = CGRect(x: 0, y: 0, width: 30, height: 9)
+            editChatMembersImageView.image = UIImage(named: "elipses Icon")
+            editChatMembersImageView.addGestureRecognizer(editChatMembersTapGesture)
+            
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: editChatMembersImageView)
+            
             self.navigationItem.titleView = titleView
             
             UIView.animate(withDuration: 0.5) {
@@ -530,6 +543,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+    func editChatMembersTapped (sender: UITapGestureRecognizer) {
+        
+    }
    
     //keyboard function to adjust message textfield position when the keyboard appears
     func keyboardWasShown(notification: NSNotification) {
@@ -675,7 +691,18 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         if showEverybody == true {
         friendMessageCell.messageTextView.text = everybodyMessages[indexPath.row].message
-        friendMessageCell.userImageView.sd_setImage(with: URL(string : everybodyMessages[indexPath.row].userImage as String))
+        //friendMessageCell.userImageView.sd_setImage(with: URL(string : everybodyMessages[indexPath.row].userImage as String))
+            
+            FIRDatabase.database().reference().child("users").child(everybodyMessages[indexPath.row].userID).observe(.value, with: {
+                
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                let profileImageURL = snapshotValue["profileImageURL"] as! String
+                
+                friendMessageCell.userImageView.sd_setImage(with: URL(string : profileImageURL))
+                
+            })
+            
         friendMessageCell.userNameLabel.text = everybodyMessages[indexPath.row].userName
             }
             
@@ -780,7 +807,18 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
        
         if showEverybody == true {
-            cell.chatMemberImageView.sd_setImage(with: URL(string : self.chatMembers[indexPath.item].imageURL1))
+            
+            FIRDatabase.database().reference().child("users").child(self.chatMembers[indexPath.item].recipientID).observe(.value, with: {
+                
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                let profileImageURL = snapshotValue["profileImageURL"] as! String
+                
+                cell.chatMemberImageView.sd_setImage(with: URL(string : profileImageURL))
+                
+            })
+            //cell.chatMemberImageView.sd_setImage(with: URL(string : self.chatMembers[indexPath.item].imageURL1))
+        
             cell.chatMemberImageView.layer.cornerRadius = cell.chatMemberImageView.layer.frame.size.width / 2
             cell.chatMemberImageView.layer.masksToBounds = true
             cell.chatMemberFirstNameLabel.text = self.chatMembers[indexPath.item].recipientName
@@ -992,7 +1030,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         
-        tableView.reloadData()
+       // tableView.reloadData()
     }
 
     
@@ -1245,6 +1283,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
+    }
+    
+    func hideKeyboard () {
+        let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        
+        view.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    func dismissKeyboard(){
+        view.endEditing(true)
     }
     
     func isSenderID (currentUserIDString :String) -> Bool {

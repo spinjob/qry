@@ -122,6 +122,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
         imagePicker.delegate = self
 
+        self.hideKeyboard()
         
     }
     
@@ -233,6 +234,12 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         } else {
             hyperLinkButton.isHidden = true
         }
+        
+        if (input?.contains("going"))! {
+            answer1TextField.text = "Going"
+            answer2TextField.text = "Can't Go"
+        }
+
         
         self.view.endEditing(true)
         
@@ -403,6 +410,17 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         self.performSegue(withIdentifier: "unwindToMenuCancel", sender: self)
         
         
+    }
+    
+    func hideKeyboard () {
+        let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        
+        view.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    func dismissKeyboard(){
+        view.endEditing(true)
     }
 
 }

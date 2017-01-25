@@ -29,6 +29,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
     let currentUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!)
     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
+    let newPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls")
     let sentPollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls")
     
 
@@ -61,6 +62,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
             })
 
+                
         
         pollRef.observe(.childAdded, with: {
             snapshot in
@@ -583,13 +585,9 @@ func userImageTapped (sender : UITapGestureRecognizer) {
     
     
     
-    
-    
-func answerButton1Tapped (sender : UIButton){
+ func answerButton1Tapped (sender : UIButton){
         sender.isSelected = !sender.isSelected;
     
-    
-
         let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!).child("voteString")
         
         let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(receivedPolls[sender.tag].pollID).child("vote")
@@ -597,10 +595,7 @@ func answerButton1Tapped (sender : UIButton){
         let senderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child(receivedPolls[sender.tag].senderUser)
         let buttonIndexPath = IndexPath(row: sender.tag, section: 0)
         let cell = tableView.cellForRow(at: buttonIndexPath) as! PollTableViewCell
-    
-    
-        print("Answer 1 button selected: \(cell.answer1Button.isSelected)")
-    
+
         
         if selectedButton[sender.tag] != nil {
             if selectedButton[sender.tag] != sender {
@@ -615,7 +610,7 @@ func answerButton1Tapped (sender : UIButton){
                 sender.isSelected = false
                 sender.layer.backgroundColor = UIColor.white.cgColor
                 pollAnsweredRef.setValue("no vote")
-                answeredPollRef.setValue("no vote")
+               // answeredPollRef.setValue("no vote")
             }
         } else {
             
@@ -627,11 +622,11 @@ func answerButton1Tapped (sender : UIButton){
         if selectedButton[sender.tag]?.isSelected == true {
             
             pollAnsweredRef.setValue("answer1")
-            answeredPollRef.setValue("answer1")
+          //  answeredPollRef.setValue("answer1")
             
         } else {
             pollAnsweredRef.setValue("no vote")
-            answeredPollRef.setValue("no vote")
+           // answeredPollRef.setValue("no vote")
         }
         
         
@@ -676,7 +671,7 @@ func answerButton2Tapped (sender : UIButton){
                 sender.isSelected = false
                 sender.layer.backgroundColor = UIColor.white.cgColor
                 pollAnsweredRef.setValue("no vote")
-                answeredPollRef.setValue("no vote")
+                //answeredPollRef.setValue("no vote")
             }
         } else {
             
@@ -688,13 +683,13 @@ func answerButton2Tapped (sender : UIButton){
         if selectedButton[sender.tag]?.isSelected == true {
             
             pollAnsweredRef.setValue("answer2")
-            answeredPollRef.setValue("answer2")
+            //answeredPollRef.setValue("answer2")
 
             
         } else {
             
             pollAnsweredRef.setValue("no vote")
-            answeredPollRef.setValue("no vote")
+            //answeredPollRef.setValue("no vote")
         }
         
         senderUserRef.observe(.value, with: {

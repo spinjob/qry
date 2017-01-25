@@ -683,7 +683,7 @@ func answerButton1Tapped (sender : UIButton){
                 sender.isSelected = false
                 sender.layer.backgroundColor = UIColor.white.cgColor
                 pollAnsweredRef.setValue("no vote")
-                answeredPollRef.setValue("no vote")
+                //answeredPollRef.setValue("no vote")
             }
         } else {
             
@@ -695,11 +695,11 @@ func answerButton1Tapped (sender : UIButton){
         if selectedButton[sender.tag]?.isSelected == true {
             
             pollAnsweredRef.setValue("answer1")
-            answeredPollRef.setValue("answer1")
+            //answeredPollRef.setValue("answer1")
             
         } else {
             pollAnsweredRef.setValue("no vote")
-            answeredPollRef.setValue("no vote")
+            //answeredPollRef.setValue("no vote")
         }
         
     }
@@ -748,7 +748,7 @@ func answerButton2Tapped (sender : UIButton){
                 sender.isSelected = false
                 sender.layer.backgroundColor = UIColor.white.cgColor
                 pollAnsweredRef.setValue("no vote")
-                answeredPollRef.setValue("no vote")
+              //  answeredPollRef.setValue("no vote")
             }
         } else {
             
@@ -760,13 +760,13 @@ func answerButton2Tapped (sender : UIButton){
         if selectedButton[sender.tag]?.isSelected == true {
             
             pollAnsweredRef.setValue("answer2")
-            answeredPollRef.setValue("answer2")
+           // answeredPollRef.setValue("answer2")
             
             
         } else {
             
             pollAnsweredRef.setValue("no vote")
-            answeredPollRef.setValue("no vote")
+           // answeredPollRef.setValue("no vote")
         }
         
         
