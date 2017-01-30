@@ -66,6 +66,7 @@
 		682DB3A71DD66F74009015AC /* FriendMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB3A61DD66F74009015AC /* FriendMessageTableViewCell.swift */; };
 		682DB3A91DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB3A81DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift */; };
 		683166811DD6B752003EDC21 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 683166801DD6B752003EDC21 /* gradient.png */; };
+		684D2ED31E3D28730000879F /* GroupMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684D2ED21E3D28730000879F /* GroupMemberCollectionViewCell.swift */; };
 		685E9B9C1DE9FEC700D95C15 /* show icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 685E9B9B1DE9FEC700D95C15 /* show icon.png */; };
 		685E9B9E1DE9FED300D95C15 /* hide icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 685E9B9D1DE9FED300D95C15 /* hide icon.png */; };
 		685ED1741DD6747400C85F37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685ED1731DD6747400C85F37 /* Main.storyboard */; };
@@ -198,6 +199,7 @@
 		682DB3A61DD66F74009015AC /* FriendMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendMessageTableViewCell.swift; sourceTree = "<group>"; };
 		682DB3A81DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserMessageTableViewCell.swift; sourceTree = "<group>"; };
 		683166801DD6B752003EDC21 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gradient.png; path = ../../gradient.png; sourceTree = "<group>"; };
+		684D2ED21E3D28730000879F /* GroupMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		685E9B9B1DE9FEC700D95C15 /* show icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "show icon.png"; path = "../../../Downloads/show icon.png"; sourceTree = "<group>"; };
 		685E9B9D1DE9FED300D95C15 /* hide icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "hide icon.png"; path = "../../../Downloads/hide icon.png"; sourceTree = "<group>"; };
 		685ED1731DD6747400C85F37 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = SOURCE_ROOT; };
@@ -435,6 +437,7 @@
 				68CCC47E1DC524230094F3AE /* FriendTableViewCell.swift */,
 				68CCC48C1DC6C8F10094F3AE /* UserTableViewCell.swift */,
 				68CCC48E1DC7D5AD0094F3AE /* GroupTableViewCell.swift */,
+				684D2ED21E3D28730000879F /* GroupMemberCollectionViewCell.swift */,
 				682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */,
 			);
 			name = "Select Recipients VCs";
@@ -742,6 +745,7 @@
 			files = (
 				68CCC49D1DC8227B0094F3AE /* LoginViewController.swift in Sources */,
 				68B999BF1DFF25FE00959721 /* PieChart.swift in Sources */,
+				684D2ED31E3D28730000879F /* GroupMemberCollectionViewCell.swift in Sources */,
 				68BDD7C11DFA0A2500C64B7C /* WebViewController.swift in Sources */,
 				6819B6461DDE7D440099A98B /* ChatMemberCollectionViewCell.swift in Sources */,
 				682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */,

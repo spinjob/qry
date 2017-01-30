@@ -15,7 +15,7 @@ import FirebaseStorage
 import SDWebImage
 
 
-class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var createGroupButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -24,6 +24,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     var pollID = ""
     var dictPoll : [NSObject : AnyObject] = [:]
     var recipientList : [Recipient] = []
+    var groupRecipientList : [Recipient] = []
     var users : [User] = []
     var selectedRecipients  : [Recipient] = []
     var questionImage : UIImage = UIImage()
@@ -32,8 +33,8 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     var groupToEdit : Recipient = Recipient()
     var groupMembers : [Recipient] = []
     
+    let sectionTitles = ["Lists", "Friends"]
     
-   
     
     @IBOutlet weak var sendButton: UIButton!
     
@@ -74,8 +75,23 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             }
             
         }
+        userRef.queryOrdered(byChild: "tag").queryEqual(toValue: "group").observe(.childAdded, with: {
+            
+            snapshot in
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            var group : Recipient = Recipient()
+            
+            group.recipientName = snapshotValue["recipientName"] as! String
+            group.recipientID = snapshotValue["recipientID"] as! String
+            group.tag = snapshotValue["tag"] as! String
+            group.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+            
+            self.groupRecipientList.append(group)
+            
+        })
         
-        userRef.observe(FIRDataEventType.childAdded, with: {(snapshot) in
+        userRef.queryOrdered(byChild: "tag").queryEqual(toValue: "user").observe(FIRDataEventType.childAdded, with: {(snapshot) in
             print(snapshot)
             
             
@@ -87,12 +103,6 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             recipient.recipientID = snapshotvalue["recipientID"] as! String
             recipient.tag = snapshotvalue["tag"] as! String
             recipient.imageURL1 = snapshotvalue["recipientImageURL1"] as! String
-            
-            if recipient.tag == "group" {
-               recipient.imageURL2 = snapshotvalue["recipientImageURL2"] as! String
-            } else {
-             print("not a group")
-            }
         
             self.recipientList.sort(by: {$0.recipientName > $1.recipientName})
             self.recipientList.append(recipient)
@@ -105,7 +115,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
     func editGroupScreen (sender : UIButton!) {
         
-        groupToEdit = recipientList[sender.tag]
+        groupToEdit = groupRecipientList[sender.tag]
         
         performSegue(withIdentifier: "editGroupSegue", sender: groupToEdit)
         
@@ -114,20 +124,27 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let items = [groupRecipientList, recipientList]
         
-        print(recipientList)
-        print(recipientList.count)
+        if items[indexPath.section][indexPath.row].tag == "group" {
+            return 80
+        }
         
-        return recipientList.count
-        
-        
+        return 60
+    }
     
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let items = [groupRecipientList, recipientList]
+        
+        return items[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-     //user cell
+      let items = [groupRecipientList, recipientList]
+        
       let cell = tableView.dequeueReusableCell(withIdentifier: "userCell") as! UserTableViewCell
         
       cell.tag = indexPath.row
@@ -135,41 +152,109 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
       cell.userProfileImageView.layer.cornerRadius =  cell.userProfileImageView.layer.frame.size.width / 2
       cell.userProfileImageView.layer.masksToBounds = true
         
-      let recipientCell = recipientList[indexPath.row]
+      let recipientForCell = items[indexPath.section][indexPath.row]
         
 
-      cell.userNameLabel.text = recipientCell.recipientName
+      cell.userNameLabel.text = recipientForCell.recipientName
         
-      cell.userProfileImageView.sd_setImage(with: URL(string : recipientCell.imageURL1))
+      cell.userProfileImageView.sd_setImage(with: URL(string : recipientForCell.imageURL1))
        
     //group cell
         
       let groupCell = tableView.dequeueReusableCell(withIdentifier: "groupCell") as! GroupTableViewCell
         
         
-      groupCell.groupMember1ImageView.sd_setImage(with: URL(string : recipientCell.imageURL1))
-      groupCell.groupMember2ImageView.sd_setImage(with: URL(string : recipientCell.imageURL2))
-      groupCell.groupNameLabel.text = recipientCell.recipientName
-
+      groupCell.groupMember1ImageView.sd_setImage(with: URL(string : recipientForCell.imageURL1))
+        groupCell.groupMember1ImageView.layer.cornerRadius = 4
+        groupCell.groupMember1ImageView.layer.masksToBounds = true
+      
+      groupCell.groupNameLabel.text = recipientForCell.recipientName
+      groupCell.tag = indexPath.row
+      groupCell.groupMemberCollectionView.tag = indexPath.row
         
       groupCell.editButton.tag = indexPath.row
       groupCell.editButton.addTarget(self, action: #selector(self.editGroupScreen(sender:)), for: .touchUpInside)
     
+    if indexPath.section == 0 {
         
-        if recipientCell.tag == "group" {
-            
         return groupCell
-            
-            
-        } else {
+       
+    }
+       
+    else {
         
-     return cell
+        return cell
         
         }
     
     }
 
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitles[section]
+    }
     
+    
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sectionTitles.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientList[collectionView.tag].recipientID).child("groupMembers")
+    
+        var collectionViewCellCount : Int = 2
+        ref.observe(.childAdded, with: {
+            
+            snapshot in
+            collectionViewCellCount = Int(snapshot.childrenCount)
+
+        })
+        
+        
+        return collectionViewCellCount
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+   
+        let items = [groupRecipientList, recipientList]
+        
+        let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(items[indexPath.section][indexPath.row].recipientID).child("groupMembers")
+        
+        collectionView.showsHorizontalScrollIndicator = false
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pollGroupMemberCell", for: indexPath) as! GroupMemberCollectionViewCell
+        
+        cell.groupMemberImageView.layer.cornerRadius = cell.groupMemberImageView.layer.frame.size.width / 2
+        cell.groupMemberImageView.layer.masksToBounds = true
+        
+        var listMembers : [Recipient] = []
+        
+        ref.observe(.childAdded, with: {
+            snapshot in
+        
+            
+            
+            let recipient = Recipient()
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            recipient.recipientName = snapshotValue["recipientName"] as! String
+            recipient.recipientID = snapshotValue["recipientID"] as! String
+            recipient.tag = snapshotValue["tag"] as! String
+            recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+            
+            listMembers.append(recipient)
+            
+        
+        })
+        
+        cell.groupMemberImageView.sd_setImage(with: URL(string:listMembers[collectionView.tag].imageURL1))
+        
+        return cell
+        
+    }
  
     
     
@@ -177,24 +262,23 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         let selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
         selectedCell.contentView.backgroundColor = UIColor.white
         
+        let items = [groupRecipientList, recipientList]
         
-        if recipientList[indexPath.row].tag == "user" {
+        
+        if indexPath.section == 1 {
 
-        let selectedRecipient = recipientList[indexPath.row]
+        let selectedRecipient = items[indexPath.section][indexPath.row]
         selectedRecipients.append(selectedRecipient)
-         print(selectedRecipient.recipientID)
             
         }
 
         
         
-        if recipientList[indexPath.row].tag == "group" {
-            
-        print(recipientList[indexPath.row].recipientName)
-        print(recipientList[indexPath.row].recipientID)
+        if indexPath.section == 0 {
+
             
             
-        let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientList[indexPath.row].recipientID).child("groupMembers")
+        let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(items[indexPath.section][indexPath.row].recipientID).child("groupMembers")
             
             ref.observe(FIRDataEventType.childAdded, with: {(snapshot) in
                 
@@ -215,7 +299,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
                 self.groupMembers.forEach { (Recipient) in
                     
                     let indexToDisable = self.recipientList.index(where: { $0.recipientID.contains(Recipient.recipientID) == true})
-                    let indexPathForGroupMember = NSIndexPath(row: indexToDisable!, section: 0)
+                    let indexPathForGroupMember = NSIndexPath(row: indexToDisable!, section: 1)
                     
                     
                     tableView.cellForRow(at: indexPathForGroupMember as IndexPath)?.isUserInteractionEnabled = false
@@ -237,9 +321,6 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
             })
             
-            
-            
-            
                      
             print("GROUP OF USERS after \(groupMembers)")
             
@@ -249,19 +330,21 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     }
   
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let deSelectedRecipient = recipientList[indexPath.row]
         
-        print("GROUP OF USERS \(groupMembers)")
+    
+        let items = [groupRecipientList, recipientList]
         
-        if recipientList[indexPath.row].tag == "user" {
+        let deSelectedRecipient = items[indexPath.section][indexPath.row]
+        
+        if indexPath.section == 1 {
 
-        delete(recipient: recipientList[indexPath.row])
+        delete(recipient: items[indexPath.section][indexPath.row])
             
         print(selectedRecipients)
             
         }
         
-        let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientList[indexPath.row].recipientID).child("groupMembers")
+        let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(items[indexPath.section][indexPath.row].recipientID).child("groupMembers")
         
         ref.observe(FIRDataEventType.childAdded, with: {(snapshot) in
             
@@ -281,8 +364,8 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
             self.groupMembers.forEach { (Recipient) in
                 
-                let indexToDisable = self.recipientList.index(where: { $0.recipientID.contains(Recipient.recipientID) == true})
-                let indexPathForGroupMember = NSIndexPath(row: indexToDisable!, section: 0)
+                let indexToEnable = self.recipientList.index(where: { $0.recipientID.contains(Recipient.recipientID) == true})
+                let indexPathForGroupMember = NSIndexPath(row: indexToEnable!, section: 1)
                 
                 
                 tableView.cellForRow(at: indexPathForGroupMember as IndexPath)?.isUserInteractionEnabled = true

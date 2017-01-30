@@ -14,5 +14,6 @@ class Recipient {
     var imageURL3 : String = ""
     var imageURL4 : String = ""
     var recipientID : String = ""
+    var groupMembers : [String] = [""]
     var tag : String = ""
 }

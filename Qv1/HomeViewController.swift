@@ -459,29 +459,82 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     
-func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-         if receivedPolls[indexPath.row].pollURL != "no url" {
-            return 355
-        } else if receivedPolls[indexPath.row].pollQuestionImageURL != "no question image" {
-            return 615
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if receivedPolls[indexPath.row].pollURL != "no url" {
+                return 355
+            } else if receivedPolls[indexPath.row].pollQuestionImageURL != "no question image" {
+                return 615
+            }
+            return 246
+        
+        
+    }
+    
+    func tableView( _ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
+        {
+            let footerView = UIView()
+        
+            return footerView
         }
-         return 246
+    
+    func tableView( _ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+            return 100
+        }
+   
+    
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+    }
+    
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let pollToLeave = receivedPolls[indexPath.row]
+        print(pollToLeave.pollID)
+        
+        let delete = UITableViewRowAction(style: .normal, title: "Leave") { action, index in
+            print("delete group tapped")
+            
+        let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(pollToLeave.pollID)
+            
+        ref.removeValue()
+            
+        self.deletePoll(poll: pollToLeave)
+            
+        tableView.reloadData()
+            
+        UIView.animate(withDuration: 0.1) {
+                self.view.layoutIfNeeded()
+            }
+            
+            
+        }
+        
+        delete.backgroundColor = UIColor.init(hexString: "FF4E56")
+        
+        
+        return [delete]
         
         
     }
     
-func tableView( _ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
-    {
-       let footerView = UIView()
-        
-       return footerView
-    }
     
-func tableView( _ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 100
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    
+        return true
+        
     }
     
 
+    func deletePoll(poll: Poll) {
+        
+        receivedPolls = receivedPolls.filter() {$0 !== poll}
+        
+    }
+
+    
+    
+    
  func linkViewTapped (sender : UITapGestureRecognizer) {
     
     

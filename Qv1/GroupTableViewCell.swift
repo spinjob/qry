@@ -11,9 +11,8 @@ import UIKit
 class GroupTableViewCell: UITableViewCell {
 
     @IBOutlet weak var groupMember1ImageView: UIImageView!
-    @IBOutlet weak var groupMember2ImageView: UIImageView!
-    @IBOutlet weak var groupMember3ImageView: UIImageView!
-    @IBOutlet weak var groupMember4ImageView: UIImageView!
+
+    @IBOutlet weak var groupMemberCollectionView: UICollectionView!
     
     @IBOutlet weak var groupNameLabel: UILabel!
     @IBOutlet weak var editButton: UIButton!
