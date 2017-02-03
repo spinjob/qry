@@ -77,13 +77,26 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     
     var imagePicker = UIImagePickerController()
-
     
+    let date = Date()
+    var expirationDate = Date()
+    var calendar = Calendar.current
+    let formatter = DateFormatter()
+    let myLocale = Locale(identifier: "bg_BG")
+
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+    
+        formatter.dateStyle = .short
         
+        formatter.timeStyle = .short
+        
+        let timeStamp = formatter.string(from: date)
+        
+        poll.dateCreated = timeStamp
+
        
        navigationController?.navigationBar.barTintColor = UIColor.white
        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
@@ -127,7 +140,8 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+       
+        let pollRef = FIRDatabase.database().reference().child("polls").child(pollId)
         let image = info[UIImagePickerControllerEditedImage] as! UIImage
         imagePicker.dismiss(animated: true, completion: nil)
         questionImage = image
@@ -147,7 +161,25 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
         imageView.backgroundColor = UIColor.clear
         
-            
+        if questionImage.size != CGSize(width: 0, height: 0) {
+                
+                let profileImageData = UIImageJPEGRepresentation(image, 0.4)
+                
+                FIRStorage.storage().reference().child("PollImages/\(pollId)/pollImage.jpg").put(profileImageData!, metadata: nil){
+                    metadata, error in
+                    
+                    if error != nil {
+                        print("error \(error)")
+                    }
+                    else {
+                        pollRef.child("questionImageURL").setValue((metadata?.downloadURL()?.absoluteString)!)
+                        self.questionImageURL = (metadata?.downloadURL()?.absoluteString)!
+                    
+                    }
+                    
+                }
+                
+            }
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
@@ -269,63 +301,47 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
         print(imageView.image)
         
-       // let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
-        
-       // let nextPoll : [NSObject : AnyObject] = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject]
-        
-       // FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls").child(pollId).setValue(nextPoll)
-      //  FIRDatabase.database().reference().child("polls").child(pollId).setValue(nextPoll)
-        
-      //  if pollURL != nil {
-            
-      //      FIRDatabase.database().reference().child("polls").child(pollId).child("pollURL").setValue(pollURL)
-        
-      //  }
-        
-      //  if pollImage != nil {
-            
-      //      FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageURL").setValue(pollImage)
-            
-      //  }
-        
-      //  if pollImageDescription != nil {
-            
-      //      FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageDescription").setValue(pollImageDescription)
-            
-       // }
-        
-      //  if pollImageTitle != nil {
-            
-      //      FIRDatabase.database().reference().child("polls").child(pollId).child("pollImageTitle").setValue(pollImageTitle)
-            
-      //  }
-
-        
-      // if pickerData[selectedIndex] == "an hour" {
-      //  poll.expiration = Timer(timeInterval: 3600, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
-      //  }
-        
-      // if pickerData[selectedIndex] == "a day" {
-      //     poll.expiration = Timer(timeInterval: 86400, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
-      //  }
-        
-      //  if pickerData[selectedIndex] == "a week" {
-      //      poll.expiration = Timer(timeInterval: 432000, target: self.poll, selector: "pollTimer", userInfo: nil, repeats: false)
-      //  }
-
-            performSegue(withIdentifier: "selectRecipientsSegue", sender: nil)
+        performSegue(withIdentifier: "selectRecipientsSegue", sender: nil)
         
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        var expirationDateString = ""
+        
         if segue.identifier == "selectRecipientsSegue" {
-       let nextVC = segue.destination as! SelectRecipientsViewController
-
-       let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
-    
+      
             
-        let dictPoll : [NSObject : AnyObject]  = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject, "pollImageURL" as NSObject: self.pollImage as AnyObject, "pollURL" as NSObject: self.pollURL as AnyObject, "pollImageDescription" as NSObject: self.pollImageDescription as AnyObject, "pollImageTitle" as NSObject: self.pollImageTitle as AnyObject, "questionImageURL" as NSObject: self.questionImageURL as AnyObject]
+            let nextVC = segue.destination as! SelectRecipientsViewController
+    
+
+            let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
+            
+            
+            if pickerData[selectedIndex] == "an hour" {
+                
+                expirationDate = calendar.date(byAdding: .hour, value: 1, to: date)!
+                
+            }
+            
+            if pickerData[selectedIndex] == "a day" {
+                
+                expirationDate = calendar.date(byAdding: .day, value: 1, to: date)!
+                
+            }
+            
+            if pickerData[selectedIndex] == "a week" {
+                
+                expirationDate = calendar.date(byAdding: .day, value: 7, to: date)!
+                
+            }
+           
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            expirationDateString = formatter.string(from: expirationDate)
+            
+            
+            let dictPoll : [NSObject : AnyObject]  = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject, "pollImageURL" as NSObject: self.pollImage as AnyObject, "pollURL" as NSObject: self.pollURL as AnyObject, "pollImageDescription" as NSObject: self.pollImageDescription as AnyObject, "pollImageTitle" as NSObject: self.pollImageTitle as AnyObject, "questionImageURL" as NSObject: self.questionImageURL as AnyObject, "dateCreated" as NSObject: self.poll.dateCreated as AnyObject, "expired" as NSObject: "false" as AnyObject, "expirationDate" as NSObject: expirationDateString as AnyObject, "answer1Count" as NSObject: "0" as AnyObject, "answer2Count" as NSObject: "0" as AnyObject]
             
             
         
@@ -339,9 +355,10 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         nextVC.poll.pollImageURL = pollImageTitle
         nextVC.poll.senderUser = (FIRAuth.auth()?.currentUser?.uid)!
         nextVC.poll.pollID = pollId
+        nextVC.poll.dateCreated = poll.dateCreated
         nextVC.questionImage = questionImage
+        nextVC.questionImageURL = self.questionImageURL
 
-        
         nextVC.dictPoll = dictPoll
         nextVC.pollID = pollId
             

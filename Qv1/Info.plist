@@ -2,14 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
-    <key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Qv1</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -35,12 +31,17 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>We&apos;d like to access your camera so you can use it in our app!</string>
+	<string>We'd like to access your camera so you can use it in our app!</string>
 	<key>NSContactsUsageDescription</key>
-	<string>We&apos;d like to access your contacts so you can ask friends without them needing the app!</string>
+	<string>We'd like to access your contacts so you can ask friends without them needing the app!</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We&apos;d like to access your photos so you can choose one!</string>
+	<string>We'd like to access your photos so you can choose one!</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ProximaNova-SBold.otf</string>
@@ -69,6 +70,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>    
+	</array>
 </dict>
 </plist>

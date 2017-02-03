@@ -27,6 +27,8 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     var groupRecipientList : [Recipient] = []
     var users : [User] = []
     var selectedRecipients  : [Recipient] = []
+    var selectedUserCells : [UITableViewCell] = []
+    var selectedGroupCells : [UITableViewCell] = []
     var questionImage : UIImage = UIImage()
     var questionImageURL : String = "no question image"
 
@@ -38,7 +40,9 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
     @IBOutlet weak var sendButton: UIButton!
     
-    
+    @IBOutlet weak var createGroupButtonHeightConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var sendButtonHeightConstraint: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,26 +59,31 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         tableView.delegate = self
         tableView.dataSource = self
+    
+        sendButtonHeightConstraint.constant = 0
+        createGroupButtonHeightConstraint.constant = 0
         
-        if questionImage.size != CGSize(width: 0, height: 0) {
-            
-            let profileImageData = UIImageJPEGRepresentation(questionImage, 0.4)
-            
-            FIRStorage.storage().reference().child("PollImages/\(poll.pollID)/pollImage.jpg").put(profileImageData!, metadata: nil){
-                metadata, error in
-                
-                if error != nil {
-                    print("error \(error)")
-                }
-                else {
-                    pollRef.child("questionImageURL").setValue((metadata?.downloadURL()?.absoluteString)!)
-                    self.questionImageURL = (metadata?.downloadURL()?.absoluteString)!
-                    
-                }
-                
-            }
-            
-        }
+        
+  //      if questionImage.size != CGSize(width: 0, height: 0) {
+  //
+  //          let profileImageData = UIImageJPEGRepresentation(questionImage, 0.4)
+  //
+  //          FIRStorage.storage().reference().child("PollImages/\(poll.pollID)/pollImage.jpg").put(profileImageData!, metadata: nil){
+  //              metadata, error in
+  //
+  //              if error != nil {
+  //                  print("error \(error)")
+  //              }
+  //              else {
+  //                  pollRef.child("questionImageURL").setValue((metadata?.downloadURL()?.absoluteString)!)
+  //                  self.questionImageURL = (metadata?.downloadURL()?.absoluteString)!
+  //
+  //              }
+  //
+  //          }
+  //
+  //      }
+     
         userRef.queryOrdered(byChild: "tag").queryEqual(toValue: "group").observe(.childAdded, with: {
             
             snapshot in
@@ -264,21 +273,29 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         let items = [groupRecipientList, recipientList]
         
-        
         if indexPath.section == 1 {
 
         let selectedRecipient = items[indexPath.section][indexPath.row]
         selectedRecipients.append(selectedRecipient)
+        selectedUserCells.append(selectedCell)
+        
+            if selectedUserCells.count > 1 {
+                createGroupButtonHeightConstraint.constant = 50
+            }
             
         }
 
+        if selectedRecipients.count > 1 {
+            sendButtonHeightConstraint.constant = 50
+        }
         
-        
-        if indexPath.section == 0 {
 
+        print(selectedRecipients)
+
+        if indexPath.section == 0 {
+            selectedGroupCells.append(selectedCell)
             
-            
-        let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(items[indexPath.section][indexPath.row].recipientID).child("groupMembers")
+            let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(items[indexPath.section][indexPath.row].recipientID).child("groupMembers")
             
             ref.observe(FIRDataEventType.childAdded, with: {(snapshot) in
                 
@@ -292,9 +309,6 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
                 recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
                 
                 self.groupMembers.append(recipient)
-                print("SELF\(self.groupMembers)")
-                
-                
                 
                 self.groupMembers.forEach { (Recipient) in
                     
@@ -320,72 +334,89 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             self.groupMembers.removeAll(keepingCapacity: true)
             
             })
+
             
-                     
-            print("GROUP OF USERS after \(groupMembers)")
-            
-        }
+            }
+        
 
         
     }
   
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        
+    func removeCell (cell: UITableViewCell) {
+        selectedUserCells = selectedUserCells.filter() {$0 !== cell}
+    }
     
+    func removeGroupCell (cell: UITableViewCell) {
+        selectedGroupCells = selectedUserCells.filter() {$0 !== cell}
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+
+        let deSelectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
+        
         let items = [groupRecipientList, recipientList]
         
         let deSelectedRecipient = items[indexPath.section][indexPath.row]
         
         if indexPath.section == 1 {
-
-        delete(recipient: items[indexPath.section][indexPath.row])
+            removeCell(cell: deSelectedCell)
+            delete(recipient: items[indexPath.section][indexPath.row])
             
-        print(selectedRecipients)
-            
+           if selectedUserCells.count < 2 {
+                
+                createGroupButtonHeightConstraint.constant = 0
+                
+            }
         }
         
-        let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(items[indexPath.section][indexPath.row].recipientID).child("groupMembers")
-        
-        ref.observe(FIRDataEventType.childAdded, with: {(snapshot) in
+        if indexPath.section == 0 {
             
-            let recipient = Recipient()
+            removeGroupCell(cell: deSelectedCell)
             
-            let snapshotValue = snapshot.value as! NSDictionary
+            if selectedGroupCells.count == 0 {
+                selectedRecipients.removeAll()
+            }
             
-            recipient.recipientName = snapshotValue["recipientName"] as! String
-            recipient.recipientID = snapshotValue["recipientID"] as! String
-            recipient.tag = snapshotValue["tag"] as! String
-            recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+            let groupRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser!.uid)!).child("recipientList").child(items[indexPath.section][indexPath.row].recipientID).child("groupMembers")
             
-            self.groupMembers.append(recipient)
-            print("SELF\(self.groupMembers)")
-            
-            
-            
-            self.groupMembers.forEach { (Recipient) in
+            groupRef.observe(.childAdded, with: {
                 
-                let indexToEnable = self.recipientList.index(where: { $0.recipientID.contains(Recipient.recipientID) == true})
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                var groupMember : Recipient = Recipient()
+                
+                groupMember.recipientName = snapshotValue["recipientName"] as! String
+                groupMember.recipientID = snapshotValue["recipientID"] as! String
+                groupMember.tag = snapshotValue["tag"] as! String
+                groupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+                
+                let indexToEnable = self.recipientList.index(where: { $0.recipientID.contains(groupMember.recipientID) == true})
                 let indexPathForGroupMember = NSIndexPath(row: indexToEnable!, section: 1)
                 
                 
                 tableView.cellForRow(at: indexPathForGroupMember as IndexPath)?.isUserInteractionEnabled = true
                 tableView.cellForRow(at: indexPathForGroupMember as IndexPath)?.alpha = 1
                 tableView.deselectRow(at: indexPathForGroupMember as IndexPath, animated: true)
-                self.delete(recipient: Recipient)
+                
+                self.selectedRecipients = self.selectedRecipients.filter() {$0 !== groupMember}
+
             
-            }
+            })
             
-            self.groupMembers.removeAll(keepingCapacity: true)
             
-            print("SELF RECIPIENTLIST \(self.recipientList)")
-            
-        })
+        }
+
         
-      print("AFTER RECIPIENTLIST \(recipientList)")
+        if selectedRecipients.count == 0 {
+            sendButtonHeightConstraint.constant = 0
+        }
+        
+        print(self.selectedRecipients)
     }
     
     
-    @IBAction func createGroupButtonTapped(_ sender: Any) {
+    @IBAction func createListButtonTapped(_ sender: Any) {
+        
         
         var newRecipient : [NSObject : AnyObject] = [ : ]
         
@@ -429,29 +460,43 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         tableView.reloadData()
         
-        
+
     }
     
     @IBAction func sendButtonTapped(_ sender: Any) {
         
         let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)
-        pollRef.setValue(dictPoll)
-               
+        let currentDate = Date()
+        var expirationDate = Date()
+        let formatter = DateFormatter()
+        let calendar = Calendar.current
+        
+       pollRef.setValue(dictPoll)
+        
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+    
+    
         print("Send Tapped Question Image \(questionImage)")
         
         
         self.selectedRecipients.forEach { (Recipient) in
         
         let recipientID = Recipient.recipientID
-        print(Recipient.recipientName)
-        let recipientDict : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject]
+        print(recipientID)
+            
+        let recipientDict : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject, "hasLeft" as NSObject: "0" as AnyObject]
+       
         let voter : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "voteString" as NSObject: "no vote" as AnyObject]
+        
         let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(pollID)
         let sentToRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
         let voteRef = FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(recipientID)
             
    
         sentToRef.setValue(recipientDict)
+        
+            
         ref.setValue(self.dictPoll)
         ref.child("questionImageURL").setValue(self.questionImageURL)
         voteRef.setValue(voter)
@@ -474,8 +519,6 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     func delete(recipient: Recipient) {
         selectedRecipients = selectedRecipients.filter() {$0 !== recipient}
     }
-
-    
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -485,7 +528,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         print(nextVC.group)
     
-        }
+            }
         }
     
     }

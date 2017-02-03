@@ -5,6 +5,7 @@
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(AppIdentifierPrefix)SMJ.Qv1</string>
+		<string>$(AppIdentifierPrefix)SpencerJ.Quin</string>
 	</array>
 </dict>
 </plist>

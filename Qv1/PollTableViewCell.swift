@@ -32,6 +32,8 @@ class PollTableViewCell: UITableViewCell {
     @IBOutlet weak var imageDescriptionTextView: UITextView!
     @IBOutlet weak var linkPreviewView: UIView!
     
+    @IBOutlet weak var timeUntilExpirationLabel: UILabel!
+    
     @IBOutlet weak var answerButton1VerticalConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var answerButton2VerticalConstraint: NSLayoutConstraint!

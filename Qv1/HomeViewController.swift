@@ -72,6 +72,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
             let snapshotValue = snapshot.value as! NSDictionary
            
+
             
             poll.answer1String = snapshotValue["answer1"] as! String
             poll.answer2String = snapshotValue["answer2"] as! String
@@ -83,9 +84,17 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
             poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
+            poll.dateExpired = snapshotValue["expirationDate"] as! String
+            poll.dateCreated = snapshotValue["dateCreated"] as! String
             
+            if snapshotValue["expired"] as! String == "true" {
+                poll.isExpired = true
+            }
             
+    
             self.receivedPolls.append(poll)
+
+           
             
             self.tableView.reloadData()
             
@@ -165,7 +174,31 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.userImageTapped(sender:)))
         let linkViewTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.linkViewTapped(sender:)))
         
+        //determining amount of time until the poll expires
         let pollForCell = receivedPolls[indexPath.row]
+        
+        let date = Date()
+        let formatter = DateFormatter()
+        let calendar = Calendar.current
+       
+        
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        let dateString = formatter.string(from: date)
+        
+        let pollForCellDateExpired = formatter.date(from: pollForCell.dateExpired)
+        let pollForCellDateCreated = formatter.date(from: pollForCell.dateCreated)
+        let currentDate = formatter.date(from: dateString)
+ 
+        let hoursLeft = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateExpired!)
+        let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
+        let daysLeft = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateExpired!)
+        
+        
+        print("HOURS LEFT\(hoursLeft)")
+        print("Minutes LEFT\(minutesLeft)")
+        print("HOURS LEFT\(daysLeft)")
+        
         
         let senderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child(receivedPolls[indexPath.row].senderUser)
         let sentToRecipientsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("sentTo")
@@ -178,8 +211,265 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         var sentToRecipientsString : [String] = [""]
         var numberOfOtherRecipients : Int
         
-      
-    
+        if hoursLeft.hour! < 1 {
+            cell.timeUntilExpirationLabel.text = "\(minutesLeft.minute!) minutes left"
+        }
+        
+        
+        if daysLeft.day! > 1 {
+            cell.timeUntilExpirationLabel.text = "\(daysLeft.day!) days left"
+        }
+        
+        
+        if daysLeft.day! == 1 {
+            cell.timeUntilExpirationLabel.text = "\(daysLeft.day!) day left"
+        }
+        
+        if hoursLeft.hour! > 1, daysLeft.day! < 1 {
+            cell.timeUntilExpirationLabel.text = "\(hoursLeft.hour!) hours left"
+        }
+        
+        if hoursLeft.hour! == 1 {
+            cell.timeUntilExpirationLabel.text = "\(hoursLeft.hour!) hour left"
+        }
+        
+        
+        //formatting for expired polls
+        
+        if minutesLeft.minute == 0 {
+            cell.timeUntilExpirationLabel.text = "Expired"
+            
+            
+            let sentToRecipientsReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("sentTo")
+            var sentToRecipientIDs : [String] = []
+            let mainPollRef = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID)
+            
+            pollRef.child(pollForCell.pollID).child("expired").setValue("true")
+            mainPollRef.child("expired").setValue("true")
+            
+            
+            cell.resultsView.isHidden = false
+            cell.answer2Button.isHidden = true
+            cell.answer1Button.isHidden = true
+            cell.viewPollResultsButton.isHidden = true
+            cell.answer2ResultBarImageView.layer.borderColor = UIColor.init(hexString: "DEDEDE").cgColor
+            cell.answer1ResultBarImageView.layer.borderColor = UIColor.init(hexString: "DEDEDE").cgColor
+            
+            
+            //get votes and calculate poll results from Firebase
+            
+            let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
+            
+            
+            pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
+                snapshot in
+                
+                cell.answer1PercentageTextLabel.text = String(snapshot.childrenCount)
+                
+            })
+            
+            pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
+                snapshot in
+                
+                cell.answer2PercentageTextLabel.text = String(snapshot.childrenCount)
+                
+                let answer1Count = Double(cell.answer1PercentageTextLabel.text!)
+                let answer2Count = Double(snapshot.childrenCount)
+                let total = answer1Count! + answer2Count
+                
+                if total > 0 {
+                    
+                    let answer1frame : CGRect = CGRect(x: cell.answer1ResultBarImageView.frame.origin.x, y: cell.answer1ResultBarImageView.frame.origin.y, width: CGFloat(334*(answer1Count!/total)), height: cell.answer1ResultBarImageView.frame.height)
+                    
+                    let answer2frame : CGRect = CGRect(x: cell.answer2ResultBarImageView.frame.origin.x, y: cell.answer2ResultBarImageView.frame.origin.y, width: CGFloat(334*(answer2Count/total)), height: cell.answer1ResultBarImageView.frame.height)
+                    
+                    cell.answer1ResultBarImageView.frame = answer1frame
+                    cell.answer2ResultBarImageView.frame = answer2frame
+                    
+                    
+                    if answer1Count == 0, Int(answer2Count) > 0 {
+                        cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1TextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2TextLabel.textColor = UIColor.white
+                        cell.answer2PercentageTextLabel.textColor = UIColor.white
+                        cell.answer1ResultBarImageView.frame = CGRect(x: cell.answer1ResultBarImageView.frame.origin.x, y: cell.answer1ResultBarImageView.frame.origin.y, width: 0, height: cell.answer1ResultBarImageView.frame.height)
+                    }
+                    
+                    if answer2Count == 0, Int(answer1Count!) > 0 {
+                        cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2TextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        //cell.answer1ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
+                        cell.answer1ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1TextLabel.textColor = UIColor.white
+                        cell.answer1PercentageTextLabel.textColor = UIColor.white
+                        cell.answer2ResultBarImageView.frame = CGRect(x: cell.answer2ResultBarImageView.frame.origin.x, y: cell.answer2ResultBarImageView.frame.origin.y, width: 0, height: cell.answer1ResultBarImageView.frame.height)
+                    }
+                    
+                    if Int(answer1Count!) < Int(answer2Count) {
+                        
+                        // cell.answer2ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
+                        cell.answer2ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
+                        cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1TextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                    }
+                    
+                    
+                    if Int(answer1Count!) == Int(answer2Count) {
+                        cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2TextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1TextLabel.textColor = UIColor.white
+                        cell.answer1PercentageTextLabel.textColor = UIColor.white
+                    }
+                    
+                    
+                    
+                } else {
+                    cell.viewPollResultsButton.isHidden = true
+                    cell.noVotesButton.isHidden = false
+                    cell.answer1Button.isHidden = false
+                    cell.answer2Button.isHidden = false
+                    cell.resultsView.isHidden = true
+                    
+                }
+                
+                
+            })
+            
+            self.view.reloadInputViews()
+            
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+                
+            }
+        }
+        
+        
+        
+        if minutesLeft.minute! < 0 {
+            cell.timeUntilExpirationLabel.text = "Expired"
+            
+            
+            let sentToRecipientsReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("sentTo")
+            var sentToRecipientIDs : [String] = []
+            let mainPollRef = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID)
+            
+            pollRef.child(pollForCell.pollID).child("expired").setValue("true")
+            mainPollRef.child("expired").setValue("true")
+            
+            
+            cell.resultsView.isHidden = false
+            cell.answer2Button.isHidden = true
+            cell.answer1Button.isHidden = true
+            cell.viewPollResultsButton.isHidden = true
+            cell.answer2ResultBarImageView.layer.borderColor = UIColor.init(hexString: "DEDEDE").cgColor
+            cell.answer1ResultBarImageView.layer.borderColor = UIColor.init(hexString: "DEDEDE").cgColor
+            
+
+            //get votes and calculate poll results from Firebase
+            
+            let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
+            
+            
+            pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
+                snapshot in
+                
+                cell.answer1PercentageTextLabel.text = String(snapshot.childrenCount)
+                
+            })
+            
+            pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
+                snapshot in
+                
+                cell.answer2PercentageTextLabel.text = String(snapshot.childrenCount)
+                
+                let answer1Count = Double(cell.answer1PercentageTextLabel.text!)
+                let answer2Count = Double(snapshot.childrenCount)
+                let total = answer1Count! + answer2Count
+                
+                if total > 0 {
+                    
+                    let answer1frame : CGRect = CGRect(x: cell.answer1ResultBarImageView.frame.origin.x, y: cell.answer1ResultBarImageView.frame.origin.y, width: CGFloat(334*(answer1Count!/total)), height: cell.answer1ResultBarImageView.frame.height)
+                    
+                    let answer2frame : CGRect = CGRect(x: cell.answer2ResultBarImageView.frame.origin.x, y: cell.answer2ResultBarImageView.frame.origin.y, width: CGFloat(334*(answer2Count/total)), height: cell.answer1ResultBarImageView.frame.height)
+                    
+                    cell.answer1ResultBarImageView.frame = answer1frame
+                    cell.answer2ResultBarImageView.frame = answer2frame
+                    
+                    
+                    if answer1Count == 0, Int(answer2Count) > 0 {
+                        cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1TextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2TextLabel.textColor = UIColor.white
+                        cell.answer2PercentageTextLabel.textColor = UIColor.white
+                        cell.answer1ResultBarImageView.frame = CGRect(x: cell.answer1ResultBarImageView.frame.origin.x, y: cell.answer1ResultBarImageView.frame.origin.y, width: 0, height: cell.answer1ResultBarImageView.frame.height)
+                    }
+                    
+                    if answer2Count == 0, Int(answer1Count!) > 0 {
+                        cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2TextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        //cell.answer1ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
+                        cell.answer1ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1TextLabel.textColor = UIColor.white
+                        cell.answer1PercentageTextLabel.textColor = UIColor.white
+                        cell.answer2ResultBarImageView.frame = CGRect(x: cell.answer2ResultBarImageView.frame.origin.x, y: cell.answer2ResultBarImageView.frame.origin.y, width: 0, height: cell.answer1ResultBarImageView.frame.height)
+                    }
+                    
+                    if Int(answer1Count!) < Int(answer2Count) {
+                        
+                        // cell.answer2ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
+                        cell.answer2ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
+                        cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1TextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                    }
+                    
+                    
+                    if Int(answer1Count!) == Int(answer2Count) {
+                        cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2TextLabel.textColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer2ResultBarImageView.backgroundColor = UIColor.init(hexString: "DEDEDE")
+                        cell.answer1TextLabel.textColor = UIColor.white
+                        cell.answer1PercentageTextLabel.textColor = UIColor.white
+                    }
+
+                    
+                    
+                } else {
+                    cell.viewPollResultsButton.isHidden = true
+                    cell.noVotesButton.isHidden = false
+                    cell.answer1Button.isHidden = false
+                    cell.answer2Button.isHidden = false
+                    cell.resultsView.isHidden = true
+                    
+                }
+                
+                
+            })
+            
+            self.view.reloadInputViews()
+            
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+                
+            }
+            
+        } else {
+            cell.resultsView.isHidden = true
+            cell.answer1Button.isHidden = false
+            cell.answer2Button.isHidden = false
+            cell.viewPollResultsButton.isHidden = false
+            cell.answer2ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
+            cell.answer1ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
+        }
+
+        
+        
         cell.answer1Button.tag = indexPath.row
         cell.answer2Button.tag = indexPath.row
         cell.viewPollResultsButton.tag = indexPath.row
@@ -205,10 +495,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.separatorImageView.layer.borderWidth = 0.2
         cell.separatorImageView.layer.borderColor = UIColor.init(hexString: "D8D8D8").cgColor
         
-        cell.resultsView.isHidden = true
-        cell.answer1Button.isHidden = false
-        cell.answer2Button.isHidden = false
-        cell.viewPollResultsButton.isSelected = false
         
         cell.pollImageView.layer.borderWidth = 0.5
         cell.pollImageView.layer.cornerRadius = 3.5
@@ -218,6 +504,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.linkPreviewView.layer.borderWidth = 0.2
         cell.linkPreviewView.layer.borderColor = UIColor.lightGray.cgColor
         cell.linkPreviewView.layer.cornerRadius = 3.5
+        
     
         cell.resultViewVerticalConstraint.constant = 80
         cell.answerButton1VerticalConstraint.constant = 80
@@ -263,19 +550,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.viewPollResultsButton.isSelected = false
         cell.answer2TextLabel.text = cell.answer2Button.titleLabel!.text
         cell.answer1TextLabel.text = cell.answer1Button.titleLabel!.text
-        cell.answer1ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
+        
         cell.answer1ResultBarImageView.layer.borderWidth = 0.2
         cell.answer1ResultBarImageView.layer.cornerRadius = 4
         cell.answer1ResultBarImageView.layer.masksToBounds = true
         
-        cell.noVotesButton.addTarget(self, action: #selector(self.reloadResultsButtonTapped(sender:)), for: .touchUpInside)
-        
-        cell.answer2ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
         cell.answer2ResultBarImageView.layer.borderWidth = 0.2
         cell.answer2ResultBarImageView.layer.cornerRadius = 4
         cell.answer2ResultBarImageView.layer.masksToBounds = true
         
-        cell.resultsView.isHidden = true
+        cell.noVotesButton.addTarget(self, action: #selector(self.reloadResultsButtonTapped(sender:)), for: .touchUpInside)
+        
+     
+        
+       
         cell.noVotesButton.isHidden = true
         
         //imagepollviews
@@ -285,9 +573,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.imagePollView.layer.cornerRadius = 3.5
         cell.imagePollView.layer.masksToBounds = true
         
-        
-        print(pollForCell)
-        
+    
         if pollForCell.pollQuestionImageURL != "no question image", cell.linkPreviewView.isHidden == true {
             cell.imagePollImageView.sd_setImage(with: URL(string: pollForCell.pollQuestionImageURL))
             cell.imagePollView?.isHidden = false
@@ -344,6 +630,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     })
                 }
  
+        if pollForCell.isExpired == false {
+           
             if answer1Count == 0, Int(answer2Count) > 0 {
                 cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
                 cell.answer1TextLabel.textColor = UIColor.init(hexString: "00CDCE")
@@ -369,8 +657,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
                cell.answer1TextLabel.textColor = UIColor.init(hexString: "00CDCE")
             }
-        
-        }
             
             if Int(answer1Count!) == Int(answer2Count) {
                 cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
@@ -380,15 +666,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.answer1TextLabel.textColor = UIColor.white
                 cell.answer1PercentageTextLabel.textColor = UIColor.white
             }
-           
-        
+       
+        }
+                
+                
+        }
             
             
             if total == 0 {
                 cell.viewPollResultsButton.isHidden = true
                 cell.noVotesButton.isHidden = false
             }
-        print(cell.answer1ResultBarImageView.frame)
+    
         })
 
         myVoteReference.observe(.value, with: {
@@ -440,7 +729,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         })
 
         
-        if receivedPolls[indexPath.row].pollURL != "no url"  {
+        if pollForCell.pollURL != "no url"  {
             cell.linkPreviewView.isHidden = false
             cell.resultViewVerticalConstraint.constant = 202
             cell.answerButton1VerticalConstraint.constant = 202
@@ -642,7 +931,9 @@ func userImageTapped (sender : UITapGestureRecognizer) {
         sender.isSelected = !sender.isSelected;
     
         let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!).child("voteString")
-        
+    
+        let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[sender.tag].pollID)
+    
         let answeredPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(receivedPolls[sender.tag].pollID).child("vote")
         
         let senderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child(receivedPolls[sender.tag].senderUser)
@@ -663,7 +954,7 @@ func userImageTapped (sender : UITapGestureRecognizer) {
                 sender.isSelected = false
                 sender.layer.backgroundColor = UIColor.white.cgColor
                 pollAnsweredRef.setValue("no vote")
-               // answeredPollRef.setValue("no vote")
+            
             }
         } else {
             
@@ -675,7 +966,9 @@ func userImageTapped (sender : UITapGestureRecognizer) {
         if selectedButton[sender.tag]?.isSelected == true {
             
             pollAnsweredRef.setValue("answer1")
+            
           //  answeredPollRef.setValue("answer1")
+            
             
         } else {
             pollAnsweredRef.setValue("no vote")
@@ -1013,6 +1306,8 @@ func reloadResultsButtonTapped (sender : UIButton){
             
     }
   
+    
+
     
 
 }
