@@ -110,6 +110,8 @@
 		68D384371DBFBC05000B4084 /* AWSDynamoDB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		68D384461DBFBD2C000B4084 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D384451DBFBD2C000B4084 /* libz.tbd */; };
 		68D384481DBFBD36000B4084 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D384471DBFBD36000B4084 /* libsqlite3.tbd */; };
+		68D989201E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D9891F1E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift */; };
+		68D989221E4BFEF1003A7554 /* AddGroupMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D989211E4BFEF1003A7554 /* AddGroupMemberViewController.swift */; };
 		68DA700D1E0092C700B396C5 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DA700C1E0092C700B396C5 /* Logo.png */; };
 		68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3951DB6EF5000C87385 /* HomeViewController.swift */; };
 		68DBF3981DB6EF9A00C87385 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3971DB6EF9A00C87385 /* User.swift */; };
@@ -241,6 +243,8 @@
 		68D384451DBFBD2C000B4084 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		68D384471DBFBD36000B4084 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		68D386331DBFD85A000B4084 /* Qv1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qv1.entitlements; sourceTree = "<group>"; };
+		68D9891F1E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupMemberTableViewCell.swift; sourceTree = "<group>"; };
+		68D989211E4BFEF1003A7554 /* AddGroupMemberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupMemberViewController.swift; sourceTree = "<group>"; };
 		68DA700C1E0092C700B396C5 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo.png; path = ../../Logo.png; sourceTree = "<group>"; };
 		68DBF3951DB6EF5000C87385 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		68DBF3971DB6EF9A00C87385 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -429,6 +433,8 @@
 			children = (
 				68E2F7E31E158976002E13D9 /* GroupViewController.swift */,
 				68B118D51E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift */,
+				68D989211E4BFEF1003A7554 /* AddGroupMemberViewController.swift */,
+				68D9891F1E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift */,
 			);
 			name = "Group VC";
 			sourceTree = "<group>";
@@ -773,12 +779,14 @@
 				68DBF3981DB6EF9A00C87385 /* User.swift in Sources */,
 				68CCC47F1DC524230094F3AE /* FriendTableViewCell.swift in Sources */,
 				68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */,
+				68D989221E4BFEF1003A7554 /* AddGroupMemberViewController.swift in Sources */,
 				68B118D61E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift in Sources */,
 				682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */,
 				6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */,
 				6825729A1DF79880006150DB /* UserProfileViewController.swift in Sources */,
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				68D384291DBBF31C000B4084 /* SelectBirthdayViewController.swift in Sources */,
+				68D989201E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift in Sources */,
 				68219A771E0AFEEA004E822F /* FriendsViewController.swift in Sources */,
 				680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */,
 				682DB3A51DD66E95009015AC /* ChatViewController.swift in Sources */,

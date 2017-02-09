@@ -33,6 +33,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     let newPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls")
     let sentPollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls")
     
+    
+    
 
     
     override func viewDidLoad() {
@@ -64,14 +66,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
             })
 
-                
         
-        pollRef.observe(.childAdded, with: {
+        pollRef.queryOrdered(byChild: "expirationDate").observe(.childAdded, with: {
             snapshot in
             
             
             let poll = Poll()
-
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            let calendar = Calendar.current
+            let dateString = formatter.string(from: date)
+            
+           // print("DATE STRING \(dateString)")
+            
             let snapshotValue = snapshot.value as! NSDictionary
            
 
@@ -89,17 +98,23 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             poll.dateExpired = snapshotValue["expirationDate"] as! String
             poll.dateCreated = snapshotValue["dateCreated"] as! String
             
+            //print("EXPIRATION DATE \(snapshotValue["expirationDate"] as! String)")
+        
+            
+            let pollForCellDateExpired = formatter.date(from: poll.dateExpired)
+            let currentDate = formatter.date(from: dateString)
+            let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
+            poll.minutesUntilExpiration = minutesLeft.minute!
+            
             if snapshotValue["expired"] as! String == "true" {
                 poll.isExpired = true
-                
                 
             }
             
     
             self.receivedPolls.append(poll)
-
-           
-            
+            self.receivedPolls = self.receivedPolls.sorted(by: {$0.minutesUntilExpiration > $1.minutesUntilExpiration})
+        
             self.tableView.reloadData()
             
             
@@ -110,6 +125,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         
+        //self.receivedPolls = receivedPolls.sorted(by: {$0.minutesUntilExpiration < $1.minutesUntilExpiration})
         
         tableView.reloadData()
         
@@ -180,6 +196,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //determining amount of time until the poll expires
         let pollForCell = receivedPolls[indexPath.row]
+        print("minutes Remaining \(pollForCell.minutesUntilExpiration)")
         
         let date = Date()
         let formatter = DateFormatter()
@@ -197,20 +214,19 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let hoursLeft = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateExpired!)
         let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
         let daysLeft = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateExpired!)
+        let minutesTotal = calendar.dateComponents([.minute], from: pollForCellDateCreated!, to:pollForCellDateExpired! )
+        let minutesLeftDouble : Double = Double(pollForCell.minutesUntilExpiration)
+        let minutesTotalDouble : Double = Double(minutesTotal.minute!)
         
+        print("minutes TOTAL\(minutesTotalDouble)")
         
-        print("HOURS LEFT\(hoursLeft)")
-        print("Minutes LEFT\(minutesLeft)")
-        print("HOURS LEFT\(daysLeft)")
-        
+        let percentageLeft : Double = (minutesLeftDouble / minutesTotalDouble)*100
         
         let senderUserRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("users").child(receivedPolls[indexPath.row].senderUser)
         let sentToRecipientsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("sentTo")
         let pollVoteReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("votes")
         let myVoteReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("votes").child((FIRAuth.auth()?.currentUser?.uid)!)
         let chatMemberRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(receivedPolls[indexPath.row].pollID).child("sentTo")
-        
-        
 
         var sentToRecipientsString : [String] = [""]
         var numberOfOtherRecipients : Int
@@ -237,6 +253,40 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.timeUntilExpirationLabel.text = "\(hoursLeft.hour!) hour left"
         }
         
+        
+        
+        cell.timerView.isHidden = true
+
+        if minutesLeft.minute! > 0, pollForCell.isExpired == false {
+            
+        print(percentageLeft)
+        cell.timerView.isHidden = false
+        let chartView = PieChartView()
+        
+        chartView.frame = CGRect(x: 0, y: 0, width: cell.timerView.frame.size.width, height: 62)
+        
+        if percentageLeft < 10 {
+                chartView.segments = [
+                    Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
+                    Segment(color: UIColor.init(hexString: "FF4E56"), value: CGFloat(percentageLeft))
+                    
+                ]
+                
+        } else {
+            
+                chartView.segments = [
+            
+                    Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
+                    Segment(color: UIColor.init(hexString: "004488"), value: CGFloat(percentageLeft))
+                    
+                ]
+            
+        }
+            
+        cell.timerView.addSubview(chartView)
+        
+        
+        }
         
         //formatting for expired polls
         
@@ -504,21 +554,30 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let myVote = snapshotValue["voteString"] as! String
             
             if myVote == "answer1" {
+              
+                if pollForCell.isExpired == false {
+                
                 cell.answer1Button.isSelected = true
                 cell.answer1Button.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
                 cell.answer2Button.isSelected = false
                 cell.answer2Button.layer.backgroundColor = UIColor.white.cgColor
+                }
                 
                 if pollForCell.isExpired == true {
                     
-                    cell.answer2Button.alpha = 0.5
-                    cell.answer2Button.isUserInteractionEnabled = false
+                   
                     cell.answer1Button.isUserInteractionEnabled = false
                     cell.answer1Button.layer.backgroundColor = UIColor.init(hexString: "EFF0F1").cgColor
                     cell.answer1Button.layer.borderColor = UIColor.init(hexString: "EFF0F1").cgColor
-                    cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
+                    cell.answer1Button.titleLabel!.textColor = UIColor.gray
+                    cell.answer1Button.alpha = 0.8
+                    
+                    cell.answer2Button.titleLabel!.textColor = UIColor.gray
                     cell.answer2Button.layer.borderColor = UIColor.init(hexString: "D4D4D4").cgColor
-                    cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
+                    cell.answer2Button.layer.backgroundColor = UIColor.white.cgColor
+                    cell.answer2Button.isUserInteractionEnabled = false
+                    cell.answer2Button.alpha = 0.8
+                    //cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
 
                     
                     
@@ -527,33 +586,44 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             
             if myVote == "answer2" {
+                
+                if pollForCell.isExpired == false {
+                    
                 cell.answer2Button.isSelected = true
                 cell.answer2Button.layer.backgroundColor = UIColor.init(hexString: "00CDCE").cgColor
                 cell.answer1Button.isSelected = false
                 cell.answer1Button.layer.backgroundColor = UIColor.white.cgColor
                 
+                }
                 if pollForCell.isExpired == true {
                     
-                    cell.answer1Button.alpha = 0.5
-                    cell.answer2Button.isUserInteractionEnabled = false
                     cell.answer1Button.isUserInteractionEnabled = false
+                    cell.answer1Button.layer.borderColor = UIColor.init(hexString: "D4D4D4").cgColor
+                    cell.answer1Button.titleLabel!.textColor = UIColor.gray
+                    cell.answer1Button.layer.backgroundColor = UIColor.white.cgColor
+                    cell.answer1Button.alpha = 0.8
+                    
+                    cell.answer2Button.isUserInteractionEnabled = false
                     cell.answer2Button.layer.backgroundColor = UIColor.init(hexString: "EFF0F1").cgColor
                     cell.answer2Button.layer.borderColor = UIColor.init(hexString: "EFF0F1").cgColor
-                    cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
-                    cell.answer1Button.layer.borderColor = UIColor.init(hexString: "D4D4D4").cgColor
-                    cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
-    
-                    
+                    cell.answer2Button.titleLabel!.textColor = UIColor.gray
+                    cell.answer2Button.alpha = 0.8
+                
                     
                 }
         
             }
             
             if myVote == "no vote" {
+                
+                if pollForCell.isExpired == false {
+                    
                 cell.answer1Button.isSelected = false
                 cell.answer2Button.isSelected = false
                 cell.answer1Button.layer.backgroundColor = UIColor.white.cgColor
                 cell.answer2Button.layer.backgroundColor = UIColor.white.cgColor
+                
+                }
                 
                 if pollForCell.isExpired == true {
                     
@@ -997,7 +1067,9 @@ func viewPollResultsButtonTapped (sender : UIButton){
             let answer2Count = Double(snapshot.childrenCount)
             let total = answer1Count! + answer2Count
 
-        if total > 0 {
+        if total > 0, self.receivedPolls[sender.tag].isExpired == false {
+            
+            print(self.receivedPolls[sender.tag].isExpired)
             
             let answer1frame : CGRect = CGRect(x: cell.answer1ResultBarImageView.frame.origin.x, y: cell.answer1ResultBarImageView.frame.origin.y, width: CGFloat(334*(answer1Count!/total)), height: cell.answer1ResultBarImageView.frame.height)
             
@@ -1009,32 +1081,46 @@ func viewPollResultsButtonTapped (sender : UIButton){
             if answer1Count == 0, Int(answer2Count) > 0 {
                 cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
                 cell.answer1TextLabel.textColor = UIColor.init(hexString: "00CDCE")
-                cell.answer2ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
+                cell.answer1ResultBarImageView.isHidden = true
+                
+                cell.answer2ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground")
                 cell.answer2TextLabel.textColor = UIColor.white
                 cell.answer2PercentageTextLabel.textColor = UIColor.white
+                cell.answer2ResultBarImageView.isHidden = false
+                
             }
             
             if answer2Count == 0, Int(answer1Count!) > 0 {
                 cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
                 cell.answer2TextLabel.textColor = UIColor.init(hexString: "00CDCE")
-                cell.answer1ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
+                cell.answer2ResultBarImageView.isHidden = false
+                cell.answer1ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground")
                 cell.answer1TextLabel.textColor = UIColor.white
                 cell.answer1PercentageTextLabel.textColor = UIColor.white
+                cell.answer1ResultBarImageView.isHidden = false
             }
             
             if Int(answer1Count!) < Int(answer2Count) {
                 
-                cell.answer2ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
-                cell.answer1ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
+                cell.answer2ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground")
+                cell.answer1ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground")
                 cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
                 cell.answer1TextLabel.textColor = UIColor.init(hexString: "00CDCE")
+            }
+            
+            if Int(answer2Count) < Int(answer1Count!) {
+                
+                cell.answer1ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground")
+                cell.answer2ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground")
+                cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
+                cell.answer2TextLabel.textColor = UIColor.init(hexString: "00CDCE")
             }
             
             if Int(answer1Count!) == Int(answer2Count) {
                 cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
                 cell.answer2TextLabel.textColor = UIColor.init(hexString: "00CDCE")
-                cell.answer1ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
-                cell.answer2ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
+                cell.answer1ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground")
+                cell.answer2ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground")
                 cell.answer1TextLabel.textColor = UIColor.white
                 cell.answer1PercentageTextLabel.textColor = UIColor.white
             }
@@ -1043,6 +1129,7 @@ func viewPollResultsButtonTapped (sender : UIButton){
         }
             
         if total > 0, self.receivedPolls[sender.tag].isExpired == true {
+            print(self.receivedPolls[sender.tag].isExpired)
                 
             let answer1frame : CGRect = CGRect(x: cell.answer1ResultBarImageView.frame.origin.x, y: cell.answer1ResultBarImageView.frame.origin.y, width: CGFloat(334*(answer1Count!/total)), height: cell.answer1ResultBarImageView.frame.height)
                 
@@ -1149,7 +1236,7 @@ func viewPollResultsButtonTapped (sender : UIButton){
     UIView.animate(withDuration: 0.2) {
         self.view.layoutIfNeeded()
         
-    }
+        }
     }
 
     func presentCreatePollViewController(sender: UIButton) {

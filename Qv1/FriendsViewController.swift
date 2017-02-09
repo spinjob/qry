@@ -34,6 +34,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         
+        
         createGroupButtonHeightConstraint.constant = 0
         let friendAndGroupListReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID).child("recipientList")
         
@@ -336,16 +337,16 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         
         let selectedRecipientNames = selectedRecipients.map { $0.recipientName}
-        print(selectedRecipientNames)
+      //  print(selectedRecipientNames)
         
         let selectedRecipientIDs = selectedRecipients.map { $0.recipientID}
-        print(selectedRecipientIDs)
+      //  print(selectedRecipientIDs)
         
         let selectedRecipientNamesString = selectedRecipientNames.joined(separator: ", ")
-        print(selectedRecipientNamesString)
+      //  print(selectedRecipientNamesString)
         
         let selectedRecipientIDString = selectedRecipientIDs.joined(separator: "+")
-        print(selectedRecipientIDString)
+      //  print(selectedRecipientIDString)
         
         let recipientID = UUID().uuidString
         
@@ -374,9 +375,12 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             recipientListRef.child("groupMembers").child(Recipient.recipientID).setValue(groupMember)
             
         }
+       
         
         selectedRecipients.removeAll()
-        tableView.reloadSections([1], with: .fade)
+        selectedCells.removeAll()
+        print(groupArray)
+        tableView.reloadData()
         
     }
     

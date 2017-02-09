@@ -35,7 +35,6 @@ class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UI
         super.viewDidLoad()
 
         
-        
         groupImageView.isHidden = false
         groupImageView.layer.cornerRadius = 3
         groupImageView.layer.borderWidth = 0.3
@@ -125,6 +124,12 @@ class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UI
         cell.groupMemberImageView.sd_setImage(with: URL(string: groupMemberForCell.imageURL1))
         cell.groupMemberImageView.layer.cornerRadius =  cell.groupMemberImageView.layer.frame.size.width / 2
         cell.groupMemberImageView.layer.masksToBounds = true
+        cell.removeButton.layer.cornerRadius = 4
+        cell.removeButton.layer.masksToBounds = true
+        cell.removeButton.tag = indexPath.row
+        cell.removeButton.addTarget(self, action: #selector(self.removeButtonTapped(sender:)), for: .touchUpInside)
+        
+        
         
         return cell
     }
@@ -144,6 +149,11 @@ class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UI
     }
     
     @IBAction func addFriendButtonTapped(_ sender: Any) {
+        
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "AddGroupMemberViewController") as! AddGroupMemberViewController
+        myVC.groupID = groupID
+        
+        navigationController?.pushViewController(myVC, animated: true)
     }
 
 
@@ -171,5 +181,21 @@ class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UI
 
         
     }
+
+    func removeButtonTapped (sender: UIButton) {
+        
+        let groupReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(groupID).child("groupMembers")
+        
+        groupReference.child(groupMembers[sender.tag].recipientID).removeValue()
+        
+        groupMembers.remove(at: sender.tag)
+        
+        tableView.reloadData()
+    }
+    
+     @IBAction func unwindToGroupAfterAddingMembers (segue: UIStoryboardSegue) {
+    
+    }
+    
 
 }

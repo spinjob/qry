@@ -14,6 +14,7 @@ class Poll {
     var dateCreated : String = ""
     var expiration : String = ""
     var dateExpired : String = ""
+    var minutesUntilExpiration = 0
     var isExpired : Bool = false
     
     var pollID : String = ""

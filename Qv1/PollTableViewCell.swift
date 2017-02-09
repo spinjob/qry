@@ -54,6 +54,8 @@ class PollTableViewCell: UITableViewCell {
     
     @IBOutlet weak var imagePollViewWidthConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var timerView: UIView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
