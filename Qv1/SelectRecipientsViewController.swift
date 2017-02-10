@@ -180,6 +180,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
       groupCell.groupNameLabel.text = recipientForCell.recipientName
       groupCell.tag = indexPath.row
       groupCell.groupMemberCollectionView.tag = indexPath.row
+      groupCell.groupMemberCollectionView.isHidden = true
         
       groupCell.editButton.tag = indexPath.row
       groupCell.editButton.addTarget(self, action: #selector(self.editGroupScreen(sender:)), for: .touchUpInside)
@@ -256,10 +257,11 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
             listMembers.append(recipient)
             
+            cell.groupMemberImageView.sd_setImage(with: URL(string:listMembers[collectionView.tag].imageURL1))
         
         })
         
-        cell.groupMemberImageView.sd_setImage(with: URL(string:listMembers[collectionView.tag].imageURL1))
+        
         
         return cell
         
@@ -281,6 +283,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
             if selectedUserCells.count > 1 {
                 createGroupButtonHeightConstraint.constant = 50
+                createGroupButton.isHidden = false
             }
             
         }
@@ -293,8 +296,10 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         print(selectedRecipients)
 
         if indexPath.section == 0 {
+        
             selectedGroupCells.append(selectedCell)
             
+           
             let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(items[indexPath.section][indexPath.row].recipientID).child("groupMembers")
             
             ref.observe(FIRDataEventType.childAdded, with: {(snapshot) in
@@ -327,6 +332,12 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
                         
                         self.selectedRecipients.append(Recipient)
                         print(self.selectedRecipients)
+                    
+                        if self.selectedRecipients.count > 1 {
+                            self.sendButtonHeightConstraint.constant = 50
+                            self.createGroupButton.isHidden = true
+                        }
+                        
     
                     }
                 }
@@ -362,9 +373,10 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             removeCell(cell: deSelectedCell)
             delete(recipient: items[indexPath.section][indexPath.row])
             
-           if selectedUserCells.count < 2 {
+           if selectedRecipients.count < 2 {
                 
                 createGroupButtonHeightConstraint.constant = 0
+            createGroupButton.isHidden = true
                 
             }
         }
@@ -407,7 +419,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         }
 
         
-        if selectedRecipients.count == 0 {
+        if selectedRecipients.count < 1 {
             sendButtonHeightConstraint.constant = 0
         }
         

@@ -587,7 +587,7 @@
                                     <constraint firstAttribute="height" constant="13" id="NlA-io-ECk"/>
                                     <constraint firstAttribute="width" constant="15" id="e9g-tN-alz"/>
                                 </constraints>
-                                <state key="normal" title="v" image="0E09A96E-F6FF-4613-A3C1-3D1D63775408"/>
+                                <state key="normal" title="v" image="D6E9D32F-644F-4A03-9EF7-DE07E2276DE1"/>
                                 <connections>
                                     <action selector="showHidePollButtonTapped:" destination="oa0-MZ-QoD" eventType="touchUpInside" id="CWO-9q-C6A"/>
                                 </connections>
@@ -1040,6 +1040,9 @@
                                     <constraint firstAttribute="height" constant="58" id="RHN-sA-UnR"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="Logo.png"/>
+                                <connections>
+                                    <segue destination="TTO-4h-JVl" kind="show" id="Pt1-ge-v9g"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1937,7 +1940,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Q0L-m2-Sr4">
-                                <rect key="frame" x="0.0" y="20" width="375" height="547"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="503"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="friendCell" rowHeight="80" id="X0u-DI-7bU" customClass="FriendTableViewCell" customModule="Qv1" customModuleProvider="target">
@@ -2056,7 +2059,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJq-0m-Ozu">
-                                                    <rect key="frame" x="79" y="12" width="197" height="25"/>
+                                                    <rect key="frame" x="79" y="27.5" width="197" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="Ms3-9q-uFT"/>
                                                         <constraint firstAttribute="width" constant="197" id="NeA-z9-Ooe"/>
@@ -2073,7 +2076,7 @@
                                                     </constraints>
                                                     <state key="normal" title="edit" image="edit icon.jpg"/>
                                                 </button>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9q0-lW-074">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9q0-lW-074">
                                                     <rect key="frame" x="81" y="43" width="185" height="21"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -2116,12 +2119,11 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="8oL-53-ghj" secondAttribute="trailing" constant="10" id="CBB-Jg-MbV"/>
                                                 <constraint firstItem="WJq-0m-Ozu" firstAttribute="leading" secondItem="3b9-vZ-4hp" secondAttribute="trailing" constant="13" id="FTh-Fp-8Tx"/>
                                                 <constraint firstItem="8oL-53-ghj" firstAttribute="centerY" secondItem="8G3-bC-MED" secondAttribute="centerY" id="H4m-wX-Cif"/>
+                                                <constraint firstItem="WJq-0m-Ozu" firstAttribute="centerY" secondItem="8G3-bC-MED" secondAttribute="centerY" id="Jqo-eg-0hl"/>
                                                 <constraint firstItem="3b9-vZ-4hp" firstAttribute="leading" secondItem="8G3-bC-MED" secondAttribute="leadingMargin" constant="8" id="M49-hm-xnc"/>
                                                 <constraint firstItem="em3-kp-ZNl" firstAttribute="centerY" secondItem="8G3-bC-MED" secondAttribute="centerY" id="QsN-Df-ngc"/>
                                                 <constraint firstItem="3b9-vZ-4hp" firstAttribute="top" secondItem="8G3-bC-MED" secondAttribute="topMargin" constant="6" id="Siq-XQ-ziB"/>
                                                 <constraint firstItem="9q0-lW-074" firstAttribute="leading" secondItem="3b9-vZ-4hp" secondAttribute="trailing" constant="15" id="ZFE-wL-ZWK"/>
-                                                <constraint firstItem="WJq-0m-Ozu" firstAttribute="top" secondItem="8G3-bC-MED" secondAttribute="topMargin" constant="4" id="aXu-1O-V3e"/>
-                                                <constraint firstItem="9q0-lW-074" firstAttribute="top" secondItem="WJq-0m-Ozu" secondAttribute="bottom" constant="6" id="djJ-OA-EDv"/>
                                                 <constraint firstItem="em3-kp-ZNl" firstAttribute="leading" secondItem="9q0-lW-074" secondAttribute="trailing" constant="28" id="yJn-tl-y98"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -3507,7 +3509,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="0E09A96E-F6FF-4613-A3C1-3D1D63775408" width="53" height="53">
+        <image name="Answer 1 Conversation (In-active).png" width="145" height="135"/>
+        <image name="Answer 2 Conversation (In-active).png" width="145" height="135"/>
+        <image name="Blue Button Background.png" width="1125" height="174"/>
+        <image name="D6E9D32F-644F-4A03-9EF7-DE07E2276DE1" width="53" height="53">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -3764,9 +3769,6 @@ NwBFAEsAVABbAGgAbwB3AHkAfgCAAIIAhwCSAJQAlgCYAJ0AoACiAKQApgCoAK0AxADGAMg5vjnDOc45
 AAAAAAAAPgAAAAAAAAAAAAAAAAAAOos
 </mutableData>
         </image>
-        <image name="Answer 1 Conversation (In-active).png" width="145" height="135"/>
-        <image name="Answer 2 Conversation (In-active).png" width="145" height="135"/>
-        <image name="Blue Button Background.png" width="1125" height="174"/>
         <image name="De-selectedResultsIcon.png" width="100" height="70"/>
         <image name="Everybody Active Conversation (Active).png" width="145" height="135"/>
         <image name="Everybody Conversation (In-active).png" width="145" height="135"/>

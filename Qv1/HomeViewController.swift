@@ -47,9 +47,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         var newRecipient : [NSObject : AnyObject] = [ : ]
         var recipientID = ""
-        
-        askButton.addTarget(self, action: #selector(self.presentCreatePollViewController(sender:)), for: .touchUpInside)
-        
+            
         ref.observe(.childAdded, with: {
             snapshot in
             
@@ -1239,15 +1237,6 @@ func viewPollResultsButtonTapped (sender : UIButton){
         }
     }
 
-    func presentCreatePollViewController(sender: UIButton) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "CreatePollViewController") as! CreatePollViewController
-        
-        self.present(controller, animated: true, completion: nil)
-        
-        
-    }
     
     @IBAction func unwindToMenu(segue: UIStoryboardSegue){
         
