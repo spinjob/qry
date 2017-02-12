@@ -112,6 +112,7 @@
 		68D384481DBFBD36000B4084 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D384471DBFBD36000B4084 /* libsqlite3.tbd */; };
 		68D989201E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D9891F1E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift */; };
 		68D989221E4BFEF1003A7554 /* AddGroupMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D989211E4BFEF1003A7554 /* AddGroupMemberViewController.swift */; };
+		68D989241E4FC72E003A7554 /* expiredIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D989231E4FC72E003A7554 /* expiredIcon.png */; };
 		68DA700D1E0092C700B396C5 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DA700C1E0092C700B396C5 /* Logo.png */; };
 		68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3951DB6EF5000C87385 /* HomeViewController.swift */; };
 		68DBF3981DB6EF9A00C87385 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3971DB6EF9A00C87385 /* User.swift */; };
@@ -245,6 +246,7 @@
 		68D386331DBFD85A000B4084 /* Qv1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qv1.entitlements; sourceTree = "<group>"; };
 		68D9891F1E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		68D989211E4BFEF1003A7554 /* AddGroupMemberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupMemberViewController.swift; sourceTree = "<group>"; };
+		68D989231E4FC72E003A7554 /* expiredIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = expiredIcon.png; path = ../../expiredIcon.png; sourceTree = "<group>"; };
 		68DA700C1E0092C700B396C5 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo.png; path = ../../Logo.png; sourceTree = "<group>"; };
 		68DBF3951DB6EF5000C87385 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		68DBF3971DB6EF9A00C87385 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 		6819B6411DDD1A3E0099A98B /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				68D989231E4FC72E003A7554 /* expiredIcon.png */,
 				685EFABB1E37EAF2007FB8FE /* elipses Icon.png */,
 				68219A7D1E0B3096004E822F /* addGroup.png */,
 				68219A701E00B0B9004E822F /* galleryIcon.png */,
@@ -677,6 +680,7 @@
 				682572921DF112A7006150DB /* Answer 1 Conversation Icon (Active).png in Resources */,
 				682572971DF112A7006150DB /* Undecided Conversation (Active).png in Resources */,
 				68CCC48B1DC6BFDB0094F3AE /* contactIcon.png in Resources */,
+				68D989241E4FC72E003A7554 /* expiredIcon.png in Resources */,
 				682DB3A11DCFF394009015AC /* edit icon.jpg in Resources */,
 				682572931DF112A7006150DB /* Answer 2 Conversation (Active).png in Resources */,
 				682572911DF112A7006150DB /* Answer 1 Conversation (In-active).png in Resources */,

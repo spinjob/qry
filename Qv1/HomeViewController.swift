@@ -289,10 +289,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         //formatting for expired polls
         
         if minutesLeft.minute == 0 {
-            cell.timeUntilExpirationLabel.text = "Expired"
+            //cell.timeUntilExpirationLabel.text = "Expired"
+            cell.timeUntilExpirationLabel.isHidden = true
             cell.resultsView.isHidden = true
             cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
             cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
+            cell.expiredIconImageView.isHidden = false
 
             let mainPollRef = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID)
             
@@ -304,10 +306,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
         if minutesLeft.minute! < 0 {
-            cell.timeUntilExpirationLabel.text = "Expired"
-            
+            //cell.timeUntilExpirationLabel.text = "Expired"
+            cell.timeUntilExpirationLabel.isHidden = true
             cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
             cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
+            cell.questionStringLabel.alpha = 0.5
+            cell.expiredIconImageView.isHidden = false
             
             let mainPollRef = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID)
             
@@ -319,7 +323,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
               cell.answer2Button.isHidden = false
               cell.answer1Button.isHidden = false
             
-        
             
         } else {
             cell.resultsView.isHidden = true
@@ -327,11 +330,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.answer2Button.isHidden = false
             cell.answer1Button.isUserInteractionEnabled = true
             cell.answer2Button.isUserInteractionEnabled = true
+            cell.expiredIconImageView.isHidden = true
             cell.answer1Button.alpha = 1
             cell.answer2Button.alpha = 1
             cell.viewPollResultsButton.isHidden = false
             cell.answer2ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
             cell.answer1ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
+            cell.senderUserImageView.alpha = 1
+            cell.questionStringLabel.alpha = 1
+            cell.timeUntilExpirationLabel.isHidden = false
+            
         }
 
         
@@ -343,6 +351,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.noVotesButton.tag = indexPath.row
         cell.senderUserImageView.tag = indexPath.row
         cell.linkPreviewView.tag = indexPath.row
+        cell.senderUserImageView.alpha = 1
         
         cell.separatorImageView.isHidden = false
         
@@ -1075,6 +1084,18 @@ func viewPollResultsButtonTapped (sender : UIButton){
             
             cell.answer1ResultBarImageView.frame = answer1frame
             cell.answer2ResultBarImageView.frame = answer2frame
+            
+            if answer1Count == 0 {
+                
+             cell.answer1ResultBarImageView.isHidden = true
+                
+            }
+            
+            if answer2Count == 0 {
+                
+                cell.answer2ResultBarImageView.isHidden = true
+                
+            }
             
             if answer1Count == 0, Int(answer2Count) > 0 {
                 cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
