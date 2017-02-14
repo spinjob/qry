@@ -113,6 +113,13 @@
 		68D989201E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D9891F1E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift */; };
 		68D989221E4BFEF1003A7554 /* AddGroupMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D989211E4BFEF1003A7554 /* AddGroupMemberViewController.swift */; };
 		68D989241E4FC72E003A7554 /* expiredIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D989231E4FC72E003A7554 /* expiredIcon.png */; };
+		68D989261E526F36003A7554 /* Sign Up - Underline for Text Field.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D989251E526F36003A7554 /* Sign Up - Underline for Text Field.png */; };
+		68D989281E527A7A003A7554 /* Sign Up - Continue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D989271E527A7A003A7554 /* Sign Up - Continue Button.png */; };
+		68D9892A1E527C80003A7554 /* LoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D989291E527C80003A7554 /* LoginOrRegisterViewController.swift */; };
+		68D9892C1E529345003A7554 /* FullNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D9892B1E529345003A7554 /* FullNameViewController.swift */; };
+		68D9892E1E52996D003A7554 /* EmailAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D9892D1E52996D003A7554 /* EmailAddressViewController.swift */; };
+		68D989301E52A226003A7554 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D9892F1E52A226003A7554 /* PasswordViewController.swift */; };
+		68D989371E52AE85003A7554 /* ChoosePictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D989361E52AE85003A7554 /* ChoosePictureViewController.swift */; };
 		68DA700D1E0092C700B396C5 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DA700C1E0092C700B396C5 /* Logo.png */; };
 		68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3951DB6EF5000C87385 /* HomeViewController.swift */; };
 		68DBF3981DB6EF9A00C87385 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF3971DB6EF9A00C87385 /* User.swift */; };
@@ -247,6 +254,13 @@
 		68D9891F1E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		68D989211E4BFEF1003A7554 /* AddGroupMemberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddGroupMemberViewController.swift; sourceTree = "<group>"; };
 		68D989231E4FC72E003A7554 /* expiredIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = expiredIcon.png; path = ../../expiredIcon.png; sourceTree = "<group>"; };
+		68D989251E526F36003A7554 /* Sign Up - Underline for Text Field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Sign Up - Underline for Text Field.png"; path = "../../Sign Up - Underline for Text Field.png"; sourceTree = "<group>"; };
+		68D989271E527A7A003A7554 /* Sign Up - Continue Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Sign Up - Continue Button.png"; path = "../../Sign Up - Continue Button.png"; sourceTree = "<group>"; };
+		68D989291E527C80003A7554 /* LoginOrRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOrRegisterViewController.swift; sourceTree = "<group>"; };
+		68D9892B1E529345003A7554 /* FullNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullNameViewController.swift; sourceTree = "<group>"; };
+		68D9892D1E52996D003A7554 /* EmailAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAddressViewController.swift; sourceTree = "<group>"; };
+		68D9892F1E52A226003A7554 /* PasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
+		68D989361E52AE85003A7554 /* ChoosePictureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoosePictureViewController.swift; sourceTree = "<group>"; };
 		68DA700C1E0092C700B396C5 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo.png; path = ../../Logo.png; sourceTree = "<group>"; };
 		68DBF3951DB6EF5000C87385 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		68DBF3971DB6EF9A00C87385 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -330,6 +344,7 @@
 		680DF2F21DB5941A00452A4E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				68D989251E526F36003A7554 /* Sign Up - Underline for Text Field.png */,
 				68219A721E033032004E822F /* redBackground.png */,
 				68219A731E033032004E822F /* greenBackground.png */,
 				68DA700C1E0092C700B396C5 /* Logo.png */,
@@ -372,6 +387,7 @@
 		6819B6411DDD1A3E0099A98B /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				68D989271E527A7A003A7554 /* Sign Up - Continue Button.png */,
 				68D989231E4FC72E003A7554 /* expiredIcon.png */,
 				685EFABB1E37EAF2007FB8FE /* elipses Icon.png */,
 				68219A7D1E0B3096004E822F /* addGroup.png */,
@@ -455,15 +471,19 @@
 			name = "Select Recipients VCs";
 			sourceTree = "<group>";
 		};
-		68CCC4951DC7E5840094F3AE /* Create Account VCs */ = {
+		68CCC4951DC7E5840094F3AE /* OLD Create Account VCs */ = {
 			isa = PBXGroup;
 			children = (
+				680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */,
+				68D384241DBBF1E7000B4084 /* LoginOrSignUpViewController.swift */,
+				68CCC49C1DC8227B0094F3AE /* LoginViewController.swift */,
 				68CCC4961DC7E6120094F3AE /* EnterEmail&PasswordViewController.swift */,
 				68D384261DBBF28D000B4084 /* EnterNameViewController.swift */,
 				68D384281DBBF31C000B4084 /* SelectBirthdayViewController.swift */,
 				68CCC4981DC7E63B0094F3AE /* ChooseProfilePictureViewController.swift */,
+				68012E711DB5BEE000676EAF /* EnterPinViewController.swift */,
 			);
-			name = "Create Account VCs";
+			name = "OLD Create Account VCs";
 			sourceTree = "<group>";
 		};
 		68D3842C1DBFBBB4000B4084 /* Sdk */ = {
@@ -485,6 +505,18 @@
 			path = Aws;
 			sourceTree = "<group>";
 		};
+		68D989311E52A631003A7554 /* New Registration VCs */ = {
+			isa = PBXGroup;
+			children = (
+				68D989291E527C80003A7554 /* LoginOrRegisterViewController.swift */,
+				68D9892B1E529345003A7554 /* FullNameViewController.swift */,
+				68D989361E52AE85003A7554 /* ChoosePictureViewController.swift */,
+				68D9892D1E52996D003A7554 /* EmailAddressViewController.swift */,
+				68D9892F1E52A226003A7554 /* PasswordViewController.swift */,
+			);
+			name = "New Registration VCs";
+			sourceTree = "<group>";
+		};
 		68DBF3991DB6EFA100C87385 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,11 +532,8 @@
 		68DBF39C1DB6EFD100C87385 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				68D384241DBBF1E7000B4084 /* LoginOrSignUpViewController.swift */,
-				68CCC49C1DC8227B0094F3AE /* LoginViewController.swift */,
-				68CCC4951DC7E5840094F3AE /* Create Account VCs */,
-				680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */,
-				68012E711DB5BEE000676EAF /* EnterPinViewController.swift */,
+				68D989311E52A631003A7554 /* New Registration VCs */,
+				68CCC4951DC7E5840094F3AE /* OLD Create Account VCs */,
 				68DBF3951DB6EF5000C87385 /* HomeViewController.swift */,
 				6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */,
 				6880A9B51DC41998000BB884 /* CreatePollViewController.swift */,
@@ -644,6 +673,7 @@
 				680DF2FF1DB5960800452A4E /* ProximaNovaSoft.otf in Resources */,
 				683166811DD6B752003EDC21 /* gradient.png in Resources */,
 				6828C20C1DE3C51E005AEC0F /* linkIcon.png in Resources */,
+				68D989281E527A7A003A7554 /* Sign Up - Continue Button.png in Resources */,
 				6819B6281DD958C50099A98B /* ask icon.png in Resources */,
 				6819B63E1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png in Resources */,
 				685E9B9C1DE9FEC700D95C15 /* show icon.png in Resources */,
@@ -664,6 +694,7 @@
 				68D384211DBBE925000B4084 /* Blue Button Background.png in Resources */,
 				68B999C11DFF434900959721 /* piechartcenter.png in Resources */,
 				680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */,
+				68D989261E526F36003A7554 /* Sign Up - Underline for Text Field.png in Resources */,
 				6825729C1DF7ADF8006150DB /* profile social.PNG in Resources */,
 				6819B6141DD90B010099A98B /* grey answer.png in Resources */,
 				6819B62E1DDA8D8E0099A98B /* mymessagetail.png in Resources */,
@@ -759,6 +790,7 @@
 			files = (
 				68CCC49D1DC8227B0094F3AE /* LoginViewController.swift in Sources */,
 				68B999BF1DFF25FE00959721 /* PieChart.swift in Sources */,
+				68D9892C1E529345003A7554 /* FullNameViewController.swift in Sources */,
 				684D2ED31E3D28730000879F /* GroupMemberCollectionViewCell.swift in Sources */,
 				68BDD7C11DFA0A2500C64B7C /* WebViewController.swift in Sources */,
 				6819B6461DDE7D440099A98B /* ChatMemberCollectionViewCell.swift in Sources */,
@@ -785,16 +817,20 @@
 				68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */,
 				68D989221E4BFEF1003A7554 /* AddGroupMemberViewController.swift in Sources */,
 				68B118D61E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift in Sources */,
+				68D9892A1E527C80003A7554 /* LoginOrRegisterViewController.swift in Sources */,
+				68D989371E52AE85003A7554 /* ChoosePictureViewController.swift in Sources */,
 				682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */,
 				6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */,
 				6825729A1DF79880006150DB /* UserProfileViewController.swift in Sources */,
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				68D384291DBBF31C000B4084 /* SelectBirthdayViewController.swift in Sources */,
+				68D9892E1E52996D003A7554 /* EmailAddressViewController.swift in Sources */,
 				68D989201E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift in Sources */,
 				68219A771E0AFEEA004E822F /* FriendsViewController.swift in Sources */,
 				680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */,
 				682DB3A51DD66E95009015AC /* ChatViewController.swift in Sources */,
 				68CCC4971DC7E6120094F3AE /* EnterEmail&PasswordViewController.swift in Sources */,
+				68D989301E52A226003A7554 /* PasswordViewController.swift in Sources */,
 				682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */,
 				68E2F7E41E158976002E13D9 /* GroupViewController.swift in Sources */,
 				68CCC4851DC526CC0094F3AE /* SelectRecipientsViewController.swift in Sources */,

@@ -48,11 +48,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         var newRecipient : [NSObject : AnyObject] = [ : ]
         var recipientID = ""
             
-        ref.observe(.childAdded, with: {
+       ref.observe(.childAdded, with: {
             snapshot in
             
             let snapshotValue = snapshot.value as? NSDictionary
-            
+    
             newRecipient = ["recipientName" as NSObject: (snapshotValue?["fullName"] as! String) as AnyObject, "recipientImageURL1" as NSObject: (snapshotValue?["profileImageURL"] as! String) as AnyObject, "recipientID" as NSObject: (snapshotValue?["uID"] as! String) as AnyObject, "tag" as NSObject: "user" as AnyObject]
             
             recipientID = snapshotValue?["uID"] as! String
@@ -851,7 +851,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
                 
             }
-            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginOrSignUpViewController") as! LoginOrSignUpViewController
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginOrRegisterViewController") as! LoginOrRegisterViewController
             present(vc, animated: true, completion: nil)
             print("You logged out")
             

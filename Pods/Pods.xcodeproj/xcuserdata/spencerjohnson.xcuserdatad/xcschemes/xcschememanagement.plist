@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Navajo-Swift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Qv1.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3D56A3C0BA61AE836FB9E95DBFBB1ECE</key>
+		<key>015AAC4618F33550E8C400890E3DCF90</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C7CC57FC11CE2F691B5DF046154A7037</key>
+		<key>1ADDE9AE303F12B4CA4E0E052EFA3C38</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FE2309718053C4A068D70B8A6747A7E2</key>
+		<key>5328DA9A8067E10D1D6C144FE6E543EB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5F3DE12067E1DA794D6275B26A51208B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

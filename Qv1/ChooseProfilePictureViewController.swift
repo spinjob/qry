@@ -37,10 +37,7 @@ class ChooseProfilePictureViewController: UIViewController, UIImagePickerControl
         imageView.layer.borderColor = UIColor(hexString: "004488").cgColor
         imageView.layer.masksToBounds = true
       
-        
-        
-    
-        
+ 
 
 
     }
@@ -104,6 +101,7 @@ class ChooseProfilePictureViewController: UIViewController, UIImagePickerControl
                 }
                 
                 self.performSegue(withIdentifier: "signInFromRegisterSegue", sender: nil)
+                
                 
             }
             
