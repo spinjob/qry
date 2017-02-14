@@ -47,6 +47,12 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
+    @IBOutlet weak var headerLabel: UILabel!
+    
+    @IBOutlet weak var expiresLabel: UILabel!
+    
+    
+    
     
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
     var featuredAnswersDict : [String:String] = ["Attending":"Not Attending", "👍":"👎","Chyeah":"Nah", "Going":"Can't Go", "🔥":"❄️"]
@@ -88,6 +94,33 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+
+        UIView.animate(withDuration: 0.8, animations: {
+            self.headerLabel.alpha = 0
+            self.answer1TextField.alpha = 0
+            self.answer2TextField.alpha = 0
+            self.questionTextField.alpha = 0
+            self.takePictureButton.alpha = 0
+            self.uploadPictureButton.alpha = 0
+            self.expirationPicker.alpha = 0
+            self.expiresLabel.alpha = 0
+            self.featuredAnswerTableView.alpha = 0
+            
+            self.headerLabel.alpha = 1
+            self.answer1TextField.alpha = 1
+            self.answer2TextField.alpha = 1
+            self.questionTextField.alpha = 1
+            self.takePictureButton.alpha = 1
+            self.uploadPictureButton.alpha = 1
+            self.expirationPicker.alpha = 1
+            self.expiresLabel.alpha = 1
+            self.featuredAnswerTableView.alpha = 1
+            
+            
+            
+            
+        })
     
         formatter.dateStyle = .short
         
@@ -409,6 +442,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
             }
             
             self.questionTextField.text = ""
+            self.hyperLinkButton.isHidden = true
            
             
         }, onError: {

@@ -14,6 +14,7 @@ import SDWebImage
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
+    @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var askButton: UIButton!
     @IBOutlet weak var logoutButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
@@ -41,6 +42,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
      
         setUpNavigationBarItems()
+        
+        separatorView.backgroundColor = UIColor.init(hexString: "D8D8D8")
         
         
         //pulling data from Firebase
@@ -534,6 +537,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             if Int(answer1Count!) == Int(answer2Count) {
                 cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
                 cell.answer2TextLabel.textColor = UIColor.init(hexString: "00CDCE")
+                cell.answer1ResultBarImageView.isHidden = false
+                cell.answer2ResultBarImageView.isHidden = false
                 cell.answer1ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground.png")
                 cell.answer2ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground.png")
                 cell.answer1TextLabel.textColor = UIColor.white
@@ -1123,8 +1128,11 @@ func viewPollResultsButtonTapped (sender : UIButton){
                 
                 cell.answer2ResultBarImageView.image = UIImage(named: "MostVotesAnswerBackground")
                 cell.answer1ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground")
+                cell.answer2TextLabel.textColor = UIColor.white
+                cell.answer2PercentageTextLabel.textColor = UIColor.white
                 cell.answer1PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
                 cell.answer1TextLabel.textColor = UIColor.init(hexString: "00CDCE")
+                
             }
             
             if Int(answer2Count) < Int(answer1Count!) {
@@ -1133,6 +1141,8 @@ func viewPollResultsButtonTapped (sender : UIButton){
                 cell.answer2ResultBarImageView.image = UIImage(named: "LeastVotesAnswerBackground")
                 cell.answer2PercentageTextLabel.textColor = UIColor.init(hexString: "00CDCE")
                 cell.answer2TextLabel.textColor = UIColor.init(hexString: "00CDCE")
+                cell.answer1TextLabel.textColor = UIColor.white
+                cell.answer1PercentageTextLabel.textColor = UIColor.white
             }
             
             if Int(answer1Count!) == Int(answer2Count) {

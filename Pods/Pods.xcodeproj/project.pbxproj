@@ -108,23 +108,23 @@
 		3DD8CA4D0B8E7DAA59B1F10E9FA59D64 /* SDWebImageDecoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageDecoder.h; path = SDWebImage/SDWebImageDecoder.h; sourceTree = "<group>"; };
 		3E65188A45ABE73C94755027ACB1623F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E684D0CAC34E146CD41E4F9E4694179 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseDatabase.framework; path = Frameworks/FirebaseDatabase.framework; sourceTree = "<group>"; };
-		4137306DFA3E1D502452D93551B8F269 /* SwiftLinkPreview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SwiftLinkPreview.framework; path = SwiftLinkPreview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4137306DFA3E1D502452D93551B8F269 /* SwiftLinkPreview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLinkPreview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2893A5B5CA9605381D52B9915E92A8 /* NSURLSessionExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NSURLSessionExtension.swift; path = Sources/NSURLSessionExtension.swift; sourceTree = "<group>"; };
 		513163ED451288E588A176449B6C318C /* Navajo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Navajo.swift; path = Source/Navajo.swift; sourceTree = "<group>"; };
 		51AD362C55E56A5C44BD55402059A04E /* UIButton+WebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIButton+WebCache.h"; path = "SDWebImage/UIButton+WebCache.h"; sourceTree = "<group>"; };
 		54C2182A890D87869546587FD28BC123 /* UIButton+WebCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIButton+WebCache.m"; path = "SDWebImage/UIButton+WebCache.m"; sourceTree = "<group>"; };
 		54DD12B218679B52511122A69EFC8C31 /* Pods-Qv1-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Qv1-dummy.m"; sourceTree = "<group>"; };
 		55491E82B7F8A25DB4CEA11B3716D164 /* GoogleIPhoneUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleIPhoneUtilities.framework; path = Frameworks/GoogleIPhoneUtilities.framework; sourceTree = "<group>"; };
-		5770885303C46F34A7FD89A965C5065F /* SDWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SDWebImage.framework; path = SDWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5770885303C46F34A7FD89A965C5065F /* SDWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SDWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57A044E231E8894BED361DA8E04A0292 /* SwiftLinkPreview-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftLinkPreview-prefix.pch"; sourceTree = "<group>"; };
 		57BEF39E6E90904CEB84DF04DAFEA7D3 /* NSData+ImageContentType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSData+ImageContentType.m"; path = "SDWebImage/NSData+ImageContentType.m"; sourceTree = "<group>"; };
 		59A8B987FC42891D068CF78649B00151 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Frameworks/frameworks/FirebaseInstanceID.framework; sourceTree = "<group>"; };
-		5C44CB9C701732BFE6250A816DB0CC55 /* Navajo_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Navajo_Swift.framework; path = "Navajo-Swift.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C44CB9C701732BFE6250A816DB0CC55 /* Navajo_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Navajo_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6680AC981723A6C2DD7813320C36172D /* Navajo-Swift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Navajo-Swift-dummy.m"; sourceTree = "<group>"; };
 		688D991AE39237C7DE20193F681081F4 /* SDWebImageDownloader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDownloader.m; path = SDWebImage/SDWebImageDownloader.m; sourceTree = "<group>"; };
 		695B60EA92B3C27538782838C04C15B2 /* FIRInstanceID.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstanceID.h; path = Sources/FIRInstanceID.h; sourceTree = "<group>"; };
 		6BE6AD996426F7122616923A398A91B2 /* SwiftLinkPreview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftLinkPreview.swift; path = Sources/SwiftLinkPreview.swift; sourceTree = "<group>"; };
-		6CCDD2845259AC80BDC4D397541C206F /* Pods-Qv1.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Qv1.modulemap"; sourceTree = "<group>"; };
+		6CCDD2845259AC80BDC4D397541C206F /* Pods-Qv1.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Qv1.modulemap"; sourceTree = "<group>"; };
 		6E9166C8F4369D28927B83B2977DA7C0 /* GoogleInterchangeUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleInterchangeUtilities.framework; path = Frameworks/GoogleInterchangeUtilities.framework; sourceTree = "<group>"; };
 		6F5128019C2066E66BE5BC3E0F742D41 /* SwiftLinkPreview-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftLinkPreview-dummy.m"; sourceTree = "<group>"; };
 		70B8FE153366AB40B3E573BA67BF5960 /* SDImageCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDImageCache.m; path = SDWebImage/SDImageCache.m; sourceTree = "<group>"; };
@@ -140,22 +140,22 @@
 		8CAF904ECF8678E449C0E0E139577D1E /* UIImage+MultiFormat.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+MultiFormat.h"; path = "SDWebImage/UIImage+MultiFormat.h"; sourceTree = "<group>"; };
 		8D625998C0F243B55BB1D2A5B22518EE /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+WebCacheOperation.m"; path = "SDWebImage/UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		8EFE4842A3EF42BEF911F139D621EE87 /* SDWebImage-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SDWebImage-dummy.m"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		95E0C781F24026A338CCC7A5F0FD2572 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Frameworks/frameworks/FirebaseAnalytics.framework; sourceTree = "<group>"; };
 		9757679632F4D96FB95D495ADE43F19A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		9794454F19A968AED8E42ECA6BFB3F47 /* GoogleNetworkingUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleNetworkingUtilities.framework; path = Frameworks/GoogleNetworkingUtilities.framework; sourceTree = "<group>"; };
 		9A8F883A0016D35534E4E6153B457956 /* Pods-Qv1-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Qv1-resources.sh"; sourceTree = "<group>"; };
 		9C1248DF42491A0786E3347458E91FA6 /* Navajo-Swift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Navajo-Swift.xcconfig"; sourceTree = "<group>"; };
 		A4F39393801004B1ECC3C9EA261075AF /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A5874D1A00435EA96DD3C727EC3216EC /* SDWebImage.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SDWebImage.modulemap; sourceTree = "<group>"; };
+		A5874D1A00435EA96DD3C727EC3216EC /* SDWebImage.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SDWebImage.modulemap; sourceTree = "<group>"; };
 		A92E2FF7AC315AEBD8837889A06205FA /* SDWebImageCompat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageCompat.m; path = SDWebImage/SDWebImageCompat.m; sourceTree = "<group>"; };
 		ABDFBF3884E114E24AFEA17719897E96 /* FirebaseStorage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseStorage.framework; path = Frameworks/frameworks/FirebaseStorage.framework; sourceTree = "<group>"; };
 		B0DFDAE2F8B0906EFFF6037D9CBBFB0C /* Pods-Qv1-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Qv1-acknowledgements.plist"; sourceTree = "<group>"; };
 		B3A23096B739F8D0A130F7439F69D102 /* Pods-Qv1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Qv1.debug.xcconfig"; sourceTree = "<group>"; };
-		B3EC54C4256F87DD2001717EF030D7FF /* Pods_Qv1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Qv1.framework; path = "Pods-Qv1.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3EC54C4256F87DD2001717EF030D7FF /* Pods_Qv1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Qv1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6F50BDFE7FAE9219632814297B149C6 /* SDWebImageCompat.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageCompat.h; path = SDWebImage/SDWebImageCompat.h; sourceTree = "<group>"; };
 		B8874C1A8432D790F7E132D5AA1C6D91 /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSymbolUtilities.framework; path = Frameworks/GoogleSymbolUtilities.framework; sourceTree = "<group>"; };
-		C06131D3E3CBE01E75FF611D901970DA /* SwiftLinkPreview.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SwiftLinkPreview.modulemap; sourceTree = "<group>"; };
+		C06131D3E3CBE01E75FF611D901970DA /* SwiftLinkPreview.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SwiftLinkPreview.modulemap; sourceTree = "<group>"; };
 		C093A276C75136D5B0B2ADF82CEB7F43 /* Navajo-Swift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Navajo-Swift-prefix.pch"; sourceTree = "<group>"; };
 		C370C04A913A8F5BBE488E8726CF9F5F /* NJOPasswordValidator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NJOPasswordValidator.swift; path = Source/NJOPasswordValidator.swift; sourceTree = "<group>"; };
 		C73F3A2BA6B26210EBEF4F115490904F /* SDWebImage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SDWebImage.xcconfig; sourceTree = "<group>"; };
@@ -166,7 +166,7 @@
 		E0AF0166CDED202B457AC4BD40CC6595 /* SDWebImagePrefetcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImagePrefetcher.h; path = SDWebImage/SDWebImagePrefetcher.h; sourceTree = "<group>"; };
 		F5135D7A7A0E8DB0A99B8AB21BCA4AA7 /* NJOPasswordRule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NJOPasswordRule.swift; path = Source/NJOPasswordRule.swift; sourceTree = "<group>"; };
 		F53A114FE6BF78AF2FA5E30617C21FE4 /* FIRMessaging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessaging.h; path = Sources/FIRMessaging.h; sourceTree = "<group>"; };
-		FD33B249EE288C37A0C428C38F7476CC /* Navajo-Swift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Navajo-Swift.modulemap"; sourceTree = "<group>"; };
+		FD33B249EE288C37A0C428C38F7476CC /* Navajo-Swift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Navajo-Swift.modulemap"; sourceTree = "<group>"; };
 		FDF6841A6DF522CD3677A9AF6BCED27A /* FirebaseAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAuth.framework; path = Frameworks/frameworks/FirebaseAuth.framework; sourceTree = "<group>"; };
 		FEDA80F98C780A907970663C6489AAF2 /* SDWebImageDecoder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDecoder.m; path = SDWebImage/SDWebImageDecoder.m; sourceTree = "<group>"; };
 		FFE181029574ED89F426925B722D275E /* SDWebImage-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SDWebImage-umbrella.h"; sourceTree = "<group>"; };
@@ -215,7 +215,6 @@
 				F53A114FE6BF78AF2FA5E30617C21FE4 /* FIRMessaging.h */,
 				FA890DB86D5AFC724523588F1AA292E2 /* Frameworks */,
 			);
-			name = FirebaseMessaging;
 			path = FirebaseMessaging;
 			sourceTree = "<group>";
 		};
@@ -232,7 +231,6 @@
 			children = (
 				89FEB1241153CFF0E33C62306F592631 /* Frameworks */,
 			);
-			name = GoogleSymbolUtilities;
 			path = GoogleSymbolUtilities;
 			sourceTree = "<group>";
 		};
@@ -241,7 +239,6 @@
 			children = (
 				8A110B0AB413439E969108617FCFE818 /* Frameworks */,
 			);
-			name = GoogleUtilities;
 			path = GoogleUtilities;
 			sourceTree = "<group>";
 		};
@@ -266,7 +263,6 @@
 			children = (
 				F4FCDF51C1AA3AFC39D4B64F903572B1 /* Frameworks */,
 			);
-			name = GoogleIPhoneUtilities;
 			path = GoogleIPhoneUtilities;
 			sourceTree = "<group>";
 		};
@@ -292,7 +288,6 @@
 				695B60EA92B3C27538782838C04C15B2 /* FIRInstanceID.h */,
 				32235B1C48F9A997732ECFEDA42B8CB6 /* Frameworks */,
 			);
-			name = FirebaseInstanceID;
 			path = FirebaseInstanceID;
 			sourceTree = "<group>";
 		};
@@ -341,7 +336,6 @@
 			children = (
 				A34E1DB89D0DD741CF20B6576E32B732 /* Analytics */,
 			);
-			name = Firebase;
 			path = Firebase;
 			sourceTree = "<group>";
 		};
@@ -397,7 +391,6 @@
 			children = (
 				C59E08A791FFAEA30E5048F8D3BDE6BA /* Frameworks */,
 			);
-			name = GoogleNetworkingUtilities;
 			path = GoogleNetworkingUtilities;
 			sourceTree = "<group>";
 		};
@@ -436,7 +429,6 @@
 			children = (
 				220D03640C973E793663412C3074EEAB /* Frameworks */,
 			);
-			name = GoogleInterchangeUtilities;
 			path = GoogleInterchangeUtilities;
 			sourceTree = "<group>";
 		};
@@ -481,7 +473,6 @@
 			children = (
 				2D70BB26D087EFD8E2E81C5BC212B52F /* Frameworks */,
 			);
-			name = FirebaseAuth;
 			path = FirebaseAuth;
 			sourceTree = "<group>";
 		};
@@ -490,7 +481,6 @@
 			children = (
 				42FD5BDDF14907807EC8D3F5BD332173 /* Frameworks */,
 			);
-			name = FirebaseAnalytics;
 			path = FirebaseAnalytics;
 			sourceTree = "<group>";
 		};
@@ -504,7 +494,6 @@
 				6BE6AD996426F7122616923A398A91B2 /* SwiftLinkPreview.swift */,
 				9A1F3CBD76619CEA578A8BAE3FA0187F /* Support Files */,
 			);
-			name = SwiftLinkPreview;
 			path = SwiftLinkPreview;
 			sourceTree = "<group>";
 		};
@@ -514,7 +503,6 @@
 				A8DB93F18236C87E2CB8EDDC8429F9F2 /* Core */,
 				D9419E04C5708CF687103493A4175115 /* Support Files */,
 			);
-			name = SDWebImage;
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
@@ -575,7 +563,6 @@
 			children = (
 				CF652980008944CADB7B5A69B516E663 /* Frameworks */,
 			);
-			name = FirebaseDatabase;
 			path = FirebaseDatabase;
 			sourceTree = "<group>";
 		};
@@ -595,7 +582,6 @@
 				C370C04A913A8F5BBE488E8726CF9F5F /* NJOPasswordValidator.swift */,
 				5E17D69732DC2007AEC436231232B8AB /* Support Files */,
 			);
-			name = "Navajo-Swift";
 			path = "Navajo-Swift";
 			sourceTree = "<group>";
 		};
@@ -604,7 +590,6 @@
 			children = (
 				5026A97CCF81FF56E74A50232A750D8C /* Frameworks */,
 			);
-			name = FirebaseStorage;
 			path = FirebaseStorage;
 			sourceTree = "<group>";
 		};

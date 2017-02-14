@@ -125,6 +125,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationItem.titleView?.addGestureRecognizer(tapGestureRecognizer)
         
         
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -544,6 +545,24 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func editChatMembersTapped (sender: UITapGestureRecognizer) {
+        
+        
+        let imgView = sender.view as! UIImageView
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "EditChatViewController") as! EditChatViewController
+        let transition:CATransition = CATransition()
+        
+        controller.pollID = poll.pollID
+        controller.sectionTitles = [poll.answer1String, poll.answer2String, "No Answer"]
+        controller.answerColors = ["A8E855", "FF4E56", "D8D8D8"]
+        
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+        
         
     }
    
@@ -1303,5 +1322,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             return false
         }
     }
+    
 
 }
