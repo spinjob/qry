@@ -32,6 +32,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     var profileImageURL = ""
     var profileUserID = ""
     var askedPolls : [Poll] = []
+    var expiredAskedPolls : [Poll] = []
     var askedPollsObserved : [Poll] = []
     var answeredPolls : [Poll] = []
     //var receivedPolls : [Poll] = []
@@ -136,6 +137,13 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
                 
             }
             
+            if snapshotValue["expired"] as! String == "true" {
+                self.expiredAskedPolls.append(poll)
+                self.expiredAskedPolls = self.expiredAskedPolls.sorted(by: {$0.minutesUntilExpiration < $1.minutesUntilExpiration})
+                
+            }
+            
+            
             }
             
             self.numberOfAskedLabel.text = String(self.askedPolls.count)
@@ -170,13 +178,21 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     })
 
         
-    receivedPollsRef.queryOrdered(byChild: "vote").queryEqual(toValue: "answer1").observe(.childAdded, with: {
+    receivedPollsRef.observe(.childAdded, with: {
             snapshot in
             
+        if snapshot.childrenCount != 0 {
+            
             let poll = Poll()
-        
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            let calendar = Calendar.current
+            let dateString = formatter.string(from: date)
+            
             let snapshotValue = snapshot.value as! NSDictionary
-        
+            
             poll.answer1String = snapshotValue["answer1"] as! String
             poll.answer2String = snapshotValue["answer2"] as! String
             poll.questionString = snapshotValue["question"] as! String
@@ -186,50 +202,30 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
             poll.pollURL = snapshotValue["pollURL"] as! String
-        
-        
-        
-            if self.answeredPolls.contains(where: { $0.pollID == poll.pollID}) {
-                
-                print("already added")
-                
-            }   else {
-                
+            poll.dateCreated = snapshotValue["dateCreated"] as! String
+            poll.dateExpired = snapshotValue["expirationDate"] as! String
+            poll.expiration = snapshotValue["expiration"] as! String
+            
+            let pollForCellDateExpired = formatter.date(from: poll.dateExpired)
+            let currentDate = formatter.date(from: dateString)
+            let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
+            poll.minutesUntilExpiration = minutesLeft.minute!
+            
+            if snapshotValue["expired"] as! String == "false" {
                 self.answeredPolls.append(poll)
                 
+                self.answeredPolls = self.answeredPolls.filter {
+                    $0.senderUser != self.profileUserID
+                }
+                
+                self.answeredPolls = self.answeredPolls.sorted(by: {$0.minutesUntilExpiration < $1.minutesUntilExpiration})
+                
             }
             
-        })
+        }
         
-    receivedPollsRef.queryOrdered(byChild: "vote").queryEqual(toValue: "answer2").observe(.childAdded, with: {
-             snapshot in
-            
-             let poll = Poll()
-            
-             let snapshotValue = snapshot.value as! NSDictionary
-            
-             poll.answer1String = snapshotValue["answer1"] as! String
-             poll.answer2String = snapshotValue["answer2"] as! String
-             poll.questionString = snapshotValue["question"] as! String
-             poll.senderUser = snapshotValue["senderUser"] as! String
-             poll.pollImageURL = snapshotValue["pollImageURL"] as! String
-             poll.pollID = snapshot.key
-             poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
-             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
-             poll.pollURL = snapshotValue["pollURL"] as! String
-             poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
-            
-            if self.answeredPolls.contains(where: { $0.pollID == poll.pollID}) {
-                
-                print("already added")
-                
-            } else {
-            
-             self.answeredPolls.append(poll)
-            
-            }
-         })
-    
+        })
+     
     
     if currentUserID == profileUserID {
 
@@ -305,7 +301,7 @@ func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
     
     if askedPollSelected == false, profileUserID == currentUserID {
 
-      return answeredPolls.count
+      return self.answeredPolls.count
     }
     
     if askedPollSelected == true, profileUserID == currentUserID {
@@ -364,7 +360,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     }
     
     if askedPollSelected == false, profileUserID == currentUserID {
-        pollCell = answeredPolls[indexPath.row]
+        pollCell = self.answeredPolls[indexPath.row]
     }
     
     if askedPollSelected == true, profileUserID == currentUserID {
@@ -785,6 +781,11 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
     
     
 @IBAction func answeredButtonTapped(_ sender: Any) {
+        askedPollSelected = false
+    
+        print(self.answeredPolls)
+        print(askedPollSelected)
+    
         askedButton.titleLabel?.textColor = UIColor.init(hexString: "D8D8D8")
         numberOfAskedLabel.backgroundColor = UIColor.init(hexString: "D8D8D8")
         
@@ -795,7 +796,7 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
             self.underlineImageView.center.x = self.answeredButton.center.x
         })
     
-       askedPollSelected = false
+    
        tableView.reloadData()
        tableView.updateConstraints()
     
