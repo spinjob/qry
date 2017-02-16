@@ -139,9 +139,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             }
             
             self.numberOfAskedLabel.text = String(self.askedPolls.count)
-          //  self.numberOfFollowersLabel.text = String(self.askedPolls.count)
             self.tableView.reloadData()
-            print("askedPolls\(self.askedPolls)")
         })
     
     
@@ -314,7 +312,7 @@ func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
         return askedPolls.count
     }
 
-    return askedPollsObserved.count
+    return askedPolls.count
     
     
     tableView.reloadData()
@@ -342,7 +340,7 @@ func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) ->
     }
     
     
-    if askedPollsObserved[indexPath.row].pollImageURL != "no image" {
+    if askedPolls[indexPath.row].pollImageURL != "no image" {
         return 355
     } else {
         return 246
@@ -362,7 +360,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     print("CURRENT USER ID \(currentUserID)")
     
     if profileUserID != currentUserID {
-        pollCell = askedPollsObserved[indexPath.row]
+        pollCell = askedPolls[indexPath.row]
     }
     
     if askedPollSelected == false, profileUserID == currentUserID {
@@ -750,7 +748,7 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
     
     let linkPreview = sender.view! as UIView
 
-    pollForCell = askedPollsObserved[linkPreview.tag]
+    pollForCell = askedPolls[linkPreview.tag]
     
     if askedPollSelected == false, profileUserID == currentUserID {
         pollForCell = answeredPolls[linkPreview.tag]
@@ -808,7 +806,7 @@ func answerButton1Tapped (sender : UIButton){
         sender.isSelected = !sender.isSelected;
     
     
-    pollForCell = askedPollsObserved[sender.tag]
+    pollForCell = askedPolls[sender.tag]
     
     if askedPollSelected == false, profileUserID == currentUserID {
         pollForCell = answeredPolls[sender.tag]
@@ -866,7 +864,7 @@ func answerButton2Tapped (sender : UIButton){
     
     print(pollForCell.pollID)
     
-    pollForCell = askedPollsObserved[sender.tag]
+    pollForCell = askedPolls[sender.tag]
     
     if askedPollSelected == false, profileUserID == currentUserID {
         pollForCell = answeredPolls[sender.tag]
@@ -954,7 +952,7 @@ func answerButton2Tapped (sender : UIButton){
 func chatButtonTapped (sender : UIButton){
     
         
-    pollForCell = askedPollsObserved[sender.tag]
+    pollForCell = askedPolls[sender.tag]
     
     if askedPollSelected == false, profileUserID == currentUserID {
         pollForCell = answeredPolls[sender.tag]
@@ -1052,7 +1050,7 @@ func viewPollResultsButtonTapped (sender : UIButton){
         let indexPath = IndexPath(row: sender.tag, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! ProfilePollTableViewCell
         
-        pollForCell = askedPollsObserved[sender.tag]
+        pollForCell = askedPolls[sender.tag]
         
         if askedPollSelected == false, profileUserID == currentUserID {
             pollForCell = answeredPolls[sender.tag]
