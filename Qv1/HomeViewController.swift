@@ -33,9 +33,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
     let newPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls")
     let sentPollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls")
-    
-    
-    
+
 
     
     override func viewDidLoad() {
@@ -130,16 +128,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         tableView.reloadData()
         
+        UIView.animate(withDuration: 1, animations: {
+            
+            self.tableView.alpha = 0
+            self.tableView.alpha = 1
+        })
+        
 
     }
     
 
     func setUpNavigationBarItems () {
        
-        let titleImageView = UIImageView(image: UIImage(named: "Logo"))
+        let titleImageView = UIImageView(image: #imageLiteral(resourceName: "Profile Image Border"))
 
         titleImageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         titleImageView.contentMode = .scaleAspectFit
+        let titleImageViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.logoTapped(sender:)))
+        titleImageView.addGestureRecognizer(titleImageViewTapGesture)
+        titleImageView.isUserInteractionEnabled = true
         
         navigationItem.titleView = titleImageView
         
@@ -169,8 +176,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
        
         navigationController?.navigationBar.backgroundColor = UIColor.white
         navigationController?.navigationBar.isTranslucent = false
-              
-
+        
+        UIView.animate(withDuration: 1, animations: {
+            
+            profileIconImageView.alpha = 0
+            profileIconImageView.alpha = 1
+        })
+        
     }
     
     
@@ -817,6 +829,23 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
     }
+    
+    func logoTapped (sender : UITapGestureRecognizer) {
+        
+        UIView.animate(withDuration: 0.5) { () -> Void in
+            
+            sender.view?.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+        }
+        
+        UIView.animate(withDuration: 0.5, delay: 0.25, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+            
+            sender.view?.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+        }, completion: nil)
+        
+        
+        
+    }
+
 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

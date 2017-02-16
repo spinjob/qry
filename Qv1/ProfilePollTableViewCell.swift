@@ -32,6 +32,11 @@ class ProfilePollTableViewCell: UITableViewCell {
     @IBOutlet weak var imageDescriptionTextView: UITextView!
     @IBOutlet weak var linkPreviewView: UIView!
     
+    @IBOutlet weak var expiredIconImageView: UIImageView!
+    @IBOutlet weak var timeLeftLabel: UILabel!
+    @IBOutlet weak var timerView: UIView!
+    
+    
     @IBOutlet weak var answerButton1VerticalConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var answerButton2VerticalConstraint: NSLayoutConstraint!

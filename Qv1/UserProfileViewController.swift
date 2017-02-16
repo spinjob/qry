@@ -23,6 +23,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var numberOfFollowersLabel: UILabel!
     @IBOutlet weak var profileView: UIView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var friendsLabel: UILabel!
     
     @IBOutlet weak var numberOfAskedLabel: UILabel!
     @IBOutlet weak var friendsButton: UIButton!
@@ -42,13 +43,16 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     var userGroupArray : [Recipient] = []
     var imagePicker = UIImagePickerController()
     
-override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
     
         tableView.delegate = self
         tableView.dataSource = self
     
         imagePicker.delegate = self
+        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
 
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID)
         let pollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls")
@@ -64,9 +68,8 @@ override func viewDidLoad() {
         userProfileImageView.layer.borderWidth = 0
         userProfileImageView.addGestureRecognizer(tapGestureRecognizer)
     
-        if profileUserID == currentUserID {
-        userProfileImageView.isUserInteractionEnabled = true
-        }
+    
+        friendsButton.isUserInteractionEnabled = false
 
     
         numberOfAskedLabel.layer.cornerRadius = 4
@@ -92,35 +95,53 @@ override func viewDidLoad() {
     })
     
     
-        pollsRef.queryOrdered(byChild: "senderUser").queryEqual(toValue: profileUserID).observe(.childAdded, with: {
+    pollsRef.queryOrdered(byChild: "senderUser").queryEqual(toValue: profileUserID).observe(.childAdded, with: {
             snapshot in
+        
+        self.numberOfFollowersLabel.text = String(snapshot.childrenCount)
         
         if snapshot.childrenCount != 0 {
             
             let poll = Poll()
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            let calendar = Calendar.current
+            let dateString = formatter.string(from: date)
             
             let snapshotValue = snapshot.value as! NSDictionary
   
             poll.answer1String = snapshotValue["answer1"] as! String
             poll.answer2String = snapshotValue["answer2"] as! String
             poll.questionString = snapshotValue["question"] as! String
-   
             poll.senderUser = snapshotValue["senderUser"] as! String
             poll.pollImageURL = snapshotValue["pollImageURL"] as! String
             poll.pollID = snapshot.key
             poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
             poll.pollURL = snapshotValue["pollURL"] as! String
+            poll.dateCreated = snapshotValue["dateCreated"] as! String
+            poll.dateExpired = snapshotValue["expirationDate"] as! String
+            poll.expiration = snapshotValue["expiration"] as! String
             
+            let pollForCellDateExpired = formatter.date(from: poll.dateExpired)
+            let currentDate = formatter.date(from: dateString)
+            let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
+            poll.minutesUntilExpiration = minutesLeft.minute!
             
-            
-            self.askedPolls.append(poll)
+            if snapshotValue["expired"] as! String == "false" {
+                self.askedPolls.append(poll)
+                self.askedPolls = self.askedPolls.sorted(by: {$0.minutesUntilExpiration < $1.minutesUntilExpiration})
+                
+            }
             
             }
             
             self.numberOfAskedLabel.text = String(self.askedPolls.count)
-            self.numberOfFollowersLabel.text = String(self.askedPolls.count)
+          //  self.numberOfFollowersLabel.text = String(self.askedPolls.count)
             self.tableView.reloadData()
+            print("askedPolls\(self.askedPolls)")
         })
     
     
@@ -136,14 +157,14 @@ override func viewDidLoad() {
             poll.answer1String = snapshotValue["answer1"] as! String
             poll.answer2String = snapshotValue["answer2"] as! String
             poll.questionString = snapshotValue["question"] as! String
-            
             poll.senderUser = snapshotValue["senderUser"] as! String
             poll.pollImageURL = snapshotValue["pollImageURL"] as! String
             poll.pollID = snapshot.key
             poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
             poll.pollURL = snapshotValue["pollURL"] as! String
-            
+            poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
+
             self.askedPollsObserved.append(poll)
         }
         
@@ -155,9 +176,9 @@ override func viewDidLoad() {
             snapshot in
             
             let poll = Poll()
-            
+        
             let snapshotValue = snapshot.value as! NSDictionary
-            
+        
             poll.answer1String = snapshotValue["answer1"] as! String
             poll.answer2String = snapshotValue["answer2"] as! String
             poll.questionString = snapshotValue["question"] as! String
@@ -167,9 +188,9 @@ override func viewDidLoad() {
             poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
             poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
             poll.pollURL = snapshotValue["pollURL"] as! String
-            poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
-            
-            
+        
+        
+        
             if self.answeredPolls.contains(where: { $0.pollID == poll.pollID}) {
                 
                 print("already added")
@@ -215,9 +236,14 @@ override func viewDidLoad() {
     if currentUserID == profileUserID {
 
         self.followButton.isHidden = true
-        self.pollViewHeightConstraint.constant = 240
+        self.pollViewHeightConstraint.constant = 200
+        userProfileImageView.isUserInteractionEnabled = true
+        friendsButton.isUserInteractionEnabled = true
+        friendsLabel.textColor = UIColor.init(hexString: "19C4C3")
         
     } else {
+        
+        friendsLabel.textColor = UIColor.init(hexString: "999999")
         
         currentUserRef.child("recipientList").queryOrdered(byChild: "recipientID").queryEqual(toValue: profileUserID).observe(.value, with: {
             snapshot in
@@ -347,6 +373,30 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         pollCell = askedPolls[indexPath.row]
     }
 
+    let date = Date()
+    let formatter = DateFormatter()
+    let calendar = Calendar.current
+    
+    
+    formatter.dateStyle = .short
+    formatter.timeStyle = .short
+    let dateString = formatter.string(from: date)
+    
+    
+    let pollForCellDateExpired = formatter.date(from: pollCell.dateExpired)
+    let pollForCellDateCreated = formatter.date(from: pollCell.dateCreated)
+    let currentDate = formatter.date(from: dateString)
+    
+    let hoursLeft = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateExpired!)
+    let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
+    let daysLeft = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateExpired!)
+    let minutesTotal = calendar.dateComponents([.minute], from: pollForCellDateCreated!, to:pollForCellDateExpired! )
+    let minutesLeftDouble : Double = Double(pollCell.minutesUntilExpiration)
+    let minutesTotalDouble : Double = Double(minutesTotal.minute!)
+    
+    let percentageLeft : Double = (minutesLeftDouble / minutesTotalDouble)*100
+    
+  
     
     let linkViewTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.linkViewTapped(sender:)))
     
@@ -359,6 +409,110 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
     var sentToRecipientsString : [String] = [""]
     var numberOfOtherRecipients : Int
+    
+   
+    if hoursLeft.hour! < 1 {
+        cell.timeLeftLabel.text = "\(minutesLeft.minute!) minutes left"
+    }
+    
+    if daysLeft.day! > 1 {
+        cell.timeLeftLabel.text = "\(daysLeft.day!) days left"
+    }
+    
+    if daysLeft.day! == 1 {
+        cell.timeLeftLabel.text = "\(daysLeft.day!) day left"
+    }
+  
+    if hoursLeft.hour! > 1, daysLeft.day! < 1 {
+        cell.timeLeftLabel.text = "\(hoursLeft.hour!) hours left"
+    }
+    
+    if hoursLeft.hour! == 1 {
+        cell.timeLeftLabel.text = "\(hoursLeft.hour!) hour left"
+    }
+    
+    cell.timerView.isHidden = true
+    cell.expiredIconImageView.isHidden = true
+    
+    if minutesLeft.minute! > 0, pollCell.isExpired == false {
+        cell.timerView.isHidden = false
+        cell.expiredIconImageView.isHidden = true
+        let chartView = PieChartView()
+        
+        chartView.frame = CGRect(x: 0, y: 0, width: cell.timerView.frame.size.width, height: 62)
+        
+        if percentageLeft < 10 {
+            chartView.segments = [
+                Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
+                Segment(color: UIColor.init(hexString: "FF4E56"), value: CGFloat(percentageLeft))
+            ]
+        } else {
+            
+            chartView.segments = [
+                Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
+                Segment(color: UIColor.init(hexString: "004488"), value: CGFloat(percentageLeft))
+            ]
+            
+        }
+        
+        cell.timerView.addSubview(chartView)
+        
+    }
+    
+   // if minutesLeft.minute == 0{
+        
+   //     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
+   //     let mainPollRef = FIRDatabase.database().reference().child("polls").child(pollCell.pollID)
+        
+   //     cell.timeLeftLabel.isHidden = true
+   //     cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
+   //     cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
+   //     cell.expiredIconImageView.isHidden = false
+        
+        
+       
+   //     pollRef.child(pollForCell.pollID).child("expired").setValue("true")
+        
+   //     mainPollRef.child("expired").setValue("true")
+        
+   // }
+    
+  //  if minutesLeft.minute! < 0 {
+  //      let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
+  //      let mainPollRef = FIRDatabase.database().reference().child("polls").child(pollCell.pollID)
+ //
+ //       cell.timeLeftLabel.isHidden = true
+ //       cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
+ //       cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
+ //       cell.expiredIconImageView.isHidden = false
+ //
+ //       pollRef.child(pollForCell.pollID).child("expired").setValue("true")
+        
+ //       mainPollRef.child("expired").setValue("true")
+ //       cell.resultsView.isHidden = true
+ //       cell.answer1Button.isHidden = false
+ //       cell.answer2Button.isHidden = true
+
+ //   } else {
+        
+ //       cell.resultsView.isHidden = true
+ //       cell.answer1Button.isHidden = false
+ //       cell.answer2Button.isHidden = false
+ //       cell.answer1Button.isUserInteractionEnabled = true
+ //       cell.answer2Button.isUserInteractionEnabled = true
+ //       cell.expiredIconImageView.isHidden = true
+ //       cell.answer1Button.alpha = 1
+ //       cell.answer2Button.alpha = 1
+ //       cell.viewPollResultsButton.isHidden = false
+ //       cell.answer2ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
+ //       cell.answer1ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
+ //       cell.senderUserImageView.alpha = 1
+  //      cell.questionStringLabel.alpha = 1
+   //     cell.timeLeftLabel.isHidden = false
+        
+  //  }
+    
+    
     
     
     
