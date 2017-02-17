@@ -478,6 +478,8 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     @IBAction func sendButtonTapped(_ sender: Any) {
         
         let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)
+        let currentUserID = FIRAuth.auth()?.currentUser?.uid
+        
         let currentDate = Date()
         var expirationDate = Date()
         let formatter = DateFormatter()
@@ -487,6 +489,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         formatter.dateStyle = .short
         formatter.timeStyle = .short
+        let dateString = formatter.string(from: currentDate)
     
     
         print("Send Tapped Question Image \(questionImage)")
@@ -494,6 +497,14 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         self.selectedRecipients.forEach { (Recipient) in
         
+        let notificationID = UUID().uuidString
+        let notificationRef = FIRDatabase.database().reference().child("notifications").child(notificationID)
+            
+        let notificationDict : [NSObject : AnyObject]  = ["recipientID" as NSObject: Recipient.recipientID as AnyObject, "senderID" as NSObject: currentUserID as AnyObject, "activity type" as NSObject: "poll received" as AnyObject, "time sent" as NSObject: dateString as AnyObject, "is unread" as NSObject: "true" as AnyObject, "pollID" as NSObject: pollID as AnyObject, "messageID" as NSObject: "NA" as AnyObject]
+        
+        notificationRef.setValue(notificationDict)
+            
+            
         let recipientID = Recipient.recipientID
         print(recipientID)
             

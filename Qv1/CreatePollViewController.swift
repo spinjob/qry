@@ -57,7 +57,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
     var featuredAnswersDict : [String:String] = ["Attending":"Not Attending", "👍":"👎","Chyeah":"Nah", "Going":"Can't Go", "🔥":"❄️"]
     
-    let pickerData : [String] = ["an hour", "a day", "a week"]
+    let pickerData : [String] = ["30 seconds","an hour", "a day", "a week"]
     
     let pollId = UUID().uuidString
     
@@ -351,6 +351,13 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
             let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
             
             
+            if pickerData[selectedIndex] == "30 seconds" {
+                
+                expirationDate = calendar.date(byAdding: .second, value: 30, to: date)!
+                
+            }
+            
+            
             if pickerData[selectedIndex] == "an hour" {
                 
                 expirationDate = calendar.date(byAdding: .hour, value: 1, to: date)!
@@ -368,6 +375,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
                 expirationDate = calendar.date(byAdding: .day, value: 7, to: date)!
                 
             }
+            
            
             formatter.dateStyle = .short
             formatter.timeStyle = .short

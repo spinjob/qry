@@ -104,6 +104,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             poll.dateExpired = snapshotValue["expirationDate"] as! String
             poll.dateCreated = snapshotValue["dateCreated"] as! String
             
+            
             //print("EXPIRATION DATE \(snapshotValue["expirationDate"] as! String)")
         
             
@@ -115,6 +116,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             if snapshotValue["expired"] as! String == "true" {
                 poll.isExpired = true
                 
+            } else {
+                poll.isExpired = false
             }
             
     
@@ -179,6 +182,19 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             profileIconImageView.sd_setImage(with: profileImageURL)
 
         })
+        
+        
+        let notificationIconImageView = UIImageView()
+        let notificationIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.notificationIconTapped(sender:)))
+        
+        notificationIconImageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        
+        notificationIconImageView.addGestureRecognizer(notificationIconTapGesture)
+        
+        notificationIconImageView.image = #imageLiteral(resourceName: "new message notification icon")
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: notificationIconImageView)
+  
        
        
         navigationController?.navigationBar.backgroundColor = UIColor.white
@@ -308,8 +324,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         }
         
-        //formatting for expired polls
+    //notification for sender user that their poll has expired
         
+        
+        if minutesLeft.minute! < 0, pollForCell.isExpired == false {
+            
+            let notificationID = UUID().uuidString
+            let notificationRef : FIRDatabaseReference = FIRDatabase.database().reference().child("notifications").child(notificationID)
+            let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID)
+            
+            let notificationDict : [NSObject : AnyObject]  = ["recipientID" as NSObject: pollForCell.senderUser as AnyObject, "senderID" as NSObject: currentUserID as AnyObject, "activity type" as NSObject: "poll expired" as AnyObject, "time sent" as NSObject: dateString as AnyObject, "is unread" as NSObject: "true" as AnyObject, "pollID" as NSObject: pollForCell.pollID as AnyObject, "messageID" as NSObject: "NA" as AnyObject]
+            
+            notificationRef.setValue(notificationDict)
+            pollRef.child("expired").setValue("true")
+            pollForCell.isExpired = true
+            
+            
+            }
+        
+         //formatting for expired polls
         if minutesLeft.minute == 0 {
             //cell.timeUntilExpirationLabel.text = "Expired"
             cell.timeUntilExpirationLabel.isHidden = true
@@ -321,6 +354,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let mainPollRef = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID)
             
             pollRef.child(pollForCell.pollID).child("expired").setValue("true")
+            
             mainPollRef.child("expired").setValue("true")
             
         }
@@ -833,6 +867,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
        
           self.navigationController!.view.layer.add(transition, forKey: kCATransition)
           self.navigationController?.pushViewController(controller, animated: false)
+        
+        
+    }
+    
+    func notificationIconTapped (sender : UITapGestureRecognizer) {
+        
+        let imgView = sender.view as! UIImageView
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "NotificationViewController") as! NotificationViewController
+        let transition:CATransition = CATransition()
+    
+        
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
         
         
     }

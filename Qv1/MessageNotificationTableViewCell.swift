@@ -9,7 +9,22 @@
 import UIKit
 
 class MessageNotificationTableViewCell: UITableViewCell {
-
+    
+    @IBOutlet weak var messageNotificationIconImageView: UIImageView!
+    @IBOutlet weak var newMessagesStaticLabel: UILabel!
+    @IBOutlet weak var conversationIndicatorImageView: UIImageView!
+  
+    @IBOutlet weak var pollQuestionStringLabel: UILabel!
+    
+    @IBOutlet weak var recentMessageView: UIView!
+    
+    @IBOutlet weak var recentMessageStringTextView: UITextView!
+    
+    @IBOutlet weak var messageSenderUserName: UILabel!
+    
+    @IBOutlet weak var messageSenderUserImageView: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
