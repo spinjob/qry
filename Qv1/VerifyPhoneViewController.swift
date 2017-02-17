@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import FirebaseDatabase
+
 
 
 class VerifyPhoneViewController: UIViewController {
 
-    var applicationKey = "d7050be6-5d80-41a4-aba7-5baed06312bf"
+    var applicationKey = "25f6a494-e70d-4663-8e77-dbd7a756e130"
     var userID = ""
     
     
@@ -23,6 +25,8 @@ class VerifyPhoneViewController: UIViewController {
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
     spinner.isHidden = true
     statusTextLabel.text = ""

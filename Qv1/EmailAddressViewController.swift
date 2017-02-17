@@ -84,7 +84,7 @@ class EmailAddressViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)  {
-        let nextVC = segue.destination as! PasswordViewController
+        let nextVC = segue.destination as! PhoneNumberViewController
         
         nextVC.firstName = firstName
         nextVC.lastName = lastName

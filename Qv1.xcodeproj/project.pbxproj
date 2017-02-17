@@ -81,6 +81,7 @@
 		688344A41E53B25500E95228 /* ChatListViewHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688344A31E53B25500E95228 /* ChatListViewHeaderTableViewCell.swift */; };
 		688344A61E5651E700E95228 /* FriendsAndListsHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688344A51E5651E700E95228 /* FriendsAndListsHeaderTableViewCell.swift */; };
 		68894BD91E56A19B006C98D1 /* AppNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68894BD81E56A19B006C98D1 /* AppNotifications.swift */; };
+		68894BDB1E576CB6006C98D1 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68894BDA1E576CB6006C98D1 /* PhoneNumberViewController.swift */; };
 		68A243611E566AFD006AAA61 /* logout icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A243601E566AFD006AAA61 /* logout icon.png */; };
 		68A243631E568781006AAA61 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A243621E568781006AAA61 /* NotificationTableViewCell.swift */; };
 		68A243651E5687B1006AAA61 /* MessageNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A243641E5687B1006AAA61 /* MessageNotificationTableViewCell.swift */; };
@@ -227,6 +228,7 @@
 		688344A31E53B25500E95228 /* ChatListViewHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListViewHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		688344A51E5651E700E95228 /* FriendsAndListsHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsAndListsHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		68894BD81E56A19B006C98D1 /* AppNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNotifications.swift; sourceTree = "<group>"; };
+		68894BDA1E576CB6006C98D1 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		68A243601E566AFD006AAA61 /* logout icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logout icon.png"; path = "../../logout icon.png"; sourceTree = "<group>"; };
 		68A243621E568781006AAA61 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		68A243641E5687B1006AAA61 /* MessageNotificationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageNotificationTableViewCell.swift; sourceTree = "<group>"; };
@@ -512,8 +514,7 @@
 		68D989311E52A631003A7554 /* New Registration VCs */ = {
 			isa = PBXGroup;
 			children = (
-				680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */,
-				68012E711DB5BEE000676EAF /* EnterPinViewController.swift */,
+				68894BDA1E576CB6006C98D1 /* PhoneNumberViewController.swift */,
 				68D989291E527C80003A7554 /* LoginOrRegisterViewController.swift */,
 				68D9892B1E529345003A7554 /* FullNameViewController.swift */,
 				68D989361E52AE85003A7554 /* ChoosePictureViewController.swift */,
@@ -539,6 +540,8 @@
 		68DBF39C1DB6EFD100C87385 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */,
+				68012E711DB5BEE000676EAF /* EnterPinViewController.swift */,
 				68D989311E52A631003A7554 /* New Registration VCs */,
 				68DBF3951DB6EF5000C87385 /* HomeViewController.swift */,
 				6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */,
@@ -834,6 +837,7 @@
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				68D9892E1E52996D003A7554 /* EmailAddressViewController.swift in Sources */,
 				68D989201E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift in Sources */,
+				68894BDB1E576CB6006C98D1 /* PhoneNumberViewController.swift in Sources */,
 				68A243631E568781006AAA61 /* NotificationTableViewCell.swift in Sources */,
 				68219A771E0AFEEA004E822F /* FriendsViewController.swift in Sources */,
 				680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */,

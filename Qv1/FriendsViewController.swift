@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import Contacts
 
 class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -26,6 +27,41 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var selectedRecipients : [Recipient] = []
     var selectedCells : [EditFriendTableViewCell] = []
     
+    lazy var contacts: [CNContact] = {
+        let contactStore = CNContactStore()
+        let keysToFetch = [
+            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+            CNContactEmailAddressesKey,
+            CNContactPhoneNumbersKey,
+            CNContactImageDataAvailableKey,
+            CNContactThumbnailImageDataKey] as [Any]
+        
+        // Get all the containers
+        var allContainers: [CNContainer] = []
+        do {
+            allContainers = try contactStore.containers(matching: nil)
+        } catch {
+            print("Error fetching containers")
+        }
+        
+        var results: [CNContact] = []
+        
+        // Iterate all containers and append their contacts to our results array
+        for container in allContainers {
+            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
+            
+            do {
+                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as! [CNKeyDescriptor])
+                results.append(contentsOf: containerResults)
+            } catch {
+                print("Error fetching results for container")
+            }
+        }
+        
+        return results
+        
+    }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +71,15 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         
+    
+        let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
+        
+        
+        userRef.observe(.childAdded, with: {
+            snapshot in
+            
+            
+        })
         
         createGroupButtonHeightConstraint.constant = 0
         let friendAndGroupListReference : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID).child("recipientList")
@@ -50,8 +95,12 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             friend.recipientID = snapshotValue["recipientID"] as! String
             friend.recipientName = snapshotValue["recipientName"] as! String
             friend.tag = snapshotValue["tag"] as! String
+            friend.phoneNumber = snapshotValue["phoneNumber"] as! String
             
-            self.friendArray.append(friend)
+            if self.searchForContactUsingPhoneNumber(phoneNumber: friend.phoneNumber).count > 0 {
+              self.friendArray.append(friend)
+            }
+            
             self.tableView.reloadData()
             
         })
@@ -89,12 +138,50 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             group.imageURL1 = snapshotValue["recipientImageURL1"] as! String
             group.tag = snapshotValue["tag"] as! String
             
+            
             self.groupArray.append(group)
             self.tableView.reloadData()
             
         })
         
     }
+    
+    
+    func searchForContactUsingPhoneNumber(phoneNumber: String) -> [CNContact] {
+        
+        
+        let recipient = Recipient()
+        var matchingRecipient = Recipient()
+        var result: [CNContact] = []
+        
+        for contact in self.contacts {
+            
+            if (!contact.phoneNumbers.isEmpty) {
+                
+                let phoneNumberToCompareAgainst = phoneNumber.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
+                for phoneNumber in contact.phoneNumbers {
+                    if let phoneNumberStruct = phoneNumber.value as? CNPhoneNumber {
+                        let phoneNumberString = phoneNumberStruct.stringValue
+                        let phoneNumberToCompare = phoneNumberString.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
+
+                        if phoneNumberToCompare == phoneNumberToCompareAgainst {
+                            
+                            recipient.recipientName = "\(contact.givenName) \(contact.familyName)"
+                            recipient.phoneNumber = phoneNumberToCompare
+                            
+                            matchingRecipient = recipient
+                    
+                            print("CONTACT MATCH FOUND \(matchingRecipient)")
+                            result.append(contact)
+                        }
+                    }
+                }
+            }
+        }
+        
+        return result
+    }
+    
     
     //TableView Data Source
     
@@ -207,7 +294,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
 
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCell = tableView.cellForRow(at: indexPath)! as! EditFriendTableViewCell
         let items = [friendArray, groupArray]

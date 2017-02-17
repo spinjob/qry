@@ -587,7 +587,7 @@
                                     <constraint firstAttribute="height" constant="13" id="NlA-io-ECk"/>
                                     <constraint firstAttribute="width" constant="15" id="e9g-tN-alz"/>
                                 </constraints>
-                                <state key="normal" title="v" image="BACE8330-C90D-4354-8FF7-2AC56D308486"/>
+                                <state key="normal" title="v" image="58CB3DF2-40DD-47E4-8EA4-A05787172D43"/>
                                 <connections>
                                     <action selector="showHidePollButtonTapped:" destination="oa0-MZ-QoD" eventType="touchUpInside" id="CWO-9q-C6A"/>
                                 </connections>
@@ -804,7 +804,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="firstName lastName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vVp-Fe-GKo">
-                                                    <rect key="frame" x="48" y="21" width="124" height="17.5"/>
+                                                    <rect key="frame" x="48" y="21" width="124" height="18"/>
                                                     <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="14"/>
                                                     <color key="textColor" red="0.30821734670000001" green="0.39585533740000001" blue="0.53739041089999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -3226,10 +3226,10 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4pC-u1-VkX">
-                                <rect key="frame" x="37" y="467" width="301" height="60"/>
+                                <rect key="frame" x="37" y="447" width="301" height="50"/>
                                 <color key="backgroundColor" red="0.098039215690000001" green="0.76862745099999996" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="A8Y-RW-BSd"/>
+                                    <constraint firstAttribute="height" constant="50" id="A8Y-RW-BSd"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="ProximaNovaSoft-Medium" family="Proxima Nova Soft" pointSize="24"/>
                                 <state key="normal" title="Login">
@@ -3248,7 +3248,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EMAIL ADDRESS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r3W-bn-MSb">
                                 <rect key="frame" x="26" y="221" width="122" height="20"/>
                                 <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="16"/>
-                                <color key="textColor" red="0.30821734670000001" green="0.39585533740000001" blue="0.53739041089999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.69803921570000005" green="0.69019607839999997" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="spencer.johnson10@gmail.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vQi-gc-p5C">
@@ -3266,7 +3266,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PASSWORD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y3h-q3-Kca">
                                 <rect key="frame" x="26" y="316" width="86" height="20"/>
                                 <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="16"/>
-                                <color key="textColor" red="0.30821734670000001" green="0.39585533740000001" blue="0.53739041089999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.69803921570000005" green="0.69019607839999997" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="favorite1A." textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B7r-hH-o9P">
@@ -3276,10 +3276,10 @@
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ML3-wk-Ht2">
-                                <rect key="frame" x="37" y="557" width="301" height="60"/>
+                                <rect key="frame" x="37" y="517" width="301" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="aPa-qN-SmX"/>
+                                    <constraint firstAttribute="height" constant="50" id="aPa-qN-SmX"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="ProximaNovaSoft-Medium" family="Proxima Nova Soft" pointSize="24"/>
                                 <state key="normal" title="Create Account">
@@ -3315,8 +3315,8 @@
                             <constraint firstAttribute="trailingMargin" secondItem="ML3-wk-Ht2" secondAttribute="trailing" constant="21" id="cxa-YU-Pyp"/>
                             <constraint firstItem="y3h-q3-Kca" firstAttribute="leading" secondItem="1kt-SW-MpE" secondAttribute="leadingMargin" constant="10" id="df4-8h-TXD"/>
                             <constraint firstItem="cvQ-fr-YSB" firstAttribute="leading" secondItem="1kt-SW-MpE" secondAttribute="leadingMargin" constant="10" id="dgZ-pU-qiQ"/>
-                            <constraint firstItem="4pC-u1-VkX" firstAttribute="top" secondItem="cvQ-fr-YSB" secondAttribute="bottom" constant="80" id="fiz-Xt-xoh"/>
-                            <constraint firstItem="ML3-wk-Ht2" firstAttribute="top" secondItem="4pC-u1-VkX" secondAttribute="bottom" constant="30" id="oBd-ne-rbA"/>
+                            <constraint firstItem="4pC-u1-VkX" firstAttribute="top" secondItem="cvQ-fr-YSB" secondAttribute="bottom" constant="60" id="fiz-Xt-xoh"/>
+                            <constraint firstItem="ML3-wk-Ht2" firstAttribute="top" secondItem="4pC-u1-VkX" secondAttribute="bottom" constant="20" id="oBd-ne-rbA"/>
                             <constraint firstItem="4pC-u1-VkX" firstAttribute="leading" secondItem="1kt-SW-MpE" secondAttribute="leadingMargin" constant="21" id="tYG-Ti-7bk"/>
                             <constraint firstAttribute="trailingMargin" secondItem="cvQ-fr-YSB" secondAttribute="trailing" constant="10" id="v0W-YV-5LH"/>
                         </constraints>
@@ -3338,7 +3338,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Ww-gA-sfA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1148" y="-3354"/>
+            <point key="canvasLocation" x="-52" y="-3355"/>
         </scene>
         <!--Full Name View Controller-->
         <scene sceneID="dSb-HR-WcB">
@@ -3450,7 +3450,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZQL-zl-ejp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1892" y="-3354.872563718141"/>
+            <point key="canvasLocation" x="692" y="-3355"/>
         </scene>
         <!--Email Address View Controller-->
         <scene sceneID="2R6-5g-4Ob">
@@ -3496,7 +3496,7 @@
                                 </constraints>
                                 <state key="normal" image="Sign Up - Continue Button.png"/>
                                 <connections>
-                                    <segue destination="Lqm-2c-L8d" kind="show" id="Exu-Nv-B31"/>
+                                    <segue destination="C1n-zI-smD" kind="show" id="pE8-Rq-tE4"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✓" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z90-2d-3IG">
@@ -3537,7 +3537,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hb5-oR-rkx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2669.5999999999999" y="-3354.872563718141"/>
+            <point key="canvasLocation" x="1465" y="-3403"/>
         </scene>
         <!--Password View Controller-->
         <scene sceneID="67a-cQ-m91">
@@ -3583,7 +3583,7 @@
                                 </constraints>
                                 <state key="normal" image="Sign Up - Continue Button.png"/>
                                 <connections>
-                                    <segue destination="QNx-xG-qRP" kind="show" id="JsD-ME-0AO"/>
+                                    <segue destination="QNx-xG-qRP" kind="show" id="ER2-bI-kyH"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="✓" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PUH-Gh-1I5">
@@ -3622,7 +3622,92 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wda-0Z-uL9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3388" y="-3354.872563718141"/>
+            <point key="canvasLocation" x="3049" y="-3403"/>
+        </scene>
+        <!--Phone Number View Controller-->
+        <scene sceneID="pjX-oc-UWc">
+            <objects>
+                <viewController id="C1n-zI-smD" customClass="PhoneNumberViewController" customModule="Qv1" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NgD-ZZ-PE6"/>
+                        <viewControllerLayoutGuide type="bottom" id="G2P-J8-taa"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6YR-MQ-10y">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="now verify with phone number" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJg-RZ-GTn">
+                                <rect key="frame" x="26" y="104" width="314" height="60"/>
+                                <fontDescription key="fontDescription" name="ProximaNovaSoft-Medium" family="Proxima Nova Soft" pointSize="30"/>
+                                <color key="textColor" red="0.015686274510000001" green="0.19215686269999999" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sign Up - Underline for Text Field.png" translatesAutoresizingMaskIntoConstraints="NO" id="Mhw-kU-t7z">
+                                <rect key="frame" x="26" y="277" width="323" height="1"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="31R-Ia-ETu"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PHONE NUMBER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2TS-NC-D0V">
+                                <rect key="frame" x="26" y="208" width="125" height="20"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="16"/>
+                                <color key="textColor" red="0.30821734670000001" green="0.39585533740000001" blue="0.53739041089999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i7O-qg-nD8">
+                                <rect key="frame" x="26" y="242" width="323" height="30"/>
+                                <color key="textColor" red="0.015686274510000001" green="0.19215686269999999" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="24"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W9J-9I-jry">
+                                <rect key="frame" x="312" y="314" width="37" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37" id="a5e-Vh-Che"/>
+                                    <constraint firstAttribute="width" constant="37" id="xFi-OR-Onb"/>
+                                </constraints>
+                                <state key="normal" image="Sign Up - Continue Button.png"/>
+                                <connections>
+                                    <segue destination="Lqm-2c-L8d" kind="show" id="AOM-4R-wvn"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✓" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TMx-w8-EY5">
+                                <rect key="frame" x="161" y="210" width="16" height="16"/>
+                                <fontDescription key="fontDescription" name="ProximaNovaSoft-Bold" family="Proxima Nova Soft" pointSize="16"/>
+                                <color key="textColor" red="0.60392156860000001" green="0.90588235289999997" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="TMx-w8-EY5" firstAttribute="leading" secondItem="2TS-NC-D0V" secondAttribute="trailing" constant="10" id="21T-fn-ynW"/>
+                            <constraint firstItem="oJg-RZ-GTn" firstAttribute="top" secondItem="NgD-ZZ-PE6" secondAttribute="bottom" constant="40" id="4EZ-cc-5bP"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="i7O-qg-nD8" secondAttribute="trailing" constant="10" id="C2Q-R4-lnP"/>
+                            <constraint firstItem="2TS-NC-D0V" firstAttribute="leading" secondItem="6YR-MQ-10y" secondAttribute="leadingMargin" constant="10" id="CjZ-UK-M8c"/>
+                            <constraint firstItem="Mhw-kU-t7z" firstAttribute="top" secondItem="i7O-qg-nD8" secondAttribute="bottom" constant="5" id="HuP-EK-C2D"/>
+                            <constraint firstItem="Mhw-kU-t7z" firstAttribute="leading" secondItem="6YR-MQ-10y" secondAttribute="leadingMargin" constant="10" id="Pn2-ik-kWx"/>
+                            <constraint firstItem="TMx-w8-EY5" firstAttribute="centerY" secondItem="2TS-NC-D0V" secondAttribute="centerY" id="WuL-Eg-82l"/>
+                            <constraint firstItem="i7O-qg-nD8" firstAttribute="leading" secondItem="6YR-MQ-10y" secondAttribute="leadingMargin" constant="10" id="YH0-Kw-1D0"/>
+                            <constraint firstItem="W9J-9I-jry" firstAttribute="top" secondItem="Mhw-kU-t7z" secondAttribute="bottom" constant="36" id="ZOQ-0E-rd2"/>
+                            <constraint firstItem="i7O-qg-nD8" firstAttribute="top" secondItem="2TS-NC-D0V" secondAttribute="bottom" constant="14" id="Zc5-N1-LIh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="W9J-9I-jry" secondAttribute="trailing" constant="10" id="eHb-yB-i0E"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Mhw-kU-t7z" secondAttribute="trailing" constant="10" id="mBc-lW-DJI"/>
+                            <constraint firstItem="oJg-RZ-GTn" firstAttribute="leading" secondItem="6YR-MQ-10y" secondAttribute="leadingMargin" constant="10" id="nRp-Da-cDM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oJg-RZ-GTn" secondAttribute="trailing" constant="19" id="pog-jY-z6g"/>
+                            <constraint firstItem="2TS-NC-D0V" firstAttribute="top" secondItem="oJg-RZ-GTn" secondAttribute="bottom" constant="44" id="vzS-ke-x6W"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="nextButton" destination="W9J-9I-jry" id="4o5-lH-ZP2"/>
+                        <outlet property="phoneNumberFieldLabel" destination="2TS-NC-D0V" id="tMP-kM-QaJ"/>
+                        <outlet property="phoneNumberHeaderLabel" destination="oJg-RZ-GTn" id="GHl-Qe-Q1y"/>
+                        <outlet property="phoneNumberTextField" destination="i7O-qg-nD8" id="tab-FY-bej"/>
+                        <outlet property="validatedIconLabel" destination="TMx-w8-EY5" id="uGo-UW-jmw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bco-FX-jvs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2236" y="-3403"/>
         </scene>
         <!--Choose Picture View Controller-->
         <scene sceneID="bMy-U8-W6J">
@@ -3773,7 +3858,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9ng-5E-QI1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-724" y="-3353"/>
+            <point key="canvasLocation" x="-1924" y="-3353"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Fgb-d5-hmG">
@@ -3791,13 +3876,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WKj-Fc-lFV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="209" y="-3354"/>
+            <point key="canvasLocation" x="-991" y="-3355"/>
         </scene>
     </scenes>
     <resources>
-        <image name="Answer 1 Conversation (In-active).png" width="145" height="135"/>
-        <image name="Answer 2 Conversation (In-active).png" width="145" height="135"/>
-        <image name="BACE8330-C90D-4354-8FF7-2AC56D308486" width="53" height="53">
+        <image name="58CB3DF2-40DD-47E4-8EA4-A05787172D43" width="53" height="53">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -4054,6 +4137,8 @@ NwBFAEsAVABbAGgAbwB3AHkAfgCAAIIAhwCSAJQAlgCYAJ0AoACiAKQApgCoAK0AxADGAMg5vjnDOc45
 AAAAAAAAPgAAAAAAAAAAAAAAAAAAOos
 </mutableData>
         </image>
+        <image name="Answer 1 Conversation (In-active).png" width="145" height="135"/>
+        <image name="Answer 2 Conversation (In-active).png" width="145" height="135"/>
         <image name="Blue Button Background.png" width="1125" height="174"/>
         <image name="De-selectedResultsIcon.png" width="100" height="70"/>
         <image name="Everybody Active Conversation (Active).png" width="145" height="135"/>

@@ -23,6 +23,7 @@ class PasswordViewController: UIViewController, UITextFieldDelegate {
     var firstName = ""
     var lastName = ""
     var emailAddress = ""
+    var phoneNumber = ""
 
     
     override func viewDidLoad() {
@@ -122,6 +123,7 @@ class PasswordViewController: UIViewController, UITextFieldDelegate {
                 FIRDatabase.database().reference().child("users").child(user!.uid).child("lastName").setValue(self.lastName)
               FIRDatabase.database().reference().child("users").child(user!.uid).child("fullName").setValue("\(self.firstName) \(self.lastName)")
              FIRDatabase.database().reference().child("users").child(user!.uid).child("uID").setValue(user!.uid)
+                FIRDatabase.database().reference().child("users").child(user!.uid).child("phoneNumber").setValue(self.phoneNumber)
                 
             
             }

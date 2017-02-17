@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Auth0ClientID</key>
+	<string>${AUTH0_CLIENT_ID}</string>
+	<key>Auth0Domain</key>
+	<string>${AUTH0_DOMAIN}</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -37,11 +41,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>We'd like to access your camera so you can use it in our app!</string>
+	<string>We&apos;d like to access your camera so you can use it in our app!</string>
 	<key>NSContactsUsageDescription</key>
-	<string>We'd like to access your contacts so you can ask friends without them needing the app!</string>
+	<string>We&apos;d like to access your contacts so you can ask friends without them needing the app!</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We'd like to access your photos so you can choose one!</string>
+	<string>We&apos;d like to access your photos so you can choose one!</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ProximaNova-SBold.otf</string>

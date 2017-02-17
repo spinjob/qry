@@ -61,12 +61,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             let snapshotValue = snapshot.value as? NSDictionary
     
-            newRecipient = ["recipientName" as NSObject: (snapshotValue?["fullName"] as! String) as AnyObject, "recipientImageURL1" as NSObject: (snapshotValue?["profileImageURL"] as! String) as AnyObject, "recipientID" as NSObject: (snapshotValue?["uID"] as! String) as AnyObject, "tag" as NSObject: "user" as AnyObject]
-            
+        newRecipient = ["recipientName" as NSObject: (snapshotValue?["fullName"] as! String) as AnyObject, "recipientImageURL1" as NSObject: (snapshotValue?["profileImageURL"] as! String) as AnyObject, "recipientID" as NSObject: (snapshotValue?["uID"] as! String) as AnyObject, "tag" as NSObject: "user" as AnyObject, "phoneNumber" as NSObject: (snapshotValue?["phoneNumber"]) as AnyObject]
+        
             recipientID = snapshotValue?["uID"] as! String
             
             let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
-            
+        
             recipientListRef.setValue(newRecipient)
 
         

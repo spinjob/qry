@@ -31,11 +31,51 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     var selectedGroupCells : [UITableViewCell] = []
     var questionImage : UIImage = UIImage()
     var questionImageURL : String = "no question image"
+    var contactStore = CNContactStore()
 
     var groupToEdit : Recipient = Recipient()
     var groupMembers : [Recipient] = []
+
     
     let sectionTitles = ["Lists", "Friends"]
+    
+    
+    lazy var contacts: [CNContact] = {
+        let contactStore = CNContactStore()
+        let keysToFetch = [
+            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+            CNContactEmailAddressesKey,
+            CNContactPhoneNumbersKey,
+            CNContactImageDataAvailableKey,
+            CNContactThumbnailImageDataKey] as [Any]
+        
+        // Get all the containers
+        var allContainers: [CNContainer] = []
+        do {
+            allContainers = try contactStore.containers(matching: nil)
+        } catch {
+            print("Error fetching containers")
+        }
+        
+        var results: [CNContact] = []
+        
+        // Iterate all containers and append their contacts to our results array
+        for container in allContainers {
+            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
+            
+            do {
+                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as! [CNKeyDescriptor])
+                results.append(contentsOf: containerResults)
+            } catch {
+                print("Error fetching results for container")
+            }
+        }
+        
+        return results
+        
+    }()
+    
+    
     
     
     @IBOutlet weak var sendButton: UIButton!
@@ -63,26 +103,6 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         sendButtonHeightConstraint.constant = 0
         createGroupButtonHeightConstraint.constant = 0
         
-        
-  //      if questionImage.size != CGSize(width: 0, height: 0) {
-  //
-  //          let profileImageData = UIImageJPEGRepresentation(questionImage, 0.4)
-  //
-  //          FIRStorage.storage().reference().child("PollImages/\(poll.pollID)/pollImage.jpg").put(profileImageData!, metadata: nil){
-  //              metadata, error in
-  //
-  //              if error != nil {
-  //                  print("error \(error)")
-  //              }
-  //              else {
-  //                  pollRef.child("questionImageURL").setValue((metadata?.downloadURL()?.absoluteString)!)
-  //                  self.questionImageURL = (metadata?.downloadURL()?.absoluteString)!
-  //
-  //              }
-  //
-  //          }
-  //
-  //      }
      
         userRef.queryOrdered(byChild: "tag").queryEqual(toValue: "group").observe(.childAdded, with: {
             
@@ -112,13 +132,17 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             recipient.recipientID = snapshotvalue["recipientID"] as! String
             recipient.tag = snapshotvalue["tag"] as! String
             recipient.imageURL1 = snapshotvalue["recipientImageURL1"] as! String
+            recipient.phoneNumber = snapshotvalue["phoneNumber"] as! String
         
-            self.recipientList.sort(by: {$0.recipientName > $1.recipientName})
-            self.recipientList.append(recipient)
+            if self.searchForContactUsingPhoneNumber(phoneNumber: recipient.phoneNumber).count > 0 {
+                self.recipientList.append(recipient)
+                self.recipientList.sort(by: {$0.recipientName > $1.recipientName})
+            }
             
             self.tableView.reloadData()
             
         })
+
         
     }
     
@@ -553,6 +577,42 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
             }
         }
+    
+    
+    func searchForContactUsingPhoneNumber(phoneNumber: String) -> [CNContact] {
+        
+        
+        let recipient = Recipient()
+        var matchingRecipient = Recipient()
+        var result: [CNContact] = []
+        
+        for contact in self.contacts {
+            
+            if (!contact.phoneNumbers.isEmpty) {
+                
+                let phoneNumberToCompareAgainst = phoneNumber.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
+                for phoneNumber in contact.phoneNumbers {
+                    if let phoneNumberStruct = phoneNumber.value as? CNPhoneNumber {
+                        let phoneNumberString = phoneNumberStruct.stringValue
+                        let phoneNumberToCompare = phoneNumberString.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
+                        
+                        if phoneNumberToCompare == phoneNumberToCompareAgainst {
+                            
+                            recipient.recipientName = "\(contact.givenName) \(contact.familyName)"
+                            recipient.phoneNumber = phoneNumberToCompare
+                            
+                            matchingRecipient = recipient
+                            
+                            print("CONTACT MATCH FOUND \(matchingRecipient)")
+                            result.append(contact)
+                        }
+                    }
+                }
+            }
+        }
+        
+        return result
+    }
     
     }
 
