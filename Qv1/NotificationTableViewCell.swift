@@ -1,20 +1,15 @@
 //
-//  ChatListViewHeaderTableViewCell.swift
+//  NotificationTableViewCell.swift
 //  Qv1
 //
-//  Created by Spencer Johnson on 2/14/17.
+//  Created by Spencer Johnson on 2/16/17.
 //  Copyright © 2017 Spencer Johnson. All rights reserved.
 //
 
 import UIKit
 
-class ChatListViewHeaderTableViewCell: UITableViewCell {
-    @IBOutlet weak var answerColorIndicatorView: UIView!
-    @IBOutlet weak var answerGroupLabel: UILabel!
+class NotificationTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var answeredStaticLabel: UILabel!
-    @IBOutlet weak var separatorView: UIView!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

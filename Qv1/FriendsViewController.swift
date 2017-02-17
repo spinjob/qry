@@ -12,7 +12,6 @@ import FirebaseDatabase
 
 class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var createGroupButtonHeightConstraint: NSLayoutConstraint!
     
@@ -31,6 +30,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setUpNavigationBarItems()
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -118,6 +119,25 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         return 60
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        
+        let view = tableView.dequeueReusableCell(withIdentifier: "friendAndListHeaderCell") as! FriendsAndListsHeaderTableViewCell
+
+        view.headerLabel.text = "Friends"
+        view.contentView.backgroundColor = UIColor.init(hexString: " 043176")
+       
+        if section == 1 {
+           view.headerLabel.text = "Lists"
+           view.contentView.backgroundColor = UIColor.init(hexString: "19C4C3")
+        }
+        
+        return view.contentView
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let items = [friendArray, groupArray]
@@ -411,9 +431,36 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
          navigationController?.pushViewController(myVC, animated: true)
     }
+  
+    
+    func setUpNavigationBarItems() {
+        
+        let titleImageView = UIImageView()
+        titleImageView.image = UIImage(named: "logout icon")
+        
+        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 34, height: 34))
+        
+        titleImageView.frame = titleView.bounds
+        titleView.layer.masksToBounds = true
+        titleView.addSubview(titleImageView)
+
+        
+        
+        self.navigationItem.rightBarButtonItem?.customView = titleView
+
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        
+        
         
     }
-    
+
+}
+
+
+
+
     
 
 

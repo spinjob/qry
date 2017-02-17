@@ -25,6 +25,8 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUpNavigationBarItems()
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
@@ -105,6 +107,11 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
         
         let view = tableView.dequeueReusableCell(withIdentifier: "header") as! ChatListViewHeaderTableViewCell
         view.answerGroupLabel.text = self.sectionTitles[section]
+        
+        if section == 2 {
+            view.answeredStaticLabel.text = "Didn't Answer"
+            view.answerGroupLabel.isHidden = true
+        }
         view.answerColorIndicatorView.layer.cornerRadius = view.answerColorIndicatorView.layer.frame.width / 2
         view.answerColorIndicatorView.layer.masksToBounds = true
         view.answerColorIndicatorView.backgroundColor = UIColor.init(hexString: self.answerColors[section])
@@ -118,9 +125,9 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
         if section == 0 {
-            return 60
+            return 50
         }
-        return 80
+        return 60
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -143,6 +150,31 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
      
         return 60
+        
+    }
+    
+    func setUpNavigationBarItems() {
+        
+        let pageTitle : UILabel = UILabel()
+        
+        pageTitle.text = "Breakdown"
+        
+        
+        pageTitle.textColor = UIColor.init(hexString: "4B6184")
+        
+        
+        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 35))
+        
+        pageTitle.frame = titleView.bounds
+        titleView.addSubview(pageTitle)
+        
+        self.navigationItem.titleView = titleView
+        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        
+        
         
     }
     

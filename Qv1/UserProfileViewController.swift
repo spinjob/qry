@@ -46,14 +46,13 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setUpNavigationBarItems()
     
         tableView.delegate = self
         tableView.dataSource = self
     
         imagePicker.delegate = self
-        
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        navigationController?.navigationBar.shadowImage = UIImage()
 
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID)
         let pollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls")
@@ -1155,7 +1154,47 @@ func viewPollResultsButtonTapped (sender : UIButton){
         
     }
     
+    func setUpNavigationBarItems() {
+        
+        let logoutIconImageView = UIImageView()
+        let logoutIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.logout(sender:)))
+        
+        logoutIconImageView.frame = CGRect(x: 0, y: 0, width: 18, height: 18)
+        logoutIconImageView.addGestureRecognizer(logoutIconTapGesture)
+        logoutIconImageView.image = UIImage(named: "logout icon")
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: logoutIconImageView)
+        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        
+    }
     
+    func logout(sender: UITapGestureRecognizer) {
+        
+        print("logout")
+        let userDefaults = UserDefaults.standard
+        
+        do {
+            try FIRAuth.auth()?.signOut()
+            if userDefaults.string(forKey: "email") != nil {
+                
+                userDefaults.removeObject(forKey: "email")
+                userDefaults.removeObject(forKey: "password")
+                
+                
+            }
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginOrRegisterViewController") as! LoginOrRegisterViewController
+            present(vc, animated: true, completion: nil)
+            print("You logged out")
+            
+        } catch let error as Error {
+            print("\(error)")
+        }
+ 
+        
+    }
     
     
 }

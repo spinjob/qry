@@ -38,8 +38,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
      
         setUpNavigationBarItems()
+        
         
         separatorView.backgroundColor = UIColor.init(hexString: "D8D8D8")
         
@@ -48,7 +50,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         var newRecipient : [NSObject : AnyObject] = [ : ]
         var recipientID = ""
-            
+        let swipeRight: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(HomeViewController.swipeRight(gestureRecognizer:)))
+        swipeRight.direction = .right
+        
+        tableView.addGestureRecognizer(swipeRight)
+        
+        
        ref.observe(.childAdded, with: {
             snapshot in
             
@@ -827,6 +834,27 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
           self.navigationController!.view.layer.add(transition, forKey: kCATransition)
           self.navigationController?.pushViewController(controller, animated: false)
         
+        
+    }
+    
+    func swipeRight(gestureRecognizer: UISwipeGestureRecognizer) {
+       
+        let imgView = gestureRecognizer.view as! UITableView
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+        let transition:CATransition = CATransition()
+        
+        controller.profileUserID = (FIRAuth.auth()?.currentUser?.uid)!
+        
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromLeft
+        
+        //  self.present(controller, animated: true, completion: nil)
+        
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
         
     }
     
