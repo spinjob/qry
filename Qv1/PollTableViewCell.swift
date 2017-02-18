@@ -56,7 +56,12 @@ class PollTableViewCell: UITableViewCell {
     
     @IBOutlet weak var timerView: UIView!
     
+    @IBOutlet weak var timerViewCenterImageView: UIImageView!
+    
     @IBOutlet weak var expiredIconImageView: UIImageView!
+    
+    @IBOutlet weak var unitOfTimeLeftLabel: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

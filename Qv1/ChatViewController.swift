@@ -508,8 +508,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             let editChatMembersImageView = UIImageView()
             let editChatMembersTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.editChatMembersTapped(sender:)))
             
-            editChatMembersImageView.frame = CGRect(x: 0, y: 0, width: 30, height: 9)
-            editChatMembersImageView.image = UIImage(named: "elipses Icon")
+            editChatMembersImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+            editChatMembersImageView.image = #imageLiteral(resourceName: "List View Icon")
             editChatMembersImageView.addGestureRecognizer(editChatMembersTapGesture)
             
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: editChatMembersImageView)

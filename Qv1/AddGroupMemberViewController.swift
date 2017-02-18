@@ -27,6 +27,7 @@ class AddGroupMemberViewController: UIViewController, UITableViewDelegate, UITab
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         
         addToListButtonHeightConstraint.constant = 0
         

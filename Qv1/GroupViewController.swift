@@ -56,6 +56,7 @@ class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UI
         imagePicker.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.tableFooterView = UIView()
         groupNameTextField.delegate = self
         
         

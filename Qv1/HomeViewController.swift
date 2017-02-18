@@ -267,39 +267,72 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         var sentToRecipientsString : [String] = [""]
         var numberOfOtherRecipients : Int
         
+        
+        
         if hoursLeft.hour! < 1 {
-            cell.timeUntilExpirationLabel.text = "\(minutesLeft.minute!) minutes left"
+            cell.timeUntilExpirationLabel.text = "\(minutesLeft.minute!)"
+            
+            if hoursLeft.hour! == 1{
+                cell.unitOfTimeLeftLabel.text = "minute"
+            }
+            
+            cell.unitOfTimeLeftLabel.text = "minutes"
+            
         }
         
         
         if daysLeft.day! > 1 {
-            cell.timeUntilExpirationLabel.text = "\(daysLeft.day!) days left"
+            cell.timeUntilExpirationLabel.text = "\(daysLeft.day!)"
+            
+            cell.unitOfTimeLeftLabel.text = "days"
+            
+            
         }
         
         
         if daysLeft.day! == 1 {
-            cell.timeUntilExpirationLabel.text = "\(daysLeft.day!) day left"
+            cell.timeUntilExpirationLabel.text = "\(daysLeft.day!)"
+
+                cell.unitOfTimeLeftLabel.text = "day"
+        
         }
         
         if hoursLeft.hour! > 1, daysLeft.day! < 1 {
-            cell.timeUntilExpirationLabel.text = "\(hoursLeft.hour!) hours left"
+            
+            cell.timeUntilExpirationLabel.text = "\(hoursLeft.hour!)"
+            
+            cell.unitOfTimeLeftLabel.text = "hours"
         }
         
         if hoursLeft.hour! == 1 {
-            cell.timeUntilExpirationLabel.text = "\(hoursLeft.hour!) hour left"
+            cell.timeUntilExpirationLabel.text = "\(hoursLeft.hour!)"
+            
+
+                cell.unitOfTimeLeftLabel.text = "hour"
+       
+            
+            
         }
         
         
-        
         cell.timerView.isHidden = true
+        cell.timerView.layer.cornerRadius = cell.timerView.layer.frame.width / 2
+        cell.timerView.layer.masksToBounds = true
+        
+        cell.timerViewCenterImageView.isHidden = true
+        cell.timerViewCenterImageView.layer.cornerRadius = cell.timerViewCenterImageView.layer.frame.width / 2
+        cell.timerViewCenterImageView.layer.masksToBounds = true
 
         if minutesLeft.minute! > 0, pollForCell.isExpired == false {
             
         print(percentageLeft)
         cell.timerView.isHidden = false
+    
+        cell.timerViewCenterImageView.isHidden = false
+            
         let chartView = PieChartView()
         
-        chartView.frame = CGRect(x: 0, y: 0, width: cell.timerView.frame.size.width, height: 62)
+        chartView.frame = CGRect(x: 0, y: 0, width: cell.timerView.frame.size.width, height: 48)
         
         if percentageLeft < 10 {
                 chartView.segments = [
@@ -346,6 +379,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if minutesLeft.minute == 0 {
             //cell.timeUntilExpirationLabel.text = "Expired"
             cell.timeUntilExpirationLabel.isHidden = true
+            cell.unitOfTimeLeftLabel.isHidden = true
             cell.resultsView.isHidden = true
             cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
             cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
@@ -364,6 +398,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if minutesLeft.minute! < 0 {
             //cell.timeUntilExpirationLabel.text = "Expired"
             cell.timeUntilExpirationLabel.isHidden = true
+            cell.unitOfTimeLeftLabel.isHidden = true
             cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
             cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
             cell.questionStringLabel.alpha = 0.5
@@ -395,6 +430,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.senderUserImageView.alpha = 1
             cell.questionStringLabel.alpha = 1
             cell.timeUntilExpirationLabel.isHidden = false
+            cell.unitOfTimeLeftLabel.isHidden = false
             
         }
 

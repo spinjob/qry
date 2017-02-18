@@ -70,6 +70,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         
     
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
@@ -108,6 +109,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         selectedCells.forEach { (EditFriendTableViewCell) in
             EditFriendTableViewCell.isSelected = true
         }
+        
+        
         
         tableView.reloadData()
         
@@ -521,19 +524,17 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func setUpNavigationBarItems() {
         
-        let titleImageView = UIImageView()
-        titleImageView.image = UIImage(named: "logout icon")
+        let pageTitle : UILabel = UILabel()
         
-        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 34, height: 34))
+        pageTitle.text = "Friends & Lists"
+    
+        pageTitle.textColor = UIColor.init(hexString: "4B6184")
         
-        titleImageView.frame = titleView.bounds
-        titleView.layer.masksToBounds = true
-        titleView.addSubview(titleImageView)
-
+        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 35))
         
+        pageTitle.frame = titleView.bounds
+        titleView.addSubview(pageTitle)
         
-        self.navigationItem.rightBarButtonItem?.customView = titleView
-
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         

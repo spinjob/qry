@@ -29,6 +29,8 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var friendsButton: UIButton!
     @IBOutlet weak var pollViewHeightConstraint: NSLayoutConstraint!
     
+    
+    
     var profileImageURL = ""
     var profileUserID = ""
     var askedPolls : [Poll] = []
@@ -51,6 +53,8 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
+        
     
         imagePicker.delegate = self
 
@@ -1163,7 +1167,10 @@ func viewPollResultsButtonTapped (sender : UIButton){
         logoutIconImageView.addGestureRecognizer(logoutIconTapGesture)
         logoutIconImageView.image = UIImage(named: "logout icon")
         
+        
+        if profileUserID == currentUserID {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: logoutIconImageView)
+        }
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
