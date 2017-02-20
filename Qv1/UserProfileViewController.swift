@@ -29,13 +29,13 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var friendsButton: UIButton!
     @IBOutlet weak var pollViewHeightConstraint: NSLayoutConstraint!
     
-    
-    
+    @IBOutlet weak var friendProfileFeedLabel: UILabel!
     var profileImageURL = ""
     var profileUserID = ""
     var askedPolls : [Poll] = []
     var expiredAskedPolls : [Poll] = []
     var askedPollsObserved : [Poll] = []
+    var receivedPollIDs : [String] = []
     var answeredPolls : [Poll] = []
     //var receivedPolls : [Poll] = []
     var selectedButton : [Int : UIButton] = [:]
@@ -134,9 +134,28 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
             poll.minutesUntilExpiration = minutesLeft.minute!
             
+            
+            
+            
             if snapshotValue["expired"] as! String == "false" {
                 self.askedPolls.append(poll)
                 self.askedPolls = self.askedPolls.sorted(by: {$0.minutesUntilExpiration < $1.minutesUntilExpiration})
+                
+                FIRDatabase.database().reference().child("users").child(self.currentUserID).child("receivedPolls").observe(.childAdded, with: {
+                    snapshot in
+                    
+                    let receivedPollID = snapshot.key
+                    
+                    if poll.pollID == receivedPollID {
+                        
+                        self.askedPollsObserved.append(poll)
+                        self.askedPollsObserved = self.askedPollsObserved.sorted(by: {$0.minutesUntilExpiration < $1.minutesUntilExpiration})
+                        
+                      self.tableView.reloadData()
+                    }
+                    
+                })
+
                 
             }
             
@@ -147,38 +166,16 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             }
             
             
-            }
             
+            
+            
+        }
+        
             self.numberOfAskedLabel.text = String(self.askedPolls.count)
             self.tableView.reloadData()
         })
-    
-    
-    receivedPollsRef.queryOrdered(byChild: "senderUser").queryEqual(toValue: profileUserID).observe(.childAdded, with: {
-        snapshot in
         
-        if snapshot.childrenCount != 0 {
-            
-            let poll = Poll()
-            
-            let snapshotValue = snapshot.value as! NSDictionary
-            
-            poll.answer1String = snapshotValue["answer1"] as! String
-            poll.answer2String = snapshotValue["answer2"] as! String
-            poll.questionString = snapshotValue["question"] as! String
-            poll.senderUser = snapshotValue["senderUser"] as! String
-            poll.pollImageURL = snapshotValue["pollImageURL"] as! String
-            poll.pollID = snapshot.key
-            poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
-            poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
-            poll.pollURL = snapshotValue["pollURL"] as! String
-            poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
-
-            self.askedPollsObserved.append(poll)
-        }
-        
-        self.tableView.reloadData()
-    })
+    
 
         
     receivedPollsRef.observe(.childAdded, with: {
@@ -237,10 +234,24 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         userProfileImageView.isUserInteractionEnabled = true
         friendsButton.isUserInteractionEnabled = true
         friendsLabel.textColor = UIColor.init(hexString: "19C4C3")
+        answeredButton.isUserInteractionEnabled = true
+        friendProfileFeedLabel.isHidden = true
+        numberOfAskedLabel.isHidden = false
+        underlineImageView.isHidden = false
+        
         
     } else {
         
         friendsLabel.textColor = UIColor.init(hexString: "999999")
+        answeredButton.isUserInteractionEnabled = false
+        answeredButton.isHidden = true
+        askedButton.isHidden = true
+        askedButton.isUserInteractionEnabled = false
+        friendProfileFeedLabel.isHidden = false
+        numberOfAskedLabel.isHidden = true
+        underlineImageView.isHidden = true
+        
+        askedButton.setTitle("Your Live Chats", for: .normal)
         
         currentUserRef.child("recipientList").queryOrdered(byChild: "recipientID").queryEqual(toValue: profileUserID).observe(.value, with: {
             snapshot in
@@ -310,6 +321,12 @@ func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
     if askedPollSelected == true, profileUserID == currentUserID {
         return askedPolls.count
     }
+    
+    if askedPollSelected == true, profileUserID != currentUserID {
+        return askedPollsObserved.count
+    }
+    
+    
 
     return askedPolls.count
     
@@ -338,7 +355,15 @@ func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) ->
         }
     }
     
+    if askedPollSelected == true, profileUserID != currentUserID {
+        if askedPollsObserved[indexPath.row].pollImageURL != "no image" {
+            return 355
+        } else {
+            return 246
+        }
+    }
     
+
     if askedPolls[indexPath.row].pollImageURL != "no image" {
         return 355
     } else {
@@ -346,7 +371,6 @@ func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) ->
     }
     
 }
-    
     
     
 
@@ -369,7 +393,12 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     if askedPollSelected == true, profileUserID == currentUserID {
         pollCell = askedPolls[indexPath.row]
     }
+    
+    if askedPollSelected == true, profileUserID != currentUserID {
+        pollCell = askedPollsObserved[indexPath.row]
+    }
 
+    
     let date = Date()
     let formatter = DateFormatter()
     let calendar = Calendar.current
@@ -455,64 +484,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         cell.timerView.addSubview(chartView)
         
     }
-    
-   // if minutesLeft.minute == 0{
-        
-   //     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
-   //     let mainPollRef = FIRDatabase.database().reference().child("polls").child(pollCell.pollID)
-        
-   //     cell.timeLeftLabel.isHidden = true
-   //     cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
-   //     cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
-   //     cell.expiredIconImageView.isHidden = false
-        
-        
-       
-   //     pollRef.child(pollForCell.pollID).child("expired").setValue("true")
-        
-   //     mainPollRef.child("expired").setValue("true")
-        
-   // }
-    
-  //  if minutesLeft.minute! < 0 {
-  //      let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
-  //      let mainPollRef = FIRDatabase.database().reference().child("polls").child(pollCell.pollID)
- //
- //       cell.timeLeftLabel.isHidden = true
- //       cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
- //       cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
- //       cell.expiredIconImageView.isHidden = false
- //
- //       pollRef.child(pollForCell.pollID).child("expired").setValue("true")
-        
- //       mainPollRef.child("expired").setValue("true")
- //       cell.resultsView.isHidden = true
- //       cell.answer1Button.isHidden = false
- //       cell.answer2Button.isHidden = true
 
- //   } else {
-        
- //       cell.resultsView.isHidden = true
- //       cell.answer1Button.isHidden = false
- //       cell.answer2Button.isHidden = false
- //       cell.answer1Button.isUserInteractionEnabled = true
- //       cell.answer2Button.isUserInteractionEnabled = true
- //       cell.expiredIconImageView.isHidden = true
- //       cell.answer1Button.alpha = 1
- //       cell.answer2Button.alpha = 1
- //       cell.viewPollResultsButton.isHidden = false
- //       cell.answer2ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
- //       cell.answer1ResultBarImageView.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
- //       cell.senderUserImageView.alpha = 1
-  //      cell.questionStringLabel.alpha = 1
-   //     cell.timeLeftLabel.isHidden = false
-        
-  //  }
-    
-    
-    
-    
-    
     cell.answer1Button.tag = indexPath.row
     cell.answer2Button.tag = indexPath.row
     cell.viewPollResultsButton.tag = indexPath.row
@@ -572,7 +544,6 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     cell.senderUserImageView.layer.borderWidth = 0.2
     cell.senderUserImageView.layer.borderColor = UIColor.init(hexString: "506688").cgColor
     cell.senderUserImageView.isUserInteractionEnabled = true
-   // cell.senderUserImageView.addGestureRecognizer(tapGestureRecognizer)
     
     
     cell.pollImageView.sd_setImage(with: URL(string: pollCell.pollImageURL))
@@ -757,6 +728,11 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
         pollForCell = askedPolls[linkPreview.tag]
     }
     
+    if askedPollSelected == false, profileUserID != currentUserID {
+        pollForCell = askedPollsObserved[linkPreview.tag]
+
+    }
+    
     let url = URL(string: pollForCell.pollURL)
         
         if #available(iOS 10.0, *) {
@@ -820,6 +796,10 @@ func answerButton1Tapped (sender : UIButton){
         pollForCell = askedPolls[sender.tag]
     }
     
+    if askedPollSelected == false, profileUserID != currentUserID {
+        pollForCell = askedPollsObserved[sender.tag]
+    }
+    
     
         let pollAnsweredRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").child(currentUserID).child("voteString")
         
@@ -876,6 +856,10 @@ func answerButton2Tapped (sender : UIButton){
     
     if askedPollSelected == true, profileUserID == currentUserID {
         pollForCell = askedPolls[sender.tag]
+    }
+    
+    if askedPollSelected == false, profileUserID != currentUserID {
+        pollForCell = askedPollsObserved[sender.tag]
     }
     
     
@@ -964,6 +948,10 @@ func chatButtonTapped (sender : UIButton){
     
     if askedPollSelected == true, profileUserID == currentUserID {
         pollForCell = askedPolls[sender.tag]
+    }
+    
+    if askedPollSelected == true, profileUserID != currentUserID {
+        pollForCell = askedPollsObserved[sender.tag]
     }
     
         print(pollForCell.groupMembers)
@@ -1063,8 +1051,12 @@ func viewPollResultsButtonTapped (sender : UIButton){
         if askedPollSelected == true, profileUserID == currentUserID {
             pollForCell = askedPolls[sender.tag]
         }
-        
-        
+    
+        if askedPollSelected == false, profileUserID != currentUserID {
+            pollForCell = askedPollsObserved[sender.tag]
+        }
+
+    
         let sentToRecipientsReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("sentTo")
         var sentToRecipientIDs : [String] = []
         
@@ -1203,7 +1195,7 @@ func viewPollResultsButtonTapped (sender : UIButton){
         
     }
     
-    
+
 }
 
 

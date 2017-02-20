@@ -38,8 +38,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-     
+  
         setUpNavigationBarItems()
         
         

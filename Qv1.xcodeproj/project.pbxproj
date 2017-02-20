@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		27B79C6780BCE387A65A38D0 /* Pods_Qv1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */; };
 		68012E701DB5A42600676EAF /* iPhone 7 Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */; };
-		68012E721DB5BEE000676EAF /* EnterPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68012E711DB5BEE000676EAF /* EnterPinViewController.swift */; };
 		680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DD1DB5933200452A4E /* AppDelegate.swift */; };
-		680DF2E01DB5933200452A4E /* VerifyPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */; };
 		680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2E41DB5933200452A4E /* Qv1.xcdatamodeld */; };
 		680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E71DB5933200452A4E /* Assets.xcassets */; };
 		680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */; };
@@ -67,6 +65,7 @@
 		682DB3A91DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB3A81DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift */; };
 		683166811DD6B752003EDC21 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 683166801DD6B752003EDC21 /* gradient.png */; };
 		68475A4E1E4A46DC0036A137 /* ExpiredVotesBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 68475A4D1E4A46DC0036A137 /* ExpiredVotesBackground.png */; };
+		684A2E2E1E58D207003706B3 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */; };
 		684D2ED31E3D28730000879F /* GroupMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684D2ED21E3D28730000879F /* GroupMemberCollectionViewCell.swift */; };
 		685E9B9C1DE9FEC700D95C15 /* show icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 685E9B9B1DE9FEC700D95C15 /* show icon.png */; };
 		685E9B9E1DE9FED300D95C15 /* hide icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 685E9B9D1DE9FED300D95C15 /* hide icon.png */; };
@@ -104,13 +103,6 @@
 		68D3841F1DBBE706000B4084 /* Login Button Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D3841E1DBBE706000B4084 /* Login Button Background.png */; };
 		68D384211DBBE925000B4084 /* Blue Button Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D384201DBBE925000B4084 /* Blue Button Background.png */; };
 		68D384231DBBEACA000B4084 /* Text Field Underline.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D384221DBBEACA000B4084 /* Text Field Underline.png */; };
-		68D384311DBFBBB4000B4084 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842E1DBFBBB4000B4084 /* AWSCore.framework */; };
-		68D384321DBFBBB4000B4084 /* AWSDynamoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */; };
-		68D384331DBFBBB4000B4084 /* CheckXcodeVersion.sh in Resources */ = {isa = PBXBuildFile; fileRef = 68D384301DBFBBB4000B4084 /* CheckXcodeVersion.sh */; };
-		68D384341DBFBC05000B4084 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842E1DBFBBB4000B4084 /* AWSCore.framework */; };
-		68D384351DBFBC05000B4084 /* AWSCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842E1DBFBBB4000B4084 /* AWSCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		68D384361DBFBC05000B4084 /* AWSDynamoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */; };
-		68D384371DBFBC05000B4084 /* AWSDynamoDB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		68D384461DBFBD2C000B4084 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D384451DBFBD2C000B4084 /* libz.tbd */; };
 		68D384481DBFBD36000B4084 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D384471DBFBD36000B4084 /* libsqlite3.tbd */; };
 		68D989201E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D9891F1E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift */; };
@@ -143,8 +135,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				68D384371DBFBC05000B4084 /* AWSDynamoDB.framework in Embed Frameworks */,
-				68D384351DBFBC05000B4084 /* AWSCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,10 +144,8 @@
 /* Begin PBXFileReference section */
 		4DE9B6A28C941F22C37D448C /* Pods-Qv1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qv1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Qv1/Pods-Qv1.debug.xcconfig"; sourceTree = "<group>"; };
 		68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone 7 Plus.png"; sourceTree = "<group>"; };
-		68012E711DB5BEE000676EAF /* EnterPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinViewController.swift; sourceTree = "<group>"; };
 		680DF2DA1DB5933200452A4E /* Qv1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qv1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		680DF2DD1DB5933200452A4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPhoneViewController.swift; sourceTree = "<group>"; };
 		680DF2E51DB5933200452A4E /* Qv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Qv1.xcdatamodel; sourceTree = "<group>"; };
 		680DF2E71DB5933200452A4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		680DF2EA1DB5933200452A4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -214,6 +202,7 @@
 		682DB3A81DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserMessageTableViewCell.swift; sourceTree = "<group>"; };
 		683166801DD6B752003EDC21 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gradient.png; path = ../../gradient.png; sourceTree = "<group>"; };
 		68475A4D1E4A46DC0036A137 /* ExpiredVotesBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ExpiredVotesBackground.png; path = ../../ExpiredVotesBackground.png; sourceTree = "<group>"; };
+		684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		684D2ED21E3D28730000879F /* GroupMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		685E9B9B1DE9FEC700D95C15 /* show icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "show icon.png"; path = "../../../Downloads/show icon.png"; sourceTree = "<group>"; };
 		685E9B9D1DE9FED300D95C15 /* hide icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "hide icon.png"; path = "../../../Downloads/hide icon.png"; sourceTree = "<group>"; };
@@ -251,9 +240,6 @@
 		68D3841E1DBBE706000B4084 /* Login Button Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Login Button Background.png"; sourceTree = "<group>"; };
 		68D384201DBBE925000B4084 /* Blue Button Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Blue Button Background.png"; sourceTree = "<group>"; };
 		68D384221DBBEACA000B4084 /* Text Field Underline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Text Field Underline.png"; sourceTree = "<group>"; };
-		68D3842E1DBFBBB4000B4084 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
-		68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSDynamoDB.framework; sourceTree = "<group>"; };
-		68D384301DBFBBB4000B4084 /* CheckXcodeVersion.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = CheckXcodeVersion.sh; sourceTree = "<group>"; };
 		68D384451DBFBD2C000B4084 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		68D384471DBFBD36000B4084 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		68D386331DBFD85A000B4084 /* Qv1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qv1.entitlements; sourceTree = "<group>"; };
@@ -290,10 +276,6 @@
 				68D384481DBFBD36000B4084 /* libsqlite3.tbd in Frameworks */,
 				68D384461DBFBD2C000B4084 /* libz.tbd in Frameworks */,
 				27B79C6780BCE387A65A38D0 /* Pods_Qv1.framework in Frameworks */,
-				68D384341DBFBC05000B4084 /* AWSCore.framework in Frameworks */,
-				68D384321DBFBBB4000B4084 /* AWSDynamoDB.framework in Frameworks */,
-				68D384311DBFBBB4000B4084 /* AWSCore.framework in Frameworks */,
-				68D384361DBFBC05000B4084 /* AWSDynamoDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,7 +297,6 @@
 				680DF2DC1DB5933200452A4E /* Qv1 */,
 				680DF2DB1DB5933200452A4E /* Products */,
 				4BF5457A2FB48E866AC3863B /* Pods */,
-				68D3842C1DBFBBB4000B4084 /* Sdk */,
 				A46A0ACBC6389C255DF8EC08 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -335,6 +316,7 @@
 				6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */,
 				68D386331DBFD85A000B4084 /* Qv1.entitlements */,
 				685ED1731DD6747400C85F37 /* Main.storyboard */,
+				684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */,
 				68DBF39C1DB6EFD100C87385 /* ViewControllers */,
 				680DF2E71DB5933200452A4E /* Assets.xcassets */,
 				680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */,
@@ -492,25 +474,6 @@
 			name = "Select Recipients VCs";
 			sourceTree = "<group>";
 		};
-		68D3842C1DBFBBB4000B4084 /* Sdk */ = {
-			isa = PBXGroup;
-			children = (
-				68D3842D1DBFBBB4000B4084 /* Aws */,
-				68D384301DBFBBB4000B4084 /* CheckXcodeVersion.sh */,
-			);
-			name = Sdk;
-			path = Qv1/Sdk;
-			sourceTree = "<group>";
-		};
-		68D3842D1DBFBBB4000B4084 /* Aws */ = {
-			isa = PBXGroup;
-			children = (
-				68D3842E1DBFBBB4000B4084 /* AWSCore.framework */,
-				68D3842F1DBFBBB4000B4084 /* AWSDynamoDB.framework */,
-			);
-			path = Aws;
-			sourceTree = "<group>";
-		};
 		68D989311E52A631003A7554 /* New Registration VCs */ = {
 			isa = PBXGroup;
 			children = (
@@ -540,8 +503,6 @@
 		68DBF39C1DB6EFD100C87385 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				680DF2DF1DB5933200452A4E /* VerifyPhoneViewController.swift */,
-				68012E711DB5BEE000676EAF /* EnterPinViewController.swift */,
 				68D989311E52A631003A7554 /* New Registration VCs */,
 				68DBF3951DB6EF5000C87385 /* HomeViewController.swift */,
 				6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */,
@@ -602,7 +563,7 @@
 				1BF98E28EEAE009AE7A45737 /* [CP] Embed Pods Frameworks */,
 				42A9B50202E2F1389577327D /* [CP] Copy Pods Resources */,
 				68D384381DBFBC05000B4084 /* Embed Frameworks */,
-				685E9B9F1DEBAE8800D95C15 /* ShellScript */,
+				685E9B9F1DEBAE8800D95C15 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -625,7 +586,7 @@
 				TargetAttributes = {
 					680DF2D91DB5933200452A4E = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 6C52M3UTNH;
+						DevelopmentTeam = XR2T7JZ8F6;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -665,7 +626,6 @@
 				680DF2FB1DB5960800452A4E /* ProximaNova-Reg.otf in Resources */,
 				6819B6361DDB95B00099A98B /* De-selectedResultsIcon.png in Resources */,
 				6819B6381DDB95B50099A98B /* selectedResultsICon.png in Resources */,
-				68D384331DBFBBB4000B4084 /* CheckXcodeVersion.sh in Resources */,
 				685E9B9E1DE9FED300D95C15 /* hide icon.png in Resources */,
 				68D3841F1DBBE706000B4084 /* Login Button Background.png in Resources */,
 				680DF2FC1DB5960800452A4E /* ProximaNova-Sbold.otf in Resources */,
@@ -706,6 +666,7 @@
 				680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */,
 				68D989261E526F36003A7554 /* Sign Up - Underline for Text Field.png in Resources */,
 				6825729C1DF7ADF8006150DB /* profile social.PNG in Resources */,
+				684A2E2E1E58D207003706B3 /* Launch Screen.storyboard in Resources */,
 				6819B6141DD90B010099A98B /* grey answer.png in Resources */,
 				6819B62E1DDA8D8E0099A98B /* mymessagetail.png in Resources */,
 				68B999C31DFF589700959721 /* shareIcon.png in Resources */,
@@ -763,18 +724,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Qv1/Pods-Qv1-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		685E9B9F1DEBAE8800D95C15 /* ShellScript */ = {
+		685E9B9F1DEBAE8800D95C15 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "";
+			shellScript = "APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '[frameworkname].framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\nEXTRACTED_ARCHS=()\n\nfor ARCH in $ARCHS\ndo\necho \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\nlipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\nEXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\ndone\n\necho \"Merging extracted architectures: ${ARCHS}\"\nlipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \"${EXTRACTED_ARCHS[@]}\"\nrm \"${EXTRACTED_ARCHS[@]}\"\n\necho \"Replacing original executable with thinned version\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone";
 		};
 		70D14A7ACD2BBD4EDCE4F2C2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -821,7 +783,6 @@
 				688344A21E53AA5100E95228 /* ChatMemberListTableViewCell.swift in Sources */,
 				68CCC48D1DC6C8F10094F3AE /* UserTableViewCell.swift in Sources */,
 				6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */,
-				680DF2E01DB5933200452A4E /* VerifyPhoneViewController.swift in Sources */,
 				688344A61E5651E700E95228 /* FriendsAndListsHeaderTableViewCell.swift in Sources */,
 				6880A9B41DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift in Sources */,
 				68DBF3981DB6EF9A00C87385 /* User.swift in Sources */,
@@ -846,7 +807,6 @@
 				682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */,
 				68E2F7E41E158976002E13D9 /* GroupViewController.swift in Sources */,
 				68CCC4851DC526CC0094F3AE /* SelectRecipientsViewController.swift in Sources */,
-				68012E721DB5BEE000676EAF /* EnterPinViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -972,7 +932,7 @@
 				CODE_SIGN_ENTITLEMENTS = Qv1/Qv1.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6C52M3UTNH;
+				DEVELOPMENT_TEAM = XR2T7JZ8F6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Qv1/Sdk/Aws",
@@ -982,7 +942,7 @@
 				);
 				INFOPLIST_FILE = Qv1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = XR2T7JZ8F6.com.smj.headcount;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smj.headcount;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 3.0;
@@ -998,7 +958,7 @@
 				CODE_SIGN_ENTITLEMENTS = Qv1/Qv1.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6C52M3UTNH;
+				DEVELOPMENT_TEAM = XR2T7JZ8F6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Qv1/Sdk/Aws",
@@ -1008,7 +968,7 @@
 				);
 				INFOPLIST_FILE = Qv1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = XR2T7JZ8F6.com.smj.headcount;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smj.headcount;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 3.0;

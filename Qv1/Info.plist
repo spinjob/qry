@@ -9,7 +9,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Qv1</string>
+	<string>Slide</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -41,11 +41,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>We&apos;d like to access your camera so you can use it in our app!</string>
+	<string>We'd like to access your camera so you can use it in our app!</string>
 	<key>NSContactsUsageDescription</key>
-	<string>We&apos;d like to access your contacts so you can ask friends without them needing the app!</string>
+	<string>We'd like to access your contacts so you can ask friends without them needing the app!</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We&apos;d like to access your photos so you can choose one!</string>
+	<string>We'd like to access your photos so you can choose one!</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ProximaNova-SBold.otf</string>
@@ -55,7 +55,7 @@
 		<string>ProximaNova-Reg.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

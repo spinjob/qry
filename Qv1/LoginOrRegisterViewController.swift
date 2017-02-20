@@ -83,7 +83,22 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
         self.hideKeyboard()
 
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        if userDefaults.string(forKey: "email") != nil {
+            
+            let email = userDefaults.string(forKey: "email")
+            
+            let password = userDefaults.string(forKey: "password")
+            
+            
+            login(email: email!, password: password!)
+            
+        }
 
+    }
+   
     func hideKeyboard () {
         let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         
@@ -117,6 +132,23 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
         
         
     }
+    
+    func login (email: String, password: String) {
+        
+        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
+            print ("We are tried to sign in")
+            
+            if error != nil {
+                
+                print("We have an error: \(error)")
+            } else {
+                print("We've signed in successfully")
+            
+                self.performSegue(withIdentifier: "signInSegue", sender: nil)
+            }
+        })
+    }
+
     
    
 }
