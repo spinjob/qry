@@ -29,14 +29,20 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
     let userDefaults = UserDefaults.standard
     
     
+    @IBOutlet weak var emailValidationLabel: UILabel!
+    
+    @IBOutlet weak var passwordValidationLabel: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         emailAddressTextField.delegate = self
         passwordTextField.delegate = self
-
         
+        emailValidationLabel.isHidden = true
+        passwordValidationLabel.isHidden = true
+
         UIView.animate(withDuration: 1.2, animations: {
             self.slideIconImageView.alpha = 0
             self.slideIconImageView.alpha = 1
@@ -118,7 +124,43 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
             
             if error != nil {
                 
+                
+                if self.emailAddressTextField.text == "" {
+                    
+                    self.emailValidationLabel.text = "Please provide email"
+                    self.emailValidationLabel.isHidden = false
+                }
+                
+                if self.passwordTextField.text == "" {
+                    
+                    self.passwordValidationLabel.text = "Please provide password"
+                    self.passwordValidationLabel.isHidden = false
+                }
+                
+                if let errCode = FIRAuthErrorCode(rawValue: error!._code) {
+                 
+             
+                
+                    switch errCode {
+                    
+                   case .errorCodeInvalidEmail:
+                        self.emailValidationLabel.text = "Invalid email format"
+                        self.emailValidationLabel.isHidden = false
+                   case .errorCodeUserNotFound:
+                        self.emailValidationLabel.text = "User not found. Please create an account."
+                        self.emailValidationLabel.isHidden = false
+                   case .errorCodeWrongPassword:
+                        self.passwordValidationLabel.text = "Incorrect password"
+                        self.passwordValidationLabel.isHidden = false
+                    
+
+                    default:
+                        print("Create User Error: \(error!)")
+                    }
+                }
                 print("We have an error: \(error)")
+                
+                
             } else {
                 print("We've signed in successfully")
                 
@@ -127,8 +169,6 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
                 self.performSegue(withIdentifier: "signInSegue", sender: nil)
             }
         })
-        
-
         
         
     }
@@ -148,7 +188,11 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
             }
         })
     }
-
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        emailValidationLabel.isHidden = true
+        passwordValidationLabel.isHidden = true
+    }
     
    
 }

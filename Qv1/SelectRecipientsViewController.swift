@@ -32,6 +32,8 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     var questionImage : UIImage = UIImage()
     var questionImageURL : String = "no question image"
     var contactStore = CNContactStore()
+    var currentUserRecipientDict : [NSObject : AnyObject] = [:]
+    var currentUserVoterDict : [NSObject : AnyObject] = [:]
 
     var groupToEdit : Recipient = Recipient()
     var groupMembers : [Recipient] = []
@@ -93,16 +95,36 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
+        let currentUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!)
         
         navigationController?.navigationBar.barTintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
     
         sendButtonHeightConstraint.constant = 0
         createGroupButtonHeightConstraint.constant = 0
         
+        currentUserRef.observe(.value, with: {
+            
+            snapshot in
+            let recipient = Recipient()
+            let snapshotValue = snapshot.value as! NSDictionary
+            recipient.recipientName = snapshotValue["fullName"] as! String
+            recipient.imageURL1 = snapshotValue["profileImageURL"] as! String
+            recipient.recipientID = snapshotValue["uID"] as! String
+        
+            
+            
+            self.currentUserRecipientDict = ["recipientName" as NSObject: (recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipient.recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject, "hasLeft" as NSObject: "0" as AnyObject]
+            
+            self.currentUserVoterDict = ["recipientName" as NSObject: (recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipient.recipientID) as AnyObject, "voteString" as NSObject: "no vote" as AnyObject]
+            
+            
+            
+        })
      
         userRef.queryOrdered(byChild: "tag").queryEqual(toValue: "group").observe(.childAdded, with: {
             
@@ -135,6 +157,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             recipient.phoneNumber = snapshotvalue["phoneNumber"] as! String
         
             if self.searchForContactUsingPhoneNumber(phoneNumber: recipient.phoneNumber).count > 0 {
+                
                 self.recipientList.append(recipient)
                 self.recipientList.sort(by: {$0.recipientName > $1.recipientName})
             }
@@ -312,8 +335,12 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
         }
 
-        if selectedRecipients.count > 1 {
+        if selectedRecipients.count > 0 {
             sendButtonHeightConstraint.constant = 50
+        }
+        
+        if selectedRecipients.count == 1 {
+           createGroupButton.isHidden = true
         }
         
 
@@ -357,7 +384,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
                         self.selectedRecipients.append(Recipient)
                         print(self.selectedRecipients)
                     
-                        if self.selectedRecipients.count > 1 {
+                        if self.selectedRecipients.count > 0 {
                             self.sendButtonHeightConstraint.constant = 50
                             self.createGroupButton.isHidden = true
                         }
@@ -373,7 +400,9 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
             }
         
-
+        UIView.animate(withDuration: 0.1) {
+            self.view.layoutIfNeeded()
+        }
         
     }
   
@@ -399,7 +428,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
            if selectedRecipients.count < 2 {
                 
-                createGroupButtonHeightConstraint.constant = 0
+            createGroupButtonHeightConstraint.constant = 0
             createGroupButton.isHidden = true
                 
             }
@@ -445,6 +474,11 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         if selectedRecipients.count < 1 {
             sendButtonHeightConstraint.constant = 0
+        }
+        
+        
+        UIView.animate(withDuration: 0.1) {
+            self.view.layoutIfNeeded()
         }
         
         print(self.selectedRecipients)
@@ -540,7 +574,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         let sentToRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
         let voteRef = FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(recipientID)
             
-   
+
         sentToRef.setValue(recipientDict)
         
             
@@ -549,6 +583,21 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         voteRef.setValue(voter)
     
      }
+    
+       FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(currentUserID!).setValue(self.currentUserRecipientDict)
+
+        FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(currentUserID!).setValue(self.currentUserVoterDict)
+        
+       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(pollID).setValue(dictPoll)
+    
+        
+        
+        
+        
+        
+        
+        
+        
         
          self.performSegue(withIdentifier: "unwindToMenuSend", sender: self)
     

@@ -18,6 +18,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var askButton: UIButton!
     @IBOutlet weak var logoutButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
+    
+    
+    @IBOutlet weak var askButtonHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var askButtonWidthConstraint: NSLayoutConstraint!
+    
     var currentUserID = ""
     var receivedPolls : [Poll] = []
     var selectedButton : [Int : UIButton] = [:]
@@ -50,10 +56,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         var newRecipient : [NSObject : AnyObject] = [ : ]
         var recipientID = ""
         let swipeRight: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(HomeViewController.swipeRight(gestureRecognizer:)))
+        
+        
         swipeRight.direction = .right
         
         tableView.addGestureRecognizer(swipeRight)
-        
         
        ref.observe(.childAdded, with: {
             snapshot in
@@ -66,8 +73,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
         
-            recipientListRef.setValue(newRecipient)
-
+            if recipientID != (FIRAuth.auth()?.currentUser?.uid)! {
+                recipientListRef.setValue(newRecipient)
+            }
+        
         
             })
 
@@ -961,6 +970,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
     }
+    
 
 
     
