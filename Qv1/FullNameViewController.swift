@@ -29,6 +29,8 @@ class FullNameViewController: UIViewController, UITextFieldDelegate {
         firstNameTextField.delegate = self
         lastNameTextField.delegate = self
         
+        self.hideKeyboard()
+        
         
         nextButton.isHidden = true
         
@@ -58,6 +60,17 @@ class FullNameViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if firstNameTextField.text != "", lastNameTextField.text != ""{
+            
+            performSegue(withIdentifier: "nameToEmailSegue", sender: self)
+            
+            
+        }
+        return true
+    }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
        if textField == lastNameTextField, firstNameTextField.text != ""{
 
@@ -76,6 +89,17 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?)  {
         nextVC.firstName = firstNameTextField.text!
         nextVC.lastName = lastNameTextField.text!
     
+    }
+    
+    func hideKeyboard () {
+        let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        
+        view.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    func dismissKeyboard(){
+        view.endEditing(true)
     }
 
     

@@ -54,6 +54,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    
     func getHintsFromTextField(textField: UITextField) {
         if validate(phoneNumber: phoneNumberTextField.text!) == true {
             
@@ -82,6 +83,21 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
         print(result)
         return result
     }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if self.validate(phoneNumber: textField.text!) == true {
+            
+            performSegue(withIdentifier: "phoneToPasswordSegue", sender: self)
+        }
+        
+        return true
+    }
+    
+    
+    
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)  {
         let nextVC = segue.destination as! PasswordViewController

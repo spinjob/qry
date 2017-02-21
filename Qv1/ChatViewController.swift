@@ -600,6 +600,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //tableView delegate functions
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
         return UITableViewAutomaticDimension
     }
     
@@ -608,6 +609,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         let uid = FIRAuth.auth()?.currentUser?.uid
         var senderID = ""
+        let previousIndex = (indexPath.row) - 1
         
         if showEverybody == true {
             senderID = everybodyMessages[indexPath.row].userID
@@ -627,6 +629,23 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
         let messageText = messages[indexPath.row].message
+        var lastMessageSenderID = ""
+        
+        if showEverybody == true, indexPath.row > 0 {
+            lastMessageSenderID = (everybodyMessages[previousIndex].userID)!
+        }
+        
+        if showAnswer1Users == true, indexPath.row > 0 {
+            lastMessageSenderID = (answer1Messages[previousIndex].userID)!
+        }
+        
+        if showAnswer2Users == true, indexPath.row > 0 {
+            lastMessageSenderID = (answer2Messages[previousIndex].userID)!
+        }
+        
+        if showUndecidedUsers == true, indexPath.row > 0 {
+            lastMessageSenderID = (undecidedMessages[previousIndex].userID)!
+        }
         
         tableView.transform = CGAffineTransform(rotationAngle: -(CGFloat)(M_PI));
         
@@ -639,6 +658,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let myMessageCell = tableView.dequeueReusableCell(withIdentifier: "currentUserMessageCell") as! CurrentUserMessageTableViewCell
         let friendMessageCell = tableView.dequeueReusableCell(withIdentifier: "friendMessageCell") as! FriendMessageTableViewCell
 
+        let stackedMessageCell = tableView.dequeueReusableCell(withIdentifier: "stackedMessageCell") as! StackedMessageTableViewCell
+        
+        stackedMessageCell.backgroundColor = UIColor.init(hexString: "F9F9F9")
+        
+        
         if senderID == uid {
         
         myMessageCell.backgroundColor = UIColor.init(hexString: "F9F9F9")
@@ -659,7 +683,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 myMessageCell.messageTextView.text = undecidedMessages[indexPath.row].message
             }
             
-        myMessageCell.messageTextView.layer.cornerRadius = 6
+        myMessageCell.messageTextView.layer.cornerRadius = 12
         myMessageCell.messageTextView.layer.masksToBounds = true
         myMessageCell.messageTextView.textContainerInset.left = 8
         myMessageCell.messageTextView.textContainerInset.right = 8
@@ -698,9 +722,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         friendMessageCell.messageTextView.layer.borderWidth = 0.2
         friendMessageCell.messageTextView.layer.borderColor = UIColor.init(hexString: "D8D8D8").cgColor
-        friendMessageCell.messageTextView.layer.cornerRadius = 6
+        friendMessageCell.messageTextView.layer.cornerRadius = 12
         friendMessageCell.messageTextView.layer.masksToBounds = true
-        friendMessageCell.messageTextView.textContainerInset.left = 12
+        friendMessageCell.messageTextView.textContainerInset.left = 10
         friendMessageCell.messageTextView.textContainerInset.right = 5
         friendMessageCell.messageTextView.textContainerInset.top = 10
         friendMessageCell.messageTextView.textContainerInset.bottom = 10
@@ -710,7 +734,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         if showEverybody == true {
         friendMessageCell.messageTextView.text = everybodyMessages[indexPath.row].message
-        //friendMessageCell.userImageView.sd_setImage(with: URL(string : everybodyMessages[indexPath.row].userImage as String))
+       
+        stackedMessageCell.messageTextView.text = everybodyMessages[indexPath.row].message
             
             FIRDatabase.database().reference().child("users").child(everybodyMessages[indexPath.row].userID).observe(.value, with: {
                 
@@ -726,26 +751,34 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             
         if showAnswer1Users == true {
-        friendMessageCell.messageTextView.text = answer1Messages[indexPath.row].message
-        friendMessageCell.userImageView.sd_setImage(with: URL(string : answer1Messages[indexPath.row].userImage as String))
-        friendMessageCell.userNameLabel.text = answer1Messages[indexPath.row].userName
+            friendMessageCell.messageTextView.text = answer1Messages[indexPath.row].message
+            friendMessageCell.userImageView.sd_setImage(with: URL(string : answer1Messages[indexPath.row].userImage as String))
+            friendMessageCell.userNameLabel.text = answer1Messages[indexPath.row].userName
+            
+            stackedMessageCell.messageTextView.text = answer1Messages[indexPath.row].message
+            
             }
             
         if showAnswer2Users == true {
             friendMessageCell.messageTextView.text = answer2Messages[indexPath.row].message
             friendMessageCell.userImageView.sd_setImage(with: URL(string : answer2Messages[indexPath.row].userImage as String))
             friendMessageCell.userNameLabel.text = answer2Messages[indexPath.row].userName
+            
+            stackedMessageCell.messageTextView.text = answer2Messages[indexPath.row].message
         }
             
         if showUndecidedUsers == true {
             friendMessageCell.messageTextView.text = undecidedMessages[indexPath.row].message
             friendMessageCell.userImageView.sd_setImage(with: URL(string : undecidedMessages[indexPath.row].userImage as String))
             friendMessageCell.userNameLabel.text = undecidedMessages[indexPath.row].userName
+            
+            stackedMessageCell.messageTextView.text = undecidedMessages[indexPath.row].message
         }
             
             
         friendMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText!).width)
-            
+          
+        
         userVoteRef.observe(.value, with: {
             snapshot in
                 
@@ -767,8 +800,25 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 
         })
             
-        friendMessageCell.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
+    
             
+        friendMessageCell.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
+         
+        if senderID == lastMessageSenderID, senderID != uid {
+                stackedMessageCell.messageTextView.layer.borderWidth = 0.2
+                stackedMessageCell.messageTextView.layer.borderColor = UIColor.init(hexString: "D8D8D8").cgColor
+                stackedMessageCell.messageTextView.layer.cornerRadius = 12
+                stackedMessageCell.messageTextView.layer.masksToBounds = true
+                stackedMessageCell.messageTextView.textContainerInset.left = 10
+                stackedMessageCell.messageTextView.textContainerInset.right = 5
+                stackedMessageCell.messageTextView.textContainerInset.top = 10
+                stackedMessageCell.messageTextView.textContainerInset.bottom = 10
+                stackedMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText!).width)
+                stackedMessageCell.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
+                return stackedMessageCell
+            
+        }
+    
         return friendMessageCell
             
         }

@@ -31,6 +31,8 @@ class EmailAddressViewController: UIViewController, UITextFieldDelegate {
         emailAddressTextField.delegate = self
         checkMarkLabel.isHidden = true
         nextButton.isHidden = true
+        
+        self.hideKeyboard()
     
         UIView.animate(withDuration: 0.8, animations:{
             self.andEmailTextLabel.alpha = 0
@@ -90,6 +92,30 @@ class EmailAddressViewController: UIViewController, UITextFieldDelegate {
         nextVC.lastName = lastName
         nextVC.emailAddress = emailAddressTextField.text!
         
+    }
+    
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if self.isValidEmail(testStr: textField.text!) == true {
+            
+            performSegue(withIdentifier: "emailToPhoneSegue", sender: self)
+        }
+        
+        return true
+    }
+    
+    
+    func hideKeyboard () {
+        let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        
+        view.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    func dismissKeyboard(){
+        view.endEditing(true)
     }
 
 }

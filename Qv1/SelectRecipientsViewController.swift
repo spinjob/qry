@@ -34,6 +34,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     var contactStore = CNContactStore()
     var currentUserRecipientDict : [NSObject : AnyObject] = [:]
     var currentUserVoterDict : [NSObject : AnyObject] = [:]
+    let currentUserID : String = (FIRAuth.auth()?.currentUser!.uid)!
 
     var groupToEdit : Recipient = Recipient()
     var groupMembers : [Recipient] = []
@@ -156,7 +157,10 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             recipient.imageURL1 = snapshotvalue["recipientImageURL1"] as! String
             recipient.phoneNumber = snapshotvalue["phoneNumber"] as! String
         
-            if self.searchForContactUsingPhoneNumber(phoneNumber: recipient.phoneNumber).count > 0 {
+            if recipient.recipientID == self.currentUserID {
+                
+                print("current user")
+            } else if self.searchForContactUsingPhoneNumber(phoneNumber: recipient.phoneNumber).count > 0 {
                 
                 self.recipientList.append(recipient)
                 self.recipientList.sort(by: {$0.recipientName > $1.recipientName})
@@ -653,6 +657,14 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
                             matchingRecipient = recipient
                             
                             print("CONTACT MATCH FOUND \(matchingRecipient)")
+                            result.append(contact)
+                        } else if phoneNumberToCompare == "1\(phoneNumberToCompareAgainst)" {
+                            recipient.recipientName = "\(contact.givenName) \(contact.familyName)"
+                            recipient.phoneNumber = phoneNumberToCompare
+                            
+                            matchingRecipient = recipient
+                            
+                            print("CONTACT MATCH FOUND \(matchingRecipient.recipientName)")
                             result.append(contact)
                         }
                     }

@@ -10,7 +10,8 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import SDWebImage
-
+import SwiftLinkPreview
+import FirebaseStorage
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -31,6 +32,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var senderUser : User = User()
     var answer1Users : [String] = []
     var answer2Users : [String] = []
+    
+    let slp = SwiftLinkPreview()
     
     
 
@@ -56,7 +59,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         var newRecipient : [NSObject : AnyObject] = [ : ]
         var recipientID = ""
         let swipeRight: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(HomeViewController.swipeRight(gestureRecognizer:)))
-        
         
         swipeRight.direction = .right
         
@@ -127,6 +129,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             } else {
                 poll.isExpired = false
             }
+            
+//            if snapshotValue["isGifPoll"] as! String == "true" {
+//                poll.isGifPoll = true
+//                
+//            } else {
+//                poll.isGifPoll = false
+//            }
+            
             
     
             self.receivedPolls.append(poll)
@@ -389,6 +399,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.timeUntilExpirationLabel.isHidden = true
             cell.unitOfTimeLeftLabel.isHidden = true
             cell.resultsView.isHidden = true
+            
             cell.answer1Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
             cell.answer2Button.titleLabel?.textColor = UIColor.init(hexString: "9B9B9B")
             cell.expiredIconImageView.isHidden = false
@@ -456,6 +467,60 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.separatorImageView.isHidden = false
         
         
+//        if pollForCell.isGifPoll == true {
+//            
+//            
+//            let answer1URLString = pollForCell.answer1String
+//            let answer2URLString = pollForCell.answer2String
+//            
+//            cell.answer1Button.sd_setImage(with: URL(string: answer1URLString), for: .normal)
+//            cell.answer2Button.sd_setImage(with: URL(string: answer2URLString), for: .normal)
+//            
+//            self.slp.preview(answer1URLString, onSuccess: {
+//            
+//                result in
+//                let imageURL1 = URL(string: result["image"] as! String)
+//            
+//                cell.answer1Button.sd_setImage(with: imageURL1, for: .normal)
+//                cell.answer2ButtonHeightConstraint.constant = 157
+//            
+//            }, onError: {
+//                
+//                error in
+//                            
+//                            
+//                print("\(error)")
+//                            
+//                            
+//                })
+//            
+//            
+//            self.slp.preview(answer2URLString, onSuccess: {
+//                
+//                result in
+//                let imageURL2 = URL(string: result["image"] as! String)
+//                
+//                cell.answer2Button.sd_setImage(with: imageURL2, for: .normal)
+//                cell.answer2ButtonHeightConstraint.constant = 157
+//                
+//                
+//            }, onError: {
+//                error in
+//                
+//                
+//                print("\(error)")
+//                
+//                
+//            })
+//            
+//            
+//        }  else {
+//            
+//            cell.answer2ButtonHeightConstraint.constant = 54
+//            
+//        }
+  
+    
         cell.answer1Button.layer.borderWidth = 0.5
         cell.answer1Button.layer.cornerRadius = 3.5
         cell.answer1Button.layer.borderColor = UIColor.init(hexString: "00CDCE").cgColor
@@ -787,8 +852,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if receivedPolls[indexPath.row].pollURL != "no url" {
                 return 355
             } else if receivedPolls[indexPath.row].pollQuestionImageURL != "no question image" {
-                return 615
-            }
+            return 615
+        }
+//         else if receivedPolls[indexPath.row].isGifPoll == true {
+//            return 355
+//        }
             return 246
         
         
@@ -1528,7 +1596,21 @@ func reloadResultsButtonTapped (sender : UIButton){
     }
   
     
-
+    func verifyUrl (urlString: String?) -> Bool {
+        let types: NSTextCheckingResult.CheckingType = .link
+        
+        let detector = try? NSDataDetector(types: types.rawValue)
+        
+        let matches = detector?.matches(in: urlString!, options: .reportCompletion, range: NSMakeRange(0, (urlString?.characters.count)!))
+        
+        if matches?.count != 0 {
+            return true
+        }
+        else {
+            return false
+        }
+        
+    }
     
 
 }

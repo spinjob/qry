@@ -29,6 +29,8 @@ class PasswordViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.hideKeyboard()
+        
         passwordTextField.delegate = self
         passwordValidationLabel.isHidden = true
         nextButton.isHidden = true
@@ -79,22 +81,22 @@ class PasswordViewController: UIViewController, UITextFieldDelegate {
     
     func isValidPassword(password: String) -> Bool{
     
-    var lengthRule = NJOLengthRule(min: 6, max: 24)
-    var uppercaseRule = NJORequiredCharacterRule(preset: .symbolCharacter)
+        var lengthRule = NJOLengthRule(min: 6, max: 24)
+        var uppercaseRule = NJORequiredCharacterRule(preset: .symbolCharacter)
     
-    let validator = NJOPasswordValidator(rules: [lengthRule, uppercaseRule])
+        let validator = NJOPasswordValidator(rules: [lengthRule, uppercaseRule])
     
-    if let failingRules = validator.validate(password) {
-        var errorMessages: [String] = []
+        if let failingRules = validator.validate(password) {
+            var errorMessages: [String] = []
+            
+            failingRules.forEach { rule in
+                errorMessages.append(rule.localizedErrorDescription)
+            }
         
-        failingRules.forEach { rule in
-            errorMessages.append(rule.localizedErrorDescription)
-        }
-        
-        passwordValidationLabel.isHidden = false
-        passwordValidationLabel.textColor = UIColor.red
-        passwordValidationLabel.text = errorMessages.joined(separator: "\n")
-        return false
+            passwordValidationLabel.isHidden = false
+            passwordValidationLabel.textColor = UIColor.red
+            passwordValidationLabel.text = errorMessages.joined(separator: "\n")
+            return false
    
     }
         
@@ -102,6 +104,16 @@ class PasswordViewController: UIViewController, UITextFieldDelegate {
     
 }
 
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if self.isValidPassword(password: textField.text!) == true {
+            
+            performSegue(withIdentifier: "passwordToImageSegue", sender: self)
+        }
+        
+        return true
+    }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -133,4 +145,15 @@ class PasswordViewController: UIViewController, UITextFieldDelegate {
         
     }
 
+    
+    func hideKeyboard () {
+        let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        
+        view.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    func dismissKeyboard(){
+        view.endEditing(true)
+    }
 }

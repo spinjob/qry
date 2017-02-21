@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>1.02</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -43,7 +43,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>We'd like to access your camera so you can use it in our app!</string>
 	<key>NSContactsUsageDescription</key>
-	<string>We'd like to access your contacts so you can ask friends without them needing the app!</string>
+	<string>We'd like to access your contacts to add friends already on the app</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We'd like to access your photos so you can choose one!</string>
 	<key>UIAppFonts</key>

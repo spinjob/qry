@@ -30,6 +30,7 @@ class Poll {
     var answer1Count : Int = 0
     var answer2Count : Int = 0
     var groupMembers : [Recipient] = []
+    var isGifPoll : Bool = false
     
     
 }

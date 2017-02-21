@@ -98,7 +98,11 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             friend.tag = snapshotValue["tag"] as! String
             friend.phoneNumber = snapshotValue["phoneNumber"] as! String
             
-            if self.searchForContactUsingPhoneNumber(phoneNumber: friend.phoneNumber).count > 0 {
+            if friend.recipientID == self.profileUserID {
+                
+                print("current user")
+                
+            } else if self.searchForContactUsingPhoneNumber(phoneNumber: friend.phoneNumber).count > 0 {
               self.friendArray.append(friend)
             }
             
@@ -117,8 +121,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        print("view appeared")
         
         groupArray.removeAll()
         
@@ -173,11 +175,17 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                             recipient.phoneNumber = phoneNumberToCompare
                             
                             matchingRecipient = recipient
-                    
-                            print("CONTACT MATCH FOUND \(matchingRecipient)")
+                            
+                            result.append(contact)
+                        } else if phoneNumberToCompare == "1\(phoneNumberToCompareAgainst)" {
+                            recipient.recipientName = "\(contact.givenName) \(contact.familyName)"
+                            recipient.phoneNumber = phoneNumberToCompare
+                            
+                            matchingRecipient = recipient
+                            
                             result.append(contact)
                         }
-                    }
+                }
                 }
             }
         }
@@ -412,7 +420,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 
             })
             
-    
+            self.tableView.reloadData()
+            
             UIView.animate(withDuration: 0.1) {
                 self.view.layoutIfNeeded()
             }
@@ -487,9 +496,14 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
        
         
         selectedRecipients.removeAll()
+        createGroupButtonHeightConstraint.constant = 0
         selectedCells.removeAll()
-        print(groupArray)
+       
         tableView.reloadData()
+        
+        UIView.animate(withDuration: 0.1) {
+            self.view.layoutIfNeeded()
+        }
         
     }
     
@@ -508,10 +522,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     func editGroup (sender: UIButton) {
         let items = [friendArray, groupArray]
         let groupToEdit = items[1][sender.tag]
-        
-        print(groupToEdit.recipientID)
-        print(groupToEdit.imageURL1)
-        print(groupToEdit.recipientName)
         
         let myVC = storyboard?.instantiateViewController(withIdentifier: "editGroupVC") as! GroupViewController
         myVC.groupImageURL = groupToEdit.imageURL1

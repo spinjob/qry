@@ -62,6 +62,8 @@ class PollTableViewCell: UITableViewCell {
     
     @IBOutlet weak var unitOfTimeLeftLabel: UILabel!
     
+    @IBOutlet weak var answer2ButtonHeightConstraint: NSLayoutConstraint!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -51,7 +51,13 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     @IBOutlet weak var expiresLabel: UILabel!
     
+    @IBOutlet weak var answer1ImageView: UIImageView!
     
+    @IBOutlet weak var answer2ImageView: UIImageView!
+    
+    @IBOutlet weak var answer1ImageViewCloseButton: UIButton!
+    
+    @IBOutlet weak var answer2ImageViewCloseButton: UIButton!
     
     
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
@@ -94,6 +100,25 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        answer1ImageView.isHidden = true
+        answer1ImageView.layer.cornerRadius = 4
+        answer1ImageView.layer.masksToBounds = true
+        answer1ImageViewCloseButton.isHidden = true
+        answer1ImageViewCloseButton.layer.cornerRadius = answer1ImageViewCloseButton.layer.frame.width / 2
+        answer1ImageViewCloseButton.backgroundColor = UIColor.white
+        answer1ImageView.layer.borderWidth = 0.2
+        answer1ImageView.layer.borderColor = UIColor.init(hexString: "004687").cgColor
+        
+    
+        answer2ImageView.isHidden = true
+        answer2ImageView.layer.cornerRadius = 4
+        answer2ImageView.layer.masksToBounds = true
+        answer2ImageViewCloseButton.isHidden = true
+        answer2ImageViewCloseButton.layer.cornerRadius = answer1ImageViewCloseButton.layer.frame.width / 2
+        answer2ImageViewCloseButton.backgroundColor = UIColor.white
+        answer2ImageView.layer.borderWidth = 0.2
+        answer2ImageView.layer.borderColor = UIColor.init(hexString: "004687").cgColor
         
 
         UIView.animate(withDuration: 0.8, animations: {
@@ -383,6 +408,10 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
             
             
             let dictPoll : [NSObject : AnyObject]  = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject, "pollImageURL" as NSObject: self.pollImage as AnyObject, "pollURL" as NSObject: self.pollURL as AnyObject, "pollImageDescription" as NSObject: self.pollImageDescription as AnyObject, "pollImageTitle" as NSObject: self.pollImageTitle as AnyObject, "questionImageURL" as NSObject: self.questionImageURL as AnyObject, "dateCreated" as NSObject: self.poll.dateCreated as AnyObject, "expired" as NSObject: "false" as AnyObject, "expirationDate" as NSObject: expirationDateString as AnyObject, "answer1Count" as NSObject: "0" as AnyObject, "answer2Count" as NSObject: "0" as AnyObject]
+        
+//            let dictPoll : [NSObject : AnyObject]  = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject, "pollImageURL" as NSObject: self.pollImage as AnyObject, "pollURL" as NSObject: self.pollURL as AnyObject, "pollImageDescription" as NSObject: self.pollImageDescription as AnyObject, "pollImageTitle" as NSObject: self.pollImageTitle as AnyObject, "questionImageURL" as NSObject: self.questionImageURL as AnyObject, "dateCreated" as NSObject: self.poll.dateCreated as AnyObject, "expired" as NSObject: "false" as AnyObject, "expirationDate" as NSObject: expirationDateString as AnyObject, "answer1Count" as NSObject: "0" as AnyObject, "answer2Count" as NSObject: "0" as AnyObject, "isGifPoll" as NSObject: "false" as AnyObject]
+           
+         // let dictGifPoll : [NSObject : AnyObject]  = ["question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject, "pollImageURL" as NSObject: self.pollImage as AnyObject, "pollURL" as NSObject: self.pollURL as AnyObject, "pollImageDescription" as NSObject: self.pollImageDescription as AnyObject, "pollImageTitle" as NSObject: self.pollImageTitle as AnyObject, "questionImageURL" as NSObject: self.questionImageURL as AnyObject, "dateCreated" as NSObject: self.poll.dateCreated as AnyObject, "expired" as NSObject: "false" as AnyObject, "expirationDate" as NSObject: expirationDateString as AnyObject, "answer1Count" as NSObject: "0" as AnyObject, "answer2Count" as NSObject: "0" as AnyObject, "isGifPoll" as NSObject: "true" as AnyObject]
             
             
         
@@ -399,8 +428,16 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         nextVC.poll.dateCreated = poll.dateCreated
         nextVC.questionImage = questionImage
         nextVC.questionImageURL = self.questionImageURL
+            
+//        if answer1ImageView.isHidden == false, answer2ImageView.isHidden == false {
+//                nextVC.poll.isGifPoll = true
+//                nextVC.dictPoll = dictGifPoll
+//        } else {
+//            nextVC.poll.isGifPoll = false
+//            nextVC.dictPoll = dictPoll
+//            }
 
-        nextVC.dictPoll = dictPoll
+       nextVC.dictPoll = dictPoll
         nextVC.pollID = pollId
             
         }
@@ -482,4 +519,127 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         view.endEditing(true)
     }
 
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(CreatePollViewController.getHintsFromTextField), object: textField)
+        
+        self.perform(#selector(CreatePollViewController.getHintsFromTextField), with: textField, afterDelay: 0.5)
+        
+        return true
+    }
+    
+    func getHintsFromTextField(textField: UITextField) {
+        
+        let input = textField.text!
+        
+        if self.verifyUrl(urlString: textField.text!) == true {
+            
+            print("TRUE")
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                
+                if textField == self.answer1TextField {
+                    
+                    self.slp.preview(input, onSuccess: {
+                        
+                        result in
+                        let imageURL = URL(string: result["image"] as! String)
+                        self.pollImage = result["image"] as! String
+                        self.answer1ImageView.sd_setImage(with: imageURL)
+                        
+                        UIView.animate(withDuration: 0.5) {
+                            self.view.layoutIfNeeded()
+                            self.featuredAnswerTableView.isHidden = true
+                            self.answer1ImageView.isHidden = false
+                            self.answer1ImageViewCloseButton.isHidden = false
+                            self.answer1TextField.isHidden = true
+                            self.answer1TextFieldVerticalConstraint.constant = 125
+                            
+                        }
+                        
+                        
+                    }, onError: {
+                        error in
+                        
+                        
+                        print("\(error)")
+                        
+                        
+                    })
+
+                    
+                }
+                
+                if textField == self.answer2TextField {
+                    
+                    self.slp.preview(input, onSuccess: {
+                        
+                        result in
+                        let imageURL = URL(string: result["image"] as! String)
+                        self.pollImage = result["image"] as! String
+                        self.answer2ImageView.sd_setImage(with: imageURL)
+                        
+                        UIView.animate(withDuration: 0.5) {
+                            self.view.layoutIfNeeded()
+                            self.featuredAnswerTableView.isHidden = true
+                            self.answer2ImageView.isHidden = false
+                            self.answer2ImageViewCloseButton.isHidden = false
+                            self.answer2TextField.isHidden = true
+                            self.answer2TextFieldVerticalConstraint.constant = 125
+                            
+                        }
+                        
+                        
+                    }, onError: {
+                        error in
+                        
+                        
+                        print("\(error)")
+                        
+                        
+                    })
+                    
+                }
+                
+            })
+            
+        }
+        
+        
+    }
+    
+    @IBAction func answer1ImageViewCloseButtonTapped(_ sender: Any) {
+        
+        answer1ImageView.isHidden = true
+        answer1TextField.isHidden = false
+        answer1TextField.text = ""
+        answer1ImageViewCloseButton.isHidden = true
+        answer1TextFieldVerticalConstraint.constant = 21
+        
+       
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @IBAction func answer2ImageViewCloseButtonTapped(_ sender: Any) {
+        
+        answer2ImageView.isHidden = true
+        answer2TextField.isHidden = false
+        answer2TextField.text = ""
+        answer2ImageViewCloseButton.isHidden = true
+        answer2TextFieldVerticalConstraint.constant = 21
+        
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+
+    }
+    
+    
+    
+    
+    
 }

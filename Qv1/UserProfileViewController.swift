@@ -167,8 +167,6 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             
             
             
-            
-            
         }
         
             self.numberOfAskedLabel.text = String(self.askedPolls.count)
