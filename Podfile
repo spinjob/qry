@@ -14,7 +14,7 @@ pod 'Firebase/Storage'
 pod 'Firebase/Messaging'
 pod 'Firebase/Analytics'
 pod 'SDWebImage'
-pod 'SwiftLinkPreview'
+pod 'SwiftLinkPreview', '~> 1.0.1'
 pod 'Navajo-Swift'
 
 

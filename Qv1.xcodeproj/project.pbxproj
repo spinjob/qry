@@ -98,7 +98,6 @@
 		68CCC48B1DC6BFDB0094F3AE /* contactIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCC48A1DC6BFDB0094F3AE /* contactIcon.png */; };
 		68CCC48D1DC6C8F10094F3AE /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CCC48C1DC6C8F10094F3AE /* UserTableViewCell.swift */; };
 		68CCC48F1DC7D5AD0094F3AE /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CCC48E1DC7D5AD0094F3AE /* GroupTableViewCell.swift */; };
-		68CCC49B1DC8067B0094F3AE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68CCC49A1DC8067B0094F3AE /* GoogleService-Info.plist */; };
 		68D3841D1DBBE701000B4084 /* Sign Up Button Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D3841C1DBBE701000B4084 /* Sign Up Button Background.png */; };
 		68D3841F1DBBE706000B4084 /* Login Button Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D3841E1DBBE706000B4084 /* Login Button Background.png */; };
 		68D384211DBBE925000B4084 /* Blue Button Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D384201DBBE925000B4084 /* Blue Button Background.png */; };
@@ -129,6 +128,8 @@
 		68F891231E5B731100A392E1 /* StackedMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F891221E5B731100A392E1 /* StackedMessageTableViewCell.swift */; };
 		68F891251E5BBF4E00A392E1 /* FindFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F891241E5BBF4E00A392E1 /* FindFriendsViewController.swift */; };
 		68F891271E5BC2B800A392E1 /* AddFriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F891261E5BC2B800A392E1 /* AddFriendTableViewCell.swift */; };
+		68F891441E5CDA6900A392E1 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F891431E5CDA6900A392E1 /* UserNotifications.framework */; };
+		68F891461E5CE39300A392E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68F891451E5CE39300A392E1 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -238,7 +239,6 @@
 		68CCC48A1DC6BFDB0094F3AE /* contactIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = contactIcon.png; path = ../../contactIcon.png; sourceTree = "<group>"; };
 		68CCC48C1DC6C8F10094F3AE /* UserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		68CCC48E1DC7D5AD0094F3AE /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
-		68CCC49A1DC8067B0094F3AE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		68D3841C1DBBE701000B4084 /* Sign Up Button Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sign Up Button Background.png"; sourceTree = "<group>"; };
 		68D3841E1DBBE706000B4084 /* Login Button Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Login Button Background.png"; sourceTree = "<group>"; };
 		68D384201DBBE925000B4084 /* Blue Button Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Blue Button Background.png"; sourceTree = "<group>"; };
@@ -270,6 +270,8 @@
 		68F891221E5B731100A392E1 /* StackedMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackedMessageTableViewCell.swift; sourceTree = "<group>"; };
 		68F891241E5BBF4E00A392E1 /* FindFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsViewController.swift; sourceTree = "<group>"; };
 		68F891261E5BC2B800A392E1 /* AddFriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendTableViewCell.swift; sourceTree = "<group>"; };
+		68F891431E5CDA6900A392E1 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		68F891451E5CE39300A392E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A4124686FDA3D5ED3994D781 /* Pods-Qv1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qv1.release.xcconfig"; path = "Pods/Target Support Files/Pods-Qv1/Pods-Qv1.release.xcconfig"; sourceTree = "<group>"; };
 		B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Qv1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -279,6 +281,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68F891441E5CDA6900A392E1 /* UserNotifications.framework in Frameworks */,
 				68D384481DBFBD36000B4084 /* libsqlite3.tbd in Frameworks */,
 				68D384461DBFBD2C000B4084 /* libz.tbd in Frameworks */,
 				27B79C6780BCE387A65A38D0 /* Pods_Qv1.framework in Frameworks */,
@@ -327,7 +330,7 @@
 				680DF2E71DB5933200452A4E /* Assets.xcassets */,
 				680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */,
 				680DF2EC1DB5933200452A4E /* Info.plist */,
-				68CCC49A1DC8067B0094F3AE /* GoogleService-Info.plist */,
+				68F891451E5CE39300A392E1 /* GoogleService-Info.plist */,
 				68DBF3991DB6EFA100C87385 /* Models */,
 				680DF2F21DB5941A00452A4E /* Resources */,
 				680DF2E41DB5933200452A4E /* Qv1.xcdatamodeld */,
@@ -551,6 +554,7 @@
 		A46A0ACBC6389C255DF8EC08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68F891431E5CDA6900A392E1 /* UserNotifications.framework */,
 				68D384471DBFBD36000B4084 /* libsqlite3.tbd */,
 				68D384451DBFBD2C000B4084 /* libz.tbd */,
 				B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */,
@@ -598,7 +602,13 @@
 						DevelopmentTeam = XR2T7JZ8F6;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -655,8 +665,8 @@
 				6819B6281DD958C50099A98B /* ask icon.png in Resources */,
 				6819B63E1DDBB3AB0099A98B /* LeastVotesAnswerBackground.png in Resources */,
 				685E9B9C1DE9FEC700D95C15 /* show icon.png in Resources */,
+				68F891461E5CE39300A392E1 /* GoogleService-Info.plist in Resources */,
 				68012E701DB5A42600676EAF /* iPhone 7 Plus.png in Resources */,
-				68CCC49B1DC8067B0094F3AE /* GoogleService-Info.plist in Resources */,
 				6819B6101DD904860099A98B /* green answer.png in Resources */,
 				6819B6301DDA8E1E0099A98B /* friendmessagetail.png in Resources */,
 				68A243611E566AFD006AAA61 /* logout icon.png in Resources */,

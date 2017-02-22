@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import FirebaseInstanceID
 
 class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
 
@@ -32,7 +33,6 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailValidationLabel: UILabel!
     
     @IBOutlet weak var passwordValidationLabel: UILabel!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

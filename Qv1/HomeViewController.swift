@@ -12,6 +12,8 @@ import FirebaseDatabase
 import SDWebImage
 import SwiftLinkPreview
 import FirebaseStorage
+import FirebaseInstanceID
+import FirebaseMessaging
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -34,25 +36,28 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var answer2Users : [String] = []
     
     let slp = SwiftLinkPreview()
-    
-    
 
     let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
     let currentUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!)
     let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls")
     let newPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls")
     let sentPollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("polls")
-
-
     
+    let token = FIRInstanceID.instanceID().token()!
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let application = UIApplication.shared
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("TOKEN \(token)")
+        
+        let tokenData = NSData(contentsOfFile: token)
   
         setUpNavigationBarItems()
         
         
         separatorView.backgroundColor = UIColor.init(hexString: "D8D8D8")
-        
         
         //pulling data from Firebase
         

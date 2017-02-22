@@ -469,7 +469,9 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         slp.preview(input, onSuccess: {
             
             result in
-            let imageURL = URL(string: result["image"] as! String)
+    
+
+            let imageURL: URL = URL(string: result["image"] as! String)!
             self.pollImage = result["image"] as! String
             self.pollImageView.sd_setImage(with: imageURL)
             self.linkHeadlineTextLabel.text = result["title"] as! String
@@ -502,6 +504,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
     }
     
+
     @IBAction func cancelButtonTapped(_ sender: Any) {
         self.performSegue(withIdentifier: "unwindToMenuCancel", sender: self)
         

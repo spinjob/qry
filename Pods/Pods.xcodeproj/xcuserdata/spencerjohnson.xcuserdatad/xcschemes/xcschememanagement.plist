@@ -4,12 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>GTMSessionFetcher.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>GoogleToolboxForMac.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Navajo-Swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-Qv1.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Protobuf.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -32,17 +47,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1ADDE9AE303F12B4CA4E0E052EFA3C38</key>
+		<key>2C206DFFDECFDC3C51B86C2B8F79E47E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5328DA9A8067E10D1D6C144FE6E543EB</key>
+		<key>3B69A8DDA0F748F8EFC8A21AF63B15AD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5F3DE12067E1DA794D6275B26A51208B</key>
+		<key>5868593A9979241208CAC750A804B24A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6D5CEDECD3D8DC52EA507E0431BDA8A0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>710D583912F09862805BE24DABC508DE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C052BEBFBD0AB5218CC64BA3450F6547</key>
 		<dict>
 			<key>primary</key>
 			<true/>

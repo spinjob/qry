@@ -33,6 +33,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.02</string>
+	<key>FirebaseAppDelegateProxyEnabled </key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -53,6 +55,10 @@
 		<string>ProximaNovaSoft.otf</string>
 		<string>ProximaNovaSoft-Medium.otf</string>
 		<string>ProximaNova-Reg.otf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
