@@ -50,9 +50,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("TOKEN \(token)")
-        
-        let tokenData = NSData(contentsOfFile: token)
+        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observe(.value, with: {
+            snapshot in
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            let deviceToken = snapshotValue["deviceToken"] as! String
+            
+            if deviceToken != self.token {
+                FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("deviceToken").setValue(FIRInstanceID.instanceID().token())
+            }
+            
+            
+        })
   
         setUpNavigationBarItems()
         

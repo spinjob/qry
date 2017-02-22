@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseDatabase
+import FirebaseInstanceID
 
 class ChoosePictureViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var lastlyChooseYourFaceLabel: UILabel!
@@ -33,7 +34,7 @@ class ChoosePictureViewController: UIViewController, UIImagePickerControllerDele
         profileImageView.layer.borderWidth = 0.2
         profileImageView.layer.masksToBounds = true
         profileImageView.backgroundColor = UIColor.clear
-
+        
         
         
         UIView.animate(withDuration: 0.8, animations:{
@@ -83,6 +84,8 @@ class ChoosePictureViewController: UIViewController, UIImagePickerControllerDele
     
     
     @IBAction func doneButtonTapped(_ sender: Any) {
+        
+        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("deviceToken").setValue(FIRInstanceID.instanceID().token())
         
         if profileImageView.image != nil {
             

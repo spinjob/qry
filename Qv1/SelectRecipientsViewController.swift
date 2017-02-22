@@ -593,15 +593,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(currentUserID!).setValue(self.currentUserVoterDict)
         
        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(pollID).setValue(dictPoll)
-    
-        
-        
-        
-        
-        
-        
-        
-        
+       
         
          self.performSegue(withIdentifier: "unwindToMenuSend", sender: self)
     
@@ -610,7 +602,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
     @IBAction func unwindAfterEditing(segue: UIStoryboardSegue){
     
-    tableView.reloadData()
+        tableView.reloadData()
     
     
     }
