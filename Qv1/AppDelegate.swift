@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import Firebase
 import UserNotifications
-import OneSignal
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

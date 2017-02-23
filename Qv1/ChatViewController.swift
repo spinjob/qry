@@ -187,18 +187,18 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //show correct change conversation icon when chat changes and reloads
         
-        changeChatButton.imageView?.image = UIImage(named: "Everybody Active Conversation (Active)")
+        changeChatButton.imageView?.image = UIImage(named: "Everybody Conversation (Active)")
         
         if showAnswer1Users == true {
-           changeChatButton.imageView?.image = UIImage(named: "Answer 1 Conversation Icon (Active).png")
+           changeChatButton.imageView?.image = UIImage(named: "Answer 1 Conversation (Active)")
         }
         
         if showAnswer2Users == true {
-            changeChatButton.imageView?.image = UIImage(named: "Answer 2 Conversation (Active).png")
+            changeChatButton.imageView?.image = UIImage(named: "Answer 2 Conversation (Active)")
         }
         
         if showUndecidedUsers == true {
-            changeChatButton.imageView?.image = UIImage(named: "Undecided Conversation (Active).png")
+            changeChatButton.imageView?.image = UIImage(named: "Undecided Conversation (Active)")
         }
         
 
@@ -691,6 +691,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         myMessageCell.messageTextView.textContainerInset.bottom = 12
             
         myMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText!).width)
+            
+        myMessageCell.answerIndicator.layer.cornerRadius = myMessageCell.answerIndicator.layer.frame.width / 2
 
         
         messageUserRef.observe(.value, with: {
@@ -701,15 +703,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             userAnswer = (snapshotValue["voteString"] as? String)!
             
             if userAnswer == "answer1" {
-                myMessageCell.answerIndicator.image = UIImage(named: "green answer.png")
+
+                myMessageCell.answerIndicator.backgroundColor = UIColor.init(hexString: "#AAE65F")
+                
             }
                 
             if userAnswer == "answer2" {
-                myMessageCell.answerIndicator.image = UIImage(named: "red answer.png")
+                myMessageCell.answerIndicator.backgroundColor = UIColor.init(hexString: "#FF505A")
             }
                 
             if userAnswer == "no vote" {
-                myMessageCell.answerIndicator.image = UIImage(named: "grey answer.png")
+                myMessageCell.answerIndicator.backgroundColor = UIColor.init(hexString: "#D8D8D8")
             }
                 
         })
@@ -777,6 +781,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             
         friendMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText!).width)
+            
+        friendMessageCell.answerIndicator.layer.cornerRadius = friendMessageCell.answerIndicator.layer.frame.width / 2
           
         
         userVoteRef.observe(.value, with: {
@@ -787,15 +793,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             userAnswer = (snapshotValue["voteString"] as? String)!
                 
             if userAnswer == "answer1" {
-                friendMessageCell.answerIndicator.image = UIImage(named: "green answer.png")
-            }
                 
+                friendMessageCell.answerIndicator.backgroundColor = UIColor.init(hexString: "#AAE65F")
+                
+            }
+            
             if userAnswer == "answer2" {
-                friendMessageCell.answerIndicator.image = UIImage(named: "red answer.png")
+                friendMessageCell.answerIndicator.backgroundColor = UIColor.init(hexString: "#FF505A")
             }
-                
+            
             if userAnswer == "no vote" {
-                friendMessageCell.answerIndicator.image = UIImage(named: "grey answer.png")
+                friendMessageCell.answerIndicator.backgroundColor = UIColor.init(hexString: "#D8D8D8")
             }
                 
         })
@@ -891,6 +899,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.chatMemberImageView.layer.cornerRadius = cell.chatMemberImageView.layer.frame.size.width / 2
             cell.chatMemberImageView.layer.masksToBounds = true
             cell.chatMemberFirstNameLabel.text = self.chatMembers[indexPath.item].recipientName
+            cell.chatMemberAnswerIndicator.layer.cornerRadius = cell.chatMemberAnswerIndicator.layer.frame.size.width / 2
         
         chatMemberVoteRef.observe(.value, with: {
             snapshot in
@@ -898,15 +907,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             let snapshotValue = snapshot.value as! NSDictionary
 
             if snapshotValue["voteString"] as! String == "answer1" {
-                cell.chatMemberAnswerIndicator.image = UIImage(named: "green answer.png")
+                
+                
+                cell.chatMemberAnswerIndicator.backgroundColor = UIColor.init(hexString: "#AAE65F")
             }
             
             if snapshotValue["voteString"] as! String == "answer2" {
-                cell.chatMemberAnswerIndicator.image = UIImage(named: "red answer.png")
+                cell.chatMemberAnswerIndicator.backgroundColor = UIColor.init(hexString: "#FF505A")
             }
             
             if snapshotValue["voteString"] as! String == "no vote" {
-                cell.chatMemberAnswerIndicator.image = UIImage(named: "grey answer.png")
+                cell.chatMemberAnswerIndicator.backgroundColor = UIColor.init(hexString: "#D8D8D8")
             }
         
         })
@@ -922,7 +933,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 let snapshotValue = snapshot.value as! NSDictionary
                 
                 cell.chatMemberImageView.sd_setImage(with: URL(string: snapshotValue["profileImageURL"] as! String))
-                cell.chatMemberAnswerIndicator.image = UIImage(named: "green answer.png")
+                cell.chatMemberAnswerIndicator.backgroundColor = UIColor.init(hexString: "#AAE65F")
                 cell.chatMemberFirstNameLabel.text = snapshotValue["fullName"] as! String
                 
             })
@@ -937,7 +948,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 let snapshotValue = snapshot.value as! NSDictionary
                 
                 cell.chatMemberImageView.sd_setImage(with: URL(string: snapshotValue["profileImageURL"] as! String))
-                cell.chatMemberAnswerIndicator.image = UIImage(named: "red answer.png")
+                cell.chatMemberAnswerIndicator.backgroundColor = UIColor.init(hexString: "#FF505A")
                 cell.chatMemberFirstNameLabel.text = snapshotValue["fullName"] as! String
                 
             })
@@ -951,7 +962,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 let snapshotValue = snapshot.value as! NSDictionary
                 
                 cell.chatMemberImageView.sd_setImage(with: URL(string: snapshotValue["profileImageURL"] as! String))
-                cell.chatMemberAnswerIndicator.image = UIImage(named: "grey answer.png")
+                cell.chatMemberAnswerIndicator.backgroundColor = UIColor.init(hexString: "#D8D8D8")
                 cell.chatMemberFirstNameLabel.text = snapshotValue["fullName"] as! String
                 
             })
@@ -972,7 +983,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     func scrollViewDidScroll (_ scrollView: UIScrollView) {
         
         if pollViewHeightConstraint.constant == 280, scrollView == tableView {
-            showHidePollViewButton.setImage(UIImage(named: "hide icon.png"), for: .normal)
+            showHidePollViewButton.setImage(#imageLiteral(resourceName: "hide icon"), for: .normal)
             pollViewHeightConstraint.constant = 96
             questionTextLabel.isHidden = true
             answer1TextLabel.isHidden = true
@@ -996,7 +1007,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         if pollViewHeightConstraint.constant == 0, scrollView == tableView, scrollView.scrollsToTop == true {
             
-            showHidePollViewButton.setImage(UIImage(named: "show icon.png"), for: .normal)
+            showHidePollViewButton.setImage(#imageLiteral(resourceName: "show icon"), for: .normal)
             pollViewHeightConstraint.constant = 280
             questionTextLabel.isHidden = false
             answer1TextLabel.isHidden = false
@@ -1201,15 +1212,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         if showAnswer1Users == true {
-            changeChatButton.imageView?.image = UIImage(named: "Answer 1 Conversation Icon (Active).png")
+            changeChatButton.imageView?.image = UIImage(named: "Answer 1 Conversation Icon (Active)")
         }
         
         if showAnswer2Users == true {
-            changeChatButton.imageView?.image = UIImage(named: "Answer 2 Conversation (Active).png")
+            changeChatButton.imageView?.image = UIImage(named: "Answer 2 Conversation (Active)")
         }
         
         if showUndecidedUsers == true {
-            changeChatButton.imageView?.image = UIImage(named: "Undecided Conversation (Active).png")
+            changeChatButton.imageView?.image = UIImage(named: "Undecided Conversation (Active)")
         }
         
         UIView.animate(withDuration: 0.2) {
@@ -1224,7 +1235,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         showAnswer2Users = false
         showUndecidedUsers = false
         showAnswer1Users = true
-        changeChatButton.imageView?.image = UIImage(named: "Answer 1 Conversation Icon (Active).png")
+        changeChatButton.imageView?.image = UIImage(named: "Answer 1 Conversation Icon (Active)")
         collectionView.reloadData()
         tableView.reloadData()
         
@@ -1248,7 +1259,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         showUndecidedUsers = false
         showAnswer1Users = false
         showAnswer2Users = true
-        changeChatButton.imageView?.image = UIImage(named: "Answer 2 Conversation (Active).png")
+        changeChatButton.imageView?.image = UIImage(named: "Answer 2 Conversation (Active)")
         collectionView.reloadData()
         tableView.reloadData()
         
@@ -1270,7 +1281,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         showAnswer1Users = false
         showAnswer2Users = false
         showUndecidedUsers = true
-        changeChatButton.imageView?.image = UIImage(named: "Undecided Conversation (Active).png")
+        changeChatButton.imageView?.image = UIImage(named: "Undecided Conversation (Active)")
         collectionView.reloadData()
         tableView.reloadData()
         
@@ -1290,7 +1301,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         showAnswer2Users = false
         showUndecidedUsers = false
         showEverybody = true
-        changeChatButton.imageView?.image = UIImage(named: "Everybody Conversation (Active).png")
+        changeChatButton.imageView?.image = UIImage(named: "Everybody Conversation (Active)")
         collectionView.reloadData()
         tableView.reloadData()
         
