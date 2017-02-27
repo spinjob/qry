@@ -74,6 +74,8 @@
 		68A243671E5687DF006AAA61 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A243661E5687DF006AAA61 /* NotificationViewController.swift */; };
 		68B1116D1E6364F200FAFE01 /* UserHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B1116C1E6364F200FAFE01 /* UserHomeViewController.swift */; };
 		68B111711E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B111701E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift */; };
+		68B111771E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */; };
+		68B111791E64CF0F00FAFE01 /* PollImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B111781E64CF0F00FAFE01 /* PollImageDetailViewController.swift */; };
 		68B118D61E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B118D51E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift */; };
 		68B999BF1DFF25FE00959721 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B999BE1DFF25FE00959721 /* PieChart.swift */; };
 		68B999C11DFF434900959721 /* piechartcenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B999C01DFF434900959721 /* piechartcenter.png */; };
@@ -197,6 +199,8 @@
 		68A243661E5687DF006AAA61 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		68B1116C1E6364F200FAFE01 /* UserHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserHomeViewController.swift; sourceTree = "<group>"; };
 		68B111701E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollRecipientCollectionViewCell.swift; sourceTree = "<group>"; };
+		68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivePollsHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		68B111781E64CF0F00FAFE01 /* PollImageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollImageDetailViewController.swift; sourceTree = "<group>"; };
 		68B118D51E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditGroupMemberTableViewCell.swift; path = ../EditGroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		68B999BE1DFF25FE00959721 /* PieChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		68B999C01DFF434900959721 /* piechartcenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = piechartcenter.png; path = ../../piechartcenter.png; sourceTree = "<group>"; };
@@ -396,7 +400,9 @@
 		683413511E620A9900077388 /* New UI/UX */ = {
 			isa = PBXGroup;
 			children = (
+				68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */,
 				68B1116C1E6364F200FAFE01 /* UserHomeViewController.swift */,
+				68B111781E64CF0F00FAFE01 /* PollImageDetailViewController.swift */,
 				683413521E620AB300077388 /* StringPollTableViewCell.swift */,
 				68B111701E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift */,
 			);
@@ -715,6 +721,7 @@
 				68A243671E5687DF006AAA61 /* NotificationViewController.swift in Sources */,
 				68A243651E5687B1006AAA61 /* MessageNotificationTableViewCell.swift in Sources */,
 				688344A41E53B25500E95228 /* ChatListViewHeaderTableViewCell.swift in Sources */,
+				68B111771E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift in Sources */,
 				68B999BF1DFF25FE00959721 /* PieChart.swift in Sources */,
 				68D9892C1E529345003A7554 /* FullNameViewController.swift in Sources */,
 				684D2ED31E3D28730000879F /* GroupMemberCollectionViewCell.swift in Sources */,
@@ -763,6 +770,7 @@
 				68D989301E52A226003A7554 /* PasswordViewController.swift in Sources */,
 				682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */,
 				68E2F7E41E158976002E13D9 /* GroupViewController.swift in Sources */,
+				68B111791E64CF0F00FAFE01 /* PollImageDetailViewController.swift in Sources */,
 				68CCC4851DC526CC0094F3AE /* SelectRecipientsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

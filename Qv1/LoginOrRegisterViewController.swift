@@ -35,7 +35,7 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var passwordValidationLabel: UILabel!
     
-    override func viewDidLoad() {
+      override func viewDidLoad() {
         super.viewDidLoad()
         
         emailAddressTextField.delegate = self

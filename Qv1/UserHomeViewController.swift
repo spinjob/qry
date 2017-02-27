@@ -13,7 +13,7 @@ import FirebaseStorage
 import SDWebImage
 import SwiftLinkPreview
 
-class UserHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+class UserHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -40,6 +40,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     var livePolls : [Poll] = []
     var expiredPolls : [Poll] = []
+    var allPolls : [Poll] = []
     var publicPolls : [Poll] = []
     
     //sections
@@ -49,8 +50,16 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         
         setUpNavigationBarItems()
+        
+        
+        if( traitCollection.forceTouchCapability == .available){
+            
+            registerForPreviewing(with: self as! UIViewControllerPreviewingDelegate, sourceView: view)
+            
+        }
         
         
         tableView.delegate = self
@@ -204,12 +213,34 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         let binaryStringCell = tableView.dequeueReusableCell(withIdentifier: "binaryStringPollCell", for: indexPath) as! StringPollTableViewCell
         
         let currentUserVoteRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").child(currentUserID!)
+        
 
+        //Binary String Cell
         
         //Question Text
         binaryStringCell.questionStringTextView.textContainerInset = UIEdgeInsets.zero
         binaryStringCell.questionStringTextView.textContainer.lineFragmentPadding = 0
         binaryStringCell.questionStringTextView.text = pollForCell.questionString
+        
+        //pollImage
+        
+        binaryStringCell.pollImageView.layer.cornerRadius = 4
+        binaryStringCell.pollImageView.layer.masksToBounds = true
+        binaryStringCell.pollImageView.alpha = 0.8
+        
+        if pollForCell.pollQuestionImageURL == "no question image" {
+            binaryStringCell.pollImageView.isHidden = true
+            binaryStringCell.pollImageViewHeight.constant = 48
+            
+        } else {
+        
+        binaryStringCell.pollImageView.isHidden = false
+        binaryStringCell.pollImageViewHeight.constant = 124
+        binaryStringCell.pollImageView.sd_setImage(with: URL(string: pollForCell.pollQuestionImageURL))
+            
+        }
+        
+        
         
         //Sender User
        senderUserRef.observe(.value, with: {
@@ -274,9 +305,13 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         if pollForCell.isExpired == false {
             binaryStringCell.answerSelectedView.isUserInteractionEnabled = true
+            binaryStringCell.answerSelectedView.backgroundColor = actionGreen
+            
         } else{
             
             binaryStringCell.answerSelectedView.isUserInteractionEnabled = false
+            binaryStringCell.answerSelectedView.backgroundColor = grey
+      
         }
   
         
@@ -420,6 +455,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
         } else if minutesLeft.minute! < 0, pollForCell.isExpired == false  {
             pollForCellRef.child("expired").setValue("true")
+            FIRDatabase.database().reference().child("users").child("receivedPolls").child(pollForCell.pollID).child("expired").setValue("true")
             tableView.reloadData()
             
         } else {
@@ -449,6 +485,38 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         tableViewCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = tableView.dequeueReusableCell(withIdentifier: "livePollsHeaderCell") as! LivePollsHeaderTableViewCell
+        view.livePollsIconView.layer.borderWidth = 0.2
+        view.livePollsIconView.layer.cornerRadius = 4
+        view.livePollsIconView.layer.masksToBounds = true
+       
+        if section == 0 {
+
+        view.livePollsIconView.layer.borderColor = actionGreen.cgColor
+        view.barrierView.backgroundColor = actionGreen
+        view.iconLabel.text = "⚡️"
+        view.sectionTitleLabel.text = "Live Plans"
+        view.sectionTitleLabel.textColor = actionGreen
+            
+        }
+        
+        if section == 1 {
+            view.livePollsIconView.layer.borderColor = UIColor.init(hexString: "4B6184").cgColor
+            view.barrierView.backgroundColor = UIColor.init(hexString: "4B6184")
+            view.iconLabel.text = "⌛️"
+            view.sectionTitleLabel.text = "Past Plans"
+            view.sectionTitleLabel.textColor = UIColor.init(hexString: "4B6184")
+            
+        }
+        
+        return view.contentView
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         var groupMembers : [Recipient] = []
@@ -471,6 +539,12 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let pollForCell : Poll = combinedPolls[collectionView.tag]
         let recipientForCollectionCell = pollForCell.groupMembers[indexPath.item]
+        
+        cell.answerIndicatorImageView.layer.borderWidth = 0.8
+        cell.answerIndicatorImageView.layer.borderColor = UIColor.white.cgColor
+        cell.recipientImageView.layer.borderWidth = 1
+        cell.recipientImageView.layer.borderColor = UIColor.white.cgColor
+        
 
         if recipientForCollectionCell.vote == "no vote" {
             
@@ -509,17 +583,18 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         UIView.animate(withDuration: 0.2, animations: {
             binaryStringCell.answer2Button.alpha = 0
             binaryStringCell.answer2Button.isHidden = true
-            
             binaryStringCell.answer1Button.alpha = 0
             binaryStringCell.answer1Button.isHidden = true
             
              binaryStringCell.answerSelectedTextLabel.text = "Answered \(self.livePolls[sender.tag].answer1String)"
         })
-    
-       
+        
+ 
         delay(0.2, closure: {
             
             UIView.animate(withDuration: 0.2, animations: {
+                
+
                 
                 binaryStringCell.answerSelectedView.alpha = 0
                 binaryStringCell.answerSelectedView.isHidden = false
@@ -545,11 +620,12 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         UIView.animate(withDuration: 0.2, animations: {
+
+            binaryStringCell.answer1Button.alpha = 0
+            binaryStringCell.answer1Button.isHidden = true
             binaryStringCell.answer2Button.alpha = 0
             binaryStringCell.answer2Button.isHidden = true
             
-            binaryStringCell.answer1Button.alpha = 0
-            binaryStringCell.answer1Button.isHidden = true
             
             binaryStringCell.answerSelectedTextLabel.text = "Answered \(self.livePolls[sender.tag].answer2String)"
         })
@@ -565,6 +641,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
                 
             })
             
+            
+
         })
       
         FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer2")
@@ -672,6 +750,39 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         })
         
     }
+    
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        
+        guard let indexPath = tableView.indexPathForRow(at: location) else {return nil}
+        guard let cell = tableView.cellForRow(at: indexPath) else {return nil}
+        guard let detailVC = storyboard?.instantiateViewController(withIdentifier: "PollImageDetailViewController") as? PollImageDetailViewController else { return nil }
+        
+        let items = [livePolls, expiredPolls]
+        
+        let photoURL = items[indexPath.section][indexPath.row].pollQuestionImageURL
+        
+        
+        detailVC.photoURL = photoURL
+        detailVC.preferredContentSize = CGSize(width: 300, height: 300)
+        previewingContext.sourceRect = cell.frame
+        
+        
+        if photoURL == "no question image" {return nil}
+        
+        
+        return detailVC
+        
+        
+    }
+    
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        
+        show(viewControllerToCommit, sender: self)
+        
+    }
+
     
     
     

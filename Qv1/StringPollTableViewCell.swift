@@ -14,6 +14,7 @@ class StringPollTableViewCell: UITableViewCell {
     @IBOutlet weak var questionStringTextView: UITextView!
     @IBOutlet weak var groupMembersCollectionView: UICollectionView!
     
+    @IBOutlet weak var pollImageView: UIImageView!
     @IBOutlet weak var answer1Button: UIButton!
     
     @IBOutlet weak var answer2Button: UIButton!
@@ -23,6 +24,8 @@ class StringPollTableViewCell: UITableViewCell {
     @IBOutlet weak var answerSelectedView: UIView!
     
     @IBOutlet weak var answerSelectedTextLabel: UILabel!
+    
+    @IBOutlet weak var pollImageViewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var questionStringTextViewWidthConstraint: NSLayoutConstraint!
     
