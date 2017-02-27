@@ -16,6 +16,7 @@ pod 'Firebase/Analytics'
 pod 'SDWebImage'
 pod 'SwiftLinkPreview', '~> 1.0.1'
 pod 'Navajo-Swift'
+pod 'JTAppleCalendar'
 
 
 post_install do |installer|

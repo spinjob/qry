@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>JTAppleCalendar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Navajo-Swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -47,17 +52,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2C206DFFDECFDC3C51B86C2B8F79E47E</key>
+		<key>02714813050509CE29EF06B869592EDD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3B69A8DDA0F748F8EFC8A21AF63B15AD</key>
+		<key>331863F4D5780EFD8A0A43316E05B438</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5868593A9979241208CAC750A804B24A</key>
+		<key>64897AF0E185AD05DA49317FB92E5EB8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -67,12 +72,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>710D583912F09862805BE24DABC508DE</key>
+		<key>9B22756F1BC69AB282A6C7FFC7EB05C3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>C052BEBFBD0AB5218CC64BA3450F6547</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB9DFDD90D0CC1C9D6CED4C7D2EEF2D2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

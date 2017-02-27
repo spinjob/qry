@@ -70,7 +70,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //pulling data from Firebase
         
-        var newRecipient : [NSObject : AnyObject] = [ : ]
+        var newRecipient :[NSObject : AnyObject] = [ : ]
         var recipientID = ""
         let swipeRight: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(HomeViewController.swipeRight(gestureRecognizer:)))
         

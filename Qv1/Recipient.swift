@@ -17,4 +17,5 @@ class Recipient {
     var groupMembers : [String] = [""]
     var tag : String = ""
     var phoneNumber : String = ""
+    var vote : String = ""
 }

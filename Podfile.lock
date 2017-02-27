@@ -50,6 +50,7 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.8)
+  - JTAppleCalendar (6.1.2)
   - Navajo-Swift (1.0.0)
   - Protobuf (3.2.0)
   - SDWebImage (4.0.0):
@@ -64,6 +65,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - JTAppleCalendar
   - Navajo-Swift
   - SDWebImage
   - SwiftLinkPreview (~> 1.0.1)
@@ -79,11 +81,12 @@ SPEC CHECKSUMS:
   FirebaseStorage: 63628572a5fde258f8e933b5fb42697468da0158
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 6f8d8b28b7e345549ac471071608170b31cb4977
+  JTAppleCalendar: 4424fdd0daac0daf1db93299c07949505055135d
   Navajo-Swift: b5ccdf31f5b21e4944a418c5dfe891c8e571f7c7
   Protobuf: 745f59e122e5de98d4d7ef291e264a0eef80f58e
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SwiftLinkPreview: 977461879ae31f9e2d1bf2fafba0553d99eacbb9
 
-PODFILE CHECKSUM: 36c0c8674f9c7e1f598a7d6a6b72a2fe895cc74e
+PODFILE CHECKSUM: c64380649eca0c949e41ed4d690032124a1c0c16
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0
