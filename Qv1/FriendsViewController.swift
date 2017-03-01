@@ -23,6 +23,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var profileUserID = ""
     var friendArray : [Recipient] = []
     var groupArray : [Recipient] = []
+    var liveThreadArray : [Poll] = []
 //    var items : [[Recipient]] = [[]]
     var selectedRecipients : [Recipient] = []
     var selectedCells : [EditFriendTableViewCell] = []

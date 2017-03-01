@@ -150,27 +150,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qv1/SelectRecipientsViewController.swift"
-            timestampString = "509424101.962671"
+            timestampString = "510036179.233221"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "674"
-            endingLineNumber = "674">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Qv1/SelectRecipientsViewController.swift"
-            timestampString = "509316914.742055"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
+            startingLineNumber = "847"
+            endingLineNumber = "847">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -187,84 +171,6 @@
             endingLineNumber = "18"
             landmarkName = "drawText(in:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Qv1/SelectRecipientsViewController.swift"
-            timestampString = "509316914.742055"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "SelectRecipientsViewController"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Qv1.SelectRecipientsViewController.sendButton.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.UIButton&gt;"
-                  moduleName = "Qv1"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/spencerjohnson/Desktop/Qv1/Qv1/SelectRecipientsViewController.swift"
-                  timestampString = "500765278.921608"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "32"
-                  endingLineNumber = "32"
-                  offsetFromSymbolStart = "40">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Qv1.SelectRecipientsViewController.sendButton.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.UIButton&gt;"
-                  moduleName = "Qv1"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/spencerjohnson/Desktop/Qv1/Qv1/SelectRecipientsViewController.swift"
-                  timestampString = "500765278.923593"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "32"
-                  endingLineNumber = "32"
-                  offsetFromSymbolStart = "52">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Qv1.SelectRecipientsViewController.init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; Qv1.SelectRecipientsViewController"
-                  moduleName = "Qv1"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/spencerjohnson/Desktop/Qv1/Qv1/SelectRecipientsViewController.swift"
-                  timestampString = "500765278.92493"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "32"
-                  endingLineNumber = "32"
-                  offsetFromSymbolStart = "660">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Qv1.SelectRecipientsViewController.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;Qv1.SelectRecipientsViewController&gt;"
-                  moduleName = "Qv1"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/spencerjohnson/Desktop/Qv1/Qv1/SelectRecipientsViewController.swift"
-                  timestampString = "500765278.926374"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "32"
-                  endingLineNumber = "32"
-                  offsetFromSymbolStart = "596">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

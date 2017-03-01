@@ -275,6 +275,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             } else {
 
             pollForCell.groupMembers.append(recipient)
+            pollForCell.groupMembers = pollForCell.groupMembers.sorted(by: {$0.vote < $1.vote})
+          
             binaryStringCell.groupMembersCollectionView.reloadData()
             }
 
@@ -455,7 +457,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
         } else if minutesLeft.minute! < 0, pollForCell.isExpired == false  {
             pollForCellRef.child("expired").setValue("true")
-            FIRDatabase.database().reference().child("users").child("receivedPolls").child(pollForCell.pollID).child("expired").setValue("true")
+            FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(pollForCell.pollID).child("expired").setValue("true")
             tableView.reloadData()
             
         } else {
@@ -517,6 +519,46 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         return view.contentView
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+       
+        let pollArrays = [livePolls, expiredPolls]
+        
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
+    
+        
+        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollArrays[indexPath.section][indexPath.row].pollID).child("votes")
+        
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
+            snapshot in
+            
+            myVC.answer1Count = Int(snapshot.childrenCount)
+            
+        })
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
+            snapshot in
+            
+            myVC.answer2Count = Int(snapshot.childrenCount)
+            
+        })
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.value, with: {
+            snapshot in
+            
+            myVC.undecidedCount = Int(snapshot.childrenCount)
+            
+        })
+        
+        myVC.poll = pollArrays[indexPath.section][indexPath.row]
+        myVC.chatMembers = pollArrays[indexPath.section][indexPath.row].groupMembers
+        
+        
+        navigationController?.pushViewController(myVC, animated: true)
+        
+        
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         var groupMembers : [Recipient] = []
@@ -549,16 +591,19 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         if recipientForCollectionCell.vote == "no vote" {
             
             cell.answerIndicatorImageView.backgroundColor = grey
+           // cell.recipientImageView.layer.borderColor = grey.cgColor
           
             
         } else if recipientForCollectionCell.vote == "answer1" {
             
             cell.answerIndicatorImageView.backgroundColor = brightGreen
+           // cell.recipientImageView.layer.borderColor = brightGreen.cgColor
             
             
         } else if recipientForCollectionCell.vote == "answer2" {
             
             cell.answerIndicatorImageView.backgroundColor = red
+          //  cell.recipientImageView.layer.borderColor = red.cgColor
  
         }
 

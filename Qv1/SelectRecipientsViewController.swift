@@ -38,9 +38,17 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
 
     var groupToEdit : Recipient = Recipient()
     var groupMembers : [Recipient] = []
+    
+    var pollRecipientList : [Recipient] = []
 
     
-    let sectionTitles = ["Lists", "Friends"]
+    let sectionTitles = ["Threads","Lists", "Friends"]
+    
+    let brightGreen = UIColor.init(hexString: "A8E855")
+    let red = UIColor.init(hexString: "FF4E56")
+    let actionGreen = UIColor.init(hexString: "00D1D5")
+    let blue = UIColor.init(hexString: "004488")
+    let grey = UIColor.init(hexString: "D8D8D8")
     
     
     lazy var contacts: [CNContact] = {
@@ -107,6 +115,55 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
         sendButtonHeightConstraint.constant = 0
         createGroupButtonHeightConstraint.constant = 0
+        
+        print("Current User ID \(currentUserID)")
+        
+        FIRDatabase.database().reference().child("polls").queryOrdered(byChild: "senderUser").queryEqual(toValue: currentUserID).observe(.childAdded, with: {
+            snapshot in
+            
+            
+            
+            print("MY LIVE POLLS SNAPSHOT \(snapshot)")
+            
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            let recipient = Recipient()
+            
+            recipient.recipientName = snapshotValue["question"] as! String
+            recipient.recipientID = snapshot.key as! String
+            recipient.imageURL1 = snapshotValue["expirationDate"] as! String
+            recipient.imageURL2 = snapshotValue["dateCreated"] as! String
+            recipient.imageURL3 = snapshotValue["expired"] as! String
+            recipient.imageURL4 = snapshotValue["answer1"] as! String
+            recipient.tag = snapshotValue["answer2"] as! String
+            
+            let date = Date()
+            let formatter = DateFormatter()
+            
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            
+            let calendar = Calendar.current
+            let dateString = formatter.string(from: date)
+            let dateOfExpiration = formatter.date(from: recipient.imageURL1)
+            let currentDate = formatter.date(from: dateString)
+            let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: dateOfExpiration!)
+            
+            
+            recipient.minutesToExpiration = minutesLeft.minute!
+            
+            print(recipient)
+            
+            if recipient.imageURL3 == "false" {
+                self.pollRecipientList.append(recipient)
+                self.pollRecipientList = self.pollRecipientList.sorted(by: {$0.imageURL1 < $1.imageURL1})
+                self.tableView.reloadData()
+                
+            }
+            
+        })
+        
         
         currentUserRef.observe(.value, with: {
             
@@ -185,7 +242,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let items = [groupRecipientList, recipientList]
+        let items = [pollRecipientList, groupRecipientList, recipientList]
         
         if items[indexPath.section][indexPath.row].tag == "group" {
             return 80
@@ -196,14 +253,14 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let items = [groupRecipientList, recipientList]
+        let items = [pollRecipientList, groupRecipientList, recipientList]
         
         return items[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-      let items = [groupRecipientList, recipientList]
+      let items = [pollRecipientList, groupRecipientList, recipientList]
         
       let cell = tableView.dequeueReusableCell(withIdentifier: "userCell") as! UserTableViewCell
         
@@ -225,8 +282,8 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         
       groupCell.groupMember1ImageView.sd_setImage(with: URL(string : recipientForCell.imageURL1))
-        groupCell.groupMember1ImageView.layer.cornerRadius = 4
-        groupCell.groupMember1ImageView.layer.masksToBounds = true
+      groupCell.groupMember1ImageView.layer.cornerRadius = 4
+      groupCell.groupMember1ImageView.layer.masksToBounds = true
       
       groupCell.groupNameLabel.text = recipientForCell.recipientName
       groupCell.tag = indexPath.row
@@ -236,10 +293,108 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
       groupCell.editButton.tag = indexPath.row
       groupCell.editButton.addTarget(self, action: #selector(self.editGroupScreen(sender:)), for: .touchUpInside)
     
-    if indexPath.section == 0 {
+    
+    //poll cell
         
-        return groupCell
+        let pollCell = tableView.dequeueReusableCell(withIdentifier: "selectThreadCell") as! SelectThreadTableViewCell
+        
+        pollCell.questionLabel.text = recipientForCell.recipientName
+        pollCell.pieChartCenterView.layer.cornerRadius =  pollCell.pieChartCenterView.layer.frame.width / 2
+        pollCell.timerView.layer.cornerRadius =  pollCell.timerView.layer.frame.width / 2
+
+        
+if indexPath.section == 0 {
+    
+        let date = Date()
+        let formatter = DateFormatter()
+        let calendar = Calendar.current
+        
+        
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        let dateString = formatter.string(from: date)
+        
+        let pollForCellDateExpired = formatter.date(from: recipientForCell.imageURL1)
+        let pollForCellDateCreated = formatter.date(from: recipientForCell.imageURL2)
+        let currentDate = formatter.date(from: dateString)
+        
+        let hoursLeft = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateExpired!)
+        let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
+        let daysLeft = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateExpired!)
+        let minutesTotal = calendar.dateComponents([.minute], from: pollForCellDateCreated!, to:pollForCellDateExpired! )
+        let minutesLeftDouble : Double = Double(recipientForCell.minutesToExpiration)
+        let minutesTotalDouble : Double = Double(minutesTotal.minute!)
+        
+        let percentageLeft : Double = (minutesLeftDouble / minutesTotalDouble)*100
+        
+        if hoursLeft.hour! < 1 {
+            pollCell.timeLeftNumberLabel.text = "\(minutesLeft.minute!)"
+            
+            if hoursLeft.hour! == 1{
+                pollCell.timeLeftUnitLabel.text = "minute"
+            }
+            
+            pollCell.timeLeftUnitLabel.text = "minutes"
+            
+        }
+        
+        
+        if daysLeft.day! > 1 {
+            pollCell.timeLeftNumberLabel.text = "\(daysLeft.day!)"
+            
+            pollCell.timeLeftUnitLabel.text = "days"
+            
+        }
+        
+        if daysLeft.day! == 1 {
+            pollCell.timeLeftNumberLabel.text = "\(daysLeft.day!)"
+            
+            pollCell.timeLeftUnitLabel.text = "day"
+            
+        }
+        
+        if hoursLeft.hour! > 1, daysLeft.day! < 1 {
+            
+            pollCell.timeLeftNumberLabel.text = "\(hoursLeft.hour!)"
+            
+            pollCell.timeLeftUnitLabel.text = "hours"
+        }
+        
+        if hoursLeft.hour! == 1 {
+            pollCell.timeLeftNumberLabel.text = "\(hoursLeft.hour!)"
+            
+            pollCell.timeLeftUnitLabel.text = "hour"
+
+        }
+        
+        let chartView = PieChartView()
+        
+        chartView.frame = CGRect(x: 0, y: 0, width: pollCell.timerView.frame.size.width, height: 46)
+        
+        if percentageLeft < 10 {
+            chartView.segments = [
+                Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
+                Segment(color: red, value: CGFloat(percentageLeft))
+                
+            ]
+            
+        } else {
+            
+            chartView.segments = [
+                
+                Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
+                Segment(color: blue, value: CGFloat(percentageLeft))
+                
+            ]
+            
+        }
+        
+        pollCell.timerView.addSubview(chartView)
+
+        return pollCell
        
+    } else if indexPath.section == 1{
+        return groupCell
     }
        
     else {
@@ -324,9 +479,9 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         let selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
         selectedCell.contentView.backgroundColor = UIColor.white
         
-        let items = [groupRecipientList, recipientList]
+        let items = [pollRecipientList, groupRecipientList, recipientList]
         
-        if indexPath.section == 1 {
+        if indexPath.section == 2 {
 
         let selectedRecipient = items[indexPath.section][indexPath.row]
         selectedRecipients.append(selectedRecipient)
@@ -350,7 +505,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
 
         print(selectedRecipients)
 
-        if indexPath.section == 0 {
+        if indexPath.section == 1 {
         
             selectedGroupCells.append(selectedCell)
             
@@ -373,7 +528,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
                 self.groupMembers.forEach { (Recipient) in
                     
                     let indexToDisable = self.recipientList.index(where: { $0.recipientID.contains(Recipient.recipientID) == true})
-                    let indexPathForGroupMember = NSIndexPath(row: indexToDisable!, section: 1)
+                    let indexPathForGroupMember = NSIndexPath(row: indexToDisable!, section: 2)
                     
                     
                     tableView.cellForRow(at: indexPathForGroupMember as IndexPath)?.isUserInteractionEnabled = false
@@ -404,6 +559,24 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
             }
         
+        if indexPath.section == 0 {
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "SendToThreadViewController") as! SendToThreadViewController
+            let transition:CATransition = CATransition()
+            
+            controller.pollID = pollRecipientList[indexPath.row].recipientID
+            controller.sectionTitles = [pollRecipientList[indexPath.row].imageURL4, pollRecipientList[indexPath.row].tag, "No Answer"]
+            
+            transition.duration = 0.3
+            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            transition.type = kCATransitionMoveIn
+            transition.subtype = kCATransitionFromRight
+            self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+            self.navigationController?.pushViewController(controller, animated: false)
+            
+        }
+        
         UIView.animate(withDuration: 0.1) {
             self.view.layoutIfNeeded()
         }
@@ -422,11 +595,11 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
 
         let deSelectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
         
-        let items = [groupRecipientList, recipientList]
+        let items = [pollRecipientList, groupRecipientList, recipientList]
         
         let deSelectedRecipient = items[indexPath.section][indexPath.row]
         
-        if indexPath.section == 1 {
+        if indexPath.section == 2 {
             removeCell(cell: deSelectedCell)
             delete(recipient: items[indexPath.section][indexPath.row])
             
@@ -438,7 +611,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             }
         }
         
-        if indexPath.section == 0 {
+        if indexPath.section == 1 {
             
             removeGroupCell(cell: deSelectedCell)
             
@@ -460,7 +633,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
                 groupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
                 
                 let indexToEnable = self.recipientList.index(where: { $0.recipientID.contains(groupMember.recipientID) == true})
-                let indexPathForGroupMember = NSIndexPath(row: indexToEnable!, section: 1)
+                let indexPathForGroupMember = NSIndexPath(row: indexToEnable!, section: 2)
                 
                 
                 tableView.cellForRow(at: indexPathForGroupMember as IndexPath)?.isUserInteractionEnabled = true

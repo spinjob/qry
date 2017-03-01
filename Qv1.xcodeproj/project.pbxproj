@@ -76,6 +76,10 @@
 		68B111711E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B111701E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift */; };
 		68B111771E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */; };
 		68B111791E64CF0F00FAFE01 /* PollImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B111781E64CF0F00FAFE01 /* PollImageDetailViewController.swift */; };
+		68B1117B1E66533600FAFE01 /* SelectThreadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B1117A1E66533600FAFE01 /* SelectThreadTableViewCell.swift */; };
+		68B1117D1E667ED600FAFE01 /* SendToThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B1117C1E667ED600FAFE01 /* SendToThreadViewController.swift */; };
+		68B1117F1E6682BF00FAFE01 /* ThreadAnswerGroupUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B1117E1E6682BF00FAFE01 /* ThreadAnswerGroupUserTableViewCell.swift */; };
+		68B111811E6682D700FAFE01 /* ThreadAnswerGroupHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B111801E6682D700FAFE01 /* ThreadAnswerGroupHeaderTableViewCell.swift */; };
 		68B118D61E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B118D51E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift */; };
 		68B999BF1DFF25FE00959721 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B999BE1DFF25FE00959721 /* PieChart.swift */; };
 		68B999C11DFF434900959721 /* piechartcenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B999C01DFF434900959721 /* piechartcenter.png */; };
@@ -201,6 +205,10 @@
 		68B111701E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollRecipientCollectionViewCell.swift; sourceTree = "<group>"; };
 		68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivePollsHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		68B111781E64CF0F00FAFE01 /* PollImageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollImageDetailViewController.swift; sourceTree = "<group>"; };
+		68B1117A1E66533600FAFE01 /* SelectThreadTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectThreadTableViewCell.swift; sourceTree = "<group>"; };
+		68B1117C1E667ED600FAFE01 /* SendToThreadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendToThreadViewController.swift; sourceTree = "<group>"; };
+		68B1117E1E6682BF00FAFE01 /* ThreadAnswerGroupUserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadAnswerGroupUserTableViewCell.swift; sourceTree = "<group>"; };
+		68B111801E6682D700FAFE01 /* ThreadAnswerGroupHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadAnswerGroupHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		68B118D51E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditGroupMemberTableViewCell.swift; path = ../EditGroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		68B999BE1DFF25FE00959721 /* PieChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		68B999C01DFF434900959721 /* piechartcenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = piechartcenter.png; path = ../../piechartcenter.png; sourceTree = "<group>"; };
@@ -405,6 +413,9 @@
 				68B111781E64CF0F00FAFE01 /* PollImageDetailViewController.swift */,
 				683413521E620AB300077388 /* StringPollTableViewCell.swift */,
 				68B111701E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift */,
+				68B1117C1E667ED600FAFE01 /* SendToThreadViewController.swift */,
+				68B1117E1E6682BF00FAFE01 /* ThreadAnswerGroupUserTableViewCell.swift */,
+				68B111801E6682D700FAFE01 /* ThreadAnswerGroupHeaderTableViewCell.swift */,
 			);
 			name = "New UI/UX";
 			sourceTree = "<group>";
@@ -434,6 +445,7 @@
 			isa = PBXGroup;
 			children = (
 				68CCC4841DC526CC0094F3AE /* SelectRecipientsViewController.swift */,
+				68B1117A1E66533600FAFE01 /* SelectThreadTableViewCell.swift */,
 				68CCC47E1DC524230094F3AE /* FriendTableViewCell.swift */,
 				68F891221E5B731100A392E1 /* StackedMessageTableViewCell.swift */,
 				68CCC48C1DC6C8F10094F3AE /* UserTableViewCell.swift */,
@@ -757,11 +769,15 @@
 				68D9892A1E527C80003A7554 /* LoginOrRegisterViewController.swift in Sources */,
 				68D989371E52AE85003A7554 /* ChoosePictureViewController.swift in Sources */,
 				682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */,
+				68B1117D1E667ED600FAFE01 /* SendToThreadViewController.swift in Sources */,
 				6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */,
 				6825729A1DF79880006150DB /* UserProfileViewController.swift in Sources */,
+				68B111811E6682D700FAFE01 /* ThreadAnswerGroupHeaderTableViewCell.swift in Sources */,
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				68D9892E1E52996D003A7554 /* EmailAddressViewController.swift in Sources */,
 				68D989201E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift in Sources */,
+				68B1117F1E6682BF00FAFE01 /* ThreadAnswerGroupUserTableViewCell.swift in Sources */,
+				68B1117B1E66533600FAFE01 /* SelectThreadTableViewCell.swift in Sources */,
 				68894BDB1E576CB6006C98D1 /* PhoneNumberViewController.swift in Sources */,
 				68A243631E568781006AAA61 /* NotificationTableViewCell.swift in Sources */,
 				68219A771E0AFEEA004E822F /* FriendsViewController.swift in Sources */,

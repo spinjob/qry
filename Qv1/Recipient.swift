@@ -18,4 +18,6 @@ class Recipient {
     var tag : String = ""
     var phoneNumber : String = ""
     var vote : String = ""
+    var minutesToExpiration = 0
+
 }
