@@ -517,8 +517,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         selectedCells = selectedCells.filter() {$0 !== cell}
     }
     
-    
-    
+
     
     func editGroup (sender: UIButton) {
         let items = [friendArray, groupArray]

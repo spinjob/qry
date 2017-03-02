@@ -155,7 +155,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             
             print(recipient)
             
-            if recipient.imageURL3 == "false" {
+            if recipient.minutesToExpiration > 0 {
                 self.pollRecipientList.append(recipient)
                 self.pollRecipientList = self.pollRecipientList.sorted(by: {$0.imageURL1 < $1.imageURL1})
                 self.tableView.reloadData()
@@ -566,6 +566,9 @@ if indexPath.section == 0 {
             let transition:CATransition = CATransition()
             
             controller.pollID = pollRecipientList[indexPath.row].recipientID
+            controller.answer1String = pollRecipientList[indexPath.row].imageURL4
+            controller.answer2String = pollRecipientList[indexPath.row].tag
+            controller.questionString = pollRecipientList[indexPath.row].recipientName
             controller.sectionTitles = [pollRecipientList[indexPath.row].imageURL4, pollRecipientList[indexPath.row].tag, "No Answer"]
             
             transition.duration = 0.3
