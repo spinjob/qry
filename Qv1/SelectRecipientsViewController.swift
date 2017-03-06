@@ -411,6 +411,37 @@ if indexPath.section == 0 {
         return sectionTitles[section]
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        
+        let view = tableView.dequeueReusableCell(withIdentifier: "sendToHeaderCell") as! SendToHeaderTableViewCell
+        
+        view.backgroundColor = UIColor.white
+        view.contentView.backgroundColor = UIColor.white
+        
+        if section == 0 {
+            view.sectionTitleLabel.text = "ADD TO DECISION THREAD"
+            view.sectionImageView.image = #imageLiteral(resourceName: "addToDecisionThreadIcon")
+        }
+        if section == 1 {
+            view.sectionTitleLabel.text = "QUICK GROUPS"
+            view.sectionImageView.image = #imageLiteral(resourceName: "quickLists")
+        }
+        
+        if section == 2 {
+            view.sectionTitleLabel.text = "FRIENDS"
+            view.sectionImageView.image = #imageLiteral(resourceName: "friendsIcon")
+        }
+
+        
+        return view.contentView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 48
+    }
+
+    
     
     
     func numberOfSections(in tableView: UITableView) -> Int {

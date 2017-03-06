@@ -9,6 +9,8 @@
 import UIKit
 
 class StringPollTableViewCell: UITableViewCell {
+    @IBOutlet weak var conversationIconImageView: UIImageView!
+    @IBOutlet weak var expiredIconImageView: UIImageView!
     @IBOutlet weak var senderImageView: UIImageView!
     @IBOutlet weak var senderFullNameLabel: UILabel!
     @IBOutlet weak var questionStringTextView: UITextView!

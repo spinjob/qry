@@ -158,7 +158,6 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
        
        navigationController?.navigationBar.barTintColor = UIColor.white
        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.gray, NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!]
-       navigationController?.navigationBar.backItem?.backBarButtonItem!.title = "X"
         
        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
        self.navigationController?.navigationBar.shadowImage = UIImage()
