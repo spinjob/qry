@@ -35,6 +35,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     var currentUserRecipientDict : [NSObject : AnyObject] = [:]
     var currentUserVoterDict : [NSObject : AnyObject] = [:]
     let currentUserID : String = (FIRAuth.auth()?.currentUser!.uid)!
+    let threadID : String = UUID().uuidString
 
     var groupToEdit : Recipient = Recipient()
     var groupMembers : [Recipient] = []
@@ -120,9 +121,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         
         FIRDatabase.database().reference().child("polls").queryOrdered(byChild: "senderUser").queryEqual(toValue: currentUserID).observe(.childAdded, with: {
             snapshot in
-            
-            
-            
+
             print("MY LIVE POLLS SNAPSHOT \(snapshot)")
             
             
@@ -137,6 +136,8 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             recipient.imageURL3 = snapshotValue["expired"] as! String
             recipient.imageURL4 = snapshotValue["answer1"] as! String
             recipient.tag = snapshotValue["answer2"] as! String
+            recipient.phoneNumber = snapshotValue["isThreadParent"] as! String
+            recipient.vote = snapshotValue["threadID"] as! String
             
             let date = Date()
             let formatter = DateFormatter()
@@ -154,6 +155,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             recipient.minutesToExpiration = minutesLeft.minute!
             
             print(recipient)
+            print(recipient.phoneNumber)
             
             if recipient.minutesToExpiration > 0 {
                 self.pollRecipientList.append(recipient)
@@ -482,6 +484,8 @@ if indexPath.section == 0 {
         let items = [pollRecipientList, groupRecipientList, recipientList]
         
         if indexPath.section == 2 {
+        
+        
 
         let selectedRecipient = items[indexPath.section][indexPath.row]
         selectedRecipients.append(selectedRecipient)
@@ -491,6 +495,9 @@ if indexPath.section == 0 {
                 createGroupButtonHeightConstraint.constant = 50
                 createGroupButton.isHidden = false
             }
+            
+            
+            print("PRINTED Selected Recipients from USER CELL \(selectedRecipients)")
             
         }
 
@@ -503,10 +510,10 @@ if indexPath.section == 0 {
         }
         
 
-        print(selectedRecipients)
+        
 
         if indexPath.section == 1 {
-        
+   
             selectedGroupCells.append(selectedCell)
             
            
@@ -556,7 +563,7 @@ if indexPath.section == 0 {
             
             })
 
-            
+            print("PRINTED Selected Recipients from GROUP CELL \(selectedRecipients)")
             }
         
         if indexPath.section == 0 {
@@ -564,12 +571,31 @@ if indexPath.section == 0 {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "SendToThreadViewController") as! SendToThreadViewController
             let transition:CATransition = CATransition()
+            let pollParentID : String = pollRecipientList[indexPath.row].recipientID
             
-            controller.pollID = pollRecipientList[indexPath.row].recipientID
+            
+            
+            FIRDatabase.database().reference().child("polls").child(pollParentID).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                print(snapshot)
+                
+                controller.parentThreadID = snapshotValue["threadID"] as! String
+                
+                print(snapshotValue["threadID"] as! String)
+                
+            })
+            
+            controller.dictPoll = dictPoll
+            controller.pollID = pollID
+            controller.parentPollID = pollRecipientList[indexPath.row].recipientID
             controller.answer1String = pollRecipientList[indexPath.row].imageURL4
             controller.answer2String = pollRecipientList[indexPath.row].tag
             controller.questionString = pollRecipientList[indexPath.row].recipientName
             controller.sectionTitles = [pollRecipientList[indexPath.row].imageURL4, pollRecipientList[indexPath.row].tag, "No Answer"]
+            
+            
+            controller.parentThreadID = pollRecipientList[indexPath.row].vote
             
             transition.duration = 0.3
             transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -717,24 +743,37 @@ if indexPath.section == 0 {
         
         let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)
         let currentUserID = FIRAuth.auth()?.currentUser?.uid
+        let threadRef = FIRDatabase.database().reference().child("threads").child(threadID)
         
         let currentDate = Date()
         var expirationDate = Date()
         let formatter = DateFormatter()
         let calendar = Calendar.current
         
-       pollRef.setValue(dictPoll)
+        
+        print("POLL DICTIONARY \(dictPoll)")
+        print("THREAD ID \(threadID)")
+        print("CURRENT USER \(currentUserID)")
+        
+        
+        
+        pollRef.setValue(dictPoll)
+        pollRef.child("threadID").setValue(threadID)
+        pollRef.child("isThreadParent").setValue("true")
+       
+        threadRef.child(pollID).setValue(dictPoll) 
+        threadRef.child(pollID).child("isThreadParent").setValue("true")
+        
         
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         let dateString = formatter.string(from: currentDate)
-    
-    
-        print("Send Tapped Question Image \(questionImage)")
         
         
         self.selectedRecipients.forEach { (Recipient) in
         
+            
+        //notifications
         let notificationID = UUID().uuidString
         let notificationRef = FIRDatabase.database().reference().child("notifications").child(notificationID)
             
@@ -743,6 +782,9 @@ if indexPath.section == 0 {
         notificationRef.setValue(notificationDict)
             
             
+            
+        //add each selected user to sentTo and votes Arrays
+            
         let recipientID = Recipient.recipientID
         print(recipientID)
             
@@ -750,27 +792,41 @@ if indexPath.section == 0 {
        
         let voter : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "voteString" as NSObject: "no vote" as AnyObject]
         
-        let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(pollID)
+        let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(threadID).child(pollID)
         let sentToRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
         let voteRef = FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(recipientID)
             
-
-        sentToRef.setValue(recipientDict)
         
-            
-        ref.setValue(self.dictPoll)
-        ref.child("questionImageURL").setValue(self.questionImageURL)
+        sentToRef.setValue(recipientDict)
         voteRef.setValue(voter)
-    
+        threadRef.child(pollID).child("threadID").setValue(threadID)
+        threadRef.child(pollID).child("sentTo").child(recipientID).setValue(recipientDict)
+        threadRef.child(pollID).child("votes").child(recipientID).setValue(voter)
+
+        ref.setValue(self.dictPoll)
+        ref.child("threadID").setValue(threadID)
+        ref.child("isThreadParent").setValue("true")
+        ref.child("questionImageURL").setValue(self.questionImageURL)
+            
+
      }
+        
+        //currentuser references
+    
     
        FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(currentUserID!).setValue(self.currentUserRecipientDict)
-
-        FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(currentUserID!).setValue(self.currentUserVoterDict)
+       FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(currentUserID!).setValue(self.currentUserVoterDict)
+    
+        FIRDatabase.database().reference().child("threads").child(threadID).child(pollID).child("votes").child(currentUserID!).setValue(self.currentUserVoterDict)
+        FIRDatabase.database().reference().child("threads").child(threadID).child(pollID).child("sentTo").child(currentUserID!).setValue(self.currentUserRecipientDict)
         
-       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(pollID).setValue(dictPoll)
+       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threadID).child(pollID).setValue(dictPoll)
+       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threadID).child(pollID).child("threadID").setValue(threadID)
+       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threadID).child(pollID).child("isThreadParent").setValue("true")
+        
+        
        
-        
+      
          self.performSegue(withIdentifier: "unwindToMenuSend", sender: self)
     
     }

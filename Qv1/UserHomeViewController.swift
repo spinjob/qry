@@ -17,7 +17,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBOutlet weak var tableView: UITableView!
     
-   
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     //current user data
     
     let currentUserID = FIRAuth.auth()?.currentUser?.uid
@@ -38,14 +39,11 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 
     //arrays
     
-    var livePolls : [Poll] = []
-    var expiredPolls : [Poll] = []
-    var allPolls : [Poll] = []
-    var publicPolls : [Poll] = []
+    var userPollsThreaded : [Poll] = []
     
-    //sections
+    var threads : [String] = []
     
-    let sectionTitles = ["Live", "Closed"]
+    var threadDict : [String : [Poll]] = ["":[]]
 
     
     override func viewDidLoad() {
@@ -61,142 +59,140 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
         }
         
-        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.estimatedRowHeight = 181
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        currentUserReceivedPollsRef.queryOrdered(byChild: "expired").queryEqual(toValue: "false").observe(.childAdded, with: {
+        threadDict.removeAll()
+    
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").observe(.childAdded, with: {
             snapshot in
-          
-            let poll = Poll()
             
             let snapshotValue = snapshot.value as! NSDictionary
             
-            poll.answer1String = snapshotValue["answer1"] as! String
-            poll.answer2String = snapshotValue["answer2"] as! String
-            poll.questionString = snapshotValue["question"] as! String
-            poll.senderUser = snapshotValue["senderUser"] as! String
-            poll.pollImageURL = snapshotValue["pollImageURL"] as! String
-            poll.pollID = snapshot.key
-            poll.pollURL = snapshotValue["pollURL"] as! String
-            poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
-            poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
-            poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
-            poll.dateExpired = snapshotValue["expirationDate"] as! String
-            poll.dateCreated = snapshotValue["dateCreated"] as! String
+            let threadID = snapshot.key
             
-            poll.isExpired = false
+            self.threads.append(threadID)
             
-            let date = Date()
-            let formatter = DateFormatter()
-            
-            formatter.dateStyle = .short
-            formatter.timeStyle = .short
-            
-            let calendar = Calendar.current
-            let dateString = formatter.string(from: date)
-            let dateOfExpiration = formatter.date(from: poll.dateExpired)
-            let currentDate = formatter.date(from: dateString)
-            let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: dateOfExpiration!)
-            
-            poll.minutesUntilExpiration = minutesLeft.minute!
-    
-            if self.livePolls.contains(where: { $0.pollID == poll.pollID})
-            { print("poll already added")
+            FIRDatabase.database().reference().child("threads").child(threadID).observe(.childAdded, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
                 
-            } else {
+                let poll = Poll()
+                poll.answer1String = snapshotValue["answer1"] as! String
+                poll.answer2String = snapshotValue["answer2"] as! String
+                poll.questionString = snapshotValue["question"] as! String
+                poll.senderUser = snapshotValue["senderUser"] as! String
+                poll.pollImageURL = snapshotValue["pollImageURL"] as! String
+                poll.pollID = snapshot.key
+                poll.pollURL = snapshotValue["pollURL"] as! String
+                poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
+                poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
+                poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
+                poll.dateExpired = snapshotValue["expirationDate"] as! String
+                poll.dateCreated = snapshotValue["dateCreated"] as! String
+                
+                
+                FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").observe(.childAdded, with: {
+                    snapshot in
+                    let snapshotValue = snapshot.value as! NSDictionary
+                    let recipient = Recipient()
+                    
+                    recipient.recipientID = snapshotValue["recipientID"] as! String
+                    recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+                    recipient.recipientName = snapshotValue["recipientName"] as! String
+                    recipient.vote = snapshotValue["voteString"] as! String
+                    
+                    
+                    if poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID})
+                    { print("group already added")
+                        
+                    } else {
+                        
+                        poll.groupMembers.append(recipient)
+                        poll.groupMembers = poll.groupMembers.sorted(by: {$0.vote < $1.vote})
+                        self.tableView.reloadData()
             
-            self.livePolls.append(poll)
+                    }
+                    
+                })
+                
+                
+                let formatter = DateFormatter()
+                let calendar = Calendar.current
+                formatter.dateStyle = .short
+                formatter.timeStyle = .short
+                
+                poll.createdDate = formatter.date(from: poll.dateCreated)!
+
+                print("DATE CREATED \(formatter.date(from: poll.dateCreated))")
+                
+                if snapshotValue["hasChildren"] as! String == "true" {
+                    poll.hasChildren = true
+                    
+                } else {
+                    poll.hasChildren = false
+                }
+
+                
+                if snapshotValue["expired"] as! String == "true" {
+                    poll.isExpired = true
+                }else {
+                    poll.isExpired = false
+                }
+
+                if snapshotValue["isThreadParent"] as! String == "true" {
+                    poll.isThreadParent = true
+                } else {
+                    poll.isThreadParent = false
+                }
+                
+                
+                if self.threadDict[threadID] == nil {
+                    self.threadDict[threadID] = [poll]
+                    //self.tableView.reloadData()
+                } else {
+                    self.threadDict[threadID]!.append(poll)
+                    self.threadDict[threadID]! = self.threadDict[threadID]!.sorted(by: {$0.createdDate < $1.createdDate})
+                   // self.tableView.reloadData()
+                    
+                }
+                
+                print("THREADS Dictionary \(self.threadDict)")
+                
+            })
             
-            print(self.livePolls)
+            print("THREADS ARRAY \(self.threads)")
             
-            self.livePolls = self.livePolls.sorted(by: {$0.minutesUntilExpiration < $1.minutesUntilExpiration})
+            print("THREADS Dictionary \(self.threadDict[threadID]))")
+        
             
-            self.tableView.reloadData()
-            
-            }
-            
+
         })
         
-        currentUserReceivedPollsRef.queryOrdered(byChild: "expired").queryEqual(toValue: "true").observe(.childAdded, with: {
-            snapshot in
-            
-            let poll = Poll()
-            
-            let snapshotValue = snapshot.value as! NSDictionary
-            
-            poll.answer1String = snapshotValue["answer1"] as! String
-            poll.answer2String = snapshotValue["answer2"] as! String
-            poll.questionString = snapshotValue["question"] as! String
-            poll.senderUser = snapshotValue["senderUser"] as! String
-            poll.pollImageURL = snapshotValue["pollImageURL"] as! String
-            poll.pollID = snapshot.key
-            poll.pollURL = snapshotValue["pollURL"] as! String
-            poll.pollImageDescription = snapshotValue["pollImageDescription"] as! String
-            poll.pollImageTitle = snapshotValue["pollImageTitle"] as! String
-            poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
-            poll.dateExpired = snapshotValue["expirationDate"] as! String
-            poll.dateCreated = snapshotValue["dateCreated"] as! String
-            poll.isExpired = true
-            
-            let date = Date()
-            let formatter = DateFormatter()
-            
-            formatter.dateStyle = .short
-            formatter.timeStyle = .short
-            
-            let calendar = Calendar.current
-            let dateString = formatter.string(from: date)
-            let dateOfExpiration = formatter.date(from: poll.dateExpired)
-            let currentDate = formatter.date(from: dateString)
-            let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: dateOfExpiration!)
-            
-            poll.minutesUntilExpiration = minutesLeft.minute!
-            
-            if self.expiredPolls.contains(where: { $0.pollID == poll.pollID})
-            { print("poll already added")
-                
-            } else {
-            
-            self.expiredPolls.append(poll)
-            
-            self.expiredPolls = self.expiredPolls.sorted(by: {$0.minutesUntilExpiration > $1.minutesUntilExpiration})
-            
-
-            self.tableView.reloadData()
-            
-            }
-            
-            UIView.animate(withDuration: 2, animations: {
-                self.tableView.alpha = 0
-                self.tableView.alpha = 1
-
-            })
-        })
-   
-      
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let items = [livePolls, expiredPolls]
         
-        print("number of rows in section\(items[section].count)")
-     
-        return items[section].count
-    
+        print(threads)
+        
+        let threadID = threads[section]
+
+        return self.threadDict[threadID]!.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        let items = [livePolls, expiredPolls]
+  
+        print("NUMBER OF SECTIONs \(threads.count)")
         
-        return items.count
+        return threads.count
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitles[section]
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//       // return sectionTitles[section]
+//        return threads[section]
+//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -204,8 +200,12 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
-        let pollArrays = [livePolls, expiredPolls]
-        let pollForCell : Poll = pollArrays[indexPath.section][indexPath.row]
+        let threadID = threads[indexPath.section]
+        let pollArrayForThread = self.threadDict[threadID]
+        
+        let pollForCell : Poll = (self.threadDict[threads[indexPath.section]]?[indexPath.row])!
+        
+        
         
         let pollForCellRef = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID)
         let senderUserRef = FIRDatabase.database().reference().child("users").child(pollForCell.senderUser)
@@ -214,6 +214,10 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let currentUserVoteRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").child(currentUserID!)
         
+        
+        binaryStringCell.contentView.tag = indexPath.section
+        
+        print("CONTENT VIEW TAG \(binaryStringCell.contentView.tag)")
 
         //Binary String Cell
         
@@ -227,6 +231,34 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         binaryStringCell.pollImageView.layer.cornerRadius = 4
         binaryStringCell.pollImageView.layer.masksToBounds = true
         binaryStringCell.pollImageView.alpha = 0.8
+        binaryStringCell.groupMembersCollectionView.isHidden = false
+        
+        //Threading Formatting
+        
+        
+        if pollForCell.isThreadParent == false {
+            binaryStringCell.senderImageView.isHidden = true
+            binaryStringCell.imageViewThread.isHidden = false
+            binaryStringCell.threadTopLine.isHidden = false
+        } else {
+            binaryStringCell.senderImageView.isHidden = false
+            binaryStringCell.imageViewThread.isHidden = true
+            binaryStringCell.threadTopLine.isHidden = true
+            binaryStringCell.threadBottomLine.isHidden = false
+            
+        }
+        
+        if pollForCell.hasChildren == false {
+            binaryStringCell.threadBottomLine.isHidden = true
+        } else {
+            binaryStringCell.threadBottomLine.isHidden = false
+        }
+        
+        
+        binaryStringCell.imageViewThread.layer.cornerRadius = binaryStringCell.imageViewThread.layer.frame.width / 2
+        binaryStringCell.imageViewThread.layer.backgroundColor = grey.cgColor
+        binaryStringCell.imageViewThread.layer.masksToBounds = true
+        
         
         if pollForCell.pollQuestionImageURL == "no question image" {
             binaryStringCell.pollImageView.isHidden = true
@@ -239,7 +271,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         binaryStringCell.pollImageView.sd_setImage(with: URL(string: pollForCell.pollQuestionImageURL))
             
         }
-        
+       
         
         
         //Sender User
@@ -256,34 +288,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         binaryStringCell.senderImageView.layer.cornerRadius = binaryStringCell.senderImageView.layer.frame.width / 2
         binaryStringCell.senderImageView.layer.masksToBounds = true
-        
-        //Group Member Array population
-        FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").observe(.childAdded, with: {
-            snapshot in
-            let snapshotValue = snapshot.value as! NSDictionary
-            let recipient = Recipient()
-            
-            recipient.recipientID = snapshotValue["recipientID"] as! String
-            recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
-            recipient.recipientName = snapshotValue["recipientName"] as! String
-            recipient.vote = snapshotValue["voteString"] as! String
-            
-            
-            if pollForCell.groupMembers.contains(where: { $0.recipientID == recipient.recipientID})
-            { print("group already added")
-                
-            } else {
 
-            pollForCell.groupMembers.append(recipient)
-            pollForCell.groupMembers = pollForCell.groupMembers.sorted(by: {$0.vote < $1.vote})
-          
-            binaryStringCell.groupMembersCollectionView.reloadData()
-            }
 
-        })
-        
-
-        
         //answer1Button
         binaryStringCell.answer1Button.tag = indexPath.row
         binaryStringCell.answer1Button.addTarget(self, action: #selector(self.answer1ButtonTapped(sender:)), for: .touchUpInside)
@@ -458,7 +464,9 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         } else if minutesLeft.minute! < 0, pollForCell.isExpired == false  {
             pollForCellRef.child("expired").setValue("true")
             FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(pollForCell.pollID).child("expired").setValue("true")
-            tableView.reloadData()
+        FIRDatabase.database().reference().child("threads").child(threads[indexPath.section]).child(pollForCell.pollID).child("expired").setValue("true")
+            
+            //tableView.reloadData()
             
         } else {
 
@@ -488,45 +496,20 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableCell(withIdentifier: "livePollsHeaderCell") as! LivePollsHeaderTableViewCell
-        view.livePollsIconView.layer.borderWidth = 0.2
-        view.livePollsIconView.layer.cornerRadius = 4
-        view.livePollsIconView.layer.masksToBounds = true
-       
-        if section == 0 {
-
-        view.livePollsIconView.layer.borderColor = actionGreen.cgColor
-        view.barrierView.backgroundColor = actionGreen
-        view.iconLabel.text = "⚡️"
-        view.sectionTitleLabel.text = "Live Plans"
-        view.sectionTitleLabel.textColor = actionGreen
-            
-        }
-        
-        if section == 1 {
-            view.livePollsIconView.layer.borderColor = UIColor.init(hexString: "4B6184").cgColor
-            view.barrierView.backgroundColor = UIColor.init(hexString: "4B6184")
-            view.iconLabel.text = "⌛️"
-            view.sectionTitleLabel.text = "Past Plans"
-            view.sectionTitleLabel.textColor = UIColor.init(hexString: "4B6184")
-            
-        }
-        
-        return view.contentView
+        return 1
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       
-        let pollArrays = [livePolls, expiredPolls]
+    
+        let threadID = threads[indexPath.section]
+        let pollArrayForThread = threadDict[threadID]!
+        let pollForCell : Poll = pollArrayForThread[indexPath.row]
+
         
         let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
     
         
-        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollArrays[indexPath.section][indexPath.row].pollID).child("votes")
+        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
         
         
         pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
@@ -550,8 +533,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
         })
         
-        myVC.poll = pollArrays[indexPath.section][indexPath.row]
-        myVC.chatMembers = pollArrays[indexPath.section][indexPath.row].groupMembers
+        myVC.poll = pollForCell
+        myVC.chatMembers = pollForCell.groupMembers
         
         
         navigationController?.pushViewController(myVC, animated: true)
@@ -561,49 +544,52 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        var groupMembers : [Recipient] = []
+        let tableViewSection = collectionView.superview!.tag
+        let thread = threads[collectionView.superview!.tag]
+        let pollArrayForThread = threadDict[thread]!
+        let pollForCell = pollArrayForThread[collectionView.tag]
         
-        let combinedPolls = livePolls + expiredPolls
+        
+    
+        print("COLLECTION VIEW ITEMS COUNT \(threadDict[threads[collectionView.superview!.tag]]!.count)")
+        print("COLLECTION VIEW RECIPIENT COUNT \(pollForCell.groupMembers.count)")
 
-        return combinedPolls[collectionView.tag].groupMembers.count
+        return pollForCell.groupMembers.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        collectionView.showsHorizontalScrollIndicator = false
-        
-        livePolls.append(contentsOf: expiredPolls)
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "newGroupMemberCollectionViewCell", for: indexPath) as! PollRecipientCollectionViewCell
-    
-        let combinedPolls = livePolls + expiredPolls
-        
-        let pollForCell : Poll = combinedPolls[collectionView.tag]
+
+        let tableViewSection = collectionView.superview!.tag
+        let tableViewRow = collectionView.tag
+        let thread = threads[collectionView.superview!.tag]
+        let pollArrayForThread = threadDict[thread]!
+        let pollForCell = pollArrayForThread[collectionView.tag]
         let recipientForCollectionCell = pollForCell.groupMembers[indexPath.item]
         
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "newGroupMemberCollectionViewCell", for: indexPath) as! PollRecipientCollectionViewCell
+
+        print(recipientForCollectionCell.recipientName)
+     
         cell.answerIndicatorImageView.layer.borderWidth = 0.8
         cell.answerIndicatorImageView.layer.borderColor = UIColor.white.cgColor
         cell.recipientImageView.layer.borderWidth = 1
         cell.recipientImageView.layer.borderColor = UIColor.white.cgColor
-        
+
 
         if recipientForCollectionCell.vote == "no vote" {
             
             cell.answerIndicatorImageView.backgroundColor = grey
-           // cell.recipientImageView.layer.borderColor = grey.cgColor
           
             
         } else if recipientForCollectionCell.vote == "answer1" {
             
             cell.answerIndicatorImageView.backgroundColor = brightGreen
-           // cell.recipientImageView.layer.borderColor = brightGreen.cgColor
-            
+
             
         } else if recipientForCollectionCell.vote == "answer2" {
             
             cell.answerIndicatorImageView.backgroundColor = red
-          //  cell.recipientImageView.layer.borderColor = red.cgColor
  
         }
 
@@ -620,48 +606,65 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func answer1ButtonTapped (sender: UIButton) {
         
-        let buttonIndexPath = IndexPath(row: sender.tag, section: 0)
-        let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
-        let pollForRow = livePolls[sender.tag]
+        tableView.reloadData()
         
-        
-        UIView.animate(withDuration: 0.2, animations: {
-            binaryStringCell.answer2Button.alpha = 0
-            binaryStringCell.answer2Button.isHidden = true
-            binaryStringCell.answer1Button.alpha = 0
-            binaryStringCell.answer1Button.isHidden = true
-            
-             binaryStringCell.answerSelectedTextLabel.text = "Answered \(self.livePolls[sender.tag].answer1String)"
-        })
-        
- 
-        delay(0.2, closure: {
-            
-            UIView.animate(withDuration: 0.2, animations: {
-                
-
-                
-                binaryStringCell.answerSelectedView.alpha = 0
-                binaryStringCell.answerSelectedView.isHidden = false
-                binaryStringCell.answerSelectedView.alpha = 1
-                
-            })
-            
-        })
-        
-        
-        FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer1")
-        
-        binaryStringCell.groupMembersCollectionView.reloadData()
-       
+//        let tableViewSection = sender.superview!.tag
+//        let tableViewRow = sender.tag
+//        let thread = threads[sender.superview!.tag]
+//        let pollArrayForThread = threadDict[thread]!
+//        let pollForRow = pollArrayForThread[sender.tag]
+//        
+//        
+//        let buttonIndexPath = IndexPath(row: tableViewRow, section: tableViewSection)
+//        let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
+//        //let pollForRow = livePolls[sender.tag]
+//        
+//        
+//        UIView.animate(withDuration: 0.2, animations: {
+//            binaryStringCell.answer2Button.alpha = 0
+//            binaryStringCell.answer2Button.isHidden = true
+//            binaryStringCell.answer1Button.alpha = 0
+//            binaryStringCell.answer1Button.isHidden = true
+//            
+//             binaryStringCell.answerSelectedTextLabel.text = "Answered \(self.livePolls[sender.tag].answer1String)"
+//        })
+//        
+// 
+//        delay(0.2, closure: {
+//            
+//            UIView.animate(withDuration: 0.2, animations: {
+//                
+//
+//                
+//                binaryStringCell.answerSelectedView.alpha = 0
+//                binaryStringCell.answerSelectedView.isHidden = false
+//                binaryStringCell.answerSelectedView.alpha = 1
+//                
+//            })
+//            
+//        })
+//        
+//        
+//        FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer1")
+//            FIRDatabase.database().reference().child("threads").child(thread).child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer1")
+//        
+//            binaryStringCell.groupMembersCollectionView.reloadData()
+//       
         
           }
     
     func answer2ButtonTapped (sender: UIButton) {
+       
+        let tableViewSection = sender.superview!.tag
+        let tableViewRow = sender.tag
+        let thread = threads[sender.superview!.tag]
+        let pollArrayForThread = threadDict[thread]!
+        let pollForRow = pollArrayForThread[sender.tag]
         
-        let buttonIndexPath = IndexPath(row: sender.tag, section: 0)
+        
+        let buttonIndexPath = IndexPath(row: tableViewRow, section: tableViewSection)
         let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
-        let pollForRow = livePolls[sender.tag]
+        //let pollForRow = livePolls[sender.tag]
         
         
         UIView.animate(withDuration: 0.2, animations: {
@@ -672,7 +675,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             binaryStringCell.answer2Button.isHidden = true
             
             
-            binaryStringCell.answerSelectedTextLabel.text = "Answered \(self.livePolls[sender.tag].answer2String)"
+//            binaryStringCell.answerSelectedTextLabel.text = "Answered \(self.livePolls[sender.tag].answer2String)"
         })
         
         
@@ -691,15 +694,19 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         })
       
         FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer2")
-        
-        binaryStringCell.groupMembersCollectionView.reloadData()
+        FIRDatabase.database().reference().child("threads").child(thread).child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer2")
         
         
     }
     
     func answeredViewTapped (sender: UITapGestureRecognizer) {
         
-        let buttonIndexPath = IndexPath(row: sender.view!.tag, section: 0)
+        let tableViewSection = sender.view?.superview?.tag
+        
+        let tableViewRow = sender.view?.tag
+
+        let buttonIndexPath = IndexPath(row: tableViewRow!, section: tableViewSection!)
+
         let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
         
         UIView.animate(withDuration: 0.2, animations: {
@@ -803,17 +810,17 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         guard let cell = tableView.cellForRow(at: indexPath) else {return nil}
         guard let detailVC = storyboard?.instantiateViewController(withIdentifier: "PollImageDetailViewController") as? PollImageDetailViewController else { return nil }
         
-        let items = [livePolls, expiredPolls]
+      //  let items = [livePolls, expiredPolls]
         
-        let photoURL = items[indexPath.section][indexPath.row].pollQuestionImageURL
-        
-        
-        detailVC.photoURL = photoURL
-        detailVC.preferredContentSize = CGSize(width: 300, height: 300)
-        previewingContext.sourceRect = cell.frame
-        
-        
-        if photoURL == "no question image" {return nil}
+      //  let photoURL = items[indexPath.section][indexPath.row].pollQuestionImageURL
+//        
+//        
+//        detailVC.photoURL = photoURL
+//        detailVC.preferredContentSize = CGSize(width: 300, height: 300)
+//        previewingContext.sourceRect = cell.frame
+//        
+//        
+//        if photoURL == "no question image" {return nil}
         
         
         return detailVC
@@ -825,6 +832,16 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
         
         show(viewControllerToCommit, sender: self)
+        
+    }
+    
+    
+    
+    @IBAction func unwindToMenuAfterSendingThreadPoll(segue: UIStoryboardSegue){
+        
+       // tableView.reloadData()
+        tableView.updateConstraints()
+        
         
     }
 

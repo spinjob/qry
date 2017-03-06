@@ -12,6 +12,7 @@ class Poll {
     var answer2String : String = ""
    
     var dateCreated : String = ""
+    var createdDate : Date = Date()
     var expiration : String = ""
     var dateExpired : String = ""
     var minutesUntilExpiration = 0
@@ -33,6 +34,7 @@ class Poll {
     
     var threadID : String = ""
     var isThreadParent : Bool = true
+    var hasChildren : Bool = false
 
     
     

@@ -114,6 +114,7 @@
 		68DBF3A81DB6F6FF00C87385 /* small ask.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3A71DB6F6FF00C87385 /* small ask.png */; };
 		68DBF3AA1DB6F71600C87385 /* small inbox empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBF3A91DB6F71600C87385 /* small inbox empty.png */; };
 		68E2F7E41E158976002E13D9 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E2F7E31E158976002E13D9 /* GroupViewController.swift */; };
+		68F2424E1E6C9836005CB3AA /* ScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F2424D1E6C9836005CB3AA /* ScrollViewController.swift */; };
 		68F891231E5B731100A392E1 /* StackedMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F891221E5B731100A392E1 /* StackedMessageTableViewCell.swift */; };
 		68F891251E5BBF4E00A392E1 /* FindFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F891241E5BBF4E00A392E1 /* FindFriendsViewController.swift */; };
 		68F891271E5BC2B800A392E1 /* AddFriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F891261E5BC2B800A392E1 /* AddFriendTableViewCell.swift */; };
@@ -244,6 +245,7 @@
 		68DBF3A71DB6F6FF00C87385 /* small ask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small ask.png"; sourceTree = "<group>"; };
 		68DBF3A91DB6F71600C87385 /* small inbox empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small inbox empty.png"; sourceTree = "<group>"; };
 		68E2F7E31E158976002E13D9 /* GroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
+		68F2424D1E6C9836005CB3AA /* ScrollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViewController.swift; sourceTree = "<group>"; };
 		68F891221E5B731100A392E1 /* StackedMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackedMessageTableViewCell.swift; sourceTree = "<group>"; };
 		68F891241E5BBF4E00A392E1 /* FindFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsViewController.swift; sourceTree = "<group>"; };
 		68F891261E5BC2B800A392E1 /* AddFriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendTableViewCell.swift; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 		683413511E620A9900077388 /* New UI/UX */ = {
 			isa = PBXGroup;
 			children = (
+				68F2424D1E6C9836005CB3AA /* ScrollViewController.swift */,
 				68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */,
 				68B1116C1E6364F200FAFE01 /* UserHomeViewController.swift */,
 				68B111781E64CF0F00FAFE01 /* PollImageDetailViewController.swift */,
@@ -736,6 +739,7 @@
 				68B111771E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift in Sources */,
 				68B999BF1DFF25FE00959721 /* PieChart.swift in Sources */,
 				68D9892C1E529345003A7554 /* FullNameViewController.swift in Sources */,
+				68F2424E1E6C9836005CB3AA /* ScrollViewController.swift in Sources */,
 				684D2ED31E3D28730000879F /* GroupMemberCollectionViewCell.swift in Sources */,
 				6819B6461DDE7D440099A98B /* ChatMemberCollectionViewCell.swift in Sources */,
 				682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */,

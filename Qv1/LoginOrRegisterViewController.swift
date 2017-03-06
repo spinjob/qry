@@ -245,6 +245,62 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
     }
     
     
+    @IBAction func scrollViewHome(_ sender: Any) {
+        
+        FIRAuth.auth()?.signIn(withEmail: emailAddressTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
+            print ("We are tried to sign in")
+            
+            if error != nil {
+                
+                
+                if self.emailAddressTextField.text == "" {
+                    
+                    self.emailValidationLabel.text = "Please provide email"
+                    self.emailValidationLabel.isHidden = false
+                }
+                
+                if self.passwordTextField.text == "" {
+                    
+                    self.passwordValidationLabel.text = "Please provide password"
+                    self.passwordValidationLabel.isHidden = false
+                }
+                
+                if let errCode = FIRAuthErrorCode(rawValue: error!._code) {
+                    
+                    
+                    
+                    switch errCode {
+                        
+                    case .errorCodeInvalidEmail:
+                        self.emailValidationLabel.text = "Invalid email format"
+                        self.emailValidationLabel.isHidden = false
+                    case .errorCodeUserNotFound:
+                        self.emailValidationLabel.text = "User not found. Please create an account."
+                        self.emailValidationLabel.isHidden = false
+                    case .errorCodeWrongPassword:
+                        self.passwordValidationLabel.text = "Incorrect password"
+                        self.passwordValidationLabel.isHidden = false
+                        
+                        
+                    default:
+                        print("Create User Error: \(error!)")
+                    }
+                }
+                print("We have an error: \(error)")
+                
+                
+            } else {
+                print("We've signed in successfully")
+                
+                self.performSegue(withIdentifier: "scrollViewSegue", sender: nil)
+            }
+        })
+        
+        
+    }
+    
+    
+    
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         emailValidationLabel.isHidden = true

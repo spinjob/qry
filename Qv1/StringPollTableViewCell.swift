@@ -14,6 +14,11 @@ class StringPollTableViewCell: UITableViewCell {
     @IBOutlet weak var questionStringTextView: UITextView!
     @IBOutlet weak var groupMembersCollectionView: UICollectionView!
     
+    @IBOutlet weak var threadTopLine: UIView!
+    @IBOutlet weak var threadBottomLine: UIView!
+    
+    @IBOutlet weak var imageViewThread: UIImageView!
+    
     @IBOutlet weak var pollImageView: UIImageView!
     @IBOutlet weak var answer1Button: UIButton!
     
