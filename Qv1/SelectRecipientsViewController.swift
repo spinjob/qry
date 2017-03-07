@@ -617,6 +617,8 @@ if indexPath.section == 0 {
                 
             })
             
+            
+            
             controller.dictPoll = dictPoll
             controller.pollID = pollID
             controller.parentPollID = pollRecipientList[indexPath.row].recipientID
@@ -639,6 +641,7 @@ if indexPath.section == 0 {
         
         UIView.animate(withDuration: 0.1) {
             self.view.layoutIfNeeded()
+            self.updateViewConstraints()
         }
         
     }
@@ -857,8 +860,7 @@ if indexPath.section == 0 {
         
         
        
-      
-         self.performSegue(withIdentifier: "unwindToMenuSend", sender: self)
+      self.performSegue(withIdentifier: "unwindToMenuAfterSendingNewThreadPoll", sender: self)
     
     }
 

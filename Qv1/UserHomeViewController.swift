@@ -943,7 +943,16 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func unwindToMenuAfterSendingThreadPoll(segue: UIStoryboardSegue){
         
-       // tableView.reloadData()
+        tableView.reloadData()
+        tableView.updateConstraints()
+        
+        
+    }
+
+    
+    @IBAction func unwindToMenuAfterSendingNewThreadPoll(segue: UIStoryboardSegue){
+        
+         tableView.reloadData()
         tableView.updateConstraints()
         
         

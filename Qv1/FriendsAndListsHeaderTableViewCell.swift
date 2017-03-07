@@ -12,6 +12,10 @@ class FriendsAndListsHeaderTableViewCell: UITableViewCell {
 
     @IBOutlet weak var headerLabel: UILabel!
     
+    @IBOutlet weak var sectionLabel: UILabel!
+    
+    @IBOutlet weak var sectionIconImageView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

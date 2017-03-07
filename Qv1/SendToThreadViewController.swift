@@ -77,25 +77,31 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         askEverybodyButton.layer.masksToBounds = true
         //askEverybodyButton.layer.borderWidth = 0.4
         askEverybodyButton.layer.borderColor = actionGreen.cgColor
+        askEverybodyButton.backgroundColor = actionGreen
         
         askAnswer1GroupButton.setTitle("Add group that said \(answer1String)", for: .normal)
         askAnswer1GroupButton.layer.cornerRadius = 4
         askAnswer1GroupButton.layer.masksToBounds = true
        // askAnswer1GroupButton.layer.borderWidth = 0.4
         askAnswer1GroupButton.layer.borderColor = actionGreen.cgColor
+        askAnswer1GroupButton.backgroundColor = actionGreen
         
         askAnswer2GroupButton.setTitle("Add group that said \(answer2String)", for: .normal)
         askAnswer2GroupButton.layer.cornerRadius = 4
         askAnswer2GroupButton.layer.masksToBounds = true
        // askAnswer2GroupButton.layer.borderWidth = 0.4
         askAnswer2GroupButton.layer.borderColor = actionGreen.cgColor
+        askAnswer2GroupButton.backgroundColor = actionGreen
         
         askNoAnswerGroupButton.layer.cornerRadius = 4
         askNoAnswerGroupButton.layer.masksToBounds = true
         //askNoAnswerGroupButton.layer.borderWidth = 0.4
         askNoAnswerGroupButton.layer.borderColor = actionGreen.cgColor
+        askNoAnswerGroupButton.backgroundColor = actionGreen
         
         pollQuestionLabel.text = questionString
+        
+        startNewGroupHeightConstraint.constant = 0
         
         
         let pollRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("polls").child(pollID)
@@ -132,6 +138,7 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         pollVoteRef.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.childAdded, with: {
             
             snapshot in
+            
             let snapshotValue = snapshot.value as! NSDictionary
             let answer1GroupMember : Recipient = Recipient()
             answer1GroupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
@@ -140,6 +147,16 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             
             self.answer1Group.append(answer1GroupMember)
             print("Answer 1 Group \(self.answer1Group)")
+           
+            if self.answer1Group.count == 0 {
+                self.askAnswer1GroupButton.setTitle("Nobody has answered \(self.answer1String) yet", for: .normal)
+                self.askAnswer1GroupButton.layer.borderColor = self.grey.cgColor
+                self.askAnswer1GroupButton.backgroundColor = self.grey
+                self.askAnswer1GroupButton.isUserInteractionEnabled = false
+            }
+            
+            
+            
             self.tableView.reloadData()
             
         })
@@ -147,6 +164,10 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         pollVoteRef.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.childAdded, with: {
             
             snapshot in
+            
+           
+            
+            
             let snapshotValue = snapshot.value as! NSDictionary
             let answer2GroupMember : Recipient = Recipient()
             answer2GroupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
@@ -155,6 +176,14 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             
             self.answer2Group.append(answer2GroupMember)
             print("Answer 2 Group \(self.answer2Group)")
+            
+            if self.answer2Group.count == 0 {
+                self.askAnswer2GroupButton.setTitle("Nobody has answered \(self.answer2String) yet", for: .normal)
+                self.askAnswer2GroupButton.layer.borderColor = self.grey.cgColor
+                self.askAnswer2GroupButton.backgroundColor = self.grey
+                self.askAnswer2GroupButton.isUserInteractionEnabled = false
+            }
+            
             self.tableView.reloadData()
             
         })
@@ -162,6 +191,7 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         pollVoteRef.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.childAdded, with: {
             
             snapshot in
+            
             let snapshotValue = snapshot.value as! NSDictionary
             let noAnswerGroupMember : Recipient = Recipient()
             noAnswerGroupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
@@ -170,6 +200,10 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             
             self.noanswerGroup.append(noAnswerGroupMember)
             print("No Answer Group \(self.noanswerGroup)")
+            
+            if self.noanswerGroup.count == 0 {
+                self.askNoAnswerGroupButton.isHidden = true
+            }
             self.tableView.reloadData()
             
         })
@@ -204,18 +238,7 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        
-//        return self.sectionTitles.count
-//    }
-    
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
-//    {
-//    
-//        return 0
-//    }
-//    
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return 60
@@ -248,116 +271,6 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        
-//        return self.sectionTitles[section]
-//    }
-    
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        
-//        let view = tableView.dequeueReusableCell(withIdentifier: "answerGroupHeader") as! ThreadAnswerGroupHeaderTableViewCell
-//        
-//        view.answerStringLabel.text = self.sectionTitles[section]
-//        view.selectAnswerGroupButton.layer.cornerRadius = view.selectAnswerGroupButton.layer.frame.width / 2
-//        view.selectAnswerGroupButton.layer.backgroundColor = UIColor.white.cgColor
-//        view.selectAnswerGroupButton.layer.borderWidth = 0.2
-//        view.selectAnswerGroupButton.setTitle("+", for: .normal)
-//        view.selectAnswerGroupButton.layer.masksToBounds = true
-//        let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.headerViewTapped(sender:)))
-//        view.selectAnswerGroupButton.addGestureRecognizer(viewTapGesture)
-//        
-//        view.selectAnswerGroupButton.tag = section
-//        view.isUserInteractionEnabled = true
-//        //view.backgroundColor = grey
-//        
-//        if section == 2 {
-//            view.staticAnsweredLabel.text = "DIDN'T ANSWER"
-//            view.answerStringLabel.isHidden = true
-//        }
-//
-//        return view
-//        
-//    }
-    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        
-//        let items = [answer1Group, answer2Group, noanswerGroup]
-//        let selectedCell = tableView.cellForRow(at: indexPath)! as! ThreadAnswerGroupUserTableViewCell
-//        selectedCell.contentView.backgroundColor = UIColor.white
-//
-//        let selectedRecipient = items[indexPath.section][indexPath.row]
-//        selectedRecipients.append(selectedRecipient)
-//        selectedUserCells.append(selectedCell)
-//        
-//        selectedCell.selectAnswerGroupMemberButton.setTitle("✓", for: .normal)
-//        selectedCell.selectAnswerGroupMemberButton.setTitleColor(UIColor.white, for: .normal)
-//        selectedCell.selectAnswerGroupMemberButton.backgroundColor = actionGreen
-//
-//        
-//        if selectedUserCells.count > 1 {
-//        
-//        }
-//        
-//    
-//        if selectedRecipients.count > 0 {
-//    
-//        }
-//    
-//        if selectedRecipients.count == 1 {
-// 
-//        }
-//    
-//    
-//        UIView.animate(withDuration: 0.1) {
-//            self.view.layoutIfNeeded()
-//        }
-//            print(selectedRecipients)
-//
-//    }
-    
-//    
-//    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        
-//        let deSelectedCell = tableView.cellForRow(at: indexPath)! as! ThreadAnswerGroupUserTableViewCell
-//        
-//        let items = [answer1Group, answer2Group, noanswerGroup]
-//        
-//        let deSelectedRecipient = items[indexPath.section][indexPath.row]
-//        
-//        removeCell(cell: deSelectedCell)
-//        delete(recipient: deSelectedRecipient)
-//        
-//        deSelectedCell.selectAnswerGroupMemberButton.setTitle("+", for: .normal)
-//        deSelectedCell.selectAnswerGroupMemberButton.setTitleColor(grey, for: .normal)
-//        deSelectedCell.selectAnswerGroupMemberButton.backgroundColor = UIColor.white
-//            
-//        if selectedRecipients.count < 2 {
-//           
-//                
-//        }
-//    }
-//    
-//    func removeCell (cell: UITableViewCell) {
-//        
-//        selectedUserCells = selectedUserCells.filter() {$0 !== cell}
-//    }
-//    
-//    func delete(recipient: Recipient) {
-//        selectedRecipients = selectedRecipients.filter() {$0 !== recipient}
-//    }
-//    
-//    func headerViewTapped (sender: UITapGestureRecognizer) {
-//        let section = (sender.view?.tag)!
-//        let totalRows = tableView.numberOfRows(inSection: section)
-//        
-//        for row in 0..<totalRows {
-//            
-//            let indexPath = IndexPath(row: row, section: section )
-//        
-//            tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
-//        }
-//    }
-
     
     @IBAction func askEverybodyButtonTapped(_ sender: Any) {
 
@@ -400,23 +313,44 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             askEverybodyButton.setTitleColor(UIColor.white, for: .normal)
             askEverybodyButton.backgroundColor = actionGreen
             
+            if answer1Group.count > 0 {
             askAnswer1GroupButton.alpha = 1
             askAnswer1GroupButton.isEnabled = true
             askAnswer1GroupButton.backgroundColor = actionGreen
             askAnswer1GroupButton.setTitleColor(UIColor.white, for: .normal)
             askAnswer1GroupButton.setTitle("Add group that said \(answer1String)", for: .normal)
+            } else {
+                askAnswer1GroupButton.setTitle("Nobody has answered \(self.answer1String) yet", for: .normal)
+                askAnswer1GroupButton.layer.borderColor = self.grey.cgColor
+                askAnswer1GroupButton.backgroundColor = self.grey
+                askAnswer1GroupButton.isUserInteractionEnabled = false
+            }
             
+            if answer2Group.count > 0 {
             askAnswer2GroupButton.alpha = 1
             askAnswer2GroupButton.isEnabled = true
             askAnswer2GroupButton.backgroundColor = actionGreen
             askAnswer2GroupButton.setTitleColor(UIColor.white, for: .normal)
             askAnswer2GroupButton.setTitle("Add group that said \(answer2String)", for: .normal)
-            
+            } else {
+                askAnswer2GroupButton.setTitle("Nobody has answered \(self.answer2String) yet", for: .normal)
+                askAnswer2GroupButton.layer.borderColor = self.grey.cgColor
+                askAnswer2GroupButton.backgroundColor = self.grey
+                askAnswer2GroupButton.isUserInteractionEnabled = false
+                
+            }
+        
+            if noanswerGroup.count > 0 {
+            askNoAnswerGroupButton.isHidden = false
             askNoAnswerGroupButton.alpha = 1
             askNoAnswerGroupButton.isEnabled = true
             askNoAnswerGroupButton.backgroundColor = actionGreen
             askNoAnswerGroupButton.setTitleColor(UIColor.white, for: .normal)
             askNoAnswerGroupButton.setTitle("Add group that didn't answer", for: .normal)
+                
+            } else {
+                askNoAnswerGroupButton.isHidden = true
+            }
             
             startNewGroupHeightConstraint.constant = 0
             
@@ -450,6 +384,7 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         if askAnswer1GroupButton.backgroundColor == actionGreen {
         
             
+            if answer1Group.count != 0 {
             //askAnswer1GroupButton.isSelected = true
             askAnswer1GroupButton.setTitle("Added group that said \(answer1String)", for: .normal)
             askAnswer1GroupButton.setTitleColor(actionGreen, for: .normal)
@@ -461,6 +396,15 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
       
             
             tableView.reloadData()
+        
+            } else {
+                askAnswer1GroupButton.setTitle("Nobody has answered \(self.answer1String) yet", for: .normal)
+                askAnswer1GroupButton.layer.borderColor = self.grey.cgColor
+                askAnswer1GroupButton.backgroundColor = self.grey
+                askAnswer1GroupButton.isUserInteractionEnabled = false
+            }
+            
+            
         } else  {
             
             askAnswer1GroupButton.isSelected = false
@@ -470,6 +414,10 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             
             answer1Group.forEach { (Recipient) in
                delete(recipient: Recipient)
+            }
+            
+            if selectedRecipients.count == 0 {
+                startNewGroupHeightConstraint.constant = 0
             }
             
             tableView.reloadData()
@@ -498,6 +446,7 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         
         if askAnswer2GroupButton.backgroundColor == actionGreen {
             
+            if answer2Group.count != 0 {
            // askAnswer2GroupButton.isSelected = true
             askAnswer2GroupButton.setTitle("Added group that said \(answer2String)", for: .normal)
             askAnswer2GroupButton.setTitleColor(actionGreen, for: .normal)
@@ -508,6 +457,13 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             startNewGroupHeightConstraint.constant = 50
             
             tableView.reloadData()
+                
+            } else {
+                askAnswer2GroupButton.setTitle("Nobody has answered \(self.answer2String) yet", for: .normal)
+                askAnswer2GroupButton.layer.borderColor = self.grey.cgColor
+                askAnswer2GroupButton.backgroundColor = self.grey
+                askAnswer2GroupButton.isUserInteractionEnabled = false
+            }
         } else {
             
             askAnswer2GroupButton.isSelected = false
@@ -517,6 +473,10 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             
             answer2Group.forEach { (Recipient) in
                 delete(recipient: Recipient)
+            }
+            
+            if selectedRecipients.count == 0 {
+                startNewGroupHeightConstraint.constant = 0
             }
             
             tableView.reloadData()
@@ -539,6 +499,7 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         
         if askNoAnswerGroupButton.backgroundColor == actionGreen {
             
+            if noanswerGroup.count != 0 {
            // askNoAnswerGroupButton.isSelected = true
             askNoAnswerGroupButton.setTitle("Added group that didn't answer", for: .normal)
             askNoAnswerGroupButton.setTitleColor(actionGreen, for: .normal)
@@ -549,7 +510,12 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             startNewGroupHeightConstraint.constant = 50
             
             tableView.reloadData()
-        }else {
+                
+            } else {
+                
+                askNoAnswerGroupButton.isHidden = true
+            }
+        } else {
             
             askNoAnswerGroupButton.isSelected = false
             askNoAnswerGroupButton.setTitle("Add group that didn't answer", for: .normal)
@@ -558,6 +524,10 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             
             noanswerGroup.forEach { (Recipient) in
                 delete(recipient: Recipient)
+            }
+            
+            if selectedRecipients.count == 0 {
+                startNewGroupHeightConstraint.constant = 0
             }
             
             tableView.reloadData()

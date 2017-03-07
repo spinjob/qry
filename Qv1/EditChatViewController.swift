@@ -108,8 +108,16 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
         let view = tableView.dequeueReusableCell(withIdentifier: "header") as! ChatListViewHeaderTableViewCell
         view.answerGroupLabel.text = self.sectionTitles[section]
         
+        if section == 0 {
+            view.answeredStaticLabel.text = "\(answer1Group.count) Answered"
+        }
+        
+        if section == 1 {
+            view.answeredStaticLabel.text = "\(answer2Group.count) Answered"
+        }
+        
         if section == 2 {
-            view.answeredStaticLabel.text = "Didn't Answer"
+            view.answeredStaticLabel.text = "\(noanswerGroup.count) Didn't Answer"
             view.answerGroupLabel.isHidden = true
         }
         view.answerColorIndicatorView.layer.cornerRadius = view.answerColorIndicatorView.layer.frame.width / 2

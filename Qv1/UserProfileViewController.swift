@@ -55,6 +55,8 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         
+        tableView.isHidden = true
+        
     
         imagePicker.delegate = self
 

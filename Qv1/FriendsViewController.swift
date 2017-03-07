@@ -227,12 +227,14 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let view = tableView.dequeueReusableCell(withIdentifier: "friendAndListHeaderCell") as! FriendsAndListsHeaderTableViewCell
 
-        view.headerLabel.text = "Friends"
-        view.contentView.backgroundColor = UIColor.init(hexString: " 043176")
+        view.sectionLabel.text = "Friends"
+        view.sectionIconImageView.image = #imageLiteral(resourceName: "friendsIcon")
+        view.contentView.backgroundColor = UIColor.white
        
         if section == 1 {
-           view.headerLabel.text = "Lists"
-           view.contentView.backgroundColor = UIColor.init(hexString: "19C4C3")
+            view.sectionLabel.text = "Quick Groups"
+            view.sectionIconImageView.image = #imageLiteral(resourceName: "quickLists")
+            view.contentView.backgroundColor = UIColor.white
         }
         
         return view.contentView
