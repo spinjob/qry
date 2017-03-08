@@ -15,6 +15,8 @@ import SwiftLinkPreview
 
 class UserHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate {
 
+    @IBOutlet weak var emptyStateView: UIView!
+    
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -70,14 +72,21 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").observe(.childAdded, with: {
             snapshot in
             
-            let snapshotValue = snapshot.value as! NSDictionary
-            
             let threadID = snapshot.key
             let threadCount = Int(snapshot.childrenCount)
             
             self.threadCountDict[threadID] = threadCount
             
             self.threads.append(threadID)
+            
+            if self.threads.count == 0 {
+                self.emptyStateView.isHidden = false
+                self.tableView.isHidden = true
+                
+            } else {
+                self.tableView.isHidden = false
+                self.emptyStateView.isHidden = true
+            }
             
             FIRDatabase.database().reference().child("threads").child(threadID).observe(.childAdded, with: {
                 snapshot in
@@ -151,6 +160,9 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 if self.threadDict[threadID] == nil {
                     self.threadDict[threadID] = [poll]
+                    
+                    
+                    
                     //self.tableView.reloadData()
                 } else {
                     self.threadDict[threadID]!.append(poll)
@@ -185,6 +197,20 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 //        
 //        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width * 2, height: self.view.frame.size.height-66)
         
+    }
+    
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+//        if threads.count == 0 {
+//            emptyStateView.isHidden = false
+//            tableView.isHidden = true
+//            
+//        } else {
+//            tableView.isHidden = false
+//            emptyStateView.isHidden = true
+//        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -229,6 +255,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         let currentUserVoteRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").child(currentUserID!)
         
         
+    
         binaryStringCell.contentView.tag = indexPath.section
         
         print("CONTENT VIEW TAG \(binaryStringCell.contentView.tag)")
@@ -246,6 +273,14 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         binaryStringCell.pollImageView.layer.masksToBounds = true
         binaryStringCell.pollImageView.alpha = 0.8
         binaryStringCell.groupMembersCollectionView.isHidden = false
+        
+        
+        //senderImageView Tap Gesture
+        
+        
+        let userImageTapGesture = UIGestureRecognizer(target: self, action: #selector(self.userImageTapped(sender:)))
+        
+        binaryStringCell.senderImageView.addGestureRecognizer(userImageTapGesture)
         
         //Threading Formatting
         
@@ -799,6 +834,38 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     func delay(_ delay:Double, closure:@escaping ()->()) {
         let when = DispatchTime.now() + delay
         DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
+    }
+    
+    
+    
+    func userImageTapped (sender : UITapGestureRecognizer) {
+        
+        let tableViewSection = sender.view?.superview?.tag
+        
+        let tableViewRow = sender.view?.tag
+        
+        let buttonIndexPath = IndexPath(row: tableViewRow!, section: tableViewSection!)
+        
+        let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
+        
+        let threadID = threads[tableViewSection!]
+        let pollArrayForThread = threadDict[threadID]
+        let pollForCell = pollArrayForThread?[tableViewRow!]
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+        let transition:CATransition = CATransition()
+        
+        controller.profileUserID = (pollForCell?.senderUser)!
+            
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+        
+        
     }
     
     
