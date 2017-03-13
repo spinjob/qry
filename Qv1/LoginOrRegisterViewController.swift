@@ -43,6 +43,8 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
         
         emailValidationLabel.isHidden = true
         passwordValidationLabel.isHidden = true
+        
+        newHomeTestButton.isHidden = true
 
         UIView.animate(withDuration: 1.2, animations: {
             self.slideIconImageView.alpha = 0
@@ -167,7 +169,9 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
                 
                 self.userDefaults.setValue(self.emailAddressTextField.text!, forKey: "email")
                 self.userDefaults.setValue(self.passwordTextField.text!, forKey: "password")
-                self.performSegue(withIdentifier: "signInSegue", sender: nil)
+                
+                self.performSegue(withIdentifier: "newHomeSegue", sender: nil)
+               // self.performSegue(withIdentifier: "signInSegue", sender: nil)
             }
         })
         

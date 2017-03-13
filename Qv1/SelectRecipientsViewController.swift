@@ -842,6 +842,9 @@ if indexPath.section == 0 {
         ref.child("isThreadParent").setValue("true")
         ref.child("questionImageURL").setValue(self.questionImageURL)
             
+            FIRDatabase.database().reference().child("users").child(recipientID).child("votes").child(pollID).child("answerChoice").setValue("no answer")
+            FIRDatabase.database().reference().child("users").child(recipientID).child("votes").child(pollID).child("answerString").setValue("no answer")
+            
 
      }
         
@@ -857,6 +860,9 @@ if indexPath.section == 0 {
        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threadID).child(pollID).setValue(dictPoll)
        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threadID).child(pollID).child("threadID").setValue(threadID)
        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threadID).child(pollID).child("isThreadParent").setValue("true")
+        
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerChoice").setValue("no answer")
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerString").setValue("no answer")
         
         
        

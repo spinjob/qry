@@ -935,7 +935,6 @@ func answerButton2Tapped (sender : UIButton){
     self.navigationController?.pushViewController(controller, animated: false)
     
     
-    
     }
     
     

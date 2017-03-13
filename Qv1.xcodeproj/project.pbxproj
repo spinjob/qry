@@ -11,7 +11,6 @@
 		68012E701DB5A42600676EAF /* iPhone 7 Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */; };
 		680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DD1DB5933200452A4E /* AppDelegate.swift */; };
 		680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2E41DB5933200452A4E /* Qv1.xcdatamodeld */; };
-		680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E71DB5933200452A4E /* Assets.xcassets */; };
 		680DF2EB1DB5933200452A4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */; };
 		680DF2FA1DB5960800452A4E /* ProximaNova-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F31DB595F800452A4E /* ProximaNova-Light.otf */; };
 		680DF2FB1DB5960800452A4E /* ProximaNova-Reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 680DF2F41DB595F800452A4E /* ProximaNova-Reg.otf */; };
@@ -57,9 +56,12 @@
 		683413541E620AB300077388 /* StringPollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683413521E620AB300077388 /* StringPollTableViewCell.swift */; };
 		684A2E2E1E58D207003706B3 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */; };
 		684BA6561E6DFC760004C045 /* SendToHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BA6551E6DFC760004C045 /* SendToHeaderTableViewCell.swift */; };
+		684BA6581E70ADE90004C045 /* PollProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BA6571E70ADE90004C045 /* PollProfileViewController.swift */; };
 		684D2ED31E3D28730000879F /* GroupMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684D2ED21E3D28730000879F /* GroupMemberCollectionViewCell.swift */; };
 		685ED1741DD6747400C85F37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685ED1731DD6747400C85F37 /* Main.storyboard */; };
 		6869CEE41DF8EE1200F8207C /* ProfilePollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */; };
+		6871BB1D1E771534005F6932 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6871BB1C1E771534005F6932 /* OnboardingViewController.swift */; };
+		6871BB1F1E773D18005F6932 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6871BB1E1E773D18005F6932 /* Assets.xcassets */; };
 		6880A9B41DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */; };
 		6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B51DC41998000BB884 /* CreatePollViewController.swift */; };
 		6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */; };
@@ -141,7 +143,6 @@
 		680DF2DA1DB5933200452A4E /* Qv1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qv1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		680DF2DD1DB5933200452A4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		680DF2E51DB5933200452A4E /* Qv1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Qv1.xcdatamodel; sourceTree = "<group>"; };
-		680DF2E71DB5933200452A4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		680DF2EA1DB5933200452A4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		680DF2EC1DB5933200452A4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		680DF2F31DB595F800452A4E /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
@@ -188,9 +189,12 @@
 		683413521E620AB300077388 /* StringPollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringPollTableViewCell.swift; sourceTree = "<group>"; };
 		684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		684BA6551E6DFC760004C045 /* SendToHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendToHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		684BA6571E70ADE90004C045 /* PollProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollProfileViewController.swift; sourceTree = "<group>"; };
 		684D2ED21E3D28730000879F /* GroupMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		685ED1731DD6747400C85F37 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = SOURCE_ROOT; };
 		6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePollTableViewCell.swift; sourceTree = "<group>"; };
+		6871BB1C1E771534005F6932 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		6871BB1E1E773D18005F6932 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../.Trash/Assets.xcassets; sourceTree = "<group>"; };
 		6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedAnswerOptionTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B51DC41998000BB884 /* CreatePollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollViewController.swift; sourceTree = "<group>"; };
 		6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexToCGFloat.swift; sourceTree = "<group>"; };
@@ -307,13 +311,13 @@
 				685ED1731DD6747400C85F37 /* Main.storyboard */,
 				684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */,
 				68DBF39C1DB6EFD100C87385 /* ViewControllers */,
-				680DF2E71DB5933200452A4E /* Assets.xcassets */,
 				680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */,
 				680DF2EC1DB5933200452A4E /* Info.plist */,
 				681A7C3C1E5E571200849E7E /* GoogleService-Info.plist */,
 				68DBF3991DB6EFA100C87385 /* Models */,
 				680DF2F21DB5941A00452A4E /* Resources */,
 				680DF2E41DB5933200452A4E /* Qv1.xcdatamodeld */,
+				6871BB1E1E773D18005F6932 /* Assets.xcassets */,
 			);
 			path = Qv1;
 			sourceTree = "<group>";
@@ -412,6 +416,8 @@
 		683413511E620A9900077388 /* New UI/UX */ = {
 			isa = PBXGroup;
 			children = (
+				6871BB1C1E771534005F6932 /* OnboardingViewController.swift */,
+				684BA6571E70ADE90004C045 /* PollProfileViewController.swift */,
 				68F2424D1E6C9836005CB3AA /* ScrollViewController.swift */,
 				68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */,
 				68B1116C1E6364F200FAFE01 /* UserHomeViewController.swift */,
@@ -655,13 +661,13 @@
 				681A7C591E5E606200849E7E /* Undecided Conversation (Active).png in Resources */,
 				681A7C4F1E5E5F6F00849E7E /* Answer 1 Conversation (Select).png in Resources */,
 				68DBF3AA1DB6F71600C87385 /* small inbox empty.png in Resources */,
-				680DF2E81DB5933200452A4E /* Assets.xcassets in Resources */,
 				68DBF3A11DB6F5DC00C87385 /* inboxActive.png in Resources */,
 				6819B6401DDD1A270099A98B /* reloadAnswersIcon.png in Resources */,
 				681A7C491E5E5EBB00849E7E /* Everybody Conversation (Select).png in Resources */,
 				6819B63C1DDBB3380099A98B /* MostVotesAnswerBackground.png in Resources */,
 				680DF3021DB59A3A00452A4E /* quarry.png in Resources */,
 				68219A711E00B0B9004E822F /* galleryIcon.png in Resources */,
+				6871BB1F1E773D18005F6932 /* Assets.xcassets in Resources */,
 				681A7C581E5E606200849E7E /* Everybody Conversation (Active).png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -746,6 +752,7 @@
 				684D2ED31E3D28730000879F /* GroupMemberCollectionViewCell.swift in Sources */,
 				6819B6461DDE7D440099A98B /* ChatMemberCollectionViewCell.swift in Sources */,
 				682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */,
+				684BA6581E70ADE90004C045 /* PollProfileViewController.swift in Sources */,
 				682DB3A91DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift in Sources */,
 				6869CEE41DF8EE1200F8207C /* ProfilePollTableViewCell.swift in Sources */,
 				68B111711E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift in Sources */,
@@ -759,6 +766,7 @@
 				684BA6561E6DFC760004C045 /* SendToHeaderTableViewCell.swift in Sources */,
 				682DB3A31DD16A4A009015AC /* PollTableViewCell.swift in Sources */,
 				68C3C82C1DC922B3000B9730 /* Recipient.swift in Sources */,
+				6871BB1D1E771534005F6932 /* OnboardingViewController.swift in Sources */,
 				68CCC4891DC6A7B40094F3AE /* Contact.swift in Sources */,
 				68219A791E0B016E004E822F /* EditFriendTableViewCell.swift in Sources */,
 				68DBF3961DB6EF5000C87385 /* HomeViewController.swift in Sources */,

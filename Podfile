@@ -17,6 +17,7 @@ pod 'SDWebImage'
 pod 'SwiftLinkPreview', '~> 1.0.1'
 pod 'Navajo-Swift'
 pod 'JTAppleCalendar'
+pod 'paper-onboarding', '~> 2.0.1'
 
 
 post_install do |installer|

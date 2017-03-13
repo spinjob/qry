@@ -429,35 +429,42 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             self.answer1Count = Int(snapshot.childrenCount)
             
+            pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
+                snapshot in
+                
+                self.answer2Count = Int(snapshot.childrenCount)
+                
+                pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.value, with: {
+                    snapshot in
+                    
+                    self.undecidedCount = Int(snapshot.childrenCount)
+                    
+                    
+                    chartView.frame = CGRect(x: 0, y: 0, width: self.pieChartView.frame.size.width, height: 86)
+                    self.pieChartCenterImageView.layer.cornerRadius = self.pieChartCenterImageView.layer.frame.size.width / 2
+                    self.pieChartCenterImageView.layer.masksToBounds = true
+                    
+                    chartView.segments = [
+                        
+                        Segment(color: UIColor.init(hexString: "A8E855"), value: CGFloat(self.answer1Count)),
+                        Segment(color: UIColor.init(hexString: "FF4E56"), value: CGFloat(self.answer2Count)),
+                        Segment(color: UIColor.init(hexString: "D8D8D8"), value: CGFloat(self.undecidedCount))
+                    ]
+                    
+                    self.pieChartView.addSubview(chartView)
+                    
+                })
+                
+            })
+            
         })
         
-        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
-            snapshot in
-            
-            self.answer2Count = Int(snapshot.childrenCount)
-            
-        })
+       
         
-        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.value, with: {
-            snapshot in
-            
-            self.undecidedCount = Int(snapshot.childrenCount)
-            
-        })
+        
         
 
-        chartView.frame = CGRect(x: 0, y: 0, width: pieChartView.frame.size.width, height: 86)
-        pieChartCenterImageView.layer.cornerRadius = pieChartCenterImageView.layer.frame.size.width / 2
-        pieChartCenterImageView.layer.masksToBounds = true
-        
-        chartView.segments = [
-
-            Segment(color: UIColor.init(hexString: "A8E855"), value: CGFloat(self.answer1Count)),
-            Segment(color: UIColor.init(hexString: "FF4E56"), value: CGFloat(answer2Count)),
-            Segment(color: UIColor.init(hexString: "D8D8D8"), value: CGFloat(undecidedCount))
-        ]
-        
-        pieChartView.addSubview(chartView)
+       
     }
 
     
@@ -564,7 +571,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationController?.pushViewController(controller, animated: false)
         
         
-    }
+     }
    
     //keyboard function to adjust message textfield position when the keyboard appears
     func keyboardWasShown(notification: NSNotification) {

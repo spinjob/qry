@@ -604,6 +604,11 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             voteRef.setValue(voter)
             
             
+            FIRDatabase.database().reference().child("users").child(recipientID).child("votes").child(pollID).child("answerChoice").setValue("no answer")
+            FIRDatabase.database().reference().child("users").child(recipientID).child("votes").child(pollID).child("answerString").setValue("no answer")
+            
+            
+            
             
         }
         
@@ -620,6 +625,9 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(parentThreadID).child(pollID).child("threadID").setValue(parentThreadID)
 
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(parentThreadID).child(pollID).child("isThreadParent").setValue("false")
+        
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerChoice").setValue("no answer")
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerString").setValue("no answer")
         
         
         

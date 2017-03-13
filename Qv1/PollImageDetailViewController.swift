@@ -19,6 +19,8 @@ class PollImageDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         print(photoURL)
         
         imageView.sd_setImage(with: URL(string: photoURL))

@@ -150,11 +150,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qv1/SelectRecipientsViewController.swift"
-            timestampString = "510618207.760672"
+            timestampString = "510703726.782816"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "939"
-            endingLineNumber = "939">
+            startingLineNumber = "945"
+            endingLineNumber = "945">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -194,11 +194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qv1/ChatViewController.swift"
-            timestampString = "509512751.998311"
+            timestampString = "510794499.163518"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "906"
-            endingLineNumber = "906"
+            startingLineNumber = "913"
+            endingLineNumber = "913"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
