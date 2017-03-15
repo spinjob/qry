@@ -58,6 +58,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print("Error fetching results for container")
             }
         }
+    
+        print(results)
         
         return results
         
@@ -104,6 +106,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print("current user")
                 
             } else if self.searchForContactUsingPhoneNumber(phoneNumber: friend.phoneNumber).count > 0 {
+                
+                print("FRIEND NUMBER\(friend.phoneNumber)")
               self.friendArray.append(friend)
             }
             
@@ -169,8 +173,13 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
                     if let phoneNumberStruct = phoneNumber.value as? CNPhoneNumber {
                         let phoneNumberString = phoneNumberStruct.stringValue
                         let phoneNumberToCompare = phoneNumberString.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
+                        
+                        print("USER NUMBER \(phoneNumberToCompareAgainst)")
+                        print("CONTACT NUMBER\(phoneNumberToCompare)")
+                        
 
                         if phoneNumberToCompare == phoneNumberToCompareAgainst {
+                            
                             
                             recipient.recipientName = "\(contact.givenName) \(contact.familyName)"
                             recipient.phoneNumber = phoneNumberToCompare

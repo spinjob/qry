@@ -46,6 +46,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let action2 = UNNotificationAction(identifier: "answer2", title: "action2")
             let category = UNNotificationCategory(identifier: "answerCategory", actions: [action1, action2], intentIdentifiers: [])
             center.setNotificationCategories([category])
+            
+            
 
             
         } else {

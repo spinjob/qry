@@ -38,6 +38,10 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     let blue = UIColor.init(hexString: "004488")
     let grey = UIColor.init(hexString: "D8D8D8")
 
+    //empty state
+ 
+    let imageView = UIImageView(image: #imageLiteral(resourceName: "home empty state"))
+    
     //arrays
     
     var userPollsThreaded : [Poll] = []
@@ -51,10 +55,33 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         
         setUpNavigationBarItems()
         
+        
+        let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
+        
+        var newRecipient :[NSObject : AnyObject] = [ : ]
+        var recipientID = ""
+
+        
+        ref.observe(.childAdded, with: {
+            snapshot in
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            newRecipient = ["recipientName" as NSObject: (snapshotValue["fullName"] as! String) as AnyObject, "recipientImageURL1" as NSObject: (snapshotValue["profileImageURL"] as! String) as AnyObject, "recipientID" as NSObject: (snapshot.key) as AnyObject, "tag" as NSObject: "user" as AnyObject, "phoneNumber" as NSObject: (snapshotValue["phoneNumber"]) as AnyObject]
+            
+            recipientID = snapshot.key
+            
+            let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
+            
+            if recipientID != (FIRAuth.auth()?.currentUser?.uid)! {
+                recipientListRef.setValue(newRecipient)
+            }
+            
+            
+        })
         
         if( traitCollection.forceTouchCapability == .available){
             
@@ -85,7 +112,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
                 
             } else {
                 self.tableView.isHidden = false
-                self.emptyStateView.isHidden = true
+               self.emptyStateView.isHidden = true
             }
             
             FIRDatabase.database().reference().child("threads").child(threadID).observe(.childAdded, with: {
@@ -190,34 +217,38 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 
         })
         
-        
-//        let vc1 = storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
-//        vc1.profileUserID = (FIRAuth.auth()?.currentUser?.uid)!
-//        
-//        var frame1 = vc1.view.frame
-//        frame1.origin.x = self.view.frame.size.width
-//        vc1.view.frame = frame1
-//        
-//        self.addChildViewController(vc1)
-//        self.scrollView.addSubview(vc1.view)
-//        vc1.didMove(toParentViewController: self)
-//        
-//        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width * 2, height: self.view.frame.size.height-66)
+    
         
     }
     
     
     
     override func viewDidAppear(_ animated: Bool) {
-        
-//        if threads.count == 0 {
-//            emptyStateView.isHidden = false
-//            tableView.isHidden = true
-//            
-//        } else {
-//            tableView.isHidden = false
-//            emptyStateView.isHidden = true
-//        }
+       
+        delay(1, closure: {
+    
+            if self.threads.count == 0 {
+                
+                UIView.animate(withDuration: 0.2, animations: {
+                    
+                    self.emptyStateView.alpha = 0
+                    self.emptyStateView.isHidden = false
+                    self.emptyStateView.alpha = 1
+                    self.tableView.isHidden = true
+                    
+                })
+                
+                
+            } else {
+                self.tableView.alpha = 0
+                 self.tableView.isHidden = false
+                self.tableView.alpha = 1
+               
+                self.emptyStateView.isHidden = true
+            }
+            
+        })
+     
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -226,7 +257,9 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let threadID = threads[section]
 
-     //   return self.threadDict[threadID]!.count
+        if self.threadCountDict[threadID]! == 0 {
+            tableView.backgroundView = imageView
+        }
         
        return self.threadCountDict[threadID]!
     }
@@ -237,11 +270,6 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         return threads.count
     }
-    
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//       // return sectionTitles[section]
-//        return threads[section]
-//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -732,6 +760,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         tableView.reloadRows(at: [indexPath], with: .fade)
         
+        updatePollVotes(indexPath: indexPath)
+        
         
         let buttonIndexPath = IndexPath(row: tableViewRow, section: tableViewSection)
         let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
@@ -772,9 +802,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         })
         
         
-        FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer1")
-        FIRDatabase.database().reference().child("users").child("votes").child(pollForRow.pollID).setValue("answer1")
-        
+    FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer1")
+
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerChoice").setValue("answer1")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerString").setValue(pollForRow.answer1String)
         
@@ -793,6 +822,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         let indexPath = IndexPath(row: tableViewRow, section: tableViewSection)
         
         tableView.reloadRows(at: [indexPath], with: .fade)
+        
+        updatePollVotes(indexPath: indexPath)
         
         
         let buttonIndexPath = IndexPath(row: tableViewRow, section: tableViewSection)
@@ -837,7 +868,6 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         })
       
         FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer2")
-        FIRDatabase.database().reference().child("users").child("votes").child(pollForRow.pollID).setValue("answer2")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerChoice").setValue("answer2")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerString").setValue(pollForRow.answer2String)
         
@@ -1086,6 +1116,56 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
          tableView.reloadData()
         tableView.updateConstraints()
+        
+        
+    }
+    
+    func updatePollVotes (indexPath : IndexPath) {
+        
+        let threadID = threads[indexPath.section]
+        let poll = threadDict[threadID]?[indexPath.row]
+        poll?.groupMembers.removeAll()
+        
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").observe(.value, with: {
+            snapshot in
+            
+            FIRDatabase.database().reference().child("threads").child(threadID).observe(.childAdded, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+
+                FIRDatabase.database().reference().child("polls").child((poll?.pollID)!).child("votes").observe(.childAdded, with: {
+                    snapshot in
+                    let snapshotValue = snapshot.value as! NSDictionary
+                    let recipient = Recipient()
+                    
+                    recipient.recipientID = snapshotValue["recipientID"] as! String
+                    recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+                    recipient.recipientName = snapshotValue["recipientName"] as! String
+                    recipient.vote = snapshotValue["voteString"] as! String
+                    
+                    
+                    if (poll?.groupMembers.contains(where: { $0.recipientID == recipient.recipientID}))!
+                    { print("group already added")
+                        
+                    } else {
+                        
+                        poll?.groupMembers.append(recipient)
+                        poll?.groupMembers = (poll?.groupMembers.sorted(by: {$0.vote < $1.vote}))!
+                        self.tableView.reloadRows(at: [indexPath], with: .none)
+                        
+                        
+                    }
+                    
+                    
+                })
+        
+                
+            })
+
+            
+        })
+        
+
         
         
     }

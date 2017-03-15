@@ -8,9 +8,11 @@
 
 import UIKit
 import paper_onboarding
+import FirebaseAuth
+import FirebaseDatabase
 
 
-class OnboardingViewController: UIViewController, PaperOnboardingDataSource {
+class OnboardingViewController: UIViewController, PaperOnboardingDataSource, PaperOnboardingDelegate {
     
     @IBOutlet weak var onboarding: UIView!
     
@@ -22,6 +24,10 @@ class OnboardingViewController: UIViewController, PaperOnboardingDataSource {
     let blue = UIColor.init(hexString: "004488")
     let grey = UIColor.init(hexString: "D8D8D8")
     
+    var userName : String = ""
+    let currentUserID = FIRAuth.auth()?.currentUser?.uid
+    var isFromLogin : Bool = false
+    
     
     //fonts
     
@@ -31,8 +37,11 @@ class OnboardingViewController: UIViewController, PaperOnboardingDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let onboardingView = PaperOnboarding(itemsCount: 4)
+        setUpNavigationBarItems()
+        
+        let onboardingView = PaperOnboarding(itemsCount: 5)
         onboardingView.dataSource = self
+        onboardingView.delegate = self
         onboardingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(onboardingView)
         
@@ -50,26 +59,76 @@ class OnboardingViewController: UIViewController, PaperOnboardingDataSource {
         
     }
         
+        
     }
 
     
     func onboardingItemAtIndex(_ index: Int) -> OnboardingItemInfo {
         return [
             
-            ("onboarding1PollImage", "Ask a question", "Start planning by asking a question, providing two quick-responses, and picking an expiration", "askQuestionIcon", blue, UIColor.white, UIColor.white, textFont, descriptionFont),
-            ("collectImage", "Collect responses", "Use quick-responses to get rapid feedback and headcounts", "collectIcon", actionGreen, UIColor.white, UIColor.white, textFont, descriptionFont),
-            ("discussOnboardingImage", "Hop into the group chat", "Talk with sub-groups based on their response", "discussOnboardingIcon", red, UIColor.white, UIColor.white, textFont, descriptionFont),
-            ("launchImage", "Organize and follow up", "Link related discussions to organize your plans and filter out friends by answer", "launchImage", brightGreen, UIColor.white, UIColor.white, textFont, descriptionFont)][index]
+          ("onboarding1PollImage", "Ask a question", "Start a decision with a question and two responses", "askQuestionIcon", blue, UIColor.white, UIColor.white, textFont, descriptionFont),
+            ("collectImage", "Get answers", "Add your friends to collect opinions or get a headcount", "collectIcon", actionGreen, UIColor.white, UIColor.white, textFont, descriptionFont),
+            ("discussOnboardingImage", "Chat with context", "Message the entire group or choose by answer", "discussOnboardingIcon", red, UIColor.white, UIColor.white, textFont, descriptionFont), ("threadOnboardingImage", "Thread your questions", "Create a branches for different answer groups", "Launch Image", UIColor.white, blue, blue, textFont, descriptionFont), ("nextIcon", "Let's do it", "Tap above to login", "launchImage", UIColor.white, blue, blue, textFont, descriptionFont)][index]
     }
     
     
     func onboardingItemsCount() -> Int {
-        return 4
+        
+        if isFromLogin == true {
+            return 4
+        }
+        return 5
     }
 
     
-    func onboardingConfigurationItem(_ item: OnboardingContentViewItem, index: Int) {
+    func onboardingWillTransitonToIndex(_ index: Int) {
+        
+    }
+    
+    
+    func onboardingDidTransitonToIndex(_ index: Int) {
 
+        
+    }
+    
+    
+    
+    func onboardingConfigurationItem(_ item: OnboardingContentViewItem, index: Int) {
+        
+        if index == 4, isFromLogin == false {
+            
+            let tapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.performSegue(sender:)))
+            view.addGestureRecognizer(tapGesture)
+
+        }
+        
+
+    }
+
+    
+    func performSegue (sender: UITapGestureRecognizer) {
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "UserHomeViewController") as! UserHomeViewController
+        let transition:CATransition = CATransition()
+        
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+
+        
+    }
+
+    
+    func setUpNavigationBarItems () {
+        
+       // navigationController?.navigationBar.backgroundColor = UIColor.white
+       // navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.backItem?.hidesBackButton = true
+        
     }
 
 }

@@ -25,6 +25,7 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var passwordTextFieldLabel: UILabel!
     
+
     @IBOutlet weak var passwordTextField: UITextField!
     
     let userDefaults = UserDefaults.standard
@@ -38,6 +39,8 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
       override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        setUpNavigationBarItems()
         emailAddressTextField.delegate = self
         passwordTextField.delegate = self
         
@@ -189,7 +192,8 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
             } else {
                 print("We've signed in successfully")
             
-                self.performSegue(withIdentifier: "signInSegue", sender: nil)
+                  self.performSegue(withIdentifier: "newHomeSegue", sender: nil)
+                //self.performSegue(withIdentifier: "signInSegue", sender: nil)
             }
         })
     }
@@ -303,12 +307,37 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    
-    
+    @IBAction func onboardingButtonTapped(_ sender: UIButton) {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "OnboardingViewController") as! OnboardingViewController
+        let transition:CATransition = CATransition()
+        
+        controller.isFromLogin = true
+        
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+        
+
+    }
+
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         emailValidationLabel.isHidden = true
         passwordValidationLabel.isHidden = true
+    }
+    
+    func setUpNavigationBarItems () {
+        
+        navigationController?.navigationBar.backgroundColor = UIColor.white
+        navigationController?.navigationBar.isTranslucent = false
+        
+
+        
     }
     
    

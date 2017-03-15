@@ -110,7 +110,7 @@ class ChoosePictureViewController: UIViewController, UIImagePickerControllerDele
                         
                     }
                     
-                    self.performSegue(withIdentifier: "signUpSignInSegue", sender: nil)
+                    self.performSegue(withIdentifier: "onboardingSegue", sender: nil)
                     
                     
                    // let storyboard = UIStoryboard(name: "Main", bundle: nil)
