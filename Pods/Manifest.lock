@@ -37,6 +37,8 @@ PODS:
   - FirebaseStorage (1.0.6):
     - FirebaseAnalytics (~> 3.7)
     - GTMSessionFetcher/Core (~> 1.1)
+  - FLAnimatedImage (1.0.12)
+  - Gifu (2.0.0)
   - GoogleToolboxForMac/DebugUtils (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - GoogleToolboxForMac/Defines (2.1.1)
@@ -57,6 +59,9 @@ PODS:
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
+  - SDWebImage/GIF (4.0.0):
+    - FLAnimatedImage (~> 1.0)
+    - SDWebImage/Core
   - SwiftLinkPreview (1.0.1)
 
 DEPENDENCIES:
@@ -66,10 +71,12 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - Gifu
   - JTAppleCalendar
   - Navajo-Swift
   - paper-onboarding (~> 2.0.1)
   - SDWebImage
+  - SDWebImage/GIF
   - SwiftLinkPreview (~> 1.0.1)
 
 SPEC CHECKSUMS:
@@ -81,6 +88,8 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 2d0518b1378fe9d685ef40cbdd63d2fdc1125339
   FirebaseMessaging: df8267f378580a24174ce7861233aa11d5c90109
   FirebaseStorage: 63628572a5fde258f8e933b5fb42697468da0158
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  Gifu: 56a4d8f1092399159fa32662aa2232158b48d8ac
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 6f8d8b28b7e345549ac471071608170b31cb4977
   JTAppleCalendar: 4424fdd0daac0daf1db93299c07949505055135d
@@ -90,6 +99,6 @@ SPEC CHECKSUMS:
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SwiftLinkPreview: 977461879ae31f9e2d1bf2fafba0553d99eacbb9
 
-PODFILE CHECKSUM: cf2937688c62d633c6f49a25cb31359a394c6750
+PODFILE CHECKSUM: 363b323158e947349a8122dad8a09f9c2de3197a
 
 COCOAPODS: 1.2.0

@@ -14,11 +14,12 @@ pod 'Firebase/Storage'
 pod 'Firebase/Messaging'
 pod 'Firebase/Analytics'
 pod 'SDWebImage'
+pod 'SDWebImage/GIF'
 pod 'SwiftLinkPreview', '~> 1.0.1'
 pod 'Navajo-Swift'
 pod 'JTAppleCalendar'
 pod 'paper-onboarding', '~> 2.0.1'
-
+pod 'Gifu'
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|

@@ -4,7 +4,17 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>FLAnimatedImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GTMSessionFetcher.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Gifu.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -57,7 +67,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1EB6BB90F19EB2C554134AB1CB58DA57</key>
+		<key>0DC1BD63B696CA11DA4EC416E8182A78</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -67,7 +77,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>5B9888C33DE4EBFB8177CEA845DEEA74</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>606370D9782F444767F7B6A53C92B7C1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>6D5CEDECD3D8DC52EA507E0431BDA8A0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>83B5B60C676A8D31829A6AE91CE86A75</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,12 +102,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A0F766CE63F8FADC5779DDD0191666D8</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B9BC5B64D01A61FED72AB0F986419CCB</key>
+		<key>B61F7CF8367AD6D7A8B8972A9082976A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,7 +112,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D9ECF6E5A63510E5ECBF0CAA52614297</key>
+		<key>C4D72FFBD4326D93B03A579926508CC3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

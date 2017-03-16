@@ -46,6 +46,8 @@
 		68219A7C1E0B04FA004E822F /* EditGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68219A7B1E0B04FA004E822F /* EditGroupTableViewCell.swift */; };
 		682572871DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */; };
 		6825729A1DF79880006150DB /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682572991DF79880006150DB /* UserProfileViewController.swift */; };
+		6827C0861E79D6AC00C946AF /* Giphy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6827C0841E79D6AC00C946AF /* Giphy.swift */; };
+		6827C0891E79DA0200C946AF /* CreateResponsesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6827C0881E79DA0200C946AF /* CreateResponsesViewController.swift */; };
 		682DB39B1DCFB228009015AC /* EditGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39A1DCFB228009015AC /* EditGroupViewController.swift */; };
 		682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */; };
 		682DB3A31DD16A4A009015AC /* PollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB3A21DD16A4A009015AC /* PollTableViewCell.swift */; };
@@ -179,6 +181,8 @@
 		68219A7B1E0B04FA004E822F /* EditGroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGroupTableViewCell.swift; sourceTree = "<group>"; };
 		682572861DF0DADF006150DB /* PollGroupMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollGroupMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		682572991DF79880006150DB /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		6827C0841E79D6AC00C946AF /* Giphy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Giphy.swift; sourceTree = "<group>"; };
+		6827C0881E79DA0200C946AF /* CreateResponsesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateResponsesViewController.swift; sourceTree = "<group>"; };
 		682DB39A1DCFB228009015AC /* EditGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGroupViewController.swift; sourceTree = "<group>"; };
 		682DB39C1DCFD715009015AC /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		682DB3A21DD16A4A009015AC /* PollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollTableViewCell.swift; sourceTree = "<group>"; };
@@ -310,6 +314,7 @@
 				68D386331DBFD85A000B4084 /* Qv1.entitlements */,
 				685ED1731DD6747400C85F37 /* Main.storyboard */,
 				684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */,
+				6827C0821E79D6AC00C946AF /* Giphy */,
 				68DBF39C1DB6EFD100C87385 /* ViewControllers */,
 				680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */,
 				680DF2EC1DB5933200452A4E /* Info.plist */,
@@ -413,6 +418,15 @@
 			name = "Friend VC";
 			sourceTree = "<group>";
 		};
+		6827C0821E79D6AC00C946AF /* Giphy */ = {
+			isa = PBXGroup;
+			children = (
+				6827C0841E79D6AC00C946AF /* Giphy.swift */,
+			);
+			name = Giphy;
+			path = "../../../Downloads/Giphy.swift-master/Giphy";
+			sourceTree = "<group>";
+		};
 		683413511E620A9900077388 /* New UI/UX */ = {
 			isa = PBXGroup;
 			children = (
@@ -503,6 +517,7 @@
 				68DBF3951DB6EF5000C87385 /* HomeViewController.swift */,
 				683413511E620A9900077388 /* New UI/UX */,
 				6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */,
+				6827C0881E79DA0200C946AF /* CreateResponsesViewController.swift */,
 				6880A9B51DC41998000BB884 /* CreatePollViewController.swift */,
 				682DB39A1DCFB228009015AC /* EditGroupViewController.swift */,
 				682DB3A21DD16A4A009015AC /* PollTableViewCell.swift */,
@@ -762,6 +777,7 @@
 				68894BD91E56A19B006C98D1 /* AppNotifications.swift in Sources */,
 				68F891251E5BBF4E00A392E1 /* FindFriendsViewController.swift in Sources */,
 				68CCC48F1DC7D5AD0094F3AE /* GroupTableViewCell.swift in Sources */,
+				6827C0891E79DA0200C946AF /* CreateResponsesViewController.swift in Sources */,
 				6883449E1E538AFF00E95228 /* EditChatViewController.swift in Sources */,
 				684BA6561E6DFC760004C045 /* SendToHeaderTableViewCell.swift in Sources */,
 				682DB3A31DD16A4A009015AC /* PollTableViewCell.swift in Sources */,
@@ -780,6 +796,7 @@
 				68CCC47F1DC524230094F3AE /* FriendTableViewCell.swift in Sources */,
 				68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */,
 				68D989221E4BFEF1003A7554 /* AddGroupMemberViewController.swift in Sources */,
+				6827C0861E79D6AC00C946AF /* Giphy.swift in Sources */,
 				68B118D61E15B7B6006F05B7 /* EditGroupMemberTableViewCell.swift in Sources */,
 				68B1116D1E6364F200FAFE01 /* UserHomeViewController.swift in Sources */,
 				68D9892A1E527C80003A7554 /* LoginOrRegisterViewController.swift in Sources */,

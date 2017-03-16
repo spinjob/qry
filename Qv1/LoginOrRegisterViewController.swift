@@ -40,7 +40,7 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         
-        setUpNavigationBarItems()
+       // setUpNavigationBarItems()
         emailAddressTextField.delegate = self
         passwordTextField.delegate = self
         
