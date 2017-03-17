@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseDatabase
+import FirebaseInstanceID
 import FirebaseAuth
 import FirebaseStorage
 import SDWebImage
@@ -58,6 +59,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         setUpNavigationBarItems()
         
+        print("FIREBASE TOKEN \(FIRInstanceID.instanceID().token())")
         
         let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
         
@@ -287,13 +289,16 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let binaryStringCell = tableView.dequeueReusableCell(withIdentifier: "binaryStringPollCell", for: indexPath) as! StringPollTableViewCell
         
+        let expiredCell = tableView.dequeueReusableCell(withIdentifier: "binaryStringPollCell", for: indexPath) as! StringPollTableViewCell
+        
         let currentUserVoteRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").child(currentUserID!)
         
         
     
         binaryStringCell.contentView.tag = indexPath.section
+        expiredCell.contentView.tag = indexPath.section
         
-        print("CONTENT VIEW TAG \(binaryStringCell.contentView.tag)")
+
 
         //Binary String Cell
         
@@ -302,44 +307,85 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         binaryStringCell.questionStringTextView.textContainer.lineFragmentPadding = 0
         binaryStringCell.questionStringTextView.text = pollForCell.questionString
         
+        expiredCell.questionStringTextView.textContainerInset = UIEdgeInsets.zero
+        expiredCell.questionStringTextView.textContainer.lineFragmentPadding = 0
+        expiredCell.questionStringTextView.text = pollForCell.questionString
+        
         //pollImage
         
         binaryStringCell.pollImageView.layer.cornerRadius = 4
         binaryStringCell.pollImageView.layer.masksToBounds = true
         binaryStringCell.pollImageView.alpha = 0.8
         binaryStringCell.groupMembersCollectionView.isHidden = false
+       
+        expiredCell.pollImageView.layer.cornerRadius = 4
+        expiredCell.pollImageView.layer.masksToBounds = true
+        expiredCell.pollImageView.alpha = 0.8
+        expiredCell.groupMembersCollectionView.isHidden = false
         
         
         //senderImageView Tap Gesture
         
         
-        let userImageTapGesture = UIGestureRecognizer(target: self, action: #selector(self.userImageTapped(sender:)))
+        let userImageTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.userImageTapped(sender:)))
+        
+        let expiredUserImageTapGesure = UITapGestureRecognizer(target: self, action: #selector(self.userImageTapped(sender:)))
         
         binaryStringCell.senderImageView.addGestureRecognizer(userImageTapGesture)
         
+        expiredCell.senderImageView.addGestureRecognizer(expiredUserImageTapGesure)
+        
+        
         binaryStringCell.senderImageView.isUserInteractionEnabled = true
         
-        //Threading Formatting
+        binaryStringCell.isUserInteractionEnabled = true
         
+        expiredCell.senderImageView.isUserInteractionEnabled = true
+        
+        expiredCell.isUserInteractionEnabled = true
+        
+        //Threading Formatting
         
         if pollForCell.isThreadParent == false {
             binaryStringCell.senderImageView.isHidden = true
             binaryStringCell.imageViewThread.isHidden = false
             binaryStringCell.threadTopLine.isHidden = false
             binaryStringCell.senderFullNameLabel.isHidden = true
+            binaryStringCell.answerSelectedView.isUserInteractionEnabled = true
+            
+            expiredCell.senderImageView.isHidden = true
+            expiredCell.imageViewThread.isHidden = false
+            expiredCell.threadTopLine.isHidden = false
+            expiredCell.senderFullNameLabel.isHidden = true
+            
         } else {
             binaryStringCell.senderImageView.isHidden = false
             binaryStringCell.imageViewThread.isHidden = true
             binaryStringCell.threadTopLine.isHidden = true
             binaryStringCell.threadBottomLine.isHidden = false
             binaryStringCell.senderFullNameLabel.isHidden = false
+            binaryStringCell.answerSelectedView.isUserInteractionEnabled = true
+            
+            expiredCell.senderImageView.isHidden = false
+            expiredCell.imageViewThread.isHidden = true
+            expiredCell.threadTopLine.isHidden = true
+            expiredCell.threadBottomLine.isHidden = false
+            expiredCell.senderFullNameLabel.isHidden = false
             
         }
         
+        
+        if binaryStringCell.answer1Button.isHidden == true {
+            binaryStringCell.answerSelectedView.isHidden = false
+        }
+        
+       
         if pollForCell.hasChildren == false {
             binaryStringCell.threadBottomLine.isHidden = true
+            expiredCell.threadBottomLine.isHidden = true
         } else {
             binaryStringCell.threadBottomLine.isHidden = false
+            expiredCell.threadBottomLine.isHidden = false
         }
         
         
@@ -347,22 +393,31 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         binaryStringCell.imageViewThread.layer.backgroundColor = grey.cgColor
         binaryStringCell.imageViewThread.layer.masksToBounds = true
         
+        expiredCell.imageViewThread.layer.cornerRadius = binaryStringCell.imageViewThread.layer.frame.width / 2
+        expiredCell.imageViewThread.layer.backgroundColor = grey.cgColor
+        expiredCell.imageViewThread.layer.masksToBounds = true
+        
+        
         
         if pollForCell.pollQuestionImageURL == "no question image" {
             binaryStringCell.pollImageView.isHidden = true
             binaryStringCell.pollImageViewHeight.constant = 48
             
+            expiredCell.pollImageView.isHidden = true
+            expiredCell.pollImageViewHeight.constant = 48
         } else {
         
         binaryStringCell.pollImageView.isHidden = false
         binaryStringCell.pollImageViewHeight.constant = 124
         binaryStringCell.pollImageView.sd_setImage(with: URL(string: pollForCell.pollQuestionImageURL))
             
+        expiredCell.pollImageView.isHidden = false
+        expiredCell.pollImageViewHeight.constant = 124
+        expiredCell.pollImageView.sd_setImage(with: URL(string: pollForCell.pollQuestionImageURL))
+            
         }
 
 
-        
-        
         //Sender User
        senderUserRef.observe(.value, with: {
             snapshot in
@@ -372,12 +427,29 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
             binaryStringCell.senderImageView.sd_setImage(with: URL(string: senderUserImageURLString))
             binaryStringCell.senderFullNameLabel.text = snapshotValue["fullName"] as! String
+            expiredCell.senderImageView.sd_setImage(with: URL(string: senderUserImageURLString))
+            expiredCell.senderFullNameLabel.text = snapshotValue["fullName"] as! String
         
         })
         
         binaryStringCell.senderImageView.layer.cornerRadius = binaryStringCell.senderImageView.layer.frame.width / 2
         binaryStringCell.senderImageView.layer.masksToBounds = true
+        
+        expiredCell.senderImageView.layer.cornerRadius = binaryStringCell.senderImageView.layer.frame.width / 2
+        expiredCell.senderImageView.layer.masksToBounds = true
+        
+        //chatButton
+        let chatImageViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.chatIconTapped(sender:)))
+        
+        let expiredChatImageViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.chatIconTapped(sender:)))
 
+        binaryStringCell.conversationIconImageView.addGestureRecognizer(chatImageViewTapGesture)
+        binaryStringCell.conversationIconImageView.tag = indexPath.row
+        binaryStringCell.conversationIconImageView.isUserInteractionEnabled = true
+        
+        expiredCell.conversationIconImageView.addGestureRecognizer(expiredChatImageViewTapGesture)
+        expiredCell.conversationIconImageView.tag = indexPath.row
+        expiredCell.conversationIconImageView.isUserInteractionEnabled = true
 
         //answer1Button
         binaryStringCell.answer1Button.tag = indexPath.row
@@ -385,6 +457,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         binaryStringCell.answer1Button.layer.cornerRadius = 4
         binaryStringCell.answer1Button.layer.masksToBounds = true
         binaryStringCell.answer1Button.setTitle(pollForCell.answer1String, for: .normal)
+        binaryStringCell.answer1Button.contentEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2)
         
         //answer2Button
         binaryStringCell.answer2Button.tag = indexPath.row
@@ -392,41 +465,54 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         binaryStringCell.answer2Button.layer.cornerRadius = 4
         binaryStringCell.answer2Button.layer.masksToBounds = true
         binaryStringCell.answer2Button.setTitle(pollForCell.answer2String, for: .normal)
+        binaryStringCell.answer2Button.contentEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2)
         
         //answerSelectedView
         binaryStringCell.answerSelectedView.layer.cornerRadius = 4
         binaryStringCell.answerSelectedView.backgroundColor = actionGreen
+        binaryStringCell.answerSelectedView.layer.backgroundColor = actionGreen.cgColor
         binaryStringCell.answerSelectedView.tag = indexPath.row
         let answeredViewTapGesture : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.answeredViewTapped(sender:)))
+        let expiredAnsweredViewTapGesture :UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.answeredViewTapped(sender:)))
+        
         binaryStringCell.answerSelectedView.addGestureRecognizer(answeredViewTapGesture)
+    
         
-        if pollForCell.isExpired == false {
-            binaryStringCell.answerSelectedView.isUserInteractionEnabled = true
-            binaryStringCell.answerSelectedView.backgroundColor = actionGreen
-            binaryStringCell.answerSelectedView.isHidden = false
-            binaryStringCell.answer1Button.isHidden = true
-            binaryStringCell.answer2Button.isHidden = true
-            binaryStringCell.expiredIconImageView.isHidden = true
-            binaryStringCell.timerView.isHidden = false
-            binaryStringCell.conversationIconImageView.image = #imageLiteral(resourceName: "pollConversationIcon")
-            
-        } else{
-            
-            binaryStringCell.answerSelectedView.isUserInteractionEnabled = false
-            binaryStringCell.answerSelectedView.backgroundColor = grey
-            binaryStringCell.answerSelectedView.isHidden = false
-            binaryStringCell.conversationIconImageView.isHidden = false
-            binaryStringCell.answer1Button.isHidden = true
-            binaryStringCell.answer2Button.isHidden = true
-            binaryStringCell.expiredIconImageView.isHidden = false
-            binaryStringCell.timerView.isHidden = true
-            binaryStringCell.conversationIconImageView.image = #imageLiteral(resourceName: "pollConversationIconInactive")
-            
-      
-        }
-  
+        binaryStringCell.answerSelectedView.isUserInteractionEnabled = true
+        binaryStringCell.answerSelectedView.isHidden = false
+        binaryStringCell.answer1Button.isHidden = true
+        binaryStringCell.answer2Button.isHidden = true
+        binaryStringCell.expiredIconImageView.isHidden = true
+        binaryStringCell.timerView.isHidden = false
+        binaryStringCell.conversationIconImageView.image = #imageLiteral(resourceName: "pollConversationIcon")
+        binaryStringCell.timeLeftNumberLabel.isHidden = false
+        binaryStringCell.timeLeftUnitLabel.isHidden = false
+        binaryStringCell.pieChartCenterView.isHidden = false
+        binaryStringCell.timerView.isHidden = false
         
-        currentUserVoteRef.observe(.value, with: {
+        
+        //Expired answerSelectedView
+        expiredCell.answerSelectedView.layer.cornerRadius = 4
+        expiredCell.answerSelectedView.backgroundColor = grey
+        expiredCell.answerSelectedView.layer.backgroundColor = grey.cgColor
+        expiredCell.answerSelectedView.tag = indexPath.row
+        expiredCell.answerSelectedView.addGestureRecognizer(expiredAnsweredViewTapGesture)
+        
+        expiredCell.answerSelectedView.isUserInteractionEnabled = false
+        expiredCell.answerSelectedView.isHidden = false
+        expiredCell.conversationIconImageView.isHidden = false
+        expiredCell.answer1Button.isHidden = true
+        expiredCell.answer2Button.isHidden = true
+        expiredCell.expiredIconImageView.isHidden = false
+        expiredCell.timerView.isHidden = true
+        expiredCell.conversationIconImageView.image = #imageLiteral(resourceName: "pollConversationIconInactive")
+        expiredCell.timeLeftNumberLabel.isHidden = true
+        expiredCell.timeLeftUnitLabel.isHidden = true
+        expiredCell.pieChartCenterView.isHidden = true
+        expiredCell.timerView.isHidden = true
+        
+
+          currentUserVoteRef.observe(.value, with: {
             
             snapshot in
             let snapshotValue = snapshot.value as! NSDictionary
@@ -434,54 +520,21 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
             print(vote)
             
-        //user vote based formatting
-            if vote == "no vote", pollForCell.isExpired == false {
-                binaryStringCell.answer1Button.isHidden = false
-                binaryStringCell.answer2Button.isHidden = false
-                binaryStringCell.answerSelectedView.isHidden = true
+            if vote == "no vote" {
+            
                 binaryStringCell.conversationIconImageView.isHidden = true
+                expiredCell.answerSelectedTextLabel.text = "You didn't answer"
+                binaryStringCell.answerSelectedTextLabel.text = "You haven't answered"
                 
+        
+            } else if vote == "answer1" {
                 
-            } else if vote == "no vote", pollForCell.isExpired == true {
-                binaryStringCell.answer1Button.isHidden = true
-                binaryStringCell.answer2Button.isHidden = true
-                binaryStringCell.answerSelectedView.isHidden = false
-                binaryStringCell.conversationIconImageView.isHidden = false
-                binaryStringCell.answerSelectedTextLabel.text = "You didn't answer."
-                
-                
-            } else if vote == "answer1", pollForCell.isExpired == false {
-                
-                binaryStringCell.answer1Button.isHidden = true
-                binaryStringCell.answer2Button.isHidden = true
-                binaryStringCell.answerSelectedView.isHidden = false
-                binaryStringCell.conversationIconImageView.isHidden = false
+                expiredCell.answerSelectedTextLabel.text = "Your answer was \(pollForCell.answer1String)"
                 binaryStringCell.answerSelectedTextLabel.text = "Answered \(pollForCell.answer1String)"
                 
-            } else if vote == "answer1", pollForCell.isExpired == true {
+            } else if vote == "answer2" {
                 
-                binaryStringCell.answer1Button.isHidden = true
-                binaryStringCell.answer2Button.isHidden = true
-                binaryStringCell.answerSelectedView.isUserInteractionEnabled = false
-                binaryStringCell.answerSelectedView.isHidden = false
-                binaryStringCell.conversationIconImageView.isHidden = false
-                binaryStringCell.answerSelectedTextLabel.text = "Answered \(pollForCell.answer1String)"
-                
-            } else if vote == "answer2", pollForCell.isExpired == false {
-                
-                binaryStringCell.answer1Button.isHidden = true
-                binaryStringCell.answer2Button.isHidden = true
-                binaryStringCell.answerSelectedView.isHidden = false
-                binaryStringCell.conversationIconImageView.isHidden = false
-                binaryStringCell.answerSelectedTextLabel.text = "Answered \(pollForCell.answer2String)"
-                
-            } else if vote == "answer2", pollForCell.isExpired == true {
-                
-                binaryStringCell.answer1Button.isHidden = true
-                binaryStringCell.answer2Button.isHidden = true
-                binaryStringCell.answerSelectedView.isUserInteractionEnabled = false
-                binaryStringCell.answerSelectedView.isHidden = false
-                binaryStringCell.conversationIconImageView.isHidden = false
+                expiredCell.answerSelectedTextLabel.text = "Your answer was \(pollForCell.answer2String)"
                 binaryStringCell.answerSelectedTextLabel.text = "Answered \(pollForCell.answer2String)"
                 
             }
@@ -608,25 +661,31 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
        
             
         } else if minutesLeft.minute! < 0, pollForCell.isExpired == false  {
+            
+            return expiredCell
             pollForCellRef.child("expired").setValue("true")
             FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threads[indexPath.section]).child(pollForCell.pollID).child("expired").setValue("true")
         FIRDatabase.database().reference().child("threads").child(threads[indexPath.section]).child(pollForCell.pollID).child("expired").setValue("true")
             
 
             
-        } else {
-
-            binaryStringCell.timeLeftNumberLabel.isHidden = true
-            binaryStringCell.timeLeftUnitLabel.isHidden = true
-            binaryStringCell.pieChartCenterView.isHidden = true
-            binaryStringCell.timerView.isHidden = true
         }
-        
-    
- 
+
         //Collection View
         
         binaryStringCell.groupMembersCollectionView.tag = indexPath.row
+        expiredCell.groupMembersCollectionView.tag = indexPath.row
+        
+        if pollForCell.isExpired == true{
+            print("Expired CELL CHAT GESTURES \(expiredCell.conversationIconImageView.gestureRecognizers)")
+            print("Expired CELL PROFILE IMAGE GESTURES \(expiredCell.senderImageView.gestureRecognizers)")
+
+            return expiredCell
+        }
+
+        if expiredCell.answer1Button.isHidden == true {
+            expiredCell.answerSelectedView.isHidden = false
+        }
         
         
         return binaryStringCell
@@ -637,54 +696,56 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         guard let tableViewCell = cell as? StringPollTableViewCell else { return }
         
         tableViewCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
+        tableViewCell.isUserInteractionEnabled = true
+        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 1
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
-        let threadID = threads[indexPath.section]
-        let pollArrayForThread = threadDict[threadID]!
-        let pollForCell : Poll = pollArrayForThread[indexPath.row]
-
-        
-        let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
-    
-        
-        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
-        
-        
-        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
-            snapshot in
-            
-            myVC.answer1Count = Int(snapshot.childrenCount)
-            
-        })
-        
-        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
-            snapshot in
-            
-            myVC.answer2Count = Int(snapshot.childrenCount)
-            
-        })
-        
-        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.value, with: {
-            snapshot in
-            
-            myVC.undecidedCount = Int(snapshot.childrenCount)
-            
-        })
-        
-        myVC.poll = pollForCell
-        myVC.chatMembers = pollForCell.groupMembers
-        
-        
-        navigationController?.pushViewController(myVC, animated: true)
-        
-        
-    }
+//    
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//    
+////        let threadID = threads[indexPath.section]
+////        let pollArrayForThread = threadDict[threadID]!
+////        let pollForCell : Poll = pollArrayForThread[indexPath.row]
+//
+////        
+////        let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
+////    
+////        
+////        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
+////        
+////        
+////        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
+////            snapshot in
+////            
+////            myVC.answer1Count = Int(snapshot.childrenCount)
+////            
+////        })
+////        
+////        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
+////            snapshot in
+////            
+////            myVC.answer2Count = Int(snapshot.childrenCount)
+////            
+////        })
+////        
+////        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.value, with: {
+////            snapshot in
+////            
+////            myVC.undecidedCount = Int(snapshot.childrenCount)
+////            
+////        })
+////        
+////        myVC.poll = pollForCell
+////        myVC.chatMembers = pollForCell.groupMembers
+////        
+////        
+////        navigationController?.pushViewController(myVC, animated: true)
+////        
+////        
+//    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -766,6 +827,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         let buttonIndexPath = IndexPath(row: tableViewRow, section: tableViewSection)
         let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
         
+        binaryStringCell.groupMembersCollectionView.reloadData()
+        
         FIRDatabase.database().reference().child("users").child(pollForRow.senderUser).observe(.value, with: {
             snapshot in
             let snapshotValue = snapshot.value as! NSDictionary
@@ -774,7 +837,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
         })
         
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: 0.1, animations: {
             binaryStringCell.answer2Button.alpha = 0
             binaryStringCell.answer2Button.isHidden = true
             binaryStringCell.answer1Button.alpha = 0
@@ -786,9 +849,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
  
         delay(0.2, closure: {
             
-            UIView.animate(withDuration: 0.2, animations: {
-                
-
+            UIView.animate(withDuration: 0.1, animations: {
                 
                 binaryStringCell.answerSelectedView.alpha = 0
                 binaryStringCell.conversationIconImageView.alpha = 0
@@ -828,6 +889,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let buttonIndexPath = IndexPath(row: tableViewRow, section: tableViewSection)
         let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
+        
+        binaryStringCell.groupMembersCollectionView.reloadData()
         
         FIRDatabase.database().reference().child("users").child(pollForRow.senderUser).observe(.value, with: {
             snapshot in
@@ -870,10 +933,13 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer2")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerChoice").setValue("answer2")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerString").setValue(pollForRow.answer2String)
+       
         
     }
     
     func answeredViewTapped (sender: UITapGestureRecognizer) {
+        
+        print("answeredTAPPED")
         
         let tableViewSection = sender.view?.superview?.tag
         
@@ -913,18 +979,113 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
             UIView.animate(withDuration: 0.2, animations: {
                 
-                binaryStringCell.answer2Button.alpha = 1
+                binaryStringCell.answer2Button.alpha = 0
                 binaryStringCell.answer2Button.isHidden = false
+                binaryStringCell.answer2Button.alpha = 1
                 
-                binaryStringCell.answer1Button.alpha = 1
+                binaryStringCell.answer1Button.alpha = 0
                 binaryStringCell.answer1Button.isHidden = false
+                binaryStringCell.answer1Button.alpha = 1
                 
             })
             
         })
         
-        
+      
+
     }
+    
+    
+    func chatIconTapped (sender: UITapGestureRecognizer) {
+       
+        print("chat Tapped")
+
+        
+        let tableViewSection = sender.view?.superview?.tag
+        
+        let tableViewRow = sender.view?.tag
+        
+        let thread = threads[tableViewSection!]
+        let pollArrayForThread = threadDict[thread]!
+        let pollForRow = pollArrayForThread[tableViewRow!]
+        
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
+        
+        
+        let pollVoteReference = FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes")
+        
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
+            snapshot in
+            
+            myVC.answer1Count = Int(snapshot.childrenCount)
+            
+        })
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer2").observe(.value, with: {
+            snapshot in
+            
+            myVC.answer2Count = Int(snapshot.childrenCount)
+            
+        })
+        
+        pollVoteReference.queryOrdered(byChild: "voteString").queryEqual(toValue: "no vote").observe(.value, with: {
+            snapshot in
+            
+            myVC.undecidedCount = Int(snapshot.childrenCount)
+            
+        })
+        
+        myVC.poll = pollForRow
+        myVC.chatMembers = pollForRow.groupMembers
+        
+        
+        navigationController?.pushViewController(myVC, animated: true)
+    }
+    
+    
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        
+//    }
+//    
+//
+//    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+//        let pollToLeave = receivedPolls[indexPath.row]
+//        print(pollToLeave.pollID)
+//        
+//        let delete = UITableViewRowAction(style: .normal, title: "Leave") { action, index in
+//            print("delete group tapped")
+//            
+//            let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(pollToLeave.pollID)
+//            
+//            ref.removeValue()
+//            
+//            self.deletePoll(poll: pollToLeave)
+//            
+//            tableView.reloadData()
+//            
+//            UIView.animate(withDuration: 0.1) {
+//                self.view.layoutIfNeeded()
+//            }
+//            
+//            
+//        }
+//        
+//        delete.backgroundColor = UIColor.init(hexString: "FF4E56")
+//        
+//        
+//        return [delete]
+//        
+//        
+//    }
+//    
+//    
+//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        
+//        return true
+//        
+//    }
+
     
     func delay(_ delay:Double, closure:@escaping ()->()) {
         let when = DispatchTime.now() + delay
@@ -934,6 +1095,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     func userImageTapped (sender : UITapGestureRecognizer) {
+        
+        print("image tapped")
         
         let tableViewSection = sender.view?.superview?.tag
         
@@ -1151,7 +1314,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
                         
                         poll?.groupMembers.append(recipient)
                         poll?.groupMembers = (poll?.groupMembers.sorted(by: {$0.vote < $1.vote}))!
-                        self.tableView.reloadRows(at: [indexPath], with: .none)
+                        self.tableView.reloadRows(at: [indexPath], with: .fade)
                         
                         
                     }

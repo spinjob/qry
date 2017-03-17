@@ -538,7 +538,7 @@
                                     <constraint firstAttribute="height" constant="10" id="NlA-io-ECk"/>
                                     <constraint firstAttribute="width" constant="11" id="e9g-tN-alz"/>
                                 </constraints>
-                                <state key="normal" title="v" image="9252D54F-DDDC-44C9-9EC5-87850A64C20F"/>
+                                <state key="normal" title="v" image="B9542EB3-E2A1-439D-9E77-1E26BAD13E3C"/>
                                 <connections>
                                     <action selector="showHidePollButtonTapped:" destination="oa0-MZ-QoD" eventType="touchUpInside" id="CWO-9q-C6A"/>
                                 </connections>
@@ -1049,7 +1049,10 @@
                                                             <rect key="frame" x="66" y="205" width="251" height="38"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Team Answer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bYA-U1-uHK">
-                                                                    <rect key="frame" x="77" y="11" width="97" height="16"/>
+                                                                    <rect key="frame" x="77" y="2" width="97" height="35"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="35" id="N6C-Q7-gRS"/>
+                                                                    </constraints>
                                                                     <fontDescription key="fontDescription" name="ProximaNovaSoft-Semibold" family="Proxima Nova Soft" pointSize="16"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
@@ -1062,7 +1065,7 @@
                                                                 <constraint firstItem="bYA-U1-uHK" firstAttribute="centerX" secondItem="Ohd-rF-Lrf" secondAttribute="centerX" id="rwU-6j-MrO"/>
                                                             </constraints>
                                                         </view>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pollConversationIcon" translatesAutoresizingMaskIntoConstraints="NO" id="h04-x7-ytu">
+                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pollConversationIcon" translatesAutoresizingMaskIntoConstraints="NO" id="h04-x7-ytu">
                                                             <rect key="frame" x="319" y="205" width="38" height="38"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="38" id="1Xv-0g-hx6"/>
@@ -1772,7 +1775,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PYu-dt-Gww">
-                                <rect key="frame" x="35" y="217" width="150" height="150"/>
+                                <rect key="frame" x="35" y="261" width="150" height="150"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iiE-du-rjy" customClass="FLAnimatedImageView">
                                         <rect key="frame" x="0.0" y="46" width="150" height="104"/>
@@ -1805,7 +1808,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pUL-Z1-9gV">
-                                <rect key="frame" x="189" y="217" width="150" height="150"/>
+                                <rect key="frame" x="189" y="261" width="150" height="150"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gXi-Pk-fQw" customClass="FLAnimatedImageView">
                                         <rect key="frame" x="0.0" y="46" width="150" height="104"/>
@@ -1838,7 +1841,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ggm-UR-JPi">
-                                <rect key="frame" x="35" y="375" width="120" height="29"/>
+                                <rect key="frame" x="35" y="419" width="120" height="29"/>
                                 <fontDescription key="fontDescription" name="ProximaNovaSoft-Semibold" family="Proxima Nova Soft" pointSize="17"/>
                                 <state key="normal" title="Translate to GIF">
                                     <color key="titleColor" red="0.50196081400000003" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1848,7 +1851,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="What would you like to know?" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="7bV-Kd-Arh">
-                                <rect key="frame" x="35" y="173" width="304" height="30"/>
+                                <rect key="frame" x="35" y="217" width="304" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="VCS-XY-QaH"/>
                                 </constraints>
@@ -1857,7 +1860,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MXh-Vs-DW1">
-                                <rect key="frame" x="243" y="364" width="96" height="56"/>
+                                <rect key="frame" x="243" y="408" width="96" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="96" id="u84-fP-SNg"/>
                                     <constraint firstAttribute="height" constant="56" id="wmF-I9-giu"/>
@@ -3193,7 +3196,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O4H-7A-B5i">
-                                <rect key="frame" x="267" y="443" width="89" height="30"/>
+                                <rect key="frame" x="266.5" y="443" width="89" height="30"/>
                                 <state key="normal" title="GIF Poll View"/>
                                 <connections>
                                     <segue destination="ggS-Mi-3aB" kind="show" id="sBR-d7-ZWT"/>
@@ -5101,7 +5104,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="9252D54F-DDDC-44C9-9EC5-87850A64C20F" width="53" height="53">
+        <image name="Answer 1 Conversation (Select).png" width="110" height="110"/>
+        <image name="Answer 2 Conversation (Select).png" width="110" height="110"/>
+        <image name="Ask Icon" width="270" height="270"/>
+        <image name="B9542EB3-E2A1-439D-9E77-1E26BAD13E3C" width="53" height="53">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -5358,9 +5364,6 @@ NwBFAEsAVABbAGgAbwB3AHkAfgCAAIIAhwCSAJQAlgCYAJ0AoACiAKQApgCoAK0AxADGAMg5vjnDOc45
 AAAAAAAAPgAAAAAAAAAAAAAAAAAAOos
 </mutableData>
         </image>
-        <image name="Answer 1 Conversation (Select).png" width="110" height="110"/>
-        <image name="Answer 2 Conversation (Select).png" width="110" height="110"/>
-        <image name="Ask Icon" width="270" height="270"/>
         <image name="Blue Button Background.png" width="1125" height="174"/>
         <image name="De-selectedResultsIcon.png" width="112" height="75"/>
         <image name="Everybody Conversation (Active)" width="110" height="110"/>

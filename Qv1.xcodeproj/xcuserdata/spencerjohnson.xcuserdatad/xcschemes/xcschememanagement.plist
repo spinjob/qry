@@ -4,8 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>OneSignalNotificationServiceExtension.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>12</integer>
+		</dict>
 		<key>Qv1.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
@@ -13,6 +20,16 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>680DF2D91DB5933200452A4E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>68418E4D1E7B1AD10085FD74</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>68418E5D1E7B1BE50085FD74</key>
 		<dict>
 			<key>primary</key>
 			<true/>

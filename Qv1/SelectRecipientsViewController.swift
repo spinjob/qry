@@ -35,6 +35,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
     var currentUserRecipientDict : [NSObject : AnyObject] = [:]
     var currentUserVoterDict : [NSObject : AnyObject] = [:]
     let currentUserID : String = (FIRAuth.auth()?.currentUser!.uid)!
+    var currentUserName : String = ""
     let threadID : String = UUID().uuidString
 
     var groupToEdit : Recipient = Recipient()
@@ -173,6 +174,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             let recipient = Recipient()
             let snapshotValue = snapshot.value as! NSDictionary
             recipient.recipientName = snapshotValue["fullName"] as! String
+            self.currentUserName = recipient.recipientName
             recipient.imageURL1 = snapshotValue["profileImageURL"] as! String
             recipient.recipientID = snapshotValue["uID"] as! String
         
@@ -864,6 +866,8 @@ if indexPath.section == 0 {
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerChoice").setValue("no answer")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerString").setValue("no answer")
         
+    
+        sendUserNotification()
         
        
       self.performSegue(withIdentifier: "unwindToMenuAfterSendingNewThreadPoll", sender: self)
@@ -938,10 +942,77 @@ if indexPath.section == 0 {
         return result
     }
     
+    
+    
+    func sendUserNotification() {
+      
+        
+        let bundle = Bundle.main
+
+        var request = NSMutableURLRequest(url: NSURL(string: "http://127.0.0.1:3001")! as URL)
+        var session = URLSession.shared
+    
+        request.httpMethod = "POST"
+        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
+        
+        selectedRecipients.forEach { (Recipient) in
+        
+                FIRDatabase.database().reference().child("users").child(Recipient.recipientID).observe(.value, with: {
+                        snapshot in
+        
+                        print("SNAPSHOT VALUE ON SEND BUTTON \(snapshot)")
+                        let snapshotValue = snapshot.value as! NSDictionary
+        
+                        let token = snapshotValue["deviceToken"] as! String
+                        
+                        request.setValue(token, forHTTPHeaderField: "deviceToken")
+                        
+        })
+
+        let task = session.uploadTask(withStreamedRequest: request as URLRequest)
+        task.resume()
+            
+            
+//        
+//        let url = NSURL(string: "https://fcm.googleapis.com/fcm/send")!
+//        let session = URLSession.shared
+//        
+//        let request = NSMutableURLRequest(url: url as URL)
+//        request.httpMethod = "POST"
+//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.addValue("key={AIzaSyBZqdzbtDK6a3YQRaRwFp0saGOlUcQ6nHc}", forHTTPHeaderField: "Authorization")
+//
+//        //request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringCacheData
+//        
+//        selectedRecipients.forEach { (Recipient) in
+//            
+//            FIRDatabase.database().reference().child("users").child(Recipient.recipientID).observe(.value, with: {
+//                snapshot in
+//                
+//                print("SNAPSHOT VALUE ON SEND BUTTON \(snapshot)")
+//                let snapshotValue = snapshot.value as! NSDictionary
+//                
+//                let token = snapshotValue["deviceToken"] as! String
+//        
+//                let dictionary = ["notification":["title":"\(self.currentUserName) started a poll","text": "\(self.poll.questionString)","project_id": "slide-e0b7b","to":token]]
+//                print(dictionary)//["notification": ["title": "", "project_id": "myProjectID", "to": "12", "text": "message"]]
+//                do {
+//                    try request.httpBody = JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
+//                    
+//                } catch {}
+//                
+//            })
+//            
+//        }
+//        
+//  
+        
+    }
+    
     }
 
 
-
+}
     
 
 

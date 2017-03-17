@@ -22,13 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         super.init()
         // Firebase Init
           FIRApp.configure()
+        
+        
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
-    
+       
         
         if #available(iOS 10.0, *) {
-            
+
             print("i0S 10 is Available")
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
             UNUserNotificationCenter.current().requestAuthorization(
@@ -197,6 +199,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type: FIRInstanceIDAPNSTokenType.sandbox)
        
+        
         var token = ""
         
         for i in 0..<deviceToken.count {

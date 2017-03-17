@@ -149,20 +149,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qv1/SelectRecipientsViewController.swift"
-            timestampString = "510703726.782816"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "945"
-            endingLineNumber = "945">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Qv1/InsetTextField.swift"
             timestampString = "500676054.850703"
             startingColumnNumber = "9223372036854775807"
