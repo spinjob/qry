@@ -54,6 +54,8 @@
 		682DB3A51DD66E95009015AC /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB3A41DD66E95009015AC /* ChatViewController.swift */; };
 		682DB3A71DD66F74009015AC /* FriendMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB3A61DD66F74009015AC /* FriendMessageTableViewCell.swift */; };
 		682DB3A91DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DB3A81DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift */; };
+		682DDC661E886737009E46F5 /* ProfileGroupMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DDC651E886737009E46F5 /* ProfileGroupMemberCollectionViewCell.swift */; };
+		682DDC681E89CA04009E46F5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DDC671E89CA04009E46F5 /* Message.swift */; };
 		683166811DD6B752003EDC21 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 683166801DD6B752003EDC21 /* gradient.png */; };
 		683413541E620AB300077388 /* StringPollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683413521E620AB300077388 /* StringPollTableViewCell.swift */; };
 		684A2E2E1E58D207003706B3 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */; };
@@ -73,6 +75,7 @@
 		688344A61E5651E700E95228 /* FriendsAndListsHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688344A51E5651E700E95228 /* FriendsAndListsHeaderTableViewCell.swift */; };
 		68894BD91E56A19B006C98D1 /* AppNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68894BD81E56A19B006C98D1 /* AppNotifications.swift */; };
 		68894BDB1E576CB6006C98D1 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68894BDA1E576CB6006C98D1 /* PhoneNumberViewController.swift */; };
+		688C802A1E85CEA000EF2228 /* ProfileLiveDecisionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C80291E85CEA000EF2228 /* ProfileLiveDecisionTableViewCell.swift */; };
 		68A243611E566AFD006AAA61 /* logout icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68A243601E566AFD006AAA61 /* logout icon.png */; };
 		68A243631E568781006AAA61 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A243621E568781006AAA61 /* NotificationTableViewCell.swift */; };
 		68A243651E5687B1006AAA61 /* MessageNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A243641E5687B1006AAA61 /* MessageNotificationTableViewCell.swift */; };
@@ -199,6 +202,8 @@
 		682DB3A41DD66E95009015AC /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		682DB3A61DD66F74009015AC /* FriendMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendMessageTableViewCell.swift; sourceTree = "<group>"; };
 		682DB3A81DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserMessageTableViewCell.swift; sourceTree = "<group>"; };
+		682DDC651E886737009E46F5 /* ProfileGroupMemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileGroupMemberCollectionViewCell.swift; sourceTree = "<group>"; };
+		682DDC671E89CA04009E46F5 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		683166801DD6B752003EDC21 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gradient.png; path = ../../gradient.png; sourceTree = "<group>"; };
 		683413521E620AB300077388 /* StringPollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringPollTableViewCell.swift; sourceTree = "<group>"; };
 		684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -218,6 +223,7 @@
 		688344A51E5651E700E95228 /* FriendsAndListsHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsAndListsHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		68894BD81E56A19B006C98D1 /* AppNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNotifications.swift; sourceTree = "<group>"; };
 		68894BDA1E576CB6006C98D1 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
+		688C80291E85CEA000EF2228 /* ProfileLiveDecisionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileLiveDecisionTableViewCell.swift; sourceTree = "<group>"; };
 		68A243601E566AFD006AAA61 /* logout icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logout icon.png"; path = "../../logout icon.png"; sourceTree = "<group>"; };
 		68A243621E568781006AAA61 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		68A243641E5687B1006AAA61 /* MessageNotificationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageNotificationTableViewCell.swift; sourceTree = "<group>"; };
@@ -441,10 +447,12 @@
 		683413511E620A9900077388 /* New UI/UX */ = {
 			isa = PBXGroup;
 			children = (
+				688C80291E85CEA000EF2228 /* ProfileLiveDecisionTableViewCell.swift */,
+				682DDC651E886737009E46F5 /* ProfileGroupMemberCollectionViewCell.swift */,
+				68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */,
 				6871BB1C1E771534005F6932 /* OnboardingViewController.swift */,
 				684BA6571E70ADE90004C045 /* PollProfileViewController.swift */,
 				68F2424D1E6C9836005CB3AA /* ScrollViewController.swift */,
-				68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */,
 				68B1116C1E6364F200FAFE01 /* UserHomeViewController.swift */,
 				68B111781E64CF0F00FAFE01 /* PollImageDetailViewController.swift */,
 				683413521E620AB300077388 /* StringPollTableViewCell.swift */,
@@ -513,6 +521,7 @@
 				68894BD81E56A19B006C98D1 /* AppNotifications.swift */,
 				68CCC4881DC6A7B40094F3AE /* Contact.swift */,
 				68DBF3971DB6EF9A00C87385 /* User.swift */,
+				682DDC671E89CA04009E46F5 /* Message.swift */,
 				68DBF39A1DB6EFB000C87385 /* Polls.swift */,
 				68C3C82B1DC922B3000B9730 /* Recipient.swift */,
 			);
@@ -804,7 +813,9 @@
 				6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */,
 				688344A61E5651E700E95228 /* FriendsAndListsHeaderTableViewCell.swift in Sources */,
 				6880A9B41DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift in Sources */,
+				682DDC661E886737009E46F5 /* ProfileGroupMemberCollectionViewCell.swift in Sources */,
 				68F891231E5B731100A392E1 /* StackedMessageTableViewCell.swift in Sources */,
+				682DDC681E89CA04009E46F5 /* Message.swift in Sources */,
 				68DBF3981DB6EF9A00C87385 /* User.swift in Sources */,
 				68CCC47F1DC524230094F3AE /* FriendTableViewCell.swift in Sources */,
 				68DBF39B1DB6EFB000C87385 /* Polls.swift in Sources */,
@@ -822,6 +833,7 @@
 				680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */,
 				68D9892E1E52996D003A7554 /* EmailAddressViewController.swift in Sources */,
 				68D989201E4BFDF5003A7554 /* AddGroupMemberTableViewCell.swift in Sources */,
+				688C802A1E85CEA000EF2228 /* ProfileLiveDecisionTableViewCell.swift in Sources */,
 				68B1117F1E6682BF00FAFE01 /* ThreadAnswerGroupUserTableViewCell.swift in Sources */,
 				68B1117B1E66533600FAFE01 /* SelectThreadTableViewCell.swift in Sources */,
 				68894BDB1E576CB6006C98D1 /* PhoneNumberViewController.swift in Sources */,

@@ -112,6 +112,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func tokenRefreshNotification(_ notification: Notification) {
         if let refreshedToken = FIRInstanceID.instanceID().token() {
             print("InstanceID token: \(refreshedToken)")
+            FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("deviceToken").setValue(FIRInstanceID.instanceID().token())
+
         }
         
         // Connect to FCM since connection may have failed when attempted before having a token.

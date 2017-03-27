@@ -101,6 +101,8 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
         super.viewDidLoad()
         
+        
+        
         answer1ImageView.isHidden = true
         answer1ImageView.layer.cornerRadius = 4
         answer1ImageView.layer.masksToBounds = true

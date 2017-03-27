@@ -12,6 +12,7 @@ import Contacts
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
+import FirebaseMessaging
 import SDWebImage
 
 
@@ -103,6 +104,7 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
         print(dictPoll)
         print(poll.pollID)
         print("View Did Load Question Image \(questionImage)")
+        
         
         let pollRef = FIRDatabase.database().reference().child("polls").child(pollID)
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
@@ -817,6 +819,7 @@ if indexPath.section == 0 {
         
         notificationRef.setValue(notificationDict)
             
+        sendNotificationToUser(user: Recipient.recipientID, message: "\(currentUserName) started a headcount for '\(poll.questionString)'")
             
             
         //add each selected user to sentTo and votes Arrays
@@ -867,7 +870,7 @@ if indexPath.section == 0 {
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerString").setValue("no answer")
         
     
-        sendUserNotification()
+    
         
        
       self.performSegue(withIdentifier: "unwindToMenuAfterSendingNewThreadPoll", sender: self)
@@ -944,72 +947,20 @@ if indexPath.section == 0 {
     
     
     
-    func sendUserNotification() {
-      
+    func sendNotificationToUser(user: String, message: String) {
         
-        let bundle = Bundle.main
-
-        var request = NSMutableURLRequest(url: NSURL(string: "http://127.0.0.1:3001")! as URL)
-        var session = URLSession.shared
+        let ref = FIRDatabase.database().reference()
+        
+        let notificationRequestsRef = ref.child("notificationRequests")
+        let notificationRequestID = UUID().uuidString
+        
+        let notificationRequestDict : [NSObject : AnyObject]  = ["username" as NSObject: user as AnyObject, "message" as NSObject: message as AnyObject]
+        
+        FIRDatabase.database().reference().child("notificationRequests").child(notificationRequestID).setValue(notificationRequestDict)
     
-        request.httpMethod = "POST"
-        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
-        
-        selectedRecipients.forEach { (Recipient) in
-        
-                FIRDatabase.database().reference().child("users").child(Recipient.recipientID).observe(.value, with: {
-                        snapshot in
-        
-                        print("SNAPSHOT VALUE ON SEND BUTTON \(snapshot)")
-                        let snapshotValue = snapshot.value as! NSDictionary
-        
-                        let token = snapshotValue["deviceToken"] as! String
-                        
-                        request.setValue(token, forHTTPHeaderField: "deviceToken")
-                        
-        })
-
-        let task = session.uploadTask(withStreamedRequest: request as URLRequest)
-        task.resume()
-            
-            
-//        
-//        let url = NSURL(string: "https://fcm.googleapis.com/fcm/send")!
-//        let session = URLSession.shared
-//        
-//        let request = NSMutableURLRequest(url: url as URL)
-//        request.httpMethod = "POST"
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.addValue("key={AIzaSyBZqdzbtDK6a3YQRaRwFp0saGOlUcQ6nHc}", forHTTPHeaderField: "Authorization")
-//
-//        //request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringCacheData
-//        
-//        selectedRecipients.forEach { (Recipient) in
-//            
-//            FIRDatabase.database().reference().child("users").child(Recipient.recipientID).observe(.value, with: {
-//                snapshot in
-//                
-//                print("SNAPSHOT VALUE ON SEND BUTTON \(snapshot)")
-//                let snapshotValue = snapshot.value as! NSDictionary
-//                
-//                let token = snapshotValue["deviceToken"] as! String
-//        
-//                let dictionary = ["notification":["title":"\(self.currentUserName) started a poll","text": "\(self.poll.questionString)","project_id": "slide-e0b7b","to":token]]
-//                print(dictionary)//["notification": ["title": "", "project_id": "myProjectID", "to": "12", "text": "message"]]
-//                do {
-//                    try request.httpBody = JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
-//                    
-//                } catch {}
-//                
-//            })
-//            
-//        }
-//        
-//  
         
     }
     
-    }
 
 
 }

@@ -110,24 +110,8 @@ class ChoosePictureViewController: UIViewController, UIImagePickerControllerDele
                         
                     }
                     
+                    
                     self.performSegue(withIdentifier: "onboardingSegue", sender: nil)
-                    
-                    
-                   // let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                   // let controller = storyboard.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-                   // let transition:CATransition = CATransition()
-                    
-                   // controller.currentUserID = (FIRAuth.auth()?.currentUser?.uid)!
-                    
-                   // transition.duration = 0.3
-                    //transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                   // transition.type = kCATransitionMoveIn
-                   // transition.subtype = kCATransitionFromLeft
-                    
-                    //  self.present(controller, animated: true, completion: nil)
-                    
-                    //self.navigationController!.view.layer.add(transition, forKey: kCATransition)
-                    //self.navigationController?.pushViewController(controller, animated: false)
                     
                 }
                 

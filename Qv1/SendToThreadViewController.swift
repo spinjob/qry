@@ -648,6 +648,7 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         parentPollRef.child("hasChildren").setValue("true")
 
         pollRef.child("threadID").setValue(parentThreadID)
+        
         pollRef.child("isThreadParent").setValue("false")
        
       

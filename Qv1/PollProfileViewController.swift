@@ -65,45 +65,45 @@ class PollProfileViewController: UIViewController, UIImagePickerControllerDelega
             
         })
         
-        FIRDatabase.database().reference().child("users").child(profileUserID).child("votes").queryOrdered(byChild: "answerChoice").queryEqual(toValue: "answer1").observe(.childAdded, with: {
-            snapshot in
-            
-            self.answer1Count = Int(snapshot.childrenCount)
-            
-            FIRDatabase.database().reference().child("users").child(self.profileUserID).child("votes").queryOrdered(byChild: "answerChoice").queryEqual(toValue: "answer2").observe(.childAdded, with: {
-                snapshot in
-                
-                self.answer2Count = Int(snapshot.childrenCount)
-                
-                FIRDatabase.database().reference().child("users").child(self.profileUserID).child("votes").queryOrdered(byChild: "answerChoice").queryEqual(toValue: "no answer").observe(.childAdded, with: {
-                    snapshot in
-                    
-                    self.noAnswerCount = Int(snapshot.childrenCount)
-                    
-                    FIRDatabase.database().reference().child("polls").queryOrdered(byChild: "senderUser").queryEqual(toValue: self.profileUserID).observe(.value, with: {
-                        snapshot in
-                        self.askedCount = Int(snapshot.childrenCount)
-                        
-                        let chartView = PieChartView()
-                        
-                        chartView.frame = CGRect(x: 0, y: 0, width: self.profilePieChartView.frame.width, height: 220)
-                        
-                        chartView.segments = [
-                            Segment(color: self.brightGreen, value: CGFloat(self.answer1Count)),
-                            Segment(color: self.red, value: CGFloat(self.answer2Count)),
-                            Segment(color: self.blue, value: CGFloat(self.noAnswerCount)),
-                            Segment(color: self.actionGreen, value: CGFloat(self.askedCount))
-                        ]
-                        
-                        self.profilePieChartView.addSubview(chartView)
-                        
-                    })
-                    
-                })
-                
-            })
-            
-        })
+//        FIRDatabase.database().reference().child("users").child(profileUserID).child("votes").queryOrdered(byChild: "answerChoice").queryEqual(toValue: "answer1").observe(.childAdded, with: {
+//            snapshot in
+//            
+//            self.answer1Count = Int(snapshot.childrenCount)
+//            
+//            FIRDatabase.database().reference().child("users").child(self.profileUserID).child("votes").queryOrdered(byChild: "answerChoice").queryEqual(toValue: "answer2").observe(.childAdded, with: {
+//                snapshot in
+//                
+//                self.answer2Count = Int(snapshot.childrenCount)
+//                
+//                FIRDatabase.database().reference().child("users").child(self.profileUserID).child("votes").queryOrdered(byChild: "answerChoice").queryEqual(toValue: "no answer").observe(.childAdded, with: {
+//                    snapshot in
+//                    
+//                    self.noAnswerCount = Int(snapshot.childrenCount)
+//                    
+//                    FIRDatabase.database().reference().child("polls").queryOrdered(byChild: "senderUser").queryEqual(toValue: self.profileUserID).observe(.value, with: {
+//                        snapshot in
+//                        self.askedCount = Int(snapshot.childrenCount)
+//                        
+//                        let chartView = PieChartView()
+//                        
+//                        chartView.frame = CGRect(x: 0, y: 0, width: self.profilePieChartView.frame.width, height: 220)
+//                        
+//                        chartView.segments = [
+//                            Segment(color: self.brightGreen, value: CGFloat(self.answer1Count)),
+//                            Segment(color: self.red, value: CGFloat(self.answer2Count)),
+//                            Segment(color: self.blue, value: CGFloat(self.noAnswerCount)),
+//                            Segment(color: self.actionGreen, value: CGFloat(self.askedCount))
+//                        ]
+//                        
+//                        self.profilePieChartView.addSubview(chartView)
+//                        
+//                    })
+//                    
+//                })
+//                
+//            })
+//            
+//        })
 
         
     }

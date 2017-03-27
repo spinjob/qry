@@ -6,27 +6,11 @@
 //
 //
 
-func delayRunOnMainThread(_ delay: Double, closure: @escaping () -> ()) {
-    DispatchQueue.main.asyncAfter(
-        deadline: DispatchTime.now() +
-            Double(Int64(delay * Double(NSEC_PER_SEC))) /
-            Double(NSEC_PER_SEC), execute: closure)
-}
-
-func delayRunOnGlobalThread(_ delay: Double,
-                            qos: DispatchQoS.QoSClass,
-                            closure: @escaping () -> ()) {
-    DispatchQueue.global(qos: qos).asyncAfter(
-        deadline: DispatchTime.now() +
-            Double(Int64(delay * Double(NSEC_PER_SEC))) /
-            Double(NSEC_PER_SEC), execute: closure
-    )
-}
-
 extension Calendar {
     static let formatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy MM dd"
+        dateFormatter.isLenient = true
         return dateFormatter
     }()
     
@@ -39,11 +23,11 @@ extension Calendar {
     func endOfMonth(for date: Date) -> Date? {
         guard
             let comp = dateFormatterComponents(from: date),
-            let day = self.range(of: .day, in: .month, for: date)?.count else {
+            let day = self.range(of: .day, in: .month, for: date)?.count,
+            let retVal = Calendar.formatter.date(from: "\(comp.year) \(comp.month) \(day)") else {
                 return nil
         }
-        
-        return Calendar.formatter.date(from: "\(comp.year) \(comp.month) \(day)")
+        return retVal
     }
     
     private func dateFormatterComponents(from date: Date) -> (month: Int, year: Int)? {

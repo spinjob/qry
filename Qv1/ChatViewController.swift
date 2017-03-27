@@ -90,7 +90,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var showAnswer1Users : Bool = false
     var showAnswer2Users : Bool = false
     var showUndecidedUsers : Bool = false
-    var showEverybody : Bool = true
+    var showEverybody : Bool = false
+    var viewHasAppeared : Bool = false
     
     struct message {
         let userName : String!
@@ -99,7 +100,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let userImage : String!
     }
     
-    var messages : [message] = []
+    //var messages : [message] = []
     var everybodyMessages : [message] = []
     var answer1Messages : [message] = []
     var answer2Messages : [message] = []
@@ -108,6 +109,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         print("POLL \(poll.questionString)")
         print("POLL \(poll.groupMembers)")
@@ -119,11 +122,20 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let currentUserID = FIRAuth.auth()?.currentUser?.uid
         let chartView = PieChartView()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.pollHeaderLabelTapped(sender:)))
- 
+        
+        let everybodyMessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("everybody")
+        let answer1MessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("answer1")
+        let answer2MessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("answer2")
+        let noAnswerMessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("noAnswer")
+
+        
         setUpNavigationBarItems()
         navigationItem.titleView?.isUserInteractionEnabled = true
         navigationItem.titleView?.addGestureRecognizer(tapGestureRecognizer)
         
+
+        position3ChangeConversationLabel.isHidden = true
+        position3ChangeConversationButton.isHidden = true
         
         
         tableView.delegate = self
@@ -203,12 +215,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
 
         
-        databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "everybody").observe(.childAdded, with: {
-            
+        everybodyMessagesRef.observe(.childAdded, with: {
             snapshot in
             
             let snapshotValue = snapshot.value as! NSDictionary
-            
             let userName = snapshotValue["userName"] as! String
             let userImage = snapshotValue["userImage"] as! String
             let userID = snapshotValue["uid"] as! String
@@ -216,9 +226,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             self.everybodyMessages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
             
+            self.tableView.reloadData()
+            
+            
         })
         
-        databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "answer1").observe(.childAdded, with: {
+        
+        answer1MessagesRef.observe(.childAdded, with: {
             
             snapshot in
             
@@ -233,8 +247,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         })
         
-        
-        databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "answer2").observe(.childAdded, with: {
+        answer2MessagesRef.observe(.childAdded, with: {
             
             snapshot in
             
@@ -249,8 +262,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         })
         
-        databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "undecided").observe(.childAdded, with: {
-            
+        noAnswerMessagesRef.observe(.childAdded, with: {
             snapshot in
             
             let snapshotValue = snapshot.value as! NSDictionary
@@ -264,25 +276,87 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         })
         
+        
+   //     databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "everybody").observe(.childAdded, with: {
+            
+   //         snapshot in
+            
+   //         let snapshotValue = snapshot.value as! NSDictionary
+   //
+   //         let userName = snapshotValue["userName"] as! String
+   //         let userImage = snapshotValue["userImage"] as! String
+   //         let userID = snapshotValue["uid"] as! String
+   //         let messageBody = snapshotValue["userMessage"] as! String
+   //
+   //         self.everybodyMessages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
+            
+   //     })
+        
+   //     databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "answer1").observe(.childAdded, with: {
+            
+   //         snapshot in
+   //
+   //         let snapshotValue = snapshot.value as! NSDictionary
+   //
+   //         let userName = snapshotValue["userName"] as! String
+   //         let userImage = snapshotValue["userImage"] as! String
+   //         let userID = snapshotValue["uid"] as! String
+   //         let messageBody = snapshotValue["userMessage"] as! String
+   //
+   //         self.answer1Messages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
+   //
+   //     })
+        
+        
+  //      databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "answer2").observe(.childAdded, with: {
+            
+  //          snapshot in
+  //
+  //          let snapshotValue = snapshot.value as! NSDictionary
+  //
+  //          let userName = snapshotValue["userName"] as! String
+  //          let userImage = snapshotValue["userImage"] as! String
+  //          let userID = snapshotValue["uid"] as! String
+  //          let messageBody = snapshotValue["userMessage"] as! String
+  //
+  //          self.answer2Messages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
+  //
+  //      })
+        
+   //     databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "undecided").observe(.childAdded, with: {
+            
+  //          snapshot in
+            
+  //          let snapshotValue = snapshot.value as! NSDictionary
+            
+  //          let userName = snapshotValue["userName"] as! String
+   //         let userImage = snapshotValue["userImage"] as! String
+   //         let userID = snapshotValue["uid"] as! String
+    //        let messageBody = snapshotValue["userMessage"] as! String
+            
+    //        self.undecidedMessages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
+            
+   //     })
+        
 
         
-        databaseRef.child("polls").child(poll.pollID).child("messages").observe(.childAdded, with: {
+     //   databaseRef.child("polls").child(poll.pollID).child("messages").observe(.childAdded, with: {
             
-            snapshot in
+     //       snapshot in
         
-            let snapshotValue = snapshot.value as! NSDictionary
+     //       let snapshotValue = snapshot.value as! NSDictionary
+       
+     //       let userName = snapshotValue["userName"] as! String
+     //       let userImage = snapshotValue["userImage"] as! String
+     //       let userID = snapshotValue["uid"] as! String
+     //       let messageBody = snapshotValue["userMessage"] as! String
+     //       let conversation = snapshotValue["conversation"] as! String
+     //
+     //       self.messages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
+     //
+      //      self.tableView.reloadData()
         
-            let userName = snapshotValue["userName"] as! String
-            let userImage = snapshotValue["userImage"] as! String
-            let userID = snapshotValue["uid"] as! String
-            let messageBody = snapshotValue["userMessage"] as! String
-            let conversation = snapshotValue["conversation"] as! String
-            
-            self.messages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
-            
-            self.tableView.reloadData()
-        
-        })
+     //   })
        
         
         
@@ -472,7 +546,12 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
     
         super.reloadInputViews()
+    
+        viewHasAppeared = true
+    
+        print("VIEW HAS APPEARED \(viewHasAppeared)")
   
+    
          NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
          NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     
@@ -480,6 +559,16 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        viewHasAppeared = false
+        
+        showAnswer1Users = false
+        showAnswer2Users = false
+        showUndecidedUsers = false
+        showEverybody = false
+        
+        
+        print("VIEW HAS APPEARED \(viewHasAppeared)")
         
         NotificationCenter.default.removeObserver(self)
     }
@@ -618,40 +707,50 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         var senderID = ""
         let previousIndex = (indexPath.row) - 1
         
+        var messageText = ""
+        
         if showEverybody == true {
             senderID = everybodyMessages[indexPath.row].userID
+            messageText = everybodyMessages[indexPath.row].message
         }
         
         if showAnswer1Users == true {
             senderID = answer1Messages[indexPath.row].userID
+            messageText = answer1Messages[indexPath.row].message
         }
         
         if showAnswer2Users == true {
             senderID = answer2Messages[indexPath.row].userID
+            messageText = answer2Messages[indexPath.row].message
         }
         
         if showUndecidedUsers == true {
              senderID = undecidedMessages[indexPath.row].userID
+             messageText = undecidedMessages[indexPath.row].message
         }
         
+
         
-        let messageText = messages[indexPath.row].message
         var lastMessageSenderID = ""
         
         if showEverybody == true, indexPath.row > 0 {
             lastMessageSenderID = (everybodyMessages[previousIndex].userID)!
+            messageText = (everybodyMessages[previousIndex].message)!
         }
         
         if showAnswer1Users == true, indexPath.row > 0 {
             lastMessageSenderID = (answer1Messages[previousIndex].userID)!
+            messageText = (answer1Messages[previousIndex].message)!
         }
         
         if showAnswer2Users == true, indexPath.row > 0 {
             lastMessageSenderID = (answer2Messages[previousIndex].userID)!
+            messageText = (answer2Messages[previousIndex].message)!
         }
         
         if showUndecidedUsers == true, indexPath.row > 0 {
             lastMessageSenderID = (undecidedMessages[previousIndex].userID)!
+            messageText = (undecidedMessages[previousIndex].message)!
         }
         
         tableView.transform = CGAffineTransform(rotationAngle: -(CGFloat)(M_PI));
@@ -697,7 +796,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         myMessageCell.messageTextView.textContainerInset.top = 12
         myMessageCell.messageTextView.textContainerInset.bottom = 12
             
-        myMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText!).width)
+        myMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText).width)
             
         myMessageCell.answerIndicator.layer.cornerRadius = myMessageCell.answerIndicator.layer.frame.width / 2
 
@@ -787,7 +886,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
             
             
-        friendMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText!).width)
+        friendMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText).width)
             
         friendMessageCell.answerIndicator.layer.cornerRadius = friendMessageCell.answerIndicator.layer.frame.width / 2
           
@@ -828,7 +927,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 stackedMessageCell.messageTextView.textContainerInset.right = 5
                 stackedMessageCell.messageTextView.textContainerInset.top = 10
                 stackedMessageCell.messageTextView.textContainerInset.bottom = 10
-                stackedMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText!).width)
+                stackedMessageCell.messageTextView.widthAnchor.constraint(equalToConstant: estimateFrameForText(text: messageText).width)
                 stackedMessageCell.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI));
                 return stackedMessageCell
             
@@ -1064,12 +1163,18 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont(name: "Proxima Nova", size: 20)!], context: nil)
     }
-    
-    
-    
+   
+
     @IBAction func sendButtonTapped(_ sender: Any) {
         
-        if messageTextField.text != nil {
+        print("send button tapped")
+        
+        if messageTextField.text != nil, viewHasAppeared == true {
+            
+            let everybodyMessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("everybody")
+            let answer1MessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("answer1")
+            let answer2MessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("answer2")
+            let noAnswerMessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("noAnswer")
             
             let messagesRef = FIRDatabase.database().reference().child("polls").child(poll.pollID).child("messages")
             let uid = FIRAuth.auth()?.currentUser?.uid
@@ -1088,25 +1193,31 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if self.showEverybody == true {
                     let message = ["uid" : uid!, "userName" : self.userName, "userMessage" : messageText, "userImage": self.userImage, "conversation" : "everybody"]
                 
-                messagesRef.childByAutoId().setValue(message)
+                    
+                print("everybody message")
+               // messagesRef.childByAutoId().setValue(message)
+                everybodyMessagesRef.childByAutoId().setValue(message)
                 }
                 
                 if self.showUndecidedUsers == true {
                     let message = ["uid" : uid!, "userName" : self.userName, "userMessage" : messageText, "userImage": self.userImage, "conversation" : "undecided"]
                     
-                    messagesRef.childByAutoId().setValue(message)
+                    //messagesRef.childByAutoId().setValue(message)
+                    noAnswerMessagesRef.childByAutoId().setValue(message)
                 }
                 
                 if self.showAnswer1Users == true {
                     let message = ["uid" : uid!, "userName" : self.userName, "userMessage" : messageText, "userImage": self.userImage, "conversation" : "answer1"]
                     
-                    messagesRef.childByAutoId().setValue(message)
+                    //messagesRef.childByAutoId().setValue(message)
+                    answer1MessagesRef.childByAutoId().setValue(message)
                 }
                 
                 if self.showAnswer2Users == true {
                     let message = ["uid" : uid!, "userName" : self.userName, "userMessage" : messageText, "userImage": self.userImage, "conversation" : "answer2"]
                     
-                    messagesRef.childByAutoId().setValue(message)
+                    //messagesRef.childByAutoId().setValue(message)
+                    answer2MessagesRef.childByAutoId().setValue(message)
                 }
                 
                 self.messageTextField.text = ""
@@ -1117,7 +1228,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         
-       // tableView.reloadData()
+        tableView.reloadData()
     }
 
     

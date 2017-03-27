@@ -1,21 +1,21 @@
 PODS:
-  - Firebase/Analytics (3.13.0):
+  - Firebase/Analytics (3.15.0):
     - Firebase/Core
-  - Firebase/Auth (3.13.0):
+  - Firebase/Auth (3.15.0):
     - Firebase/Core
     - FirebaseAuth (= 3.1.1)
-  - Firebase/Core (3.13.0):
+  - Firebase/Core (3.15.0):
     - FirebaseAnalytics (= 3.7.0)
-    - FirebaseCore (= 3.5.0)
-  - Firebase/Database (3.13.0):
+    - FirebaseCore (= 3.5.2)
+  - Firebase/Database (3.15.0):
     - Firebase/Core
     - FirebaseDatabase (= 3.1.2)
-  - Firebase/Messaging (3.13.0):
+  - Firebase/Messaging (3.15.0):
     - Firebase/Core
     - FirebaseMessaging (= 1.2.2)
-  - Firebase/Storage (3.13.0):
+  - Firebase/Storage (3.15.0):
     - Firebase/Core
-    - FirebaseStorage (= 1.0.6)
+    - FirebaseStorage (= 1.1.0)
   - FirebaseAnalytics (3.7.0):
     - FirebaseCore (~> 3.5)
     - FirebaseInstanceID (~> 1.0)
@@ -24,7 +24,7 @@ PODS:
     - FirebaseAnalytics (~> 3.7)
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseCore (3.5.0):
+  - FirebaseCore (3.5.2):
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseDatabase (3.1.2):
     - FirebaseAnalytics (~> 3.7)
@@ -34,7 +34,7 @@ PODS:
     - FirebaseInstanceID (~> 1.0)
     - GoogleToolboxForMac/Logger (~> 2.1)
     - Protobuf (~> 3.1)
-  - FirebaseStorage (1.0.6):
+  - FirebaseStorage (1.1.0):
     - FirebaseAnalytics (~> 3.7)
     - GTMSessionFetcher/Core (~> 1.1)
   - FLAnimatedImage (1.0.12)
@@ -51,8 +51,8 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.1)
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
-  - GTMSessionFetcher/Core (1.1.8)
-  - JTAppleCalendar (6.1.2)
+  - GTMSessionFetcher/Core (1.1.9)
+  - JTAppleCalendar (6.1.5)
   - Navajo-Swift (1.0.0)
   - paper-onboarding (2.0.1)
   - Protobuf (3.2.0)
@@ -80,25 +80,25 @@ DEPENDENCIES:
   - SwiftLinkPreview (~> 1.0.1)
 
 SPEC CHECKSUMS:
-  Firebase: 5bc34d7b5ff5792e3386c8b28dc6265deeab0da4
+  Firebase: 2b1cdfba1cda8589f32904a697cc753322bff9d8
   FirebaseAnalytics: 0d1b7d81d5021155be37702a94ba1ec16d45365d
   FirebaseAuth: cc8a1824170adbd351edb7f994490a3fb5c18be6
-  FirebaseCore: 1c0a13bf59bb95cdd19577252499f0ec6a03e999
+  FirebaseCore: a024587e43778508700af8c6b1209f7c4516ba02
   FirebaseDatabase: 05c96d7b43a7368dc91c07791adb49683e1738d1
   FirebaseInstanceID: 2d0518b1378fe9d685ef40cbdd63d2fdc1125339
   FirebaseMessaging: df8267f378580a24174ce7861233aa11d5c90109
-  FirebaseStorage: 63628572a5fde258f8e933b5fb42697468da0158
+  FirebaseStorage: a5c55b23741a49a72af8f30f95b3bb5ddbeda12d
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Gifu: 56a4d8f1092399159fa32662aa2232158b48d8ac
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
-  GTMSessionFetcher: 6f8d8b28b7e345549ac471071608170b31cb4977
-  JTAppleCalendar: 4424fdd0daac0daf1db93299c07949505055135d
+  GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
+  JTAppleCalendar: 7fe18d6b7c26b8095f714ff089d4c0cbd9d6a632
   Navajo-Swift: b5ccdf31f5b21e4944a418c5dfe891c8e571f7c7
   paper-onboarding: a8e001214d9ce9decf78e160b3823f396dbd51ac
   Protobuf: 745f59e122e5de98d4d7ef291e264a0eef80f58e
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SwiftLinkPreview: 977461879ae31f9e2d1bf2fafba0553d99eacbb9
 
-PODFILE CHECKSUM: 363b323158e947349a8122dad8a09f9c2de3197a
+PODFILE CHECKSUM: 97d180071fafac3cce1dfdff030b633a7307d189
 
 COCOAPODS: 1.2.0
