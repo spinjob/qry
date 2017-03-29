@@ -127,7 +127,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let answer1MessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("answer1")
         let answer2MessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("answer2")
         let noAnswerMessagesRef = FIRDatabase.database().reference().child("messages").child(poll.pollID).child("messages").child("noAnswer")
-
         
         setUpNavigationBarItems()
         navigationItem.titleView?.isUserInteractionEnabled = true
@@ -275,90 +274,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.undecidedMessages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
             
         })
-        
-        
-   //     databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "everybody").observe(.childAdded, with: {
-            
-   //         snapshot in
-            
-   //         let snapshotValue = snapshot.value as! NSDictionary
-   //
-   //         let userName = snapshotValue["userName"] as! String
-   //         let userImage = snapshotValue["userImage"] as! String
-   //         let userID = snapshotValue["uid"] as! String
-   //         let messageBody = snapshotValue["userMessage"] as! String
-   //
-   //         self.everybodyMessages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
-            
-   //     })
-        
-   //     databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "answer1").observe(.childAdded, with: {
-            
-   //         snapshot in
-   //
-   //         let snapshotValue = snapshot.value as! NSDictionary
-   //
-   //         let userName = snapshotValue["userName"] as! String
-   //         let userImage = snapshotValue["userImage"] as! String
-   //         let userID = snapshotValue["uid"] as! String
-   //         let messageBody = snapshotValue["userMessage"] as! String
-   //
-   //         self.answer1Messages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
-   //
-   //     })
-        
-        
-  //      databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "answer2").observe(.childAdded, with: {
-            
-  //          snapshot in
-  //
-  //          let snapshotValue = snapshot.value as! NSDictionary
-  //
-  //          let userName = snapshotValue["userName"] as! String
-  //          let userImage = snapshotValue["userImage"] as! String
-  //          let userID = snapshotValue["uid"] as! String
-  //          let messageBody = snapshotValue["userMessage"] as! String
-  //
-  //          self.answer2Messages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
-  //
-  //      })
-        
-   //     databaseRef.child("polls").child(poll.pollID).child("messages").queryOrdered(byChild: "conversation").queryEqual(toValue: "undecided").observe(.childAdded, with: {
-            
-  //          snapshot in
-            
-  //          let snapshotValue = snapshot.value as! NSDictionary
-            
-  //          let userName = snapshotValue["userName"] as! String
-   //         let userImage = snapshotValue["userImage"] as! String
-   //         let userID = snapshotValue["uid"] as! String
-    //        let messageBody = snapshotValue["userMessage"] as! String
-            
-    //        self.undecidedMessages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
-            
-   //     })
-        
-
-        
-     //   databaseRef.child("polls").child(poll.pollID).child("messages").observe(.childAdded, with: {
-            
-     //       snapshot in
-        
-     //       let snapshotValue = snapshot.value as! NSDictionary
-       
-     //       let userName = snapshotValue["userName"] as! String
-     //       let userImage = snapshotValue["userImage"] as! String
-     //       let userID = snapshotValue["uid"] as! String
-     //       let messageBody = snapshotValue["userMessage"] as! String
-     //       let conversation = snapshotValue["conversation"] as! String
-     //
-     //       self.messages.insert(message(userName: userName , userID: userID, message: messageBody, userImage: userImage ), at: 0)
-     //
-      //      self.tableView.reloadData()
-        
-     //   })
-       
-        
+                
         
         //figure out current user's vote and update conversation choices
         

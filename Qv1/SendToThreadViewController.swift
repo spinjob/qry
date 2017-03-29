@@ -27,6 +27,7 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
     
     @IBOutlet weak var pollQuestionLabel: UILabel!
     
+    @IBOutlet weak var verticalConstraint: NSLayoutConstraint!
     
     var pollID = ""
     var parentPollID = ""
@@ -233,6 +234,25 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if selectedRecipients.count > 0 {
+            
+        
+        verticalConstraint.constant = 80
+            
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            
+            verticalConstraint.constant = 150
+            
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+
+            
+        }
         
         return selectedRecipients.count
         

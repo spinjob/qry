@@ -64,12 +64,12 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+       
         
         
         let chartView = PieChartView()
-        
-        
-       // tableView.isHidden = true
         
     
         imagePicker.delegate = self
@@ -78,8 +78,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         let pollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls")
         let receivedPollsRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID).child("receivedPolls")
         let currentUserRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(currentUserID)
-        
-        let liveDecisionRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls")
+    
     
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.profileImageTapped(sender:)))
     
@@ -98,13 +97,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         numberOfAskedLabel.layer.masksToBounds = true
 
         
-        liveDecisionRef.queryOrdered(byChild:"sender").queryEqual(toValue: currentUserID).observe(.childAdded, with: {
-            snapshot in
-            let snapshotValue = snapshot.value as! NSDictionary
-            
-            
-        })
-        
+       
         
         userRef.observe(.value, with: {
             snapshot in
@@ -124,9 +117,9 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     })
     
+
+        
     
-        
-        
     pollsRef.queryOrdered(byChild: "senderUser").queryEqual(toValue: profileUserID).observe(.childAdded, with: {
             snapshot in
         
@@ -163,12 +156,15 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
             poll.minutesUntilExpiration = minutesLeft.minute!
             
-            FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.childAdded, with: {
+        
+            FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.value, with: {
                 
                 snapshot in
                 
+                print("Snapshot \(snapshot.children)")
+                
                 poll.answer1Count = Int(snapshot.childrenCount)
-                print("answer 1 count \(poll.answer1Count)")
+                print("answer 1 count ON LOAD \(poll.answer1Count)")
                 self.tableView.reloadData()
                 
             })
@@ -177,7 +173,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
                 snapshot in
                 
                 poll.answer2Count = Int(snapshot.childrenCount)
-                print("answer 2 count \(poll.answer1Count)")
+                print("answer 2 count ON LOAD \(poll.answer1Count)")
                 self.tableView.reloadData()
                 
             })
@@ -188,7 +184,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
                 
                 poll.undecidedCount = Int(snapshot.childrenCount)
                 
-                print("answer 2 count \(poll.answer1Count)")
+                print("answer 2 count ON LOAD \(poll.answer1Count)")
                 self.tableView.reloadData()
                 
                 
@@ -220,7 +216,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             })
 
             
-            if snapshotValue["expired"] as! String == "false" {
+            if poll.minutesUntilExpiration > 0 {
                 self.askedPolls.append(poll)
                 self.askedPolls = self.askedPolls.sorted(by: {$0.minutesUntilExpiration < $1.minutesUntilExpiration})
                 
@@ -345,6 +341,11 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     }
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
     return askedPolls.count
@@ -355,7 +356,8 @@ func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
 func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
     
-    return 80
+    return UITableViewAutomaticDimension
+    //return 100
     
 }
     
@@ -383,7 +385,10 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
     cell.groupCollectionView.tag = indexPath.row
     
-  
+    print("Poll \(pollForCell.questionString)")
+    print("Answer 1 Count \(pollForCell.answer1Count)")
+    print("Answer 2 Count \(pollForCell.answer2Count)")
+    
 
     let chartView = PieChartView()
     chartView.frame = CGRect(x: 0, y: 0, width: cell.answerPieChartView.frame.size.width, height: 62)
@@ -429,6 +434,51 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         let timerChartView = PieChartView()
         
         timerChartView.frame = CGRect(x: 0, y: 0, width: 52, height: 52)
+        
+        
+        if hoursLeft.hour! < 1 {
+            
+            cell.timeLeftAmountLabel.text = "\(minutesLeft.minute!)"
+            
+            if hoursLeft.hour! == 1{
+                cell.timeLeftUnitLabel.text = "min"
+            }
+            
+            cell.timeLeftUnitLabel.text = "mins"
+            
+        }
+        
+        
+        if daysLeft.day! > 1 {
+            cell.timeLeftAmountLabel.text = "\(daysLeft.day!)"
+            
+            cell.timeLeftUnitLabel.text = "days"
+            
+        }
+        
+        if daysLeft.day! == 1 {
+            cell.timeLeftAmountLabel.text = "\(daysLeft.day!)"
+            
+            cell.timeLeftUnitLabel.text = "day"
+            
+        }
+        
+        if hoursLeft.hour! > 1, daysLeft.day! < 1 {
+            
+            cell.timeLeftAmountLabel.text = "\(hoursLeft.hour!)"
+            
+            cell.timeLeftUnitLabel.text = "hours"
+        }
+        
+        if hoursLeft.hour! == 1 {
+            cell.timeLeftAmountLabel.text = "\(hoursLeft.hour!)"
+            
+            
+            cell.timeLeftUnitLabel.text = "hour"
+            
+            
+        }
+
         
         if percentageLeft < 10 {
             timerChartView.segments = [
@@ -525,7 +575,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
 
     
 @IBAction func followButtonTapped(_ sender: Any) {
-    
+   
     
     }
     
@@ -598,6 +648,16 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
     }
    
 
+    @IBAction func friendsButtonTapped(_ sender: Any) {
+        
+        
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "FriendsViewController") as! FriendsViewController
+        
+        myVC.profileUserID = currentUserID
+        
+        navigationController?.pushViewController(myVC, animated: true)
+        
+    }
     
     func profileImageTapped (sender: UITapGestureRecognizer) {
         imagePicker.sourceType = .savedPhotosAlbum
@@ -641,13 +701,24 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
         let logoutIconImageView = UIImageView()
         let logoutIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.logout(sender:)))
         
-        logoutIconImageView.frame = CGRect(x: 0, y: 0, width: 18, height: 18)
+        logoutIconImageView.frame = CGRect(x: 0, y: 0, width: 38, height: 18)
         logoutIconImageView.addGestureRecognizer(logoutIconTapGesture)
         logoutIconImageView.image = UIImage(named: "logout icon")
         
+        let backHomeIconImageView = UIImageView()
+        backHomeIconImageView.frame = CGRect(x: 0, y: 0, width: 18, height: 18)
+        let backHomeIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.backHome(sender:)))
+        backHomeIconImageView.addGestureRecognizer(backHomeIconTapGesture)
+        backHomeIconImageView.image = #imageLiteral(resourceName: "backIcon")
+        
+        
         
         if profileUserID == currentUserID {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: logoutIconImageView)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: logoutIconImageView)
+            
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: backHomeIconImageView)
+            
+            
         }
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
@@ -655,6 +726,27 @@ func linkViewTapped (sender : UITapGestureRecognizer) {
         
         
     }
+    
+    func backHome (sender: UITapGestureRecognizer) {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let controller = storyboard.instantiateViewController(withIdentifier: "UserHomeViewController") as! UserHomeViewController
+        let transition:CATransition = CATransition()
+    
+        
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+
+        
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+
+        
+    }
+    
     
     func logout(sender: UITapGestureRecognizer) {
         

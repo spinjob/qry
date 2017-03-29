@@ -51,14 +51,10 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     @IBOutlet weak var expiresLabel: UILabel!
     
-    @IBOutlet weak var answer1ImageView: UIImageView!
+    @IBOutlet weak var answer1ColorIndicatorView: UIView!
     
-    @IBOutlet weak var answer2ImageView: UIImageView!
     
-    @IBOutlet weak var answer1ImageViewCloseButton: UIButton!
-    
-    @IBOutlet weak var answer2ImageViewCloseButton: UIButton!
-    
+    @IBOutlet weak var answer2ColorIndicatorView: UIView!
     
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
     var featuredAnswersDict : [String:String] = ["Attending":"Not Attending", "👍":"👎","Chyeah":"Nah", "Going":"Can't Go", "🔥":"❄️"]
@@ -101,27 +97,21 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
         super.viewDidLoad()
         
+        answer1ColorIndicatorView.layer.cornerRadius = answer1ColorIndicatorView.layer.frame.width / 2
+        answer1ColorIndicatorView.layer.borderWidth = 1
+        answer1ColorIndicatorView.layer.borderColor = UIColor.white.cgColor
+        answer1ColorIndicatorView.layer.masksToBounds = true
+
+        
+        answer2ColorIndicatorView.layer.cornerRadius = answer2ColorIndicatorView.layer.frame.width / 2
+        answer2ColorIndicatorView.layer.borderWidth = 1
+        answer2ColorIndicatorView.layer.borderColor = UIColor.white.cgColor
+         answer2ColorIndicatorView.layer.masksToBounds = true
         
         
-        answer1ImageView.isHidden = true
-        answer1ImageView.layer.cornerRadius = 4
-        answer1ImageView.layer.masksToBounds = true
-        answer1ImageViewCloseButton.isHidden = true
-        answer1ImageViewCloseButton.layer.cornerRadius = answer1ImageViewCloseButton.layer.frame.width / 2
-        answer1ImageViewCloseButton.backgroundColor = UIColor.white
-        answer1ImageView.layer.borderWidth = 0.2
-        answer1ImageView.layer.borderColor = UIColor.init(hexString: "004687").cgColor
-        
-    
-        answer2ImageView.isHidden = true
-        answer2ImageView.layer.cornerRadius = 4
-        answer2ImageView.layer.masksToBounds = true
-        answer2ImageViewCloseButton.isHidden = true
-        answer2ImageViewCloseButton.layer.cornerRadius = answer1ImageViewCloseButton.layer.frame.width / 2
-        answer2ImageViewCloseButton.backgroundColor = UIColor.white
-        answer2ImageView.layer.borderWidth = 0.2
-        answer2ImageView.layer.borderColor = UIColor.init(hexString: "004687").cgColor
-        
+        takePictureButton.isHidden = true
+        uploadPictureButton.isHidden = true
+ 
 
         UIView.animate(withDuration: 0.8, animations: {
             self.headerLabel.alpha = 0
@@ -263,7 +253,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         let pickerLabel = UILabel()
         pickerLabel.textColor = UIColor(hexString: "00D1D5")
         pickerLabel.text = pickerData[row]
-        pickerLabel.font = UIFont(name: "ProximaNovaSoft-Medium", size: 20)
+        pickerLabel.font = UIFont(name: "ProximaNovaSoft-Bold", size: 15)
         pickerLabel.textAlignment = NSTextAlignment.center
         return pickerLabel
     }
@@ -538,13 +528,10 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
                         result in
                         let imageURL = URL(string: result["image"] as! String)
                         self.pollImage = result["image"] as! String
-                        self.answer1ImageView.sd_setImage(with: imageURL)
                         
                         UIView.animate(withDuration: 0.5) {
                             self.view.layoutIfNeeded()
                             self.featuredAnswerTableView.isHidden = true
-                            self.answer1ImageView.isHidden = false
-                            self.answer1ImageViewCloseButton.isHidden = false
                             self.answer1TextField.isHidden = true
                             self.answer1TextFieldVerticalConstraint.constant = 125
                             
@@ -570,13 +557,10 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
                         result in
                         let imageURL = URL(string: result["image"] as! String)
                         self.pollImage = result["image"] as! String
-                        self.answer2ImageView.sd_setImage(with: imageURL)
                         
                         UIView.animate(withDuration: 0.5) {
                             self.view.layoutIfNeeded()
                             self.featuredAnswerTableView.isHidden = true
-                            self.answer2ImageView.isHidden = false
-                            self.answer2ImageViewCloseButton.isHidden = false
                             self.answer2TextField.isHidden = true
                             self.answer2TextFieldVerticalConstraint.constant = 125
                             
@@ -601,35 +585,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
     }
     
-    @IBAction func answer1ImageViewCloseButtonTapped(_ sender: Any) {
-        
-        answer1ImageView.isHidden = true
-        answer1TextField.isHidden = false
-        answer1TextField.text = ""
-        answer1ImageViewCloseButton.isHidden = true
-        answer1TextFieldVerticalConstraint.constant = 21
-        
-       
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    @IBAction func answer2ImageViewCloseButtonTapped(_ sender: Any) {
-        
-        answer2ImageView.isHidden = true
-        answer2TextField.isHidden = false
-        answer2TextField.text = ""
-        answer2ImageViewCloseButton.isHidden = true
-        answer2TextFieldVerticalConstraint.constant = 21
-        
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
-        }
 
-    }
-    
-    
     
     
     

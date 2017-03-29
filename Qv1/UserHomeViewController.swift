@@ -60,12 +60,13 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         setUpNavigationBarItems()
         
-       // FIRMessaging.messaging().subscribe(toTopic: "topics/user_\(currentUserID!)")
+        FIRMessaging.messaging().subscribe(toTopic: "user_\(currentUserID!)")
         
         let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
         
         //set push notification ID
-       // ref.child(currentUserID!).child("deviceToken").setValue(FIRInstanceID.instanceID().token())
+
+        ref.child(currentUserID!).child("deviceToken").setValue(FIRInstanceID.instanceID().token())
         
         var newRecipient :[NSObject : AnyObject] = [ : ]
         var recipientID = ""
@@ -810,7 +811,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
            // binaryStringCell.groupMembersCollectionView.reloadData()
        
-        
+        tableView.reloadData()
     }
     
     func answer2ButtonTapped (sender: UIButton) {
@@ -873,7 +874,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer2")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerChoice").setValue("answer2")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerString").setValue(pollForRow.answer2String)
-       
+      
+         tableView.reloadData()
         
     }
     
