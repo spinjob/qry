@@ -43,7 +43,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var position2ChangeConversationButton: UIButton!
     
-    @IBOutlet weak var position3ChangeConversationButton: UIButton!
     
     @IBOutlet weak var position0ChangeConversationButton: UIButton!
 
@@ -52,8 +51,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var position1ChangeConversationLabel: UILabel!
     
     @IBOutlet weak var position2ChangeConversationLabel: UILabel!
-    
-    @IBOutlet weak var position3ChangeConversationLabel: UILabel!
+
     
     @IBOutlet weak var changeConversationView: UIView!
     
@@ -133,10 +131,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationItem.titleView?.addGestureRecognizer(tapGestureRecognizer)
         
 
-        position3ChangeConversationLabel.isHidden = true
-        position3ChangeConversationButton.isHidden = true
-        
-        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -290,9 +284,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             if userAnswer == "answer1" {
                 
                 self.position2ChangeConversationLabel.isHidden = true
-                self.position3ChangeConversationLabel.isHidden = true
                 self.position2ChangeConversationButton.isHidden = true
-                self.position3ChangeConversationButton.isHidden = true
                 
             }
             
@@ -306,8 +298,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             if userAnswer == "answer2" {
                 self.position1ChangeConversationLabel.isHidden = true
-                self.position3ChangeConversationLabel.isHidden = true
-                self.position3ChangeConversationButton.isHidden = true
                 self.position1ChangeConversationButton.isHidden = true
                 
             }
@@ -1310,25 +1300,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
 
-    @IBAction func changeConversationPosition3ButtonTapped(_ sender: Any) {
-        showEverybody = false
-        showAnswer1Users = false
-        showAnswer2Users = false
-        showUndecidedUsers = true
-        changeChatButton.imageView?.image = UIImage(named: "Undecided Conversation (Active)")
-        collectionView.reloadData()
-        tableView.reloadData()
-        
-        tableViewBottomConstraint.constant = 0
-        changeConversationView.isHidden = true
-        
-        UIView.animate(withDuration: 0.2) {
-            self.tableView.alpha = 0
-            self.collectionView.alpha = 0
-            self.tableView.alpha = 1
-            self.collectionView.alpha = 1
-        }
-    }
     
     @IBAction func changeConversationPosition0ButtonTapped(_ sender: Any) {
         showAnswer1Users = false

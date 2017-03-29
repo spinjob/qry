@@ -83,6 +83,8 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     var questionImage : UIImage = UIImage()
     
+    var questionStringFromHome : String = "none"
+    
     
     var imagePicker = UIImagePickerController()
     
@@ -96,6 +98,12 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        
+        if questionStringFromHome != "none" {
+            questionTextField.text = questionStringFromHome
+            nextButton.isHidden = false
+        }
         
         answer1ColorIndicatorView.layer.cornerRadius = answer1ColorIndicatorView.layer.frame.width / 2
         answer1ColorIndicatorView.layer.borderWidth = 1
@@ -174,7 +182,6 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
         
         expirationPicker.delegate = self
         expirationPicker.dataSource = self
-        nextButton.alpha = 0
         
         imageView.isHidden = true
         imageView.layer.borderWidth = 0.2

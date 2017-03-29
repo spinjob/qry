@@ -956,6 +956,7 @@ if indexPath.section == 0 {
         
         let notificationRequestDict : [NSObject : AnyObject]  = ["username" as NSObject: user as AnyObject, "message" as NSObject: message as AnyObject]
         
+        
         FIRDatabase.database().reference().child("notificationRequests").child(notificationRequestID).setValue(notificationRequestDict)
     
         

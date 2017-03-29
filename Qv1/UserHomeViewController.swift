@@ -15,13 +15,26 @@ import FirebaseMessaging
 import SDWebImage
 import SwiftLinkPreview
 
-class UserHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate {
+class UserHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var emptyStateView: UIView!
     
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var scrollView: UIScrollView!
+    
+    @IBOutlet weak var newDecisionTextView: UIView!
+    
+    @IBOutlet weak var newDecisionTextField: UITextField!
+    
+    @IBOutlet weak var newDecisionButton: UIButton!
+    
+    @IBOutlet weak var rightLayoutConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var bottomLayoutConstraint: NSLayoutConstraint!
+    
+    
+    var kbHeight = 0
     
     //current user data
     
@@ -59,6 +72,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         
         setUpNavigationBarItems()
+        
+        newDecisionButton.isHidden = true
         
         FIRMessaging.messaging().subscribe(toTopic: "user_\(currentUserID!)")
         
@@ -98,6 +113,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         tableView.delegate = self
         tableView.dataSource = self
+        newDecisionTextField.delegate = self
         tableView.estimatedRowHeight = 181
         tableView.rowHeight = UITableViewAutomaticDimension
         
@@ -227,6 +243,9 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
        
         delay(1, closure: {
     
@@ -973,6 +992,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
         })
         
+        
         myVC.poll = pollForRow
         myVC.chatMembers = pollForRow.groupMembers
         myVC.showEverybody = true
@@ -1080,6 +1100,41 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
+    func keyboardWasShown(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            
+            print("keyboardWasShown")
+            
+            if let keyboardSize =  (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+                kbHeight = Int(keyboardSize.height + 44)
+                self.animateTextFieldView(up: true)
+            }
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.deAnimateTextFieldView(up: true)
+        print("keyboardWillHide")
+    }
+    
+    
+    func animateTextFieldView(up: Bool) {
+        
+        UIView.animate(withDuration: 0.1, animations: {
+            self.bottomLayoutConstraint.constant = CGFloat(self.kbHeight)
+        })
+    }
+    
+    
+    func deAnimateTextFieldView(up: Bool) {
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.bottomLayoutConstraint.constant = 0
+        })
+    }
+    
+
+    
     
     func setUpNavigationBarItems () {
         
@@ -1184,6 +1239,60 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+       
+    }
+  
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let input = textField.text
+    
+        print("returned")
+ 
+        self.view.endEditing(true)
+        
+        return false
+    }
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(UserHomeViewController.getHintsFromTextField), object: textField)
+        
+        self.perform(#selector(UserHomeViewController.getHintsFromTextField), with: textField, afterDelay: 0.5)
+        
+        return true
+    }
+    
+    
+    func getHintsFromTextField(textField: UITextField) {
+        
+        let input = textField.text!
+        
+        if input != "" {
+            
+           rightLayoutConstraint.constant = 45
+           newDecisionButton.isHidden = false
+            UIView.animate(withDuration: 0.1) {
+                self.view.layoutIfNeeded()
+            }
+            
+           
+        } else {
+            rightLayoutConstraint.constant = 8
+            newDecisionButton.isHidden = true
+            UIView.animate(withDuration: 0.1) {
+                self.view.layoutIfNeeded()
+            }
+            
+        }
+        
+           
+    }
+    
+    
+    
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         
         guard let indexPath = tableView.indexPathForRow(at: location) else {return nil}
@@ -1235,6 +1344,19 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         //tableView.reloadData()
        // tableView.updateConstraints()
         
+        
+    }
+    
+    
+    @IBAction func newDecisionButtonTapped(_ sender: Any) {
+        
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "CreatePollViewController") as! CreatePollViewController
+        
+        print("\(newDecisionTextField.text)")
+        
+        myVC.questionStringFromHome = newDecisionTextField.text!
+        
+        navigationController?.pushViewController(myVC, animated: true)
         
     }
     
