@@ -21,6 +21,7 @@ class ProfileLiveDecisionTableViewCell: UITableViewCell {
 
     @IBOutlet weak var groupCollectionView: UICollectionView!
     @IBOutlet weak var timerViewCenterView: UIView!
+    @IBOutlet weak var timeOrDateLabel: UILabel!
     
     @IBOutlet weak var timeLeftAmountLabel: UILabel!
     @IBOutlet weak var timeLeftUnitLabel: UILabel!

@@ -21,6 +21,8 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     @IBOutlet weak var featuredAnswerTableView: UITableView!
     @IBOutlet weak var nextButton: UIButton!
   
+    @IBOutlet weak var pollOutlineView: UIView!
+    
     @IBOutlet weak var expirationPicker: UIPickerView!
 
     @IBOutlet weak var pollImageView: UIImageView!
@@ -47,14 +49,18 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
-    @IBOutlet weak var headerLabel: UILabel!
-    
     @IBOutlet weak var expiresLabel: UILabel!
     
     @IBOutlet weak var answer1ColorIndicatorView: UIView!
     
-    
     @IBOutlet weak var answer2ColorIndicatorView: UIView!
+    
+    
+    let brightGreen = UIColor.init(hexString: "A8E855")
+    let red = UIColor.init(hexString: "FF4E56")
+    let actionGreen = UIColor.init(hexString: "00D1D5")
+    let blue = UIColor.init(hexString: "004488")
+    let grey = UIColor.init(hexString: "D8D8D8")
     
     var featuredAnswers : [String] = ["Attending","Not Attending", "👍","👎","Chyeah","Nah", "Going","Can't Go", "🔥","❄️"]
     var featuredAnswersDict : [String:String] = ["Attending":"Not Attending", "👍":"👎","Chyeah":"Nah", "Going":"Can't Go", "🔥":"❄️"]
@@ -98,7 +104,11 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+
+//        pollOutlineView.layer.borderWidth = 0.5
+//        pollOutlineView.layer.borderColor = grey.cgColor
+//        pollOutlineView.layer.cornerRadius = 4
+//        pollOutlineView.layer.masksToBounds = true
         
         if questionStringFromHome != "none" {
             questionTextField.text = questionStringFromHome
@@ -122,7 +132,7 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
  
 
         UIView.animate(withDuration: 0.8, animations: {
-            self.headerLabel.alpha = 0
+
             self.answer1TextField.alpha = 0
             self.answer2TextField.alpha = 0
             self.questionTextField.alpha = 0
@@ -132,7 +142,6 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
             self.expiresLabel.alpha = 0
             self.featuredAnswerTableView.alpha = 0
             
-            self.headerLabel.alpha = 1
             self.answer1TextField.alpha = 1
             self.answer2TextField.alpha = 1
             self.questionTextField.alpha = 1

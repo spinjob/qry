@@ -912,6 +912,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.chatMemberImageView.layer.masksToBounds = true
             cell.chatMemberFirstNameLabel.text = self.chatMembers[indexPath.item].recipientName
             cell.chatMemberAnswerIndicator.layer.cornerRadius = cell.chatMemberAnswerIndicator.layer.frame.size.width / 2
+            cell.chatMemberAnswerIndicator.layer.borderWidth = 1
+            cell.chatMemberAnswerIndicator.layer.borderColor = UIColor.white.cgColor
         
         chatMemberVoteRef.observe(.value, with: {
             snapshot in

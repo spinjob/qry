@@ -361,7 +361,7 @@ func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) ->
     
 }
     
-    
+  
 
 func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
@@ -407,18 +407,46 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
     let date = Date()
     let formatter = DateFormatter()
+    let timeFormatter = DateFormatter()
+    let dateFormatter = DateFormatter()
     let calendar = Calendar.current
     
+    timeFormatter.dateStyle = .none
+    timeFormatter.timeStyle = .short
+    
+    dateFormatter.dateStyle = .short
+    dateFormatter.timeStyle = .none
     
     formatter.dateStyle = .short
     formatter.timeStyle = .short
-    let dateString = formatter.string(from: date)
+    
     
     let pollForCellDateExpired = formatter.date(from: pollForCell.dateExpired)
     let pollForCellDateCreated = formatter.date(from: pollForCell.dateCreated)
     
+    let dateString = formatter.string(from: date)
+    let onlyTimeString = timeFormatter.string(from: pollForCellDateCreated!)
+    let onlyDateString = dateFormatter.string(from: pollForCellDateCreated!)
+    
+   
+    
     let currentDate = formatter.date(from: dateString)
     
+    
+    //time from when the poll was sent
+    let hoursSince = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateCreated!)
+    let minutesSince = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateCreated!)
+    let daysSince = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateCreated!)
+    
+    if hoursSince.hour! > 24 {
+        cell.timeOrDateLabel.text = onlyDateString
+    } else {
+        cell.timeOrDateLabel.text = onlyTimeString
+    }
+    
+    
+    //time left until expiration
+
     let hoursLeft = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateExpired!)
     let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
     let daysLeft = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateExpired!)
@@ -428,6 +456,8 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
     let percentageLeft : Double = (minutesLeftDouble / minutesTotalDouble)*100
 
+    
+    
     
     if minutesLeft.minute! > 0 {
         
@@ -510,6 +540,69 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     }
 
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        //        let tableViewSection = indexPath.section
+        //
+        //        let tableViewRow = indexPath.row
+        //
+        //        let thread = threads[tableViewSection]
+        //        let pollArrayForThread = threadDict[thread]!
+        //        let pollForRow = pollArrayForThread[tableViewRow]
+        //        let indexPathForPoll = IndexPath(row: tableViewRow, section: tableViewSection)
+        
+        
+        let pollForRow = askedPolls[indexPath.row]
+        
+        print("\(pollForRow.pollID)")
+    
+        let end = UITableViewRowAction(style: .normal, title: "End") { action, index in
+            print("end poll tapped")
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            let calendar = Calendar.current
+            let dateString = formatter.string(from: date)
+            
+            
+            self.expirePoll(pollID: pollForRow.pollID)
+            
+            FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("expired").setValue("true")
+            FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("expirationDate").setValue(dateString)
+            
+
+            pollForRow.isExpired = true
+            
+           
+            
+            UIView.animate(withDuration: 0.1) {
+                
+                self.view.layoutIfNeeded()
+            }
+            
+            
+        }
+        
+      return [end]
+    }
+    
+    func expirePoll (pollID : String) {
+        
+        FIRDatabase.database().reference().child("polls").child(pollID).child("expired").setValue("true")
+        
+        
+        tableView.reloadData()
+        
+        
+    }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

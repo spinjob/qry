@@ -15,8 +15,12 @@ import FirebaseMessaging
 import SDWebImage
 import SwiftLinkPreview
 
-class UserHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, UITextFieldDelegate {
+class UserHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate {
 
+    
+    //removed UIViewControllerPreviewingDelegate
+    
+    
     @IBOutlet weak var emptyStateView: UIView!
     
     @IBOutlet weak var tableView: UITableView!
@@ -66,6 +70,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     var threadDict : [String : [Poll]] = ["":[]]
     
     var threadCountDict : [String: Int] = ["": 0]
+    
+    var receivedPolls : [Poll] = []
 
     
     override func viewDidLoad() {
@@ -87,6 +93,87 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         var recipientID = ""
 
         
+        currentUserReceivedPollsRef.observe(.childAdded, with: {
+            snapshot in
+            
+            let snapshotValue = snapshot.value as! NSDictionary
+            
+            let poll = Poll()
+            poll.answer1String = snapshotValue["answer1"] as! String
+            poll.answer2String = snapshotValue["answer2"] as! String
+            poll.questionString = snapshotValue["question"] as! String
+            poll.senderUser = snapshotValue["senderUser"] as! String
+            poll.pollImageURL = snapshotValue["pollImageURL"] as! String
+            poll.pollID = snapshot.key
+            poll.pollURL = snapshotValue["pollURL"] as! String
+            poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
+            poll.dateExpired = snapshotValue["expirationDate"] as! String
+            poll.dateCreated = snapshotValue["dateCreated"] as! String
+            
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            let calendar = Calendar.current
+            let dateString = formatter.string(from: date)
+            
+            let pollForCellDateExpired = formatter.date(from: poll.dateExpired)
+            let currentDate = formatter.date(from: dateString)
+            let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
+            poll.minutesUntilExpiration = minutesLeft.minute!
+            
+            poll.createdDate = formatter.date(from: poll.dateCreated)!
+            
+            
+            FIRDatabase.database().reference().child("polls").observe(.childAdded, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+            
+            if snapshotValue["expired"] as! String == "true" {
+                poll.isExpired = true
+            }else {
+                poll.isExpired = false
+            }
+
+            })
+            
+            FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").observe(.childAdded, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                let recipient = Recipient()
+                
+                recipient.recipientID = snapshotValue["recipientID"] as! String
+                recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+                recipient.recipientName = snapshotValue["recipientName"] as! String
+                recipient.vote = snapshotValue["voteString"] as! String
+                
+                
+                if poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID})
+                { print("group already added")
+                    
+                } else {
+                    
+                    poll.groupMembers.append(recipient)
+                    poll.groupMembers = poll.groupMembers.sorted(by: {$0.vote < $1.vote})
+                    
+                    if self.receivedPolls.contains(where: { $0.pollID == poll.pollID})
+                    { print("poll already added")
+                        
+                    } else {
+                        
+                        self.receivedPolls.append(poll)
+                        self.receivedPolls = self.receivedPolls.sorted(by: {$0.minutesUntilExpiration > $1.minutesUntilExpiration})
+                        
+                        self.tableView.reloadData()
+                        
+                    }
+
+                }
+                
+            })
+
+        })
+        
         ref.observe(.childAdded, with: {
             snapshot in
             
@@ -104,137 +191,141 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
             
         })
-        
-        if( traitCollection.forceTouchCapability == .available){
-            
-            registerForPreviewing(with: self as! UIViewControllerPreviewingDelegate, sourceView: view)
-            
-        }
+//        
+//        if( traitCollection.forceTouchCapability == .available){
+//            
+//            registerForPreviewing(with: self as! UIViewControllerPreviewingDelegate, sourceView: view)
+//            
+//        }
         
         tableView.delegate = self
         tableView.dataSource = self
         newDecisionTextField.delegate = self
         tableView.estimatedRowHeight = 181
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = UIView()
         
-        threadDict.removeAll()
+//        threadDict.removeAll()
         
         FIRDatabase.database().reference().child("users")
     
-        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").observe(.childAdded, with: {
-            snapshot in
-            
-            let threadID = snapshot.key
-            let threadCount = Int(snapshot.childrenCount)
-            
-            self.threadCountDict[threadID] = threadCount
-            
-            if self.threads.count == 0 {
-                self.emptyStateView.isHidden = false
-                self.tableView.isHidden = true
-                
-            } else {
-                self.tableView.isHidden = false
-               self.emptyStateView.isHidden = true
-            }
-            
-            FIRDatabase.database().reference().child("threads").child(threadID).observe(.childAdded, with: {
-                snapshot in
-                
-                
-                let snapshotValue = snapshot.value as! NSDictionary
-                
-                let poll = Poll()
-                poll.answer1String = snapshotValue["answer1"] as! String
-                poll.answer2String = snapshotValue["answer2"] as! String
-                poll.questionString = snapshotValue["question"] as! String
-                poll.senderUser = snapshotValue["senderUser"] as! String
-                poll.pollImageURL = snapshotValue["pollImageURL"] as! String
-                poll.pollID = snapshot.key
-                poll.pollURL = snapshotValue["pollURL"] as! String
-                poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
-                poll.dateExpired = snapshotValue["expirationDate"] as! String
-                poll.dateCreated = snapshotValue["dateCreated"] as! String
-                
-                let date = Date()
-                let formatter = DateFormatter()
-                formatter.dateStyle = .short
-                formatter.timeStyle = .short
-                let calendar = Calendar.current
-                let dateString = formatter.string(from: date)
-                
-                let pollForCellDateExpired = formatter.date(from: poll.dateExpired)
-                let currentDate = formatter.date(from: dateString)
-                let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
-                poll.minutesUntilExpiration = minutesLeft.minute!
-                
-                poll.createdDate = formatter.date(from: poll.dateCreated)!
+//        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").observe(.childAdded, with: {
+//            snapshot in
+//            
+//            let threadID = snapshot.key
+//            let threadCount = Int(snapshot.childrenCount)
+//            
+//            self.threadCountDict[threadID] = threadCount
+//            
+//            
+//            if self.threads.count == 0 {
+//                self.emptyStateView.isHidden = false
+//                self.tableView.isHidden = true
+//                
+//            } else {
+//                self.tableView.isHidden = false
+//               self.emptyStateView.isHidden = true
+//            }
+//            
+//            FIRDatabase.database().reference().child("threads").child(threadID).observe(.childAdded, with: {
+//                snapshot in
+//                
+//                
+//                let snapshotValue = snapshot.value as! NSDictionary
+//                
+//                let poll = Poll()
+//                poll.answer1String = snapshotValue["answer1"] as! String
+//                poll.answer2String = snapshotValue["answer2"] as! String
+//                poll.questionString = snapshotValue["question"] as! String
+//                poll.senderUser = snapshotValue["senderUser"] as! String
+//                poll.pollImageURL = snapshotValue["pollImageURL"] as! String
+//                poll.pollID = snapshot.key
+//                poll.pollURL = snapshotValue["pollURL"] as! String
+//                poll.pollQuestionImageURL = snapshotValue["questionImageURL"] as! String
+//                poll.dateExpired = snapshotValue["expirationDate"] as! String
+//                poll.dateCreated = snapshotValue["dateCreated"] as! String
+//                
+//                let date = Date()
+//                let formatter = DateFormatter()
+//                formatter.dateStyle = .short
+//                formatter.timeStyle = .short
+//                let calendar = Calendar.current
+//                let dateString = formatter.string(from: date)
+//                
+//                let pollForCellDateExpired = formatter.date(from: poll.dateExpired)
+//                let currentDate = formatter.date(from: dateString)
+//                let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
+//                poll.minutesUntilExpiration = minutesLeft.minute!
+//                
+//                poll.createdDate = formatter.date(from: poll.dateCreated)!
+//
+//                if snapshotValue["hasChildren"] as! String == "true" {
+//                    poll.hasChildren = true
+//                    
+//                } else {
+//                    poll.hasChildren = false
+//                }
+//
+//                
+//                if snapshotValue["expired"] as! String == "true" {
+//                    poll.isExpired = true
+//                }else {
+//                    poll.isExpired = false
+//                }
+//
+//                if snapshotValue["isThreadParent"] as! String == "true" {
+//                    poll.isThreadParent = true
+//                } else {
+//                    poll.isThreadParent = false
+//                }
+//            
+//                
+//               
+//                if self.threadDict[threadID] == nil {
+//                
+//                    self.threadDict[threadID] = [poll]
+//                    self.threads.append(threadID)
+//
+//                    
+//                } else  {
+//                    self.threadDict[threadID]!.append(poll)
+//                    
+//                    self.threadDict[threadID]! = self.threadDict[threadID]!.sorted(by: {$0.createdDate < $1.createdDate})
+//                    //self.tableView.reloadData()
+//                    
+//                }
+//                
+//                
+//                FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").observe(.childAdded, with: {
+//                    snapshot in
+//                    let snapshotValue = snapshot.value as! NSDictionary
+//                    let recipient = Recipient()
+//                    
+//                    recipient.recipientID = snapshotValue["recipientID"] as! String
+//                    recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+//                    recipient.recipientName = snapshotValue["recipientName"] as! String
+//                    recipient.vote = snapshotValue["voteString"] as! String
+//                    
+//                    
+//                    if poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID})
+//                    { print("group already added")
+//                        
+//                    } else {
+//                        
+//                        poll.groupMembers.append(recipient)
+//                        poll.groupMembers = poll.groupMembers.sorted(by: {$0.vote < $1.vote})
+//                        
+//                        
+//                        self.tableView.reloadData()
+//                        
+//                    }
+//                    
+//                })
+//                
+//        })
 
-                if snapshotValue["hasChildren"] as! String == "true" {
-                    poll.hasChildren = true
-                    
-                } else {
-                    poll.hasChildren = false
-                }
-
-                
-                if snapshotValue["expired"] as! String == "true" {
-                    poll.isExpired = true
-                }else {
-                    poll.isExpired = false
-                }
-
-                if snapshotValue["isThreadParent"] as! String == "true" {
-                    poll.isThreadParent = true
-                } else {
-                    poll.isThreadParent = false
-                }
-            
-                
-               
-                if self.threadDict[threadID] == nil {
-                
-                    self.threadDict[threadID] = [poll]
-                    self.threads.append(threadID)
-
-                    
-                } else  {
-                    self.threadDict[threadID]!.append(poll)
-                    
-                    self.threadDict[threadID]! = self.threadDict[threadID]!.sorted(by: {$0.createdDate < $1.createdDate})
-                    //self.tableView.reloadData()
-                    
-                }
-                
-                
-                FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").observe(.childAdded, with: {
-                    snapshot in
-                    let snapshotValue = snapshot.value as! NSDictionary
-                    let recipient = Recipient()
-                    
-                    recipient.recipientID = snapshotValue["recipientID"] as! String
-                    recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
-                    recipient.recipientName = snapshotValue["recipientName"] as! String
-                    recipient.vote = snapshotValue["voteString"] as! String
-                    
-                    
-                    if poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID})
-                    { print("group already added")
-                        
-                    } else {
-                        
-                        poll.groupMembers.append(recipient)
-                        poll.groupMembers = poll.groupMembers.sorted(by: {$0.vote < $1.vote})
-                        self.tableView.reloadData()
-                        
-                    }
-                    
-                })
-                
-        })
-
-
-        })
+//
+//        })
         
     
         
@@ -249,25 +340,25 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
        
         delay(1, closure: {
     
-            if self.threads.count == 0 {
-                
-                UIView.animate(withDuration: 0.2, animations: {
-                    
-                    self.emptyStateView.alpha = 0
-                    self.emptyStateView.isHidden = false
-                    self.emptyStateView.alpha = 1
-                    self.tableView.isHidden = true
-                    
-                })
-                
-                
-            } else {
-                self.tableView.alpha = 0
-                 self.tableView.isHidden = false
-                self.tableView.alpha = 1
-               
-                self.emptyStateView.isHidden = true
-            }
+//            if self.threads.count == 0 {
+//                
+//                UIView.animate(withDuration: 0.2, animations: {
+//                    
+//                    self.emptyStateView.alpha = 0
+//                    self.emptyStateView.isHidden = false
+//                    self.emptyStateView.alpha = 1
+//                    self.tableView.isHidden = true
+//                    
+//                })
+//                
+//                
+//            } else {
+//                self.tableView.alpha = 0
+//                 self.tableView.isHidden = false
+//                self.tableView.alpha = 1
+//               
+//                self.emptyStateView.isHidden = true
+//            }
             
         })
      
@@ -275,19 +366,21 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let threadID = threads[section]
-
-        if self.threadCountDict[threadID]! == 0 {
-            tableView.backgroundView = imageView
-        }
+//        let threadID = threads[section]
+//
+//        if self.threadCountDict[threadID]! == 0 {
+//            tableView.backgroundView = imageView
+//        }
+//        
+//       return self.threadCountDict[threadID]!
         
-       return self.threadCountDict[threadID]!
+        return receivedPolls.count
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return threads.count
-    }
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        
+//        return threads.count
+//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -295,10 +388,12 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
-        let threadID = threads[indexPath.section]
-        let pollArrayForThread = self.threadDict[threadID]
-
-        let pollForCell : Poll = (pollArrayForThread?[indexPath.row])!
+//        let threadID = threads[indexPath.section]
+//        let pollArrayForThread = self.threadDict[threadID]
+//
+//        let pollForCell : Poll = (pollArrayForThread?[indexPath.row])!
+        
+        let pollForCell : Poll = receivedPolls[indexPath.row]
         
 
         let pollForCellRef = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID)
@@ -449,9 +544,11 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         binaryStringCell.senderImageView.layer.cornerRadius = binaryStringCell.senderImageView.layer.frame.width / 2
         binaryStringCell.senderImageView.layer.masksToBounds = true
+        binaryStringCell.senderImageView.tag = indexPath.row
         
         expiredCell.senderImageView.layer.cornerRadius = binaryStringCell.senderImageView.layer.frame.width / 2
         expiredCell.senderImageView.layer.masksToBounds = true
+        expiredCell.senderImageView.tag = indexPath.row
         
         //chatButton
         let chatImageViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.chatIconTapped(sender:)))
@@ -592,10 +689,10 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
                 binaryStringCell.timeLeftNumberLabel.text = "\(minutesLeft.minute!)"
                 
                 if hoursLeft.hour! == 1{
-                    binaryStringCell.timeLeftUnitLabel.text = "minute"
+                    binaryStringCell.timeLeftUnitLabel.text = "min"
                 }
                 
-                binaryStringCell.timeLeftUnitLabel.text = "minutes"
+                binaryStringCell.timeLeftUnitLabel.text = "mins"
                 
             }
             
@@ -710,14 +807,14 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        let tableViewSection = collectionView.superview!.tag
-        let thread = threads[collectionView.superview!.tag]
-        let pollArrayForThread = threadDict[thread]!
-
-        let pollForCell = pollArrayForThread[collectionView.tag]
-        print("CollectionView Tag\(collectionView.tag)")
+//        let tableViewSection = collectionView.superview!.tag
+//        let thread = threads[collectionView.superview!.tag]
+//        let pollArrayForThread = threadDict[thread]!
+//
+//        let pollForCell = pollArrayForThread[collectionView.tag]
         
-        print(pollForCell.questionString)
+        let pollForCell = receivedPolls[collectionView.tag]
+
 
         return pollForCell.groupMembers.count
     }
@@ -725,36 +822,38 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let tableViewSection = collectionView.superview!.tag
-        let tableViewRow = collectionView.tag
-        let thread = threads[collectionView.superview!.tag]
-        let pollArrayForThread = threadDict[thread]!
-        let pollForCell = pollArrayForThread[collectionView.tag]
+//        let tableViewSection = collectionView.superview!.tag
+//        let tableViewRow = collectionView.tag
+//        let thread = threads[collectionView.superview!.tag]
+//        let pollArrayForThread = threadDict[thread]!
+//        let pollForCell = pollArrayForThread[collectionView.tag]
+        
+        let pollForCell = receivedPolls[collectionView.tag]
         let recipientForCollectionCell = pollForCell.groupMembers[indexPath.item]
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "newGroupMemberCollectionViewCell", for: indexPath) as! PollRecipientCollectionViewCell
 
      
-        cell.answerIndicatorImageView.layer.borderWidth = 0.8
+        cell.answerIndicatorImageView.layer.borderWidth = 1
         cell.answerIndicatorImageView.layer.borderColor = UIColor.white.cgColor
-        cell.recipientImageView.layer.borderWidth = 1
+        cell.recipientImageView.layer.borderWidth = 0
         cell.recipientImageView.layer.borderColor = UIColor.white.cgColor
 
 
         if recipientForCollectionCell.vote == "no vote" {
             
-            cell.answerIndicatorImageView.backgroundColor = grey
-          
+            //cell.answerIndicatorImageView.backgroundColor = grey
+            cell.answerIndicatorImageView.isHidden = true
             
         } else if recipientForCollectionCell.vote == "answer1" {
             
             cell.answerIndicatorImageView.backgroundColor = brightGreen
-
+            cell.answerIndicatorImageView.isHidden = false
             
         } else if recipientForCollectionCell.vote == "answer2" {
             
             cell.answerIndicatorImageView.backgroundColor = red
- 
+            cell.answerIndicatorImageView.isHidden = false
         }
 
         cell.answerIndicatorImageView.layer.cornerRadius = cell.answerIndicatorImageView.layer.frame.width / 2
@@ -770,24 +869,24 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func answer1ButtonTapped (sender: UIButton) {
     
-        
-        let tableViewSection = sender.superview!.tag
+        let tableViewSection = 0
         let tableViewRow = sender.tag
-        let thread = threads[sender.superview!.tag]
-        let pollArrayForThread = threadDict[thread]!
-        let pollForRow = pollArrayForThread[sender.tag]
-        let indexPath = IndexPath(row: tableViewRow, section: tableViewSection)
+        let indexPath = IndexPath(row: sender.tag, section: 0)
+        let pollForRow = receivedPolls[sender.tag]
+//        
+//        let tableViewSection = sender.superview!.tag
+//        let tableViewRow = sender.tag
+//        let thread = threads[sender.superview!.tag]
+//        let pollArrayForThread = threadDict[thread]!
+//        let pollForRow = pollArrayForThread[sender.tag]
+//        let indexPath = IndexPath(row: tableViewRow, section: tableViewSection)
     
-        
-        tableView.reloadRows(at: [indexPath], with: .fade)
-        
-        updatePollVotes(indexPath: indexPath)
-        
+//        tableView.reloadRows(at: [indexPath], with: .fade)
         
         let buttonIndexPath = IndexPath(row: tableViewRow, section: tableViewSection)
         let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
         
-        binaryStringCell.groupMembersCollectionView.reloadData()
+       // binaryStringCell.groupMembersCollectionView.reloadData()
         
         FIRDatabase.database().reference().child("users").child(pollForRow.senderUser).observe(.value, with: {
             snapshot in
@@ -825,26 +924,31 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
     FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("votes").child(currentUserID!).child("voteString").setValue("answer1")
 
-        FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerChoice").setValue("answer1")
-        FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerString").setValue(pollForRow.answer1String)
+    FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerChoice").setValue("answer1")
+    FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerString").setValue(pollForRow.answer1String)
         
-           // binaryStringCell.groupMembersCollectionView.reloadData()
+        updatePollVotes(indexPath: indexPath)
        
-        tableView.reloadData()
+        //tableView.reloadData()
     }
     
     func answer2ButtonTapped (sender: UIButton) {
        
-        let tableViewSection = sender.superview!.tag
+        let tableViewSection = 0
         let tableViewRow = sender.tag
-        let thread = threads[sender.superview!.tag]
-        let pollArrayForThread = threadDict[thread]!
-        let pollForRow = pollArrayForThread[sender.tag]
-        let indexPath = IndexPath(row: tableViewRow, section: tableViewSection)
+        let indexPath = IndexPath(row: sender.tag, section: 0)
+        let pollForRow = receivedPolls[sender.tag]
+//
+//      let tableViewSection = sender.superview!.tag
+//      let tableViewRow = sender.tag
+//      let thread = threads[sender.superview!.tag]
+//      let pollArrayForThread = threadDict[thread]!
+//      let pollForRow = pollArrayForThread[sender.tag]
+//      let indexPath = IndexPath(row: tableViewRow, section: tableViewSection)
         
-        tableView.reloadRows(at: [indexPath], with: .fade)
         
-        updatePollVotes(indexPath: indexPath)
+        
+       // tableView.reloadRows(at: [indexPath], with: .fade)
         
         
         let buttonIndexPath = IndexPath(row: tableViewRow, section: tableViewSection)
@@ -894,21 +998,28 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerChoice").setValue("answer2")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollForRow.pollID).child("answerString").setValue(pollForRow.answer2String)
       
-         tableView.reloadData()
+        updatePollVotes(indexPath: indexPath)
+       //  tableView.reloadData()
         
     }
     
     func answeredViewTapped (sender: UITapGestureRecognizer) {
         
-        let tableViewSection = sender.view?.superview?.tag
         
+        let tableViewSection = 0
         let tableViewRow = sender.view?.tag
-        
-        let thread = threads[tableViewSection!]
-        let pollArrayForThread = threadDict[thread]!
-        let pollForRow = pollArrayForThread[tableViewRow!]
+        let indexPath = IndexPath(row: tableViewRow!, section: 0)
+        let pollForRow = receivedPolls[tableViewRow!]
 
-        let buttonIndexPath = IndexPath(row: tableViewRow!, section: tableViewSection!)
+//        let tableViewSection = sender.view?.superview?.tag
+//        
+//        let tableViewRow = sender.view?.tag
+//        
+//        let thread = threads[tableViewSection!]
+//        let pollArrayForThread = threadDict[thread]!
+//        let pollForRow = pollArrayForThread[tableViewRow!]
+
+        let buttonIndexPath = IndexPath(row: tableViewRow!, section: tableViewSection)
 
         let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
         
@@ -957,13 +1068,15 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func chatIconTapped (sender: UITapGestureRecognizer) {
         
-        let tableViewSection = sender.view?.superview?.tag
-        
+//        let tableViewSection = sender.view?.superview?.tag
+//        
         let tableViewRow = sender.view?.tag
+//        
+//        let thread = threads[tableViewSection!]
+//        let pollArrayForThread = threadDict[thread]!
+//        let pollForRow = pollArrayForThread[tableViewRow!]
         
-        let thread = threads[tableViewSection!]
-        let pollArrayForThread = threadDict[thread]!
-        let pollForRow = pollArrayForThread[tableViewRow!]
+        let pollForRow = receivedPolls[tableViewRow!]
         
         let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
         
@@ -1008,46 +1121,88 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
        
-        let tableViewSection = indexPath.section
-        
-        let tableViewRow = indexPath.row
-        
-        let thread = threads[tableViewSection]
-        let pollArrayForThread = threadDict[thread]!
-        let pollForRow = pollArrayForThread[tableViewRow]
+//        let tableViewSection = indexPath.section
+//        
+//        let tableViewRow = indexPath.row
+//        
+//        let thread = threads[tableViewSection]
+//        let pollArrayForThread = threadDict[thread]!
+//        let pollForRow = pollArrayForThread[tableViewRow]
+//        let indexPathForPoll = IndexPath(row: tableViewRow, section: tableViewSection)
 
+      
+        let pollForRow = receivedPolls[indexPath.row]
+        
+        print(pollForRow.isExpired)
+        print(pollForRow.minutesUntilExpiration)
 
         
-        let delete = UITableViewRowAction(style: .normal, title: "Leave") { action, index in
+        let leave = UITableViewRowAction(style: .normal, title: "Leave") { action, index in
             print("delete group tapped")
             
-            let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(pollForRow.pollID)
+//         let threadRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(thread).child(pollForRow.pollID)
+//            
+//
+//         self.threadDict[thread] = self.threadDict[thread]?.filter() {$0 !== pollForRow}
             
-            ref.removeValue()
+        let receivedPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(pollForRow.pollID)
             
-            self.deletePoll(poll: pollForRow)
+            self.receivedPolls = self.receivedPolls.filter({$0 !== pollForRow})
+            
+            receivedPollRef.removeValue()
             
             tableView.reloadData()
             
+            
             UIView.animate(withDuration: 0.1) {
+                
                 self.view.layoutIfNeeded()
             }
             
             
         }
         
-        delete.backgroundColor = UIColor.init(hexString: "FF4E56")
+        let end = UITableViewRowAction(style: .normal, title: "End") { action, index in
+            print("end poll tapped")
+            
+            
+            let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForRow.pollID)
+            
+            
+            pollRef.child("expired").setValue("true")
+            
+            self.receivedPolls[indexPath.row].isExpired = true
+            
+            tableView.reloadData()
+            
+            
+            UIView.animate(withDuration: 0.1) {
+                
+                self.view.layoutIfNeeded()
+            }
+            
+            
+        }
         
+        leave.backgroundColor = red
         
-        return [delete]
+        end.backgroundColor = grey
+        
+        if pollForRow.senderUser == currentUserID, pollForRow.minutesUntilExpiration > 0 {
+            
+            return [end]
+        }
+        
+       
+        return [leave]
         
         
     }
     
     
-    func deletePoll(poll: Poll) {
-
+    func deletePoll(indexPath: IndexPath) {
         
+    
         
     }
 
@@ -1069,30 +1224,34 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func userImageTapped (sender : UITapGestureRecognizer) {
         
-        print("image tapped")
-        
-        let tableViewSection = sender.view?.superview?.tag
+//      let tableViewSection = sender.view?.superview?.tag
         
         let tableViewRow = sender.view?.tag
         
-        let buttonIndexPath = IndexPath(row: tableViewRow!, section: tableViewSection!)
+//      let threadID = threads[tableViewSection!]
+//      let pollArrayForThread = threadDict[threadID]
+//      let pollForCell = pollArrayForThread?[tableViewRow!]
         
-        let binaryStringCell = tableView.cellForRow(at: buttonIndexPath) as! StringPollTableViewCell
+        let pollForCell = receivedPolls[tableViewRow!]
         
-        let threadID = threads[tableViewSection!]
-        let pollArrayForThread = threadDict[threadID]
-        let pollForCell = pollArrayForThread?[tableViewRow!]
+        print(pollForCell.questionString)
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
         let transition:CATransition = CATransition()
         
-        controller.profileUserID = (pollForCell?.senderUser)!
+        controller.profileUserID = (pollForCell.senderUser)
             
         transition.duration = 0.3
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionMoveIn
-        transition.subtype = kCATransitionFromRight
+        
+        if pollForCell.senderUser == currentUserID {
+            transition.subtype = kCATransitionFromLeft
+        } else {
+            transition.subtype = kCATransitionFromRight
+        }
+        
         self.navigationController!.view.layer.add(transition, forKey: kCATransition)
         self.navigationController?.pushViewController(controller, animated: false)
         
@@ -1293,44 +1452,45 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        
-        guard let indexPath = tableView.indexPathForRow(at: location) else {return nil}
-        guard let cell = tableView.cellForRow(at: indexPath) else {return nil}
-        guard let detailVC = storyboard?.instantiateViewController(withIdentifier: "PollImageDetailViewController") as? PollImageDetailViewController else { return nil }
-        
-        let thread = threads[indexPath.section]
-        
-        let pollArrayForThread = threadDict[thread]
-        
-        let pollForCell = pollArrayForThread?[indexPath.row]
-        
-        let photoURL =  pollForCell?.pollQuestionImageURL
-        
-        
-        detailVC.photoURL = photoURL!
-        detailVC.preferredContentSize = CGSize(width: 300, height: 300)
-        previewingContext.sourceRect = cell.frame
-        
-        
-        if photoURL == "no question image" {return nil}
-        
-        
-        return detailVC
-        
-        
-    }
-    
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        
-        show(viewControllerToCommit, sender: self)
-        
-    }
+//    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+//        
+//        guard let indexPath = tableView.indexPathForRow(at: location) else {return nil}
+//        guard let cell = tableView.cellForRow(at: indexPath) else {return nil}
+//        guard let detailVC = storyboard?.instantiateViewController(withIdentifier: "PollImageDetailViewController") as? PollImageDetailViewController else { return nil }
+//        
+//        let thread = threads[indexPath.section]
+//        
+//        let pollArrayForThread = threadDict[thread]
+//        
+//        let pollForCell = pollArrayForThread?[indexPath.row]
+//        
+//        let photoURL =  pollForCell?.pollQuestionImageURL
+//        
+//        
+//        detailVC.photoURL = photoURL!
+//        detailVC.preferredContentSize = CGSize(width: 300, height: 300)
+//        previewingContext.sourceRect = cell.frame
+//        
+//        
+//        if photoURL == "no question image" {return nil}
+//        
+//        
+//        return detailVC
+//        
+//        
+//    }
+//    
+//
+//    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+//        
+//        show(viewControllerToCommit, sender: self)
+//        
+//    }
     
     
     
     @IBAction func unwindToMenuAfterSendingThreadPoll(segue: UIStoryboardSegue){
+        
         
        // tableView.reloadData()
        // tableView.updateConstraints()
@@ -1341,7 +1501,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func unwindToMenuAfterSendingNewThreadPoll(segue: UIStoryboardSegue){
         
-        //tableView.reloadData()
+       // tableView.reloadData()
        // tableView.updateConstraints()
         
         
@@ -1362,52 +1522,81 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func updatePollVotes (indexPath : IndexPath) {
         
-        let threadID = threads[indexPath.section]
-        let poll = threadDict[threadID]?[indexPath.row]
-        poll?.groupMembers.removeAll()
+//        let threadID = threads[indexPath.section]
+//        let poll = threadDict[threadID]?[indexPath.row]
         
-        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").observe(.value, with: {
+          let poll = receivedPolls[indexPath.row]
+          poll.groupMembers.removeAll()
+        
+        FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").observe(.childAdded, with: {
             snapshot in
             
-            FIRDatabase.database().reference().child("threads").child(threadID).observe(.childAdded, with: {
-                snapshot in
-                let snapshotValue = snapshot.value as! NSDictionary
-
-                FIRDatabase.database().reference().child("polls").child((poll?.pollID)!).child("votes").observe(.childAdded, with: {
-                    snapshot in
-                    let snapshotValue = snapshot.value as! NSDictionary
-                    let recipient = Recipient()
-                    
-                    recipient.recipientID = snapshotValue["recipientID"] as! String
-                    recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
-                    recipient.recipientName = snapshotValue["recipientName"] as! String
-                    recipient.vote = snapshotValue["voteString"] as! String
-                    
-                    
-                    if (poll?.groupMembers.contains(where: { $0.recipientID == recipient.recipientID}))!
-                    { print("group already added")
-                        
-                    } else {
-                        
-                        poll?.groupMembers.append(recipient)
-                        poll?.groupMembers = (poll?.groupMembers.sorted(by: {$0.vote < $1.vote}))!
-                        self.tableView.reloadRows(at: [indexPath], with: .fade)
-                        
-                        
-                    }
-                    
-                    
-                })
-        
+            let snapshotValue = snapshot.value as! NSDictionary
+            let recipient = Recipient()
+            
+            recipient.recipientID = snapshotValue["recipientID"] as! String
+            recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+            recipient.recipientName = snapshotValue["recipientName"] as! String
+            recipient.vote = snapshotValue["voteString"] as! String
+            
+            
+            if (poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID}))
+            { print("group already added")
                 
-            })
-
+            } else {
+                
+                poll.groupMembers.append(recipient)
+                poll.groupMembers = (poll.groupMembers.sorted(by: {$0.vote < $1.vote}))
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+                
+                
+            }
+            
             
         })
-        
-
-        
-        
+//    
+//        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").observe(.value, with: {
+//            snapshot in
+//            
+//            FIRDatabase.database().reference().child("threads").child(threadID).observe(.childAdded, with: {
+//                snapshot in
+//                let snapshotValue = snapshot.value as! NSDictionary
+//
+//                FIRDatabase.database().reference().child("polls").child((poll?.pollID)!).child("votes").observe(.childAdded, with: {
+//                    snapshot in
+//                    let snapshotValue = snapshot.value as! NSDictionary
+//                    let recipient = Recipient()
+//                    
+//                    recipient.recipientID = snapshotValue["recipientID"] as! String
+//                    recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+//                    recipient.recipientName = snapshotValue["recipientName"] as! String
+//                    recipient.vote = snapshotValue["voteString"] as! String
+//                    
+//                    
+//                    if (poll?.groupMembers.contains(where: { $0.recipientID == recipient.recipientID}))!
+//                    { print("group already added")
+//                        
+//                    } else {
+//                        
+//                        poll?.groupMembers.append(recipient)
+//                        poll?.groupMembers = (poll?.groupMembers.sorted(by: {$0.vote < $1.vote}))!
+//                        self.tableView.reloadRows(at: [indexPath], with: .fade)
+//                        
+//                        
+//                    }
+//                    
+//                    
+//                })
+//        
+//                
+//            })
+//
+//            
+//        })
+//        
+//
+//        
+//        
     }
 
     

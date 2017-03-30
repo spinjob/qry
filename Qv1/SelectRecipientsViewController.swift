@@ -424,7 +424,7 @@ if indexPath.section == 0 {
         view.contentView.backgroundColor = UIColor.white
         
         if section == 0 {
-            view.sectionTitleLabel.text = "ADD TO DECISION THREAD"
+            view.sectionTitleLabel.text = "FROM POLL RESPONSES"
             view.sectionImageView.image = #imageLiteral(resourceName: "addToDecisionThreadIcon")
         }
         if section == 1 {
@@ -831,7 +831,8 @@ if indexPath.section == 0 {
        
         let voter : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "voteString" as NSObject: "no vote" as AnyObject]
         
-        let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(threadID).child(pollID)
+        let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedThreads").child(threadID).child(pollID)
+        let receivedPollRef = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(pollID)
         let sentToRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
         let voteRef = FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(recipientID)
             
@@ -846,6 +847,9 @@ if indexPath.section == 0 {
         ref.child("threadID").setValue(threadID)
         ref.child("isThreadParent").setValue("true")
         ref.child("questionImageURL").setValue(self.questionImageURL)
+            
+        receivedPollRef.setValue(self.dictPoll)
+        receivedPollRef.child("questionImageURL").setValue(self.questionImageURL)
             
             FIRDatabase.database().reference().child("users").child(recipientID).child("votes").child(pollID).child("answerChoice").setValue("no answer")
             FIRDatabase.database().reference().child("users").child(recipientID).child("votes").child(pollID).child("answerString").setValue("no answer")
@@ -862,9 +866,12 @@ if indexPath.section == 0 {
         FIRDatabase.database().reference().child("threads").child(threadID).child(pollID).child("votes").child(currentUserID!).setValue(self.currentUserVoterDict)
         FIRDatabase.database().reference().child("threads").child(threadID).child(pollID).child("sentTo").child(currentUserID!).setValue(self.currentUserRecipientDict)
         
-       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threadID).child(pollID).setValue(dictPoll)
-       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threadID).child(pollID).child("threadID").setValue(threadID)
-       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threadID).child(pollID).child("isThreadParent").setValue("true")
+        
+     FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(pollID).setValue(dictPoll)
+        
+       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedThreads").child(threadID).child(pollID).setValue(dictPoll)
+       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedThreads").child(threadID).child(pollID).child("threadID").setValue(threadID)
+       FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedThreads").child(threadID).child(pollID).child("isThreadParent").setValue("true")
         
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerChoice").setValue("no answer")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerString").setValue("no answer")

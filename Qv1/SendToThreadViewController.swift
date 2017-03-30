@@ -276,8 +276,6 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         cell.answerGroupMemberImageView.layer.masksToBounds = true
         cell.answerGroupMemberImageView.sd_setImage(with: URL(string: userForCell.imageURL1))
         cell.answerGroupMemberNameLabel.text = userForCell.recipientName
-        cell.selectAnswerGroupMemberButton.layer.cornerRadius = cell.selectAnswerGroupMemberButton.layer.frame.width / 2
-        cell.selectAnswerGroupMemberButton.layer.masksToBounds = true
         
         
         if selectedRecipients.count == 0 {
@@ -602,7 +600,8 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             
             let voter : [NSObject : AnyObject] = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (recipientID) as AnyObject, "voteString" as NSObject: "no vote" as AnyObject]
             
-            let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(parentThreadID).child(pollID)
+            let ref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedThreads").child(parentThreadID).child(pollID)
+            let receivedPollsref = FIRDatabase.database().reference().child("users").child(recipientID).child("receivedPolls").child(pollID)
             let sentToRef = FIRDatabase.database().reference().child("polls").child(pollID).child("sentTo").child(recipientID)
             let voteRef = FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(recipientID)
             
@@ -615,8 +614,14 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
             ref.child("threadID").setValue(parentThreadID)
             ref.child("isThreadParent").setValue("false")
             
+            
+            receivedPollsref.setValue(self.dictPoll)
+            receivedPollsref.child("threadID").setValue(parentThreadID)
+            
             if questionImageURL != "" {
+                
             ref.child("questionImageURL").setValue(self.questionImageURL)
+            receivedPollsref.child("questionImageURL").setValue(self.questionImageURL)
                 
             }
             threadRef.child(pollID).child("sentTo").child(recipientID).setValue(recipientDict)
@@ -640,11 +645,17 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         
         FIRDatabase.database().reference().child("threads").child(parentThreadID).child(pollID).child("votes").child(currentUserID!).setValue(self.currentUserVoterDict)
         
-        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(parentThreadID).child(pollID).setValue(dictPoll)
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedThreads").child(parentThreadID).child(pollID).setValue(dictPoll)
        
-        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(parentThreadID).child(pollID).child("threadID").setValue(parentThreadID)
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedThreads").child(parentThreadID).child(pollID).child("threadID").setValue(parentThreadID)
+        
+         FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedThreads").child(parentThreadID).child(pollID).child("isThreadParent").setValue("false")
+        
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(pollID).setValue(dictPoll)
+        
+    FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(pollID).child("threadID").setValue(parentThreadID)
 
-        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(parentThreadID).child(pollID).child("isThreadParent").setValue("false")
+       
         
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerChoice").setValue("no answer")
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("votes").child(pollID).child("answerString").setValue("no answer")
@@ -655,7 +666,7 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         //set hasChildren to true for last poll in thread
     
         
-        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(parentThreadID).child((self.pollsInThread.first?.pollID)!).child("hasChildren").setValue("true")
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedThreads").child(parentThreadID).child((self.pollsInThread.first?.pollID)!).child("hasChildren").setValue("true")
         previousPollInThreadRef.child("hasChildren").setValue("true")
         threadRef.child((self.pollsInThread.last?.pollID)!).child("hasChildren").setValue("true")
         
