@@ -66,6 +66,7 @@
 		6869CEE41DF8EE1200F8207C /* ProfilePollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */; };
 		6871BB1D1E771534005F6932 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6871BB1C1E771534005F6932 /* OnboardingViewController.swift */; };
 		6871BB1F1E773D18005F6932 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6871BB1E1E773D18005F6932 /* Assets.xcassets */; };
+		6879A1AC1E9328B700F12EC1 /* ProfileAnsweredTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6879A1AB1E9328B700F12EC1 /* ProfileAnsweredTableViewCell.swift */; };
 		6880A9B41DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */; };
 		6880A9B61DC41998000BB884 /* CreatePollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B51DC41998000BB884 /* CreatePollViewController.swift */; };
 		6880A9B81DC4589B000BB884 /* HexToCGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */; };
@@ -214,6 +215,7 @@
 		6869CEE31DF8EE1200F8207C /* ProfilePollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePollTableViewCell.swift; sourceTree = "<group>"; };
 		6871BB1C1E771534005F6932 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		6871BB1E1E773D18005F6932 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../.Trash/Assets.xcassets; sourceTree = "<group>"; };
+		6879A1AB1E9328B700F12EC1 /* ProfileAnsweredTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileAnsweredTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B31DC41506000BB884 /* SuggestedAnswerOptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedAnswerOptionTableViewCell.swift; sourceTree = "<group>"; };
 		6880A9B51DC41998000BB884 /* CreatePollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollViewController.swift; sourceTree = "<group>"; };
 		6880A9B71DC4589B000BB884 /* HexToCGFloat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexToCGFloat.swift; sourceTree = "<group>"; };
@@ -447,10 +449,11 @@
 		683413511E620A9900077388 /* New UI/UX */ = {
 			isa = PBXGroup;
 			children = (
+				68F891241E5BBF4E00A392E1 /* FindFriendsViewController.swift */,
+				6879A1AB1E9328B700F12EC1 /* ProfileAnsweredTableViewCell.swift */,
 				688C80291E85CEA000EF2228 /* ProfileLiveDecisionTableViewCell.swift */,
 				682DDC651E886737009E46F5 /* ProfileGroupMemberCollectionViewCell.swift */,
 				68B111761E64C37D00FAFE01 /* LivePollsHeaderTableViewCell.swift */,
-				6871BB1C1E771534005F6932 /* OnboardingViewController.swift */,
 				684BA6571E70ADE90004C045 /* PollProfileViewController.swift */,
 				68F2424D1E6C9836005CB3AA /* ScrollViewController.swift */,
 				68B1116C1E6364F200FAFE01 /* UserHomeViewController.swift */,
@@ -510,6 +513,7 @@
 				68D989361E52AE85003A7554 /* ChoosePictureViewController.swift */,
 				68D9892D1E52996D003A7554 /* EmailAddressViewController.swift */,
 				68D9892F1E52A226003A7554 /* PasswordViewController.swift */,
+				6871BB1C1E771534005F6932 /* OnboardingViewController.swift */,
 			);
 			name = "New Registration VCs";
 			sourceTree = "<group>";
@@ -531,7 +535,6 @@
 		68DBF39C1DB6EFD100C87385 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				68F891241E5BBF4E00A392E1 /* FindFriendsViewController.swift */,
 				68F891261E5BC2B800A392E1 /* AddFriendTableViewCell.swift */,
 				68D989311E52A631003A7554 /* New Registration VCs */,
 				68DBF3951DB6EF5000C87385 /* HomeViewController.swift */,
@@ -791,6 +794,7 @@
 				682DB39D1DCFD715009015AC /* GroupMemberTableViewCell.swift in Sources */,
 				684BA6581E70ADE90004C045 /* PollProfileViewController.swift in Sources */,
 				682DB3A91DD66FF3009015AC /* CurrentUserMessageTableViewCell.swift in Sources */,
+				6879A1AC1E9328B700F12EC1 /* ProfileAnsweredTableViewCell.swift in Sources */,
 				6869CEE41DF8EE1200F8207C /* ProfilePollTableViewCell.swift in Sources */,
 				68B111711E6367AE00FAFE01 /* PollRecipientCollectionViewCell.swift in Sources */,
 				68219A7C1E0B04FA004E822F /* EditGroupTableViewCell.swift in Sources */,

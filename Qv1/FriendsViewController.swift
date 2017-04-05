@@ -20,6 +20,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     let sectionTitles = ["Friends (Mutual Follows)", "Lists"]
+    let currentUserID = FIRAuth.auth()?.currentUser?.uid
+    
     var profileUserID = ""
     var friendArray : [Recipient] = []
     var groupArray : [Recipient] = []
@@ -27,6 +29,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
 //    var items : [[Recipient]] = [[]]
     var selectedRecipients : [Recipient] = []
     var selectedCells : [EditFriendTableViewCell] = []
+    
     
     lazy var contacts: [CNContact] = {
         let contactStore = CNContactStore()
@@ -95,11 +98,12 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             let snapshotValue = snapshot.value as! NSDictionary
             
-            friend.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+           
             friend.recipientID = snapshotValue["recipientID"] as! String
             friend.recipientName = snapshotValue["recipientName"] as! String
             friend.tag = snapshotValue["tag"] as! String
             friend.phoneNumber = snapshotValue["phoneNumber"] as! String
+
             
             if friend.recipientID == self.profileUserID {
                 
@@ -108,10 +112,32 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             } else if self.searchForContactUsingPhoneNumber(phoneNumber: friend.phoneNumber).count > 0 {
                 
                 print("FRIEND NUMBER\(friend.phoneNumber)")
-              self.friendArray.append(friend)
+              
+                
+            print("FIRST NAME \(friend.recipientFirstName)")
+                
+                FIRDatabase.database().reference().child("users").child(friend.recipientID).observe(.value, with: {
+                    
+                    snapshot in
+                    
+                    let snapshotValue = snapshot.value as! NSDictionary
+                    
+                    friend.recipientLastName = snapshotValue["lastName"] as! String
+                    friend.recipientFirstName = snapshotValue["firstName"] as! String
+                    friend.imageURL1 = snapshotValue["profileImageURL"] as! String
+                    
+                    self.friendArray.append(friend)
+                    
+                    self.friendArray = self.friendArray.sorted(by: {$0.recipientFirstName < $1.recipientFirstName})
+                    
+                    self.tableView.reloadData()
+                    
+                }
+                )
+
+             
             }
-            
-            self.tableView.reloadData()
+
             
         })
         
@@ -267,6 +293,10 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         //cell.friendImageView.layer.cornerRadius =  cell.friendImageView.layer.frame.size.width / 2
         //cell.friendImageView.layer.masksToBounds = true
         cell.friendNameLabel.text = items[indexPath.section][indexPath.row].recipientName
+        
+        cell.actionButton.tag = indexPath.row
+        cell.actionButton.addTarget(self, action: (#selector(self.unfriendUser(sender:))), for: .touchUpInside)
+        
         
         if cell.isSelected == true {
             cell.actionButtonWidth.constant = 22
@@ -528,7 +558,6 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         selectedCells = selectedCells.filter() {$0 !== cell}
     }
     
-
     
     func editGroup (sender: UIButton) {
         let items = [friendArray, groupArray]
@@ -540,6 +569,17 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         myVC.groupID = groupToEdit.recipientID
         
          navigationController?.pushViewController(myVC, animated: true)
+    }
+    
+    func unfriendUser (sender: UIButton) {
+       
+        let items = [friendArray, groupArray]
+        let recipientToRemove = items[0][sender.tag]
+        
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("recipientList").child(recipientToRemove.recipientID).removeValue()
+        
+        tableView.reloadData()
+    
     }
   
     

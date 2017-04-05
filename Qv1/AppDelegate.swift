@@ -41,14 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // For iOS 10 data message (sent via FCM)
             FIRMessaging.messaging().remoteMessageDelegate = self
             
-            
-            let center = UNUserNotificationCenter.current()
-            let action1 = UNNotificationAction(identifier: "answer1", title: "action1")
-            let action2 = UNNotificationAction(identifier: "answer2", title: "action2")
-            let category = UNNotificationCategory(identifier: "answerCategory", actions: [action1, action2], intentIdentifiers: [])
-            center.setNotificationCategories([category])
-            
-            
 
             
         } else {
@@ -147,30 +139,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // [START connect_on_active]
     func applicationDidBecomeActive(_ application: UIApplication) {
-//        if #available(iOS 10.0, *) {
-//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//            UNUserNotificationCenter.current().requestAuthorization(
-//                options: authOptions,
-//                completionHandler: {_, _ in })
-//            
-//            // For iOS 10 display notification (sent via APNS)
-//            UNUserNotificationCenter.current().delegate = self
-//            // For iOS 10 data message (sent via FCM)
-//            FIRMessaging.messaging().remoteMessageDelegate = self
-//            
-//            NotificationCenter.default.addObserver(self,
-//                                                   selector: #selector(self.tokenRefreshNotification),
-//                                                   name: .firInstanceIDTokenRefresh,
-//                                                   object: nil)
-//            
-//        } else {
-//            let settings: UIUserNotificationSettings =
-//                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-//            application.registerUserNotificationSettings(settings)
-//        }
-//
-//        application.registerForRemoteNotifications()
+
         connectToFcm()
+        
+        
     }
     // [END connect_on_active]
     // [START disconnect_from_fcm]
@@ -184,19 +156,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
-//        let answer1Action = UIMutableUserNotificationAction()
-//        answer1Action.identifier = "ANSWER_1_IDENTIFIER"
-//        answer1Action.title = "Answer1"
-//        answer1Action.activationMode = .foreground
-//        
-//        let answer2Action = UIMutableUserNotificationAction()
-//        answer2Action.identifier = "ANSWER_2_IDENTIFIER"
-//        answer2Action.title = "Answer2"
-//        answer2Action.activationMode = .foreground
-//        
-//        let answerCategory = UIMutableUserNotificationCategory()
-//        answerCategory.identifier = "ANSWER_CATEGORY"
-//        answerCategory.setActions([answer1Action, answer2Action], for: .default)
         
         FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type: FIRInstanceIDAPNSTokenType.sandbox)
        
@@ -207,8 +166,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
         }
         
-        print("tokenString: \(token)")
-        print("token: \(deviceToken)")
     }
 
     

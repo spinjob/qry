@@ -109,8 +109,12 @@ class OnboardingViewController: UIViewController, PaperOnboardingDataSource, Pap
     func performSegue (sender: UITapGestureRecognizer) {
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "UserHomeViewController") as! UserHomeViewController
+        let controller = storyboard.instantiateViewController(withIdentifier: "FindFriendsViewController") as! FindFriendsViewController
         let transition:CATransition = CATransition()
+        
+        
+        controller.onboarding = true
+        
         
         transition.duration = 0.3
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)

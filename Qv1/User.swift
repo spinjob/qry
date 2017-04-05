@@ -10,10 +10,13 @@ import Foundation
 class User {
     
     var userName = ""
+    var userFirstName = ""
+    var userLastName = ""
     var uID = ""
     var userBirthday = ""
     var userPhoneNumber = ""
     var userImageURL = ""
+    
     
 
 }

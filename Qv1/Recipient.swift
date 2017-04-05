@@ -9,6 +9,8 @@
 import Foundation
 class Recipient {
     var recipientName : String = ""
+    var recipientFirstName : String = ""
+    var recipientLastName : String = ""
     var imageURL1 : String = ""
     var imageURL2 : String = ""
     var imageURL3 : String = ""

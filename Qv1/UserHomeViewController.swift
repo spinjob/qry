@@ -77,6 +77,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         setUpNavigationBarItems()
         
         newDecisionButton.isHidden = true
@@ -174,24 +175,24 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 
         })
         
-        ref.observe(.childAdded, with: {
-            snapshot in
-            
-            let snapshotValue = snapshot.value as! NSDictionary
-            
-            newRecipient = ["recipientName" as NSObject: (snapshotValue["fullName"] as! String) as AnyObject, "recipientImageURL1" as NSObject: (snapshotValue["profileImageURL"] as! String) as AnyObject, "recipientID" as NSObject: (snapshot.key) as AnyObject, "tag" as NSObject: "user" as AnyObject, "phoneNumber" as NSObject: (snapshotValue["phoneNumber"]) as AnyObject]
-            
-            recipientID = snapshot.key
-            
-            let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
-            
-            if recipientID != (FIRAuth.auth()?.currentUser?.uid)! {
-                recipientListRef.setValue(newRecipient)
-            }
-            
-            
-        })
-//        
+//        ref.observe(.childAdded, with: {
+//            snapshot in
+//            
+//            let snapshotValue = snapshot.value as! NSDictionary
+//            
+//            newRecipient = ["recipientName" as NSObject: (snapshotValue["fullName"] as! String) as AnyObject, "recipientImageURL1" as NSObject: (snapshotValue["profileImageURL"] as! String) as AnyObject, "recipientID" as NSObject: (snapshot.key) as AnyObject, "tag" as NSObject: "user" as AnyObject, "phoneNumber" as NSObject: (snapshotValue["phoneNumber"]) as AnyObject]
+//            
+//            recipientID = snapshot.key
+//            
+//            let recipientListRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(recipientID)
+//            
+//            if recipientID != (FIRAuth.auth()?.currentUser?.uid)! {
+//                recipientListRef.setValue(newRecipient)
+//            }
+//            
+//            
+//        })
+//
 //        if( traitCollection.forceTouchCapability == .available){
 //            
 //            registerForPreviewing(with: self as! UIViewControllerPreviewingDelegate, sourceView: view)
@@ -1145,6 +1146,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 //
 //         self.threadDict[thread] = self.threadDict[thread]?.filter() {$0 !== pollForRow}
             
+            
         let receivedPollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("receivedPolls").child(pollForRow.pollID)
             
             self.receivedPolls = self.receivedPolls.filter({$0 !== pollForRow})
@@ -1167,9 +1169,15 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
             
             let pollRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForRow.pollID)
-            
-            
-            pollRef.child("expired").setValue("true")
+           
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            let dateString = formatter.string(from: date)
+
+            FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("expired").setValue("true")
+            FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("expirationDate").setValue(dateString)
             
             self.receivedPolls[indexPath.row].isExpired = true
             
@@ -1210,6 +1218,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         
+
         return true
         
     }
@@ -1330,19 +1339,35 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
         })
         
+//        
+//        let newDecisionIconImageView = UIImageView()
+//        let newDecisionIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.newDecisionIconTapped(sender:)))
+//        
+//        newDecisionIconImageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+//        
+//        newDecisionIconImageView.addGestureRecognizer(newDecisionIconTapGesture)
+//        
+//        newDecisionIconImageView.image = #imageLiteral(resourceName: "newDecisionIcon")
+//        
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: newDecisionIconImageView)
+//        
+//
+//        navigationController?.navigationBar.backgroundColor = UIColor.white
+//        navigationController?.navigationBar.isTranslucent = false
         
-        let newDecisionIconImageView = UIImageView()
-        let newDecisionIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.newDecisionIconTapped(sender:)))
         
-        newDecisionIconImageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        let discoverImageView = UIImageView()
+        let discoverIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.discoverIconTapped(sender:)))
         
-        newDecisionIconImageView.addGestureRecognizer(newDecisionIconTapGesture)
+        discoverImageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         
-        newDecisionIconImageView.image = #imageLiteral(resourceName: "newDecisionIcon")
+        discoverImageView.addGestureRecognizer(discoverIconTapGesture)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: newDecisionIconImageView)
+        discoverImageView.image = #imageLiteral(resourceName: "Discover icon")
         
-
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: discoverImageView)
+        
+        
         navigationController?.navigationBar.backgroundColor = UIColor.white
         navigationController?.navigationBar.isTranslucent = false
         
@@ -1360,6 +1385,42 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "CreatePollViewController") as! CreatePollViewController
         let transition:CATransition = CATransition()
+        
+        
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+        
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+        
+        
+    }
+    
+    
+    func discoverIconTapped (sender: UITapGestureRecognizer) {
+        
+        let imgView = sender.view as! UIImageView
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "FindFriendsViewController") as! FindFriendsViewController
+        let transition:CATransition = CATransition()
+     
+        FIRDatabase.database().reference().child("users").child(currentUserID!).child("recipientList").queryOrdered(byChild: "tag").queryEqual(toValue: "user").observe(.childAdded, with: {
+            snapshot in
+            let snapshotValue = snapshot.value as! NSDictionary
+            let friend = Recipient()
+            
+            friend.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+            friend.recipientID = snapshot.key
+            friend.recipientName = snapshotValue["recipientName"] as! String
+            friend.phoneNumber = snapshotValue["phoneNumber"] as! String
+            friend.tag = snapshotValue["tag"] as! String
+            
+            controller.recipientList.append(friend)
+            
+        })
+        
         
         
         transition.duration = 0.3
@@ -1491,6 +1552,9 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func unwindToMenuAfterSendingThreadPoll(segue: UIStoryboardSegue){
         
+        newDecisionTextField.endEditing(true)
+        newDecisionTextField.text = ""
+        view.endEditing(true)
         
        // tableView.reloadData()
        // tableView.updateConstraints()
@@ -1500,6 +1564,10 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 
     
     @IBAction func unwindToMenuAfterSendingNewThreadPoll(segue: UIStoryboardSegue){
+        
+         newDecisionTextField.endEditing(true)
+         newDecisionTextField.text = ""
+         view.endEditing(true)
         
        // tableView.reloadData()
        // tableView.updateConstraints()

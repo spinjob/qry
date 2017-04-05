@@ -14,6 +14,10 @@ import Contacts
 class FindFriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var addFriendsButton: UIButton!
+    
+    @IBOutlet weak var addFriendsHeightConstraint: NSLayoutConstraint!
+    
     
     lazy var contacts: [CNContact] = {
         let contactStore = CNContactStore()
@@ -63,45 +67,102 @@ class FindFriendsViewController: UIViewController, UITableViewDelegate, UITableV
     var contactArray : [Recipient] = []
     var friendsArray : [Recipient] = []
     var selectedCells : [UITableViewCell] = []
+    var recipientList : [Recipient] = []
+    
+    var onboarding : Bool = false
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addFriendsHeightConstraint.constant = 0
+        
+        let ref = FIRDatabase.database().reference().child("users")
+        let currentUserRef = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!)
+        var newRecipient :[NSObject : AnyObject] = [ : ]
+        var recipientID = ""
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-
-        let ref = FIRDatabase.database().reference().child("users")
-        var newRecipient :[NSObject : AnyObject] = [ : ]
-        var recipientID = ""
-
-        ref.observe(.childAdded, with: {
-            snapshot in
-            
-            let snapshotValue = snapshot.value as! NSDictionary
-          
-            var friend : Recipient = Recipient ()
-            
-            friend.imageURL1 = snapshotValue["profileImageURL"] as! String
-            friend.recipientID = snapshot.key
-            friend.recipientName = snapshotValue["fullName"] as! String
-            friend.phoneNumber = snapshotValue["phoneNumber"] as! String
-            
-            if friend.recipientID == self.currentUserID {
-                
-                print("current user")
-                
-            } else if self.searchForContactUsingPhoneNumber(phoneNumber: friend.phoneNumber).count > 0 {
-                
-                print("FRIEND NUMBER\(friend.phoneNumber)")
-                self.contactArray.append(friend)
-            }
-            
-            self.tableView.reloadData()
-    
-        })
         
+        
+        if onboarding == true {
+            setUpNavigationBarItems()
+           
+            ref.observe(.childAdded, with: {
+                snapshot in
+                
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                var friend : Recipient = Recipient ()
+                
+                friend.imageURL1 = snapshotValue["profileImageURL"] as! String
+                friend.recipientID = snapshot.key
+                friend.recipientName = snapshotValue["fullName"] as! String
+                friend.phoneNumber = snapshotValue["phoneNumber"] as! String
+                friend.recipientFirstName = snapshotValue["firstName"] as! String
+                friend.recipientLastName = snapshotValue["lastName"] as! String
+                
+                if friend.recipientID == self.currentUserID {
+                    
+                    print("current user")
+                    
+                } else if self.searchForContactUsingPhoneNumber(phoneNumber: friend.phoneNumber).count > 0 {
+                    
+                    print("FRIEND NUMBER\(friend.phoneNumber)")
+                    self.contactArray.append(friend)
+                    self.contactArray = self.contactArray.sorted(by: {$0.recipientFirstName < $1.recipientFirstName})
+                }
+                
+                self.tableView.reloadData()
+                
+            })
+            
+            
+            
+        } else {
+            
+            ref.observe(.childAdded, with: {
+                snapshot in
+                
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                var friend : Recipient = Recipient ()
+                
+                friend.imageURL1 = snapshotValue["profileImageURL"] as! String
+                friend.recipientID = snapshot.key
+                friend.recipientName = snapshotValue["fullName"] as! String
+                friend.phoneNumber = snapshotValue["phoneNumber"] as! String
+                friend.recipientFirstName = snapshotValue["firstName"] as! String
+                friend.recipientLastName = snapshotValue["lastName"] as! String
+                
+                if friend.recipientID == self.currentUserID {
+                    
+                    print("current user")
+                    
+                } else if self.searchForContactUsingPhoneNumber(phoneNumber: friend.phoneNumber).count > 0 {
+                    
+                    print("FRIEND NUMBER\(friend.phoneNumber)")
+                    
+                    if (self.recipientList.contains(where: { $0.recipientID == friend.recipientID}))
+                    { print("friend already added")
+                        
+                    } else {
+                    self.contactArray.append(friend)
+                    self.contactArray = self.contactArray.sorted(by: {$0.recipientFirstName < $1.recipientFirstName})
+                    }
+                }
+                
+                self.tableView.reloadData()
+                
+            })
+            
+        }
+        
+        
+        
+
         
     }
 
@@ -123,6 +184,9 @@ class FindFriendsViewController: UIViewController, UITableViewDelegate, UITableV
         
         //print(selectedCells)
         print(friendsArray)
+        
+        
+        addFriendsHeightConstraint.constant = 50
         
         UIView.animate(withDuration: 0.2) {
             self.view.layoutIfNeeded()
@@ -147,7 +211,10 @@ class FindFriendsViewController: UIViewController, UITableViewDelegate, UITableV
         
         delete(recipient: recipientForCell)
         removeCell(cell: deSelectedCell)
-            
+        
+        if friendsArray.count == 0 {
+            addFriendsHeightConstraint.constant = 0
+        }
         //print(selectedCells)
         print(friendsArray)
             
@@ -158,6 +225,46 @@ class FindFriendsViewController: UIViewController, UITableViewDelegate, UITableV
 
         
     }
+    
+    func setUpNavigationBarItems () {
+        
+
+        let skipImageView = UIImageView()
+        let discoverIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.skipIconTapped(sender:)))
+        
+        skipImageView.frame = CGRect(x: 0, y: 0, width: 42, height: 24)
+        
+        skipImageView.addGestureRecognizer(discoverIconTapGesture)
+        
+        skipImageView.image = #imageLiteral(resourceName: "Skip Icon")
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: skipImageView)
+        
+        
+        navigationController?.navigationBar.backgroundColor = UIColor.white
+        navigationController?.navigationBar.isTranslucent = false
+
+    }
+    
+    func skipIconTapped (sender: UITapGestureRecognizer) {
+        
+        let imgView = sender.view as! UIImageView
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "UserHomeViewController") as! UserHomeViewController
+        let transition:CATransition = CATransition()
+        
+        
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+        
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+        
+        
+    }
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -180,6 +287,8 @@ class FindFriendsViewController: UIViewController, UITableViewDelegate, UITableV
         selectedCells = selectedCells.filter() {$0 !== cell}
         
     }
+
+    
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -246,4 +355,17 @@ class FindFriendsViewController: UIViewController, UITableViewDelegate, UITableV
         return result
     }
 
+    @IBAction func addFriendsButtonTapped(_ sender: Any) {
+        
+       let recipientListRef = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList")
+    
+        friendsArray.forEach{
+            (Recipient) in
+            
+           let newRecipient = ["recipientName" as NSObject: (Recipient.recipientName) as AnyObject, "recipientImageURL1" as NSObject: (Recipient.imageURL1) as AnyObject, "recipientID" as NSObject: (Recipient.recipientID) as AnyObject, "tag" as NSObject: "user" as AnyObject, "phoneNumber" as NSObject: (Recipient.phoneNumber) as AnyObject]
+            
+            
+            recipientListRef.child(Recipient.recipientID).setValue(newRecipient)
+        }
+    }
 }

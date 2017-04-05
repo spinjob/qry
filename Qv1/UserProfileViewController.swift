@@ -37,6 +37,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     var askedPollsObserved : [Poll] = []
     var receivedPollIDs : [String] = []
     var answeredPolls : [Poll] = []
+    var answeredPollIDs : [String] = []
     //var receivedPolls : [Poll] = []
     
     var liveDecisions : [Poll] = []
@@ -55,6 +56,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     let actionGreen = UIColor.init(hexString: "00D1D5")
     let blue = UIColor.init(hexString: "004488")
     let grey = UIColor.init(hexString: "D8D8D8")
+    let blueGrey = UIColor.init(hexString: "4B6184")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,11 +69,8 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
        
-        
-        
         let chartView = PieChartView()
         
-    
         imagePicker.delegate = self
 
         let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID)
@@ -97,8 +96,6 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         numberOfAskedLabel.layer.masksToBounds = true
 
         
-       
-        
         userRef.observe(.value, with: {
             snapshot in
             
@@ -107,7 +104,27 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             self.userProfileImageView.sd_setImage(with: URL(string: snapshotValue["profileImageURL"] as! String))
             self.userNameLabel.text = snapshotValue["fullName"] as! String
             
+            
+            
         })
+        
+        
+        userRef.child("votes").observe(.childAdded, with: {
+            snapshot in
+            let snapshotValue = snapshot.value as! NSDictionary
+            let poll = Poll()
+
+            poll.answer1String = snapshotValue["answerString"] as! String
+            poll.pollID = snapshot.key
+            
+            if poll.answer1String != "no answer" {
+              self.answeredPolls.append(poll)
+            }
+
+
+        })
+        
+        
     
     
     userRef.child("recipientList").queryOrdered(byChild: "tag").queryEqual(toValue: "user").observe(.value, with: {
@@ -119,7 +136,6 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
 
         
-    
     pollsRef.queryOrdered(byChild: "senderUser").queryEqual(toValue: profileUserID).observe(.childAdded, with: {
             snapshot in
         
@@ -229,6 +245,8 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
                         
                         self.askedPollsObserved.append(poll)
                         self.askedPollsObserved = self.askedPollsObserved.sorted(by: {$0.minutesUntilExpiration < $1.minutesUntilExpiration})
+                        
+                        print(self.askedPollsObserved)
                         
                      // self.tableView.reloadData()
                     }
@@ -342,15 +360,29 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     
-    override func viewDidAppear(_ animated: Bool) {
+override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()
+    
+    
     }
+    
     
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-    return askedPolls.count
+    if profileUserID == currentUserID {
     
+    if askedPollSelected == false {
+        
+        return answeredPolls.count
+        
     }
+        
+         return askedPolls.count
+    }
+   
+    return askedPollsObserved.count
+    
+ }
     
     
 func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -367,172 +399,225 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
     let cellIdentifier = "liveDecisionCell"
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ProfileLiveDecisionTableViewCell
-    let pollForCell = askedPolls[indexPath.row]
+    let answerCell = tableView.dequeueReusableCell(withIdentifier: "answeredDecisionCell", for: indexPath) as! ProfileAnsweredTableViewCell
+    var pollForCell = Poll()
+    var answeredPollForCell = Poll()
     
-    cell.questionTextView.text = pollForCell.questionString
-    
-    cell.pieChartCenterView.layer.cornerRadius =  cell.pieChartCenterView.layer.frame.width / 2
-    cell.pieChartCenterView.layer.masksToBounds = true
-    
-    cell.timerView.layer.cornerRadius =  cell.timerView.layer.frame.width / 2
-    cell.timerView.layer.masksToBounds = true
-    
-    cell.answerPieChartView.layer.cornerRadius =  cell.answerPieChartView.layer.frame.width / 2
-    cell.answerPieChartView.layer.masksToBounds = true
-    
-    cell.timerViewCenterView.layer.cornerRadius =  cell.timerViewCenterView.layer.frame.width / 2
-    cell.timerViewCenterView.layer.masksToBounds = true
-    
-    cell.groupCollectionView.tag = indexPath.row
-    
-    print("Poll \(pollForCell.questionString)")
-    print("Answer 1 Count \(pollForCell.answer1Count)")
-    print("Answer 2 Count \(pollForCell.answer2Count)")
-    
-
-    let chartView = PieChartView()
-    chartView.frame = CGRect(x: 0, y: 0, width: cell.answerPieChartView.frame.size.width, height: 62)
-    
-    let pollVoteReference : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
-    
-    
-    chartView.segments = [
+    if askedPollSelected == true{
         
-        Segment(color: UIColor.init(hexString: "A8E855"), value: CGFloat(pollForCell.answer1Count)),
-        Segment(color: UIColor.init(hexString: "FF4E56"), value: CGFloat(pollForCell.answer2Count)),
-        Segment(color: UIColor.init(hexString: "D8D8D8"), value: CGFloat(pollForCell.undecidedCount))
-    ]
-    
-    cell.answerPieChartView.addSubview(chartView)
-    
-    let date = Date()
-    let formatter = DateFormatter()
-    let timeFormatter = DateFormatter()
-    let dateFormatter = DateFormatter()
-    let calendar = Calendar.current
-    
-    timeFormatter.dateStyle = .none
-    timeFormatter.timeStyle = .short
-    
-    dateFormatter.dateStyle = .short
-    dateFormatter.timeStyle = .none
-    
-    formatter.dateStyle = .short
-    formatter.timeStyle = .short
-    
-    
-    let pollForCellDateExpired = formatter.date(from: pollForCell.dateExpired)
-    let pollForCellDateCreated = formatter.date(from: pollForCell.dateCreated)
-    
-    let dateString = formatter.string(from: date)
-    let onlyTimeString = timeFormatter.string(from: pollForCellDateCreated!)
-    let onlyDateString = dateFormatter.string(from: pollForCellDateCreated!)
-    
-   
-    
-    let currentDate = formatter.date(from: dateString)
-    
-    
-    //time from when the poll was sent
-    let hoursSince = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateCreated!)
-    let minutesSince = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateCreated!)
-    let daysSince = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateCreated!)
-    
-    if hoursSince.hour! > 24 {
-        cell.timeOrDateLabel.text = onlyDateString
-    } else {
-        cell.timeOrDateLabel.text = onlyTimeString
-    }
-    
-    
-    //time left until expiration
-
-    let hoursLeft = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateExpired!)
-    let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
-    let daysLeft = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateExpired!)
-    let minutesTotal = calendar.dateComponents([.minute], from: pollForCellDateCreated!, to:pollForCellDateExpired! )
-    let minutesLeftDouble : Double = Double(pollForCell.minutesUntilExpiration)
-    let minutesTotalDouble : Double = Double(minutesTotal.minute!)
-    
-    let percentageLeft : Double = (minutesLeftDouble / minutesTotalDouble)*100
-
-    
-    
-    
-    if minutesLeft.minute! > 0 {
-        
-        let timerChartView = PieChartView()
-        
-        timerChartView.frame = CGRect(x: 0, y: 0, width: 52, height: 52)
-        
-        
-        if hoursLeft.hour! < 1 {
+        if profileUserID != currentUserID {
             
-            cell.timeLeftAmountLabel.text = "\(minutesLeft.minute!)"
-            
-            if hoursLeft.hour! == 1{
-                cell.timeLeftUnitLabel.text = "min"
-            }
-            
-            cell.timeLeftUnitLabel.text = "mins"
-            
-        }
-        
-        
-        if daysLeft.day! > 1 {
-            cell.timeLeftAmountLabel.text = "\(daysLeft.day!)"
-            
-            cell.timeLeftUnitLabel.text = "days"
-            
-        }
-        
-        if daysLeft.day! == 1 {
-            cell.timeLeftAmountLabel.text = "\(daysLeft.day!)"
-            
-            cell.timeLeftUnitLabel.text = "day"
-            
-        }
-        
-        if hoursLeft.hour! > 1, daysLeft.day! < 1 {
-            
-            cell.timeLeftAmountLabel.text = "\(hoursLeft.hour!)"
-            
-            cell.timeLeftUnitLabel.text = "hours"
-        }
-        
-        if hoursLeft.hour! == 1 {
-            cell.timeLeftAmountLabel.text = "\(hoursLeft.hour!)"
-            
-            
-            cell.timeLeftUnitLabel.text = "hour"
-            
-            
-        }
-
-        
-        if percentageLeft < 10 {
-            timerChartView.segments = [
-                Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
-                Segment(color: red , value: CGFloat(percentageLeft))
-                
-            ]
-            
-            cell.timerView.addSubview(timerChartView)
-            
+            pollForCell = askedPollsObserved[indexPath.row]
             
         } else {
+           
+            pollForCell = askedPolls[indexPath.row]
             
-            timerChartView.segments = [
-                
-                Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
-                Segment(color: blue, value: CGFloat(percentageLeft))
-            
-            ]
-            cell.timerView.addSubview(timerChartView)
         }
         
-    }
+        
+        cell.questionTextView.text = pollForCell.questionString
+        
+        cell.pieChartCenterView.layer.cornerRadius =  cell.pieChartCenterView.layer.frame.width / 2
+        cell.pieChartCenterView.layer.masksToBounds = true
+        
+        cell.timerView.layer.cornerRadius =  cell.timerView.layer.frame.width / 2
+        cell.timerView.layer.masksToBounds = true
+        
+        cell.answerPieChartView.layer.cornerRadius =  cell.answerPieChartView.layer.frame.width / 2
+        cell.answerPieChartView.layer.masksToBounds = true
+        
+        cell.timerViewCenterView.layer.cornerRadius =  cell.timerViewCenterView.layer.frame.width / 2
+        cell.timerViewCenterView.layer.masksToBounds = true
+        
+        cell.groupCollectionView.tag = indexPath.row
+        
+        print("Poll \(pollForCell.questionString)")
+        print("Answer 1 Count \(pollForCell.answer1Count)")
+        print("Answer 2 Count \(pollForCell.answer2Count)")
+        
+        
+        let chartView = PieChartView()
+        chartView.frame = CGRect(x: 0, y: 0, width: cell.answerPieChartView.frame.size.width, height: 62)
+        
+        let pollVoteReference : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes")
+        
+        
+        chartView.segments = [
+            
+            Segment(color: UIColor.init(hexString: "A8E855"), value: CGFloat(pollForCell.answer1Count)),
+            Segment(color: UIColor.init(hexString: "FF4E56"), value: CGFloat(pollForCell.answer2Count)),
+            Segment(color: UIColor.init(hexString: "D8D8D8"), value: CGFloat(pollForCell.undecidedCount))
+        ]
+        
+        cell.answerPieChartView.addSubview(chartView)
+        
+        let date = Date()
+        let formatter = DateFormatter()
+        let timeFormatter = DateFormatter()
+        let dateFormatter = DateFormatter()
+        let calendar = Calendar.current
+        
+        timeFormatter.dateStyle = .none
+        timeFormatter.timeStyle = .short
+        
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        
+        
+        let pollForCellDateExpired = formatter.date(from: pollForCell.dateExpired)
+        let pollForCellDateCreated = formatter.date(from: pollForCell.dateCreated)
+        
+        let dateString = formatter.string(from: date)
+        let onlyTimeString = timeFormatter.string(from: pollForCellDateCreated!)
+        let onlyDateString = dateFormatter.string(from: pollForCellDateCreated!)
+        
+        
+        
+        let currentDate = formatter.date(from: dateString)
+        
+        
+        //time from when the poll was sent
+        let hoursSince = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateCreated!)
+        let minutesSince = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateCreated!)
+        let daysSince = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateCreated!)
+        
+        if hoursSince.hour! > 24 {
+            cell.timeOrDateLabel.text = onlyDateString
+        } else {
+            cell.timeOrDateLabel.text = onlyTimeString
+        }
+        
+        
+        //time left until expiration
+        
+        let hoursLeft = calendar.dateComponents([.hour], from: currentDate!, to: pollForCellDateExpired!)
+        let minutesLeft = calendar.dateComponents([.minute], from: currentDate!, to: pollForCellDateExpired!)
+        let daysLeft = calendar.dateComponents([.day], from: currentDate!, to: pollForCellDateExpired!)
+        let minutesTotal = calendar.dateComponents([.minute], from: pollForCellDateCreated!, to:pollForCellDateExpired! )
+        let minutesLeftDouble : Double = Double(pollForCell.minutesUntilExpiration)
+        let minutesTotalDouble : Double = Double(minutesTotal.minute!)
+        
+        let percentageLeft : Double = (minutesLeftDouble / minutesTotalDouble)*100
+        
+        if minutesLeft.minute! > 0 {
+            
+            let timerChartView = PieChartView()
+            
+            timerChartView.frame = CGRect(x: 0, y: 0, width: 52, height: 52)
+            
+            
+            if hoursLeft.hour! < 1 {
+                
+                cell.timeLeftAmountLabel.text = "\(minutesLeft.minute!)"
+                
+                if hoursLeft.hour! == 1{
+                    cell.timeLeftUnitLabel.text = "min"
+                }
+                
+                cell.timeLeftUnitLabel.text = "mins"
+                
+            }
+            
+            
+            if daysLeft.day! > 1 {
+                cell.timeLeftAmountLabel.text = "\(daysLeft.day!)"
+                
+                cell.timeLeftUnitLabel.text = "days"
+                
+            }
+            
+            if daysLeft.day! == 1 {
+                cell.timeLeftAmountLabel.text = "\(daysLeft.day!)"
+                
+                cell.timeLeftUnitLabel.text = "day"
+                
+            }
+            
+            if hoursLeft.hour! > 1, daysLeft.day! < 1 {
+                
+                cell.timeLeftAmountLabel.text = "\(hoursLeft.hour!)"
+                
+                cell.timeLeftUnitLabel.text = "hours"
+            }
+            
+            if hoursLeft.hour! == 1 {
+                cell.timeLeftAmountLabel.text = "\(hoursLeft.hour!)"
+                
+                
+                cell.timeLeftUnitLabel.text = "hour"
+                
+                
+            }
+            
+            
+            if percentageLeft < 10 {
+                timerChartView.segments = [
+                    Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
+                    Segment(color: red , value: CGFloat(percentageLeft))
+                    
+                ]
+                
+                cell.timerView.addSubview(timerChartView)
+                
+                
+            } else {
+                
+                timerChartView.segments = [
+                    
+                    Segment(color: UIColor.init(hexString: "FFFFFF"), value: CGFloat(100 - percentageLeft)),
+                    Segment(color: blue, value: CGFloat(percentageLeft))
+                    
+                ]
+                cell.timerView.addSubview(timerChartView)
+            }
+            
+        }
+        
+        
+    } else {
+        
+        answeredPollForCell = answeredPolls[indexPath.row]
+        answerCell.answerLabel.text = answeredPollForCell.answer1String
+        answerCell.answerView.layer.cornerRadius = 4
+        answerCell.answerView.layer.borderColor = grey.cgColor
+        answerCell.answerView.layer.borderWidth = 1
+        answerCell.senderImageView.layer.cornerRadius = answerCell.senderImageView.layer.frame.width / 2
+        answerCell.senderImageView.layer.masksToBounds = true
 
+        answerCell.questionTextView.textContainerInset = UIEdgeInsets.zero
+        answerCell.questionTextView.textContainer.lineFragmentPadding = 0
+
+        
+        FIRDatabase.database().reference().child("polls").child(answeredPollForCell.pollID).observe(.value, with: {
+            snapshot in
+            let snapshotValue = snapshot.value as! NSDictionary
+            answeredPollForCell.senderUser = snapshotValue["senderUser"] as! String
+            answeredPollForCell.questionString = snapshotValue["question"] as! String
+            
+            
+            answerCell.questionTextView.text = answeredPollForCell.questionString
+            
+            FIRDatabase.database().reference().child("users").child(answeredPollForCell.senderUser).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                let profileImageURL = snapshotValue["profileImageURL"] as! String
+                
+                answerCell.senderNameLabel.text = snapshotValue["fullName"] as! String
+                
+                answerCell.senderImageView.sd_setImage(with: URL(string: profileImageURL))
+                
+            })
+        })
+        
+        
+        return answerCell
+        
+    }
     
 
     return cell
@@ -545,7 +630,12 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+      
+        if currentUserID == profileUserID, askedPollSelected == true {
+            return true
+        }
+        
+        return false
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -571,8 +661,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
             formatter.timeStyle = .short
             let calendar = Calendar.current
             let dateString = formatter.string(from: date)
-            
-            
+         
             self.expirePoll(pollID: pollForRow.pollID)
             
             FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("expired").setValue("true")
@@ -648,7 +737,8 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+      
+        if askedPollSelected == true {
         let pollForRow = askedPolls[indexPath.row]
         let myVC = storyboard?.instantiateViewController(withIdentifier: "chatVC") as! ChatViewController
         
@@ -661,7 +751,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         
         tableView.deselectRow(at: indexPath, animated: false)
         
-        
+        }
         
     }
 
