@@ -32,6 +32,7 @@ class EditGroupViewController: UIViewController, UITableViewDelegate, UITableVie
         
         
         let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("recipientList").child(group.recipientID).child("groupMembers")
+        
             
         
         ref.observe(FIRDataEventType.childAdded, with: {(snapshot) in
@@ -47,12 +48,21 @@ class EditGroupViewController: UIViewController, UITableViewDelegate, UITableVie
             
                 recipient.recipientID = snapshotValue["recipientID"] as! String
                 recipient.tag = snapshotValue["tag"] as! String
-                recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
-
+            
+            FIRDatabase.database().reference().child("users").child(recipient.recipientID).observe(.value, with: {
+                
+                snapshot in
+                
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                recipient.imageURL1 = snapshotValue["profileImageURL"] as! String
                 self.groupMembers.append(recipient)
                 self.tableView.reloadData()
                 
             })
+            
+                
+       })
         
         
         groupNameTextField.text = group.recipientName

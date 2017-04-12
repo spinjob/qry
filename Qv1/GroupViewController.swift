@@ -70,15 +70,23 @@ class GroupViewController: UIViewController, UIImagePickerControllerDelegate, UI
             
             var groupMember = Recipient()
             
-            groupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
             groupMember.recipientID = snapshotValue["recipientID"] as! String
             groupMember.recipientName = snapshotValue["recipientName"] as! String
             
-            self.groupMembers.append(groupMember)
+            FIRDatabase.database().reference().child("users").child(groupMember.recipientID).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                groupMember.imageURL1 = snapshotValue["profileImageURL"] as! String
+                
+                self.groupMembers.append(groupMember)
+                
+                print(self.groupMembers)
+                
+                self.tableView.reloadData()
+                
+            })
             
-            print(self.groupMembers)
-        
-            self.tableView.reloadData()
+           
         })
         
         

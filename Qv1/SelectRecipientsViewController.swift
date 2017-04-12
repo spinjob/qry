@@ -217,21 +217,31 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
             recipient.recipientName = snapshotvalue["recipientName"] as! String
             recipient.recipientID = snapshotvalue["recipientID"] as! String
             recipient.tag = snapshotvalue["tag"] as! String
-            recipient.imageURL1 = snapshotvalue["recipientImageURL1"] as! String
+            //recipient.imageURL1 = snapshotvalue["recipientImageURL1"] as! String
             recipient.phoneNumber = snapshotvalue["phoneNumber"] as! String
+            
+            FIRDatabase.database().reference().child("users").child(recipient.recipientID).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                recipient.imageURL1 = snapshotValue["profileImageURL"] as! String
+               
+                if recipient.recipientID == self.currentUserID {
+                    
+                    print("current user")
+                } else if self.searchForContactUsingPhoneNumber(phoneNumber: recipient.phoneNumber).count > 0 {
+                    
+                    self.recipientList.append(recipient)
+                    self.recipientList.sort(by: {$0.recipientName > $1.recipientName})
+                }
+                
+                self.tableView.reloadData()
+                
+
+                
+            })
         
-            if recipient.recipientID == self.currentUserID {
-                
-                print("current user")
-            } else if self.searchForContactUsingPhoneNumber(phoneNumber: recipient.phoneNumber).count > 0 {
-                
-                self.recipientList.append(recipient)
-                self.recipientList.sort(by: {$0.recipientName > $1.recipientName})
-            }
-            
-            self.tableView.reloadData()
-            
-        })
+    })
 
         
     }
@@ -819,7 +829,7 @@ if indexPath.section == 0 {
         
         notificationRef.setValue(notificationDict)
             
-        sendNotificationToUser(user: Recipient.recipientID, message: "\(currentUserName) started a headcount for '\(poll.questionString)'")
+        sendNotificationToUser(user: Recipient.recipientID, message: poll.questionString)
             
             
         //add each selected user to sentTo and votes Arrays
@@ -965,6 +975,7 @@ if indexPath.section == 0 {
         
         
         FIRDatabase.database().reference().child("notificationRequests").child(notificationRequestID).setValue(notificationRequestDict)
+        
 
         print(notificationRequestDict)
     

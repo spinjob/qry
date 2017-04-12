@@ -138,6 +138,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 
             })
             
+            
+            
             FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").observe(.childAdded, with: {
                 snapshot in
                 let snapshotValue = snapshot.value as! NSDictionary
@@ -147,6 +149,14 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
                 recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
                 recipient.recipientName = snapshotValue["recipientName"] as! String
                 recipient.vote = snapshotValue["voteString"] as! String
+               
+                FIRDatabase.database().reference().child("users").child(recipient.recipientID).observe(.value, with: {
+                    snapshot in
+                    let snapshotValue = snapshot.value as! NSDictionary
+                    recipient.imageURL1 = snapshotValue["profileImageURL"] as! String
+                    self.tableView.reloadData()
+                    
+                })
                 
                 
                 if poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID})
@@ -930,7 +940,6 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         updatePollVotes(indexPath: indexPath)
        
-        //tableView.reloadData()
     }
     
     func answer2ButtonTapped (sender: UIButton) {
@@ -1603,22 +1612,30 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             let recipient = Recipient()
             
             recipient.recipientID = snapshotValue["recipientID"] as! String
-            recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
             recipient.recipientName = snapshotValue["recipientName"] as! String
             recipient.vote = snapshotValue["voteString"] as! String
+           
+            FIRDatabase.database().reference().child("users").child(recipient.recipientID).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                recipient.imageURL1 = snapshotValue["profileImageURL"] as! String
+                
+                if (poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID}))
+                { print("group already added")
+                    
+                } else {
+        
+                    poll.groupMembers.append(recipient)
+                    poll.groupMembers = (poll.groupMembers.sorted(by: {$0.vote < $1.vote}))
+                    self.tableView.reloadRows(at: [indexPath], with: .fade)
+                    
+                    
+                }
+
+                
+            })
+          
             
-            
-            if (poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID}))
-            { print("group already added")
-                
-            } else {
-                
-                poll.groupMembers.append(recipient)
-                poll.groupMembers = (poll.groupMembers.sorted(by: {$0.vote < $1.vote}))
-                self.tableView.reloadRows(at: [indexPath], with: .fade)
-                
-                
-            }
             
             
         })

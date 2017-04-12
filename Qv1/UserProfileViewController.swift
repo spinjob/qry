@@ -114,6 +114,8 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             let snapshotValue = snapshot.value as! NSDictionary
             let poll = Poll()
 
+            print("answer string snapshot\(snapshotValue["answerString"] as! String)")
+            print("answered poll snapshot\(snapshot)")
             poll.answer1String = snapshotValue["answerString"] as! String
             poll.pollID = snapshot.key
             

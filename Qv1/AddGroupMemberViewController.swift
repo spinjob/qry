@@ -42,13 +42,22 @@ class AddGroupMemberViewController: UIViewController, UITableViewDelegate, UITab
             
             let snapshotValue = snapshot.value as! NSDictionary
             
-            friend.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+            
             friend.recipientID = snapshotValue["recipientID"] as! String
             friend.recipientName = snapshotValue["recipientName"] as! String
             friend.tag = snapshotValue["tag"] as! String
             
-            self.friendArray.append(friend)
-            self.tableView.reloadData()
+            FIRDatabase.database().reference().child("users").child(friend.recipientID).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                friend.imageURL1 = snapshotValue["profileImageURL"] as! String
+                
+                self.friendArray.append(friend)
+                self.tableView.reloadData()
+                
+            })
+            
+            
             
         })
         
@@ -61,11 +70,20 @@ class AddGroupMemberViewController: UIViewController, UITableViewDelegate, UITab
             
             var groupMember = Recipient()
             
-            groupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
             groupMember.recipientID = snapshotValue["recipientID"] as! String
             groupMember.recipientName = snapshotValue["recipientName"] as! String
             
-            self.currentGroupMembers.append(groupMember)
+            FIRDatabase.database().reference().child("users").child(groupMember.recipientID).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                groupMember.imageURL1 = snapshotValue["profileImageURL"] as! String
+                
+                self.currentGroupMembers.append(groupMember)
+                self.tableView.reloadData()
+                
+            })
+            
+            
         })
 
         

@@ -73,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Print message ID.
         
         
+        
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
@@ -243,11 +244,15 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+
         let userInfo = notification.request.content.userInfo
+        
+
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
+
         
         // Print full message.
         print(userInfo)
