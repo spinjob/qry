@@ -626,6 +626,7 @@ if indexPath.section == 0 {
                 print(snapshot)
                 
                 controller.parentThreadID = snapshotValue["threadID"] as! String
+                controller.poll = self.poll
                 
                 print(snapshotValue["threadID"] as! String)
                 
@@ -912,6 +913,7 @@ if indexPath.section == 0 {
         if segue.identifier == "editGroupSegue" {
         let nextVC = segue.destination as! EditGroupViewController
         nextVC.group = sender as! Recipient
+            
         
         print(nextVC.group)
     

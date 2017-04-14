@@ -1565,7 +1565,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         newDecisionTextField.text = ""
         view.endEditing(true)
         
-       // tableView.reloadData()
+        tableView.reloadData()
        // tableView.updateConstraints()
         
         
@@ -1578,7 +1578,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
          newDecisionTextField.text = ""
          view.endEditing(true)
         
-       // tableView.reloadData()
+        tableView.reloadData()
        // tableView.updateConstraints()
         
         

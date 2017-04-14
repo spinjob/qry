@@ -252,6 +252,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 
         let userInfo = notification.request.content.userInfo
         
+        let pollID = String(describing: userInfo[AnyHashable("pollID")]!)
         
         
         let answer1Action = UNNotificationAction(identifier: "answer1",
@@ -259,7 +260,12 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         let answer2Action = UNNotificationAction(identifier: "answer2",
                                                  title:String(describing: userInfo[AnyHashable("answer2")]!), options: .foreground)
         
-        let answerCategory = UNNotificationCategory(identifier: "poll_asked",
+//        let answerCategory = UNNotificationCategory(identifier: "poll_asked",
+//            actions: [answer1Action, answer2Action],
+//            intentIdentifiers: [],
+//            options: UNNotificationCategoryOptions(rawValue: 0))
+        
+        let answerCategory = UNNotificationCategory(identifier: "poll_asked_\(pollID)",
                                                     actions: [answer1Action, answer2Action],
                                                     intentIdentifiers: [],
                                                     options: UNNotificationCategoryOptions(rawValue: 0))
@@ -268,12 +274,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         let center = UNUserNotificationCenter.current()
         center.setNotificationCategories([answerCategory])
         
-        
-        
-        print("User Info \(userInfo)")
-        print("Answer 1 \(String(describing: userInfo[AnyHashable("answer2")]!))")
-        
-        
+
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
@@ -291,6 +292,37 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
+        
+        let pollID = String(describing: userInfo[AnyHashable("pollID")]!)
+        let userID = String(describing: userInfo[AnyHashable("userID")]!)
+        let answer1String = String(describing: userInfo[AnyHashable("answer1")]!)
+        let answer2String = String(describing: userInfo[AnyHashable("answer2")]!)
+        
+        
+        print(pollID)
+        print(userID)
+        print(answer1String)
+        print(answer2String)
+        
+        print("USER INFO RESPONSE \(userInfo)")
+        
+        if response.notification.request.content.categoryIdentifier == "poll_asked_\(pollID)" {
+            if response.actionIdentifier == "answer1" {
+                FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(userID).child("voteString").setValue("answer1")
+                
+                FIRDatabase.database().reference().child("users").child(userID).child("votes").child(pollID).child("answerChoice").setValue("answer1")
+                FIRDatabase.database().reference().child("users").child(userID).child("votes").child(pollID).child("answerString").setValue(answer1String)
+
+            } else if response.actionIdentifier == "answer2" {
+                
+                FIRDatabase.database().reference().child("polls").child(pollID).child("votes").child(userID).child("voteString").setValue("answer2")
+                
+                FIRDatabase.database().reference().child("users").child(userID).child("votes").child(pollID).child("answerChoice").setValue("answer2")
+                FIRDatabase.database().reference().child("users").child(userID).child("votes").child(pollID).child("answerString").setValue(answer2String)
+                
+            }
+        }
+        
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
