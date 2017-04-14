@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		27B79C6780BCE387A65A38D0 /* Pods_Qv1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */; };
+		5545DA79C7E99F1788CC7532 /* Pods_pollNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 363F1B2D619210ADBD72A95B /* Pods_pollNotificationExtension.framework */; };
 		68012E701DB5A42600676EAF /* iPhone 7 Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */; };
 		680DF2DE1DB5933200452A4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2DD1DB5933200452A4E /* AppDelegate.swift */; };
 		680DF2E61DB5933200452A4E /* Qv1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 680DF2E41DB5933200452A4E /* Qv1.xcdatamodeld */; };
@@ -58,6 +59,8 @@
 		682DDC681E89CA04009E46F5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682DDC671E89CA04009E46F5 /* Message.swift */; };
 		683166811DD6B752003EDC21 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 683166801DD6B752003EDC21 /* gradient.png */; };
 		683413541E620AB300077388 /* StringPollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683413521E620AB300077388 /* StringPollTableViewCell.swift */; };
+		683B90421E9EDE2E00F92432 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B90411E9EDE2E00F92432 /* NotificationService.swift */; };
+		683B90461E9EDE2E00F92432 /* pollNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 683B903F1E9EDE2E00F92432 /* pollNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		684A2E2E1E58D207003706B3 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */; };
 		684BA6561E6DFC760004C045 /* SendToHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BA6551E6DFC760004C045 /* SendToHeaderTableViewCell.swift */; };
 		684BA6581E70ADE90004C045 /* PollProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BA6571E70ADE90004C045 /* PollProfileViewController.swift */; };
@@ -130,6 +133,16 @@
 		68F891441E5CDA6900A392E1 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F891431E5CDA6900A392E1 /* UserNotifications.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		683B90441E9EDE2E00F92432 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 680DF2D21DB5933200452A4E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 683B903E1E9EDE2E00F92432;
+			remoteInfo = pollNotificationExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		68418E591E7B1AD10085FD74 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -137,6 +150,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				683B90461E9EDE2E00F92432 /* pollNotificationExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,6 +168,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		09AD9A03837334ED719AADD6 /* Pods-pollNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pollNotificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-pollNotificationExtension/Pods-pollNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
+		363F1B2D619210ADBD72A95B /* Pods_pollNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pollNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DE9B6A28C941F22C37D448C /* Pods-Qv1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qv1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Qv1/Pods-Qv1.debug.xcconfig"; sourceTree = "<group>"; };
 		68012E6F1DB5A42600676EAF /* iPhone 7 Plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone 7 Plus.png"; sourceTree = "<group>"; };
 		680DF2DA1DB5933200452A4E /* Qv1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qv1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,6 +223,9 @@
 		682DDC671E89CA04009E46F5 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		683166801DD6B752003EDC21 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gradient.png; path = ../../gradient.png; sourceTree = "<group>"; };
 		683413521E620AB300077388 /* StringPollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringPollTableViewCell.swift; sourceTree = "<group>"; };
+		683B903F1E9EDE2E00F92432 /* pollNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = pollNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		683B90411E9EDE2E00F92432 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		683B90431E9EDE2E00F92432 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		684A2E2D1E58D207003706B3 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		684BA6551E6DFC760004C045 /* SendToHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendToHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		684BA6571E70ADE90004C045 /* PollProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollProfileViewController.swift; sourceTree = "<group>"; };
@@ -281,6 +300,7 @@
 		99E1BFF88B2B1A13D78BB8A4 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4124686FDA3D5ED3994D781 /* Pods-Qv1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qv1.release.xcconfig"; path = "Pods/Target Support Files/Pods-Qv1/Pods-Qv1.release.xcconfig"; sourceTree = "<group>"; };
 		B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Qv1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2F425E85ECC669F8163F47D /* Pods-pollNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pollNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pollNotificationExtension/Pods-pollNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -295,6 +315,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		683B903C1E9EDE2E00F92432 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5545DA79C7E99F1788CC7532 /* Pods_pollNotificationExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -303,6 +331,8 @@
 			children = (
 				4DE9B6A28C941F22C37D448C /* Pods-Qv1.debug.xcconfig */,
 				A4124686FDA3D5ED3994D781 /* Pods-Qv1.release.xcconfig */,
+				C2F425E85ECC669F8163F47D /* Pods-pollNotificationExtension.debug.xcconfig */,
+				09AD9A03837334ED719AADD6 /* Pods-pollNotificationExtension.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -311,6 +341,7 @@
 			isa = PBXGroup;
 			children = (
 				680DF2DC1DB5933200452A4E /* Qv1 */,
+				683B90401E9EDE2E00F92432 /* pollNotificationExtension */,
 				680DF2DB1DB5933200452A4E /* Products */,
 				4BF5457A2FB48E866AC3863B /* Pods */,
 				A46A0ACBC6389C255DF8EC08 /* Frameworks */,
@@ -321,6 +352,7 @@
 			isa = PBXGroup;
 			children = (
 				680DF2DA1DB5933200452A4E /* Qv1.app */,
+				683B903F1E9EDE2E00F92432 /* pollNotificationExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -467,6 +499,15 @@
 			name = "New UI/UX";
 			sourceTree = "<group>";
 		};
+		683B90401E9EDE2E00F92432 /* pollNotificationExtension */ = {
+			isa = PBXGroup;
+			children = (
+				683B90411E9EDE2E00F92432 /* NotificationService.swift */,
+				683B90431E9EDE2E00F92432 /* Info.plist */,
+			);
+			path = pollNotificationExtension;
+			sourceTree = "<group>";
+		};
 		68A243681E5687E8006AAA61 /* Notification Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -580,6 +621,7 @@
 				68D384451DBFBD2C000B4084 /* libz.tbd */,
 				B8046ED601EC746EAD46B385 /* Pods_Qv1.framework */,
 				99E1BFF88B2B1A13D78BB8A4 /* libPods-OneSignalNotificationServiceExtension.a */,
+				363F1B2D619210ADBD72A95B /* Pods_pollNotificationExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -604,11 +646,31 @@
 			buildRules = (
 			);
 			dependencies = (
+				683B90451E9EDE2E00F92432 /* PBXTargetDependency */,
 			);
 			name = Qv1;
 			productName = Qv1;
 			productReference = 680DF2DA1DB5933200452A4E /* Qv1.app */;
 			productType = "com.apple.product-type.application";
+		};
+		683B903E1E9EDE2E00F92432 /* pollNotificationExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 683B90491E9EDE2E00F92432 /* Build configuration list for PBXNativeTarget "pollNotificationExtension" */;
+			buildPhases = (
+				9692E2DD09562E014E51144E /* [CP] Check Pods Manifest.lock */,
+				683B903B1E9EDE2E00F92432 /* Sources */,
+				683B903C1E9EDE2E00F92432 /* Frameworks */,
+				683B903D1E9EDE2E00F92432 /* Resources */,
+				A3F2DB6F419FCAB96875F3FF /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = pollNotificationExtension;
+			productName = pollNotificationExtension;
+			productReference = 683B903F1E9EDE2E00F92432 /* pollNotificationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -616,7 +678,7 @@
 		680DF2D21DB5933200452A4E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0820;
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Spencer Johnson";
 				TargetAttributes = {
@@ -636,6 +698,11 @@
 							};
 						};
 					};
+					683B903E1E9EDE2E00F92432 = {
+						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = XR2T7JZ8F6;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 680DF2D51DB5933200452A4E /* Build configuration list for PBXProject "Qv1" */;
@@ -652,6 +719,7 @@
 			projectRoot = "";
 			targets = (
 				680DF2D91DB5933200452A4E /* Qv1 */,
+				683B903E1E9EDE2E00F92432 /* pollNotificationExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -709,6 +777,13 @@
 				68219A711E00B0B9004E822F /* galleryIcon.png in Resources */,
 				6871BB1F1E773D18005F6932 /* Assets.xcassets in Resources */,
 				681A7C581E5E606200849E7E /* Everybody Conversation (Active).png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		683B903D1E9EDE2E00F92432 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,7 +846,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9692E2DD09562E014E51144E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A3F2DB6F419FCAB96875F3FF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-pollNotificationExtension/Pods-pollNotificationExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -853,7 +958,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		683B903B1E9EDE2E00F92432 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				683B90421E9EDE2E00F92432 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		683B90451E9EDE2E00F92432 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 683B903E1E9EDE2E00F92432 /* pollNotificationExtension */;
+			targetProxy = 683B90441E9EDE2E00F92432 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		680DF2E91DB5933200452A4E /* LaunchScreen.storyboard */ = {
@@ -1020,6 +1141,40 @@
 			};
 			name = Release;
 		};
+		683B90471E9EDE2E00F92432 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C2F425E85ECC669F8163F47D /* Pods-pollNotificationExtension.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				DEVELOPMENT_TEAM = XR2T7JZ8F6;
+				INFOPLIST_FILE = pollNotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.smj.headcount.pollNotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		683B90481E9EDE2E00F92432 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 09AD9A03837334ED719AADD6 /* Pods-pollNotificationExtension.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				DEVELOPMENT_TEAM = XR2T7JZ8F6;
+				INFOPLIST_FILE = pollNotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.smj.headcount.pollNotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1037,6 +1192,15 @@
 			buildConfigurations = (
 				680DF2F01DB5933200452A4E /* Debug */,
 				680DF2F11DB5933200452A4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		683B90491E9EDE2E00F92432 /* Build configuration list for PBXNativeTarget "pollNotificationExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				683B90471E9EDE2E00F92432 /* Debug */,
+				683B90481E9EDE2E00F92432 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

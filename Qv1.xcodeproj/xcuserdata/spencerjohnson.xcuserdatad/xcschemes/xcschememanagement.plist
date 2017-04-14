@@ -7,7 +7,7 @@
 		<key>OneSignalNotificationServiceExtension.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>1</integer>
 		</dict>
 		<key>Qv1.xcscheme</key>
 		<dict>
@@ -16,10 +16,20 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>pollNotificationExtension.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>13</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>680DF2D91DB5933200452A4E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>683B903E1E9EDE2E00F92432</key>
 		<dict>
 			<key>primary</key>
 			<true/>

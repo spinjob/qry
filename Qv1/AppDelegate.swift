@@ -40,8 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UNUserNotificationCenter.current().delegate = self
             // For iOS 10 data message (sent via FCM)
             FIRMessaging.messaging().remoteMessageDelegate = self
-            
+           
 
+           
             
         } else {
             let settings: UIUserNotificationSettings =
@@ -74,8 +75,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         
+       
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
+            
         }
         
         // Print full message.
@@ -88,6 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // this callback will not be fired till the user taps on the notification launching the application.
         // TODO: Handle data of notification
         // Print message ID.
+        
+
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
@@ -114,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // [END refresh_token]
     // [START connect_to_fcm]
     
-    
+
     func connectToFcm() {
         // Won't connect since there is no token
         guard FIRInstanceID.instanceID().token() != nil else {
@@ -247,7 +252,28 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 
         let userInfo = notification.request.content.userInfo
         
-
+        
+        
+        let answer1Action = UNNotificationAction(identifier: "answer1",
+                                                 title: String(describing: userInfo[AnyHashable("answer1")]!), options: .foreground)
+        let answer2Action = UNNotificationAction(identifier: "answer2",
+                                                 title:String(describing: userInfo[AnyHashable("answer2")]!), options: .foreground)
+        
+        let answerCategory = UNNotificationCategory(identifier: "poll_asked",
+                                                    actions: [answer1Action, answer2Action],
+                                                    intentIdentifiers: [],
+                                                    options: UNNotificationCategoryOptions(rawValue: 0))
+        
+        // Register the notification categories.
+        let center = UNUserNotificationCenter.current()
+        center.setNotificationCategories([answerCategory])
+        
+        
+        
+        print("User Info \(userInfo)")
+        print("Answer 1 \(String(describing: userInfo[AnyHashable("answer2")]!))")
+        
+        
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
