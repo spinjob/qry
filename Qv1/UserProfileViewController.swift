@@ -214,22 +214,29 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
                 let recipient = Recipient()
                 
                 recipient.recipientID = snapshotValue["recipientID"] as! String
-                recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+                
                 recipient.recipientName = snapshotValue["recipientName"] as! String
                 recipient.vote = snapshotValue["voteString"] as! String
                 
-                
-                if poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID})
-                { print("group already added")
+                FIRDatabase.database().reference().child("users").child(recipient.recipientID).observe(.value, with: {
+                    snapshot in
+                    let snapshotValue = snapshot.value as! NSDictionary
+                    recipient.imageURL1 = snapshotValue["profileImageURL"] as! String
                     
-                } else {
+                    if poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID})
+                    { print("group already added")
+                        
+                    } else {
+                        
+                        poll.groupMembers.append(recipient)
+                        print("poll group member count \(poll.groupMembers.count)")
+                        poll.groupMembers = poll.groupMembers.sorted(by: {$0.vote < $1.vote})
+                        self.tableView.reloadData()
+                        
+                    }
                     
-                    poll.groupMembers.append(recipient)
-                    print("poll group member count \(poll.groupMembers.count)")
-                    poll.groupMembers = poll.groupMembers.sorted(by: {$0.vote < $1.vote})
-                    self.tableView.reloadData()
-                    
-                }
+                })
+
                 
             })
 

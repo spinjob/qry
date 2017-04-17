@@ -7,9 +7,6 @@
 //
 
 import UserNotifications
-import FirebaseDatabase
-import FirebaseAuth
-import FirebaseInstanceID
 
 class NotificationService: UNNotificationServiceExtension {
 

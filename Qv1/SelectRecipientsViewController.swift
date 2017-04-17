@@ -978,6 +978,8 @@ if indexPath.section == 0 {
         
         FIRDatabase.database().reference().child("notificationRequests").child(notificationRequestID).setValue(notificationRequestDict)
         
+        FIRDatabase.database().reference().child("notificationRequestsCopy").child(notificationRequestID).setValue(notificationRequestDict)
+        
 
         print(notificationRequestDict)
     

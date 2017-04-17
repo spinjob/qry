@@ -139,15 +139,15 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             })
             
             
-            
             FIRDatabase.database().reference().child("polls").child(poll.pollID).child("votes").observe(.childAdded, with: {
                 snapshot in
                 let snapshotValue = snapshot.value as! NSDictionary
                 let recipient = Recipient()
+
                 
                 recipient.recipientID = snapshotValue["recipientID"] as! String
-                recipient.imageURL1 = snapshotValue["recipientImageURL1"] as! String
                 recipient.recipientName = snapshotValue["recipientName"] as! String
+                
                 recipient.vote = snapshotValue["voteString"] as! String
                
                 FIRDatabase.database().reference().child("users").child(recipient.recipientID).observe(.value, with: {
@@ -165,6 +165,11 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
                 } else {
                     
                     poll.groupMembers.append(recipient)
+                    
+                    print("\(poll.pollID)")
+                    print("recipient name added \(poll.groupMembers.last)")
+                    
+                    
                     poll.groupMembers = poll.groupMembers.sorted(by: {$0.vote < $1.vote})
                     
                     if self.receivedPolls.contains(where: { $0.pollID == poll.pollID})
@@ -173,6 +178,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
                     } else {
                         
                         self.receivedPolls.append(poll)
+                        
                         self.receivedPolls = self.receivedPolls.sorted(by: {$0.minutesUntilExpiration > $1.minutesUntilExpiration})
                         
                         self.tableView.reloadData()
@@ -385,6 +391,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 //        
 //       return self.threadCountDict[threadID]!
         
+        
         return receivedPolls.count
     }
     
@@ -406,6 +413,10 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let pollForCell : Poll = receivedPolls[indexPath.row]
         
+        
+        
+        print("number of groupmembers \(pollForCell.groupMembers.count)")
+        
 
         let pollForCellRef = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID)
         let senderUserRef = FIRDatabase.database().reference().child("users").child(pollForCell.senderUser)
@@ -416,9 +427,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let currentUserVoteRef : FIRDatabaseReference = FIRDatabase.database().reference().child("polls").child(pollForCell.pollID).child("votes").child(currentUserID!)
         
-        binaryStringCell.contentView.tag = indexPath.section
-        expiredCell.contentView.tag = indexPath.section
-        
+//        binaryStringCell.contentView.tag = indexPath.section
+//        expiredCell.contentView.tag = indexPath.section
 
 
         //Binary String Cell
@@ -774,29 +784,41 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             
         } else if minutesLeft.minute! < 0, pollForCell.isExpired == false  {
             
-            return expiredCell
             pollForCellRef.child("expired").setValue("true")
-            FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(threads[indexPath.section]).child(pollForCell.pollID).child("expired").setValue("true")
-        FIRDatabase.database().reference().child("threads").child(threads[indexPath.section]).child(pollForCell.pollID).child("expired").setValue("true")
+            FIRDatabase.database().reference().child("users").child(currentUserID!).child("receivedPolls").child(pollForCell.pollID).child("expired").setValue("true")
+        //FIRDatabase.database().reference().child("threads").child(threads[indexPath.section]).child(pollForCell.pollID).child("expired").setValue("true")
             
-
+            expiredCell.groupMembersCollectionView.tag = indexPath.row
+            print("Expired Cell Collection View Tag \(expiredCell.groupMembersCollectionView.tag)")
+            
+            
+            
+            if expiredCell.answer1Button.isHidden == true {
+                expiredCell.answerSelectedView.isHidden = false
+            }
+            
+            return expiredCell
             
         }
 
         //Collection View
         
-        binaryStringCell.groupMembersCollectionView.tag = indexPath.row
-        expiredCell.groupMembersCollectionView.tag = indexPath.row
         
-        if pollForCell.isExpired == true{
+        if pollForCell.isExpired == true {
+           
+            expiredCell.groupMembersCollectionView.tag = indexPath.row
+            expiredCell.groupMembersCollectionView.isHidden = true
+
+            
+            if expiredCell.answer1Button.isHidden == true {
+                expiredCell.answerSelectedView.isHidden = false
+            }
             
             return expiredCell
         }
 
-        if expiredCell.answer1Button.isHidden == true {
-            expiredCell.answerSelectedView.isHidden = false
-        }
-        
+      
+         binaryStringCell.groupMembersCollectionView.tag = indexPath.row
         
         return binaryStringCell
         
@@ -806,6 +828,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         guard let tableViewCell = cell as? StringPollTableViewCell else { return }
         
         tableViewCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
+        
+        
         tableViewCell.isUserInteractionEnabled = true
         
     }
@@ -826,7 +850,6 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let pollForCell = receivedPolls[collectionView.tag]
 
-
         return pollForCell.groupMembers.count
     }
     
@@ -841,6 +864,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let pollForCell = receivedPolls[collectionView.tag]
         let recipientForCollectionCell = pollForCell.groupMembers[indexPath.item]
+        
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "newGroupMemberCollectionViewCell", for: indexPath) as! PollRecipientCollectionViewCell
 
@@ -1577,7 +1601,6 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
          newDecisionTextField.endEditing(true)
          newDecisionTextField.text = ""
          view.endEditing(true)
-        
         tableView.reloadData()
        // tableView.updateConstraints()
         
