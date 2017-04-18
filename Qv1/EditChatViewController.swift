@@ -33,6 +33,7 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
         
         let pollRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("polls").child(pollID)
         let pollVoteRef : FIRDatabaseReference =  FIRDatabase.database().reference().child("polls").child(pollID).child("votes")
+        let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
 
         
         pollVoteRef.queryOrdered(byChild: "voteString").queryEqual(toValue: "answer1").observe(.childAdded, with: {
@@ -40,13 +41,23 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
             snapshot in
             let snapshotValue = snapshot.value as! NSDictionary
             let answer1GroupMember : Recipient = Recipient()
-            answer1GroupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
             answer1GroupMember.recipientID = snapshotValue["recipientID"] as! String
             answer1GroupMember.recipientName = snapshotValue["recipientName"] as! String
             
-            self.answer1Group.append(answer1GroupMember)
-            print("Answer 1 Group \(self.answer1Group)")
-            self.tableView.reloadData()
+            userRef.child(answer1GroupMember.recipientID).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                answer1GroupMember.imageURL1 = snapshotValue["profileImageURL"] as! String
+                
+                self.answer1Group.append(answer1GroupMember)
+                print("Answer 1 Group \(self.answer1Group)")
+                self.tableView.reloadData()
+                
+                
+            })
+            
+
             
         })
 
@@ -55,13 +66,23 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
             snapshot in
             let snapshotValue = snapshot.value as! NSDictionary
             let answer2GroupMember : Recipient = Recipient()
-            answer2GroupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
             answer2GroupMember.recipientID = snapshotValue["recipientID"] as! String
             answer2GroupMember.recipientName = snapshotValue["recipientName"] as! String
             
-            self.answer2Group.append(answer2GroupMember)
-            print("Answer 2 Group \(self.answer2Group)")
-            self.tableView.reloadData()
+            userRef.child(answer2GroupMember.recipientID).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                answer2GroupMember.imageURL1 = snapshotValue["profileImageURL"] as! String
+                
+                self.answer2Group.append(answer2GroupMember)
+                print("Answer 2 Group \(self.answer2Group)")
+                self.tableView.reloadData()
+                
+            })
+            
+            
+            
             
         })
         
@@ -70,13 +91,23 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
             snapshot in
             let snapshotValue = snapshot.value as! NSDictionary
             let noAnswerGroupMember : Recipient = Recipient()
-            noAnswerGroupMember.imageURL1 = snapshotValue["recipientImageURL1"] as! String
+    
             noAnswerGroupMember.recipientID = snapshotValue["recipientID"] as! String
             noAnswerGroupMember.recipientName = snapshotValue["recipientName"] as! String
             
-            self.noanswerGroup.append(noAnswerGroupMember)
-            print("No Answer Group \(self.noanswerGroup)")
-            self.tableView.reloadData()
+            userRef.child(noAnswerGroupMember.recipientID).observe(.value, with: {
+                snapshot in
+                let snapshotValue = snapshot.value as! NSDictionary
+                
+                noAnswerGroupMember.imageURL1 = snapshotValue["profileImageURL"] as! String
+                
+                self.noanswerGroup.append(noAnswerGroupMember)
+                print("No Answer Group \(self.noanswerGroup)")
+                self.tableView.reloadData()
+                
+            })
+            
+            
             
         })
 

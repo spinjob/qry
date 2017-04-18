@@ -260,10 +260,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         let answer2Action = UNNotificationAction(identifier: "answer2",
                                                  title:String(describing: userInfo[AnyHashable("answer2")]!), options: .foreground)
         
-//        let answerCategory = UNNotificationCategory(identifier: "poll_asked",
-//            actions: [answer1Action, answer2Action],
-//            intentIdentifiers: [],
-//            options: UNNotificationCategoryOptions(rawValue: 0))
         
         let answerCategory = UNNotificationCategory(identifier: "poll_asked_\(pollID)",
                                                     actions: [answer1Action, answer2Action],
@@ -286,6 +282,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         // Change this to your preferred presentation option
         completionHandler([.alert, .badge, .sound])
+
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -312,6 +309,12 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                 
                 FIRDatabase.database().reference().child("users").child(userID).child("votes").child(pollID).child("answerChoice").setValue("answer1")
                 FIRDatabase.database().reference().child("users").child(userID).child("votes").child(pollID).child("answerString").setValue(answer1String)
+                
+                if UIApplication.shared.applicationIconBadgeNumber > 0 {
+                    UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber - 1
+                } else {
+                    UIApplication.shared.applicationIconBadgeNumber = 0
+                }
 
             } else if response.actionIdentifier == "answer2" {
                 

@@ -367,5 +367,6 @@ class FindFriendsViewController: UIViewController, UITableViewDelegate, UITableV
             
             recipientListRef.child(Recipient.recipientID).setValue(newRecipient)
         }
+         self.performSegue(withIdentifier: "unwindToMenuFromFindFriends", sender: self)
     }
 }

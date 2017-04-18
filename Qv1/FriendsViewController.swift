@@ -576,6 +576,8 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let items = [friendArray, groupArray]
         let recipientToRemove = items[0][sender.tag]
         
+        friendArray = friendArray.filter() {$0 !== recipientToRemove}
+        
         FIRDatabase.database().reference().child("users").child(currentUserID!).child("recipientList").child(recipientToRemove.recipientID).removeValue()
         
         tableView.reloadData()

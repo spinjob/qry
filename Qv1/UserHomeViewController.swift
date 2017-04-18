@@ -126,7 +126,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             poll.createdDate = formatter.date(from: poll.dateCreated)!
             
             
-            FIRDatabase.database().reference().child("polls").observe(.childAdded, with: {
+            FIRDatabase.database().reference().child("polls").child(poll.pollID).observe(.value, with: {
                 snapshot in
                 let snapshotValue = snapshot.value as! NSDictionary
             
@@ -344,7 +344,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 //
 //        })
         
-    
+    tableView.reloadData()
         
     }
     
@@ -749,6 +749,9 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             }
         
         
+        print("Minutes Left \(minutesLeft.minute!)")
+        
+        
         if minutesLeft.minute! > 0 {
             
             let chartView = PieChartView()
@@ -802,14 +805,12 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         }
 
         //Collection View
-        
+        print("POLL EXPIRED \(pollForCell.isExpired)")
         
         if pollForCell.isExpired == true {
            
             expiredCell.groupMembersCollectionView.tag = indexPath.row
-            expiredCell.groupMembersCollectionView.isHidden = true
 
-            
             if expiredCell.answer1Button.isHidden == true {
                 expiredCell.answerSelectedView.isHidden = false
             }
@@ -1209,8 +1210,12 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
             formatter.timeStyle = .short
             let dateString = formatter.string(from: date)
 
-            FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("expired").setValue("true")
+        FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("expired").setValue("true")
             FIRDatabase.database().reference().child("polls").child(pollForRow.pollID).child("expirationDate").setValue(dateString)
+            
+            FIRDatabase.database().reference().child("users").child(self.currentUserID!).child("receivedPolls").child(pollForRow.pollID).child("expirationDate").setValue(dateString)
+            
+            FIRDatabase.database().reference().child("users").child(self.currentUserID!).child("receivedPolls").child(pollForRow.pollID).child("expired").setValue("true")
             
             self.receivedPolls[indexPath.row].isExpired = true
             
@@ -1606,6 +1611,19 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         
     }
+    
+    
+    @IBAction func unwindToMenuFromFindFriends (segue: UIStoryboardSegue){
+        
+        newDecisionTextField.endEditing(true)
+        newDecisionTextField.text = ""
+        view.endEditing(true)
+        tableView.reloadData()
+        // tableView.updateConstraints()
+    
+    }
+    
+    
     
     
     @IBAction func newDecisionButtonTapped(_ sender: Any) {
