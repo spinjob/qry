@@ -226,10 +226,19 @@ class SelectRecipientsViewController: UIViewController, UITableViewDelegate, UIT
                 
                 recipient.imageURL1 = snapshotValue["profileImageURL"] as! String
                
+//                if recipient.recipientID == self.currentUserID {
+//                    
+//                    print("current user")
+//                } else if self.searchForContactUsingPhoneNumber(phoneNumber: recipient.phoneNumber).count > 0 {
+//                    
+//                    self.recipientList.append(recipient)
+//                    self.recipientList.sort(by: {$0.recipientName > $1.recipientName})
+//                }
+//                
                 if recipient.recipientID == self.currentUserID {
                     
                     print("current user")
-                } else if self.searchForContactUsingPhoneNumber(phoneNumber: recipient.phoneNumber).count > 0 {
+                } else {
                     
                     self.recipientList.append(recipient)
                     self.recipientList.sort(by: {$0.recipientName > $1.recipientName})

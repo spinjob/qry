@@ -80,6 +80,13 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         setUpNavigationBarItems()
         
+        tableView.delegate = self
+        tableView.dataSource = self
+        newDecisionTextField.delegate = self
+        tableView.estimatedRowHeight = 181
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = UIView()
+        
         newDecisionButton.isHidden = true
         
         FIRMessaging.messaging().subscribe(toTopic: "user_\(currentUserID!)")
@@ -215,12 +222,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 //            
 //        }
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        newDecisionTextField.delegate = self
-        tableView.estimatedRowHeight = 181
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.tableFooterView = UIView()
+        
         
 //        threadDict.removeAll()
         
@@ -344,8 +346,6 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
 //
 //        })
         
-    tableView.reloadData()
-        
     }
     
     
@@ -354,6 +354,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        tableView.reloadData()
        
         delay(1, closure: {
     
@@ -1606,7 +1608,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
          newDecisionTextField.endEditing(true)
          newDecisionTextField.text = ""
          view.endEditing(true)
-        tableView.reloadData()
+       // tableView.reloadData()
        // tableView.updateConstraints()
         
         

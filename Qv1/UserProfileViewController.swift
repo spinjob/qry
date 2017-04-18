@@ -109,24 +109,6 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         })
         
         
-        userRef.child("votes").observe(.childAdded, with: {
-            snapshot in
-            let snapshotValue = snapshot.value as! NSDictionary
-            let poll = Poll()
-
-            print("answer string snapshot\(snapshotValue["answerString"] as! String)")
-            print("answered poll snapshot\(snapshot)")
-            poll.answer1String = snapshotValue["answerString"] as! String
-            poll.pollID = snapshot.key
-            
-            if poll.answer1String != "no answer" {
-              self.answeredPolls.append(poll)
-            }
-
-
-        })
-        
-        
     
     
     userRef.child("recipientList").queryOrdered(byChild: "tag").queryEqual(toValue: "user").observe(.value, with: {
@@ -370,6 +352,28 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     
 override func viewDidAppear(_ animated: Bool) {
+    
+    let userRef : FIRDatabaseReference = FIRDatabase.database().reference().child("users").child(profileUserID)
+    
+    
+    
+    userRef.child("votes").observe(.childAdded, with: {
+        snapshot in
+        let snapshotValue = snapshot.value as! NSDictionary
+        let poll = Poll()
+        
+        print(snapshot)
+        
+        poll.answer1String = snapshotValue["answerChoice"] as! String
+        poll.pollID = snapshot.key
+        
+        if poll.answer1String != "no answer" {
+            self.answeredPolls.append(poll)
+        }
+        
+        
+    })
+    
         tableView.reloadData()
     
     
@@ -590,7 +594,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     } else {
         
         answeredPollForCell = answeredPolls[indexPath.row]
-        answerCell.answerLabel.text = answeredPollForCell.answer1String
+        
         answerCell.answerView.layer.cornerRadius = 4
         answerCell.answerView.layer.borderColor = grey.cgColor
         answerCell.answerView.layer.borderWidth = 1
@@ -607,6 +611,11 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
             answeredPollForCell.senderUser = snapshotValue["senderUser"] as! String
             answeredPollForCell.questionString = snapshotValue["question"] as! String
             
+            if answeredPollForCell.answer1String == "answer1" {
+                answerCell.answerLabel.text = snapshotValue["answer1"] as! String
+            } else if answeredPollForCell.answer1String == "answer2" {
+                answerCell.answerLabel.text = snapshotValue["answer2"] as! String
+            }
             
             answerCell.questionTextView.text = answeredPollForCell.questionString
             
