@@ -15,6 +15,9 @@ import SDWebImage
 
 class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, FeaturedAnswerCellDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    @IBOutlet weak var globalButton: UIButton!
+    
+    
     @IBOutlet weak var questionTextField: UITextField!
     @IBOutlet weak var answer1TextField: UITextField!
     @IBOutlet weak var answer2TextField: UITextField!
@@ -99,12 +102,23 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     var calendar = Calendar.current
     let formatter = DateFormatter()
     let myLocale = Locale(identifier: "bg_BG")
-
+    
+    var currentUserID = FIRAuth.auth()?.currentUser?.uid
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
+        
+        globalButton.isHidden = true
+        globalButton.isEnabled = false
+        
+        
+        if currentUserID == "UfKiyp1coUVRAUxETgtdWrA96c53" {
+            globalButton.isHidden = false
+            globalButton.isEnabled = true
+        }
+    
+        
 //        pollOutlineView.layer.borderWidth = 0.5
 //        pollOutlineView.layer.borderColor = grey.cgColor
 //        pollOutlineView.layer.cornerRadius = 4
@@ -602,6 +616,53 @@ class CreatePollViewController: UIViewController, UITextFieldDelegate, UITableVi
     }
     
 
+    @IBAction func globalButtonTapped(_ sender: Any) {
+       
+        
+        var expirationDateString = ""
+        
+        let pollID = UUID().uuidString
+        
+        let selectedIndex = expirationPicker.selectedRow(inComponent: 0)
+        
+        
+        if pickerData[selectedIndex] == "5 mins" {
+            
+            expirationDate = calendar.date(byAdding: .minute, value: 5, to: date)!
+            
+        }
+        
+        
+        if pickerData[selectedIndex] == "an hour" {
+            
+            expirationDate = calendar.date(byAdding: .hour, value: 1, to: date)!
+            
+        }
+        
+        if pickerData[selectedIndex] == "a day" {
+            
+            expirationDate = calendar.date(byAdding: .day, value: 1, to: date)!
+            
+        }
+        
+        if pickerData[selectedIndex] == "a week" {
+            
+            expirationDate = calendar.date(byAdding: .day, value: 7, to: date)!
+            
+        }
+        
+        
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        expirationDateString = formatter.string(from: expirationDate)
+        
+        
+         let dictPoll : [NSObject : AnyObject]  = ["pollID" as NSObject: pollID as AnyObject, "question" as NSObject: questionTextField.text as AnyObject, "answer1" as NSObject: answer1TextField.text as AnyObject, "answer2" as NSObject: answer2TextField.text as AnyObject, "expiration" as NSObject: pickerData[selectedIndex] as AnyObject, "senderUser" as NSObject: FIRAuth.auth()?.currentUser?.uid as AnyObject, "pollImageURL" as NSObject: self.pollImage as AnyObject, "pollURL" as NSObject: self.pollURL as AnyObject, "pollImageDescription" as NSObject: self.pollImageDescription as AnyObject, "pollImageTitle" as NSObject: self.pollImageTitle as AnyObject, "questionImageURL" as NSObject: self.questionImageURL as AnyObject, "dateCreated" as NSObject: self.poll.dateCreated as AnyObject, "expired" as NSObject: "false" as AnyObject, "expirationDate" as NSObject: expirationDateString as AnyObject, "answer1Count" as NSObject: "0" as AnyObject, "answer2Count" as NSObject: "0" as AnyObject, "isThreadParent" as NSObject: "true" as AnyObject, "threadID" as NSObject: "noID" as AnyObject, "hasChildren" as NSObject: "false" as AnyObject]
+        
+        
+        FIRDatabase.database().reference().child("globalPolls").child(pollID).setValue(dictPoll)
+        
+    }
     
     
     

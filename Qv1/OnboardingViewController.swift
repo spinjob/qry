@@ -66,9 +66,10 @@ class OnboardingViewController: UIViewController, PaperOnboardingDataSource, Pap
     func onboardingItemAtIndex(_ index: Int) -> OnboardingItemInfo {
         return [
             
-          ("onboarding1PollImage", "Ask a question", "Start a decision with a question and two responses", "askQuestionIcon", blue, UIColor.white, UIColor.white, textFont, descriptionFont),
-            ("collectImage", "Get answers", "Add your friends to collect opinions or get a headcount", "collectIcon", actionGreen, UIColor.white, UIColor.white, textFont, descriptionFont),
-            ("discussOnboardingImage", "Chat with context", "Message the entire group or choose by answer", "discussOnboardingIcon", red, UIColor.white, UIColor.white, textFont, descriptionFont), ("threadOnboardingImage", "Thread your questions", "Create a branches for different answer groups", "Launch Image", UIColor.white, blue, blue, textFont, descriptionFont), ("nextIcon", "Let's do it", "Tap above to login", "launchImage", UIColor.white, blue, blue, textFont, descriptionFont)][index]
+          ("onboarding1PollImage", "Ask a group", "Start a group chat with a question and two responses", "askQuestionIcon", blue, UIColor.white, UIColor.white, textFont, descriptionFont),
+            ("collectImage", "Get answers", "Collect opinions or get a headcount", "collectIcon", actionGreen, UIColor.white, UIColor.white, textFont, descriptionFont),
+            ("discussOnboardingImage", "Message by response", "Chat with the entire group or filter by answer", "discussOnboardingIcon", red, UIColor.white, UIColor.white, textFont, descriptionFont), ("threadOnboardingImage", "Create targeted groups", "Create new group chats from poll answer groups", "Launch Image", UIColor.white, blue, blue, textFont, descriptionFont), ("nextIcon", "Let's do it", "Tap above to login", "launchImage", UIColor.white, blue, blue, textFont, descriptionFont)][index]
+        
     }
     
     

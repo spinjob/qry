@@ -197,13 +197,13 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
                 
                 recipient.recipientID = snapshotValue["recipientID"] as! String
                 
-                recipient.recipientName = snapshotValue["recipientName"] as! String
                 recipient.vote = snapshotValue["voteString"] as! String
                 
                 FIRDatabase.database().reference().child("users").child(recipient.recipientID).observe(.value, with: {
                     snapshot in
                     let snapshotValue = snapshot.value as! NSDictionary
                     recipient.imageURL1 = snapshotValue["profileImageURL"] as! String
+                    recipient.recipientName = snapshotValue["fullName"] as! String
                     
                     if poll.groupMembers.contains(where: { $0.recipientID == recipient.recipientID})
                     { print("group already added")
@@ -688,7 +688,6 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
 
             pollForRow.isExpired = true
             
-           
             
             UIView.animate(withDuration: 0.1) {
                 

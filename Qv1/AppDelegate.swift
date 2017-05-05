@@ -15,7 +15,7 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let gcmMessageIDKey = "gcm.message_id"
+    //    let gcmMessageIDKey = "gcm.message_id"
    
 
     override init() {
@@ -76,10 +76,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
        
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-            
-        }
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//            
+//        }
         
         // Print full message.
         print(userInfo)
@@ -93,9 +93,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Print message ID.
         
 
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
         
         // Print full message.
         print(userInfo)
@@ -162,9 +162,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
-        
-        FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type: FIRInstanceIDAPNSTokenType.sandbox)
-       
+        //FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type: FIRInstanceIDAPNSTokenType.sandbox)
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken as Data, type: FIRInstanceIDAPNSTokenType.prod)
         
         var token = ""
         
@@ -272,9 +271,9 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
 
         // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
 
         
         // Print full message.
@@ -327,9 +326,9 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         }
         
         // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
         
         // Print full message.
         print(userInfo)

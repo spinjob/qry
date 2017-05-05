@@ -90,6 +90,7 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         newDecisionButton.isHidden = true
         
         FIRMessaging.messaging().subscribe(toTopic: "user_\(currentUserID!)")
+       // FIRMessaging.messaging().unsubscribe(fromTopic: "user_\(currentUserID!)")
         
         let ref : FIRDatabaseReference = FIRDatabase.database().reference().child("users")
         
@@ -1366,6 +1367,8 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         profileIconImageView.layer.masksToBounds = true
         profileIconImageView.addGestureRecognizer(profileIconTapGesture)
         
+        
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileIconImageView)
         
         FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observe(.value, with: {
@@ -1399,14 +1402,37 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         let discoverImageView = UIImageView()
         let discoverIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.discoverIconTapped(sender:)))
         
-        discoverImageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        discoverImageView.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
         
         discoverImageView.addGestureRecognizer(discoverIconTapGesture)
         
         discoverImageView.image = #imageLiteral(resourceName: "Discover icon")
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: discoverImageView)
+        let discoverBarButtonItem = UIBarButtonItem(customView: discoverImageView)
         
+        
+        
+        let globalPollsImageView = UIImageView()
+        
+        let globalPollsIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.globalPollsIconTapped(sender:)))
+        
+        globalPollsImageView.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
+        
+        globalPollsImageView.addGestureRecognizer(globalPollsIconTapGesture)
+        
+        globalPollsImageView.image = #imageLiteral(resourceName: "Global Icon")
+        
+        let globalPollsBarButtonItem = UIBarButtonItem(customView: globalPollsImageView)
+        
+        
+        
+        let barbuttonSpaceImageView = UIImageView()
+        
+        barbuttonSpaceImageView.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
+        
+        let barButtonSpace = UIBarButtonItem(customView: barbuttonSpaceImageView)
+        
+        navigationItem.rightBarButtonItems = [discoverBarButtonItem, barButtonSpace, globalPollsBarButtonItem]
         
         navigationController?.navigationBar.backgroundColor = UIColor.white
         navigationController?.navigationBar.isTranslucent = false
@@ -1463,6 +1489,25 @@ class UserHomeViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         
+        transition.duration = 0.3
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+        
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+        
+        
+    }
+    
+    func globalPollsIconTapped (sender: UITapGestureRecognizer) {
+        
+        let imgView = sender.view as! UIImageView
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "DiscoverViewController") as! DiscoverViewController
+      
+        let transition:CATransition = CATransition()
+
         transition.duration = 0.3
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionMoveIn

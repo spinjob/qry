@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.03</string>
+	<string>1.05</string>
 	<key>FirebaseAppDelegateProxyEnabled </key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>

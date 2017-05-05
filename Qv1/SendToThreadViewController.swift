@@ -562,8 +562,6 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         UIView.animate(withDuration: 0.1) {
             self.view.layoutIfNeeded()
         }
-
-        
         
     }
     
@@ -710,13 +708,13 @@ class SendToThreadViewController: UIViewController, UITableViewDelegate, UITable
         
         let ref = FIRDatabase.database().reference()
         
-        let notificationRequestsRef = ref.child("notificationRequests")
+        let notificationRequestsRef = ref.child("notification-Requests")
         let notificationRequestID = UUID().uuidString
         
         let notificationRequestDict : [NSObject : AnyObject]  = ["username" as NSObject: user as AnyObject, "message" as NSObject: message as AnyObject, "sender" as NSObject: name as AnyObject, "answer1" as NSObject: answer1 as AnyObject, "answer2" as NSObject: answer2 as AnyObject, "pollID" as NSObject: pollID as AnyObject]
         
         
-        FIRDatabase.database().reference().child("notificationRequests").child(notificationRequestID).setValue(notificationRequestDict)
+        FIRDatabase.database().reference().child("notification-Requests").child(notificationRequestID).setValue(notificationRequestDict)
         
         
         print(notificationRequestDict)

@@ -163,10 +163,10 @@ class EditChatViewController: UIViewController, UITableViewDelegate, UITableView
    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        if section == 0 {
-            return 50
-        }
-        return 60
+//        if section == 0 {
+//            return 50
+//        }
+        return 50
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
